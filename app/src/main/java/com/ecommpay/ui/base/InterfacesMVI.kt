@@ -28,4 +28,4 @@ abstract class ViewStates<VD : ViewData>(open val viewData: VD)
 
 //Действия, которые не влияют на общее состояние экрана
 //(например: Toast, переход в другой экран, показ диалога, открытие другого приложения и т.д. )
-abstract class ViewActions : Action()
+open class ViewActions : Action()

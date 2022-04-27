@@ -6,12 +6,12 @@ sealed interface MessageUI
 
 data class MessageAlert(
     val title: String,
-    val massage: String,
+    val message: String,
     val isError: Boolean = false,
 ) : MessageUI
 
 data class MessageToast(
-    val massage: String,
+    val message: String,
     val time: Int = Toast.LENGTH_SHORT,
 ) : MessageUI
 

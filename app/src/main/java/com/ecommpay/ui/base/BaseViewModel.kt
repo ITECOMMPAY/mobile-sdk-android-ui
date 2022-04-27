@@ -16,13 +16,13 @@ abstract class BaseViewModel<VD : ViewData, VI: ViewIntents> : ViewModel() {
     val viewAction: LiveData<ViewActions> = _viewAction
 
     open fun pushIntent(intent: VI) {
-        viewState.value?.let {
-            obtainIntent(intent, it)
-        }
-        when (val currentState = viewState.value) {
-            is DefaultViewStates.Display<*> -> reduce(intent, currentState as DefaultViewStates.Display<VD>)
-            is DefaultViewStates.Loading<*> -> reduce(intent, currentState as DefaultViewStates.Loading<VD>)
-            is DefaultViewStates.DisabledNetwork<*> -> reduce(intent, currentState as DefaultViewStates.DisabledNetwork<VD>)
+        viewState.value?.let { currentState ->
+            obtainIntent(intent, currentState)
+            when (currentState) {
+                is DefaultViewStates.Display<*> -> reduce(intent, currentState as DefaultViewStates.Display<VD>)
+                is DefaultViewStates.Loading<*> -> reduce(intent, currentState as DefaultViewStates.Loading<VD>)
+                is DefaultViewStates.DisabledNetwork<*> -> reduce(intent, currentState as DefaultViewStates.DisabledNetwork<VD>)
+            }
         }
     }
 
