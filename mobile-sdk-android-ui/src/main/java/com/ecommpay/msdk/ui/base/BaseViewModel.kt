@@ -1,5 +1,6 @@
 package com.ecommpay.msdk.ui.base
 
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<VD : ViewData, VI: ViewIntents> : ViewModel() {
+abstract class BaseViewModel<VD : ViewData> : ViewModel() {
 
     private val _viewState: MutableLiveData<ViewStates<VD>> = MutableLiveData(DefaultViewStates.Default(defaultViewData()))
     val viewState: LiveData<ViewStates<VD>> = _viewState
@@ -15,25 +16,29 @@ abstract class BaseViewModel<VD : ViewData, VI: ViewIntents> : ViewModel() {
     private val _viewAction: MutableLiveData<ViewActions> = MutableLiveData(DefaultViewActions.Default)
     val viewAction: LiveData<ViewActions> = _viewAction
 
-    open fun pushIntent(intent: VI) {
-        viewState.value?.let { currentState ->
+    open fun pushIntent(viewIntent: ViewIntents?) {
+        viewIntent?.let {intent -> viewState.value?.let { currentState ->
             obtainIntent(intent, currentState)
             when (currentState) {
                 is DefaultViewStates.Display<*> -> reduce(intent, currentState as DefaultViewStates.Display<VD>)
                 is DefaultViewStates.Loading<*> -> reduce(intent, currentState as DefaultViewStates.Loading<VD>)
                 is DefaultViewStates.DisabledNetwork<*> -> reduce(intent, currentState as DefaultViewStates.DisabledNetwork<VD>)
             }
-        }
+        } }
+
     }
 
-    protected open fun obtainIntent(intent: VI, currentState: ViewStates<VD>) {}
-    protected open fun reduce(intent: VI, currentState: DefaultViewStates.Display<VD>) {}
-    protected open fun reduce(intent: VI, currentState: DefaultViewStates.Loading<VD>) {}
-    protected open fun reduce(intent: VI, currentState: DefaultViewStates.DisabledNetwork<VD>) {}
+    protected open fun obtainIntent(intent: ViewIntents, currentState: ViewStates<VD>) = Unit
+    protected open fun reduce(intent: ViewIntents, currentState: DefaultViewStates.Display<VD>) = Unit
+    protected open fun reduce(intent: ViewIntents, currentState: DefaultViewStates.Loading<VD>) = Unit
+    protected open fun reduce(intent: ViewIntents, currentState: DefaultViewStates.DisabledNetwork<VD>) = Unit
 
-    open fun entryPoint() {
+    // срабатывает при входе
+    open fun entryPoint() = Unit
 
-    } // срабатывает при входе
+    // срабатывает при входе
+    open fun entryPoint(arguments: Bundle?) = Unit
+
     abstract fun defaultViewData(): VD
 
     protected fun launchAction(action: ViewActions, timeBlockUI: Long? = null) {

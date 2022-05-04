@@ -17,4 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "app"
 
 include ':mobile-sdk-android-ui'
-include ':androidapp'
+include ':mobile-sdk-android-ui-compose-sample'

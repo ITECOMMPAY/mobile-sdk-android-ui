@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.ecommpay.msdk.ui.base.DefaultViewStates
 import com.ecommpay.msdk.ui.base.ViewStates
-import com.ecommpay.msdk.ui.navigation.NavigationViewActions
+import com.ecommpay.msdk.ui.theme.SDKTypography
 import com.ecommpay.msdk.ui.views.ToolBar
 
 @Composable
 fun PaymentMethodScreen(
-    state: ViewStates<PaymentMethodViewData>,
+    state: ViewStates<PaymentMethodViewData>?,
     intentListener: (intent: PaymentMethodViewIntents) -> Unit,
 ) {
     BackHandler {
@@ -28,7 +28,9 @@ fun PaymentMethodScreen(
         content = {
             when (state) {
                 is DefaultViewStates.Display -> {
-                    Text(text = state.viewData.title)
+                    Text(
+                        text = state.viewData.title,
+                        style = SDKTypography().body1)
                 }
                 is DefaultViewStates.Loading -> {
                     CircularProgressIndicator()

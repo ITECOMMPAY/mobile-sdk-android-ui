@@ -2,8 +2,8 @@ package com.ecommpay.msdk.ui.navigation
 
 import com.ecommpay.msdk.ui.base.ViewActions
 
-sealed class NavigationViewActions: ViewActions() {
-    class PaymentMethodsListScreen: NavigationViewActions()
-    class PaymentMethodsListScreenToPaymentMethodScreen(val name: String): NavigationViewActions()
-    class PaymentMethodScreenToPaymentMethodsListScreen: NavigationViewActions()
+sealed class NavigationViewActions(open val navRoute: String): ViewActions() {
+    class PaymentMethodsListScreenToPaymentMethodScreen(override val navRoute: String): NavigationViewActions(navRoute)
+    class PaymentMethodScreenToPaymentMethodsListScreen(override val navRoute: String): NavigationViewActions(navRoute)
+    class PaymentMethodsListScreenToEnterCVVBottomSheet(override val navRoute: String): NavigationViewActions(navRoute)
 }

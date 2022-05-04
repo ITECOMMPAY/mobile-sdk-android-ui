@@ -8,13 +8,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ecommpay.msdk.ui.theme.SDKTheme
+import com.ecommpay.msdk.ui.theme.SDKTypography
 
 @Composable
-@Preview(showBackground = true)
 fun ToolBar(arrowIcon: ImageVector? = Icons.Filled.ArrowBack, listener: () -> Unit = {}) {
     TopAppBar(
         title = {
-            Text(text = "")
+            Text(
+                style = SDKTypography(true).body1,
+                text = "123123f")
         },
         navigationIcon = {
             IconButton(onClick = listener) {
@@ -23,8 +26,25 @@ fun ToolBar(arrowIcon: ImageVector? = Icons.Filled.ArrowBack, listener: () -> Un
                 }
             }
         },
-        backgroundColor = Color.Blue,
+        backgroundColor = MaterialTheme.colors.primary,
         contentColor = Color.White,
         elevation = 12.dp
     )
 }
+
+@Composable
+@Preview
+fun PreviewLightToolbar() {
+    SDKTheme(darkTheme = false) {
+        ToolBar()
+    }
+}
+
+@Composable
+@Preview
+fun PreviewDarkToolbar() {
+    SDKTheme(darkTheme = true) {
+        ToolBar()
+    }
+}
+
