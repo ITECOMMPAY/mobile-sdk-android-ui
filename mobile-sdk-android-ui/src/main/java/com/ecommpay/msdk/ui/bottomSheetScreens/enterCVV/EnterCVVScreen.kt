@@ -21,7 +21,7 @@ fun EnterCVVScreen(
         is DefaultViewStates.Display -> {
             Box(contentAlignment = Alignment.BottomEnd,
                 modifier = Modifier
-                    .background(Color.Red.copy(alpha = 0.3f))
+                    .background(Color.Black.copy(alpha = 0.3f))
                     .fillMaxSize()
             ) {
                 Column(

@@ -27,15 +27,15 @@ fun EntryScreen(
     state: ViewStates<EntryViewData>?,
     intentListener: (intent: ViewIntents) -> Unit,
 ) {
-    Scaffold(
-        topBar = { ToolBar(null) },
-        content = {
-            when (state) {
-                is DefaultViewStates.Loading,
-                is DefaultViewStates.Display,
-                is EntryViewStates.ShownDeleteDialog -> {
+    when (state) {
+        is DefaultViewStates.Display,
+        is EntryViewStates.ShownDeleteDialog -> {
+            Scaffold(
+                topBar = { ToolBar(null) },
+                content = {
                     Column(
                         modifier = Modifier
+                            .padding(it)
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())) {
                         SaveCardList(
@@ -47,20 +47,20 @@ fun EntryScreen(
                             intentListener = intentListener)
                     }
                 }
-            }
-            when (state) {
-                is DefaultViewStates.Loading -> {
-                    Box(modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            color = MaterialTheme.colors.onSurface))
-                }
-                is EntryViewStates.ShownDeleteDialog -> {
-                    DeleteDialog(state.viewData.deleteDialogViewData, intentListener)
-                }
-            }
+            )
         }
-    )
+        is DefaultViewStates.Loading -> {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    color = MaterialTheme.colors.onSurface))
+        }
+    }
+    when (state) {
+        is EntryViewStates.ShownDeleteDialog -> {
+            DeleteDialog(state.viewData.deleteDialogViewData, intentListener)
+        }
+    }
 }
 
 @Composable
