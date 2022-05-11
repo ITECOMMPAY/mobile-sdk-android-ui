@@ -19,7 +19,7 @@ fun EnterCVVState(
     navController: NavHostController,
     defaultActionListener: (defaultAction: DefaultViewActions) -> Unit,
 ) {
-    val state: ViewStates<EnterCVVViewData>? by enterCVVViewModel.viewState.observeAsState()
+    val state: ViewStates<EnterCVVViewData> by enterCVVViewModel.viewState.observeAsState(DefaultViewStates.Default(enterCVVViewModel.defaultViewData()))
     val viewAction: ViewActions? by enterCVVViewModel.viewAction.observeAsState()
 
     when (state) {
@@ -27,7 +27,9 @@ fun EnterCVVState(
     }
     viewAction?.Invoke {
         when (viewAction) {
-
+            is NavigationViewActions.EnterCVVBottomSheetToResultBottomSheet -> navController.navigate((viewAction as NavigationViewActions.EnterCVVBottomSheetToResultBottomSheet).navRoute)
+            is NavigationViewActions -> navController.popBackStack()
+            is DefaultViewActions -> defaultActionListener(viewAction as DefaultViewActions)
         }
     }
     EnterCVVScreen(

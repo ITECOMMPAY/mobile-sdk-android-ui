@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import com.google.accompanist.navigation.animation.composable
 import com.ecommpay.msdk.ui.base.DefaultViewActions
 import com.ecommpay.msdk.ui.bottomSheetScreens.enterCVV.EnterCVVState
+import com.ecommpay.msdk.ui.bottomSheetScreens.result.ResultState
 import com.ecommpay.msdk.ui.paymentMethod.PaymentMethodState
 import com.ecommpay.msdk.ui.entry.EntryState
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -45,10 +46,17 @@ fun NavigationState(
                 defaultActionListener = defaultActionListener)
         }
         composable(
-            route = "enterCVV/{id}"
+            route = "enterCVVScreen/{id}"
         ) {
             EnterCVVState(
                 arguments = it.arguments,
+                navController = navController,
+                defaultActionListener = defaultActionListener)
+        }
+        composable(
+            route = "resultScreen"
+        ) {
+            ResultState(
                 navController = navController,
                 defaultActionListener = defaultActionListener)
         }

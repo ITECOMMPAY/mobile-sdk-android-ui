@@ -20,7 +20,7 @@ import com.ecommpay.msdk.ui.entry.itemPaymentMethod.ItemPaymentMethodIntents
 import com.ecommpay.msdk.ui.entry.itemPaymentMethod.ItemPaymentMethodViewData
 import com.ecommpay.msdk.ui.entry.itemSaveCard.ItemSaveCard
 import com.ecommpay.msdk.ui.entry.itemSaveCard.ItemSaveCardViewData
-import com.ecommpay.msdk.ui.views.ToolBar
+import com.ecommpay.msdk.ui.views.SDKToolBar
 
 @Composable
 fun EntryScreen(
@@ -31,7 +31,7 @@ fun EntryScreen(
         is DefaultViewStates.Display,
         is EntryViewStates.ShownDeleteDialog -> {
             Scaffold(
-                topBar = { ToolBar(null) },
+                topBar = { SDKToolBar(null) },
                 content = {
                     Column(
                         modifier = Modifier

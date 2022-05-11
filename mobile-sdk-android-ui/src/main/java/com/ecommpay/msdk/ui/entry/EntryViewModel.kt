@@ -1,7 +1,5 @@
 package com.ecommpay.msdk.ui.entry
 
-import com.ecommpay.msdk.core.MSDKCoreSession
-import com.ecommpay.msdk.core.MSDKCoreSessionConfig
 import com.ecommpay.msdk.core.domain.entities.init.InitPaymentMethod
 import com.ecommpay.msdk.core.domain.entities.init.InitSavedAccount
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
@@ -16,12 +14,12 @@ import com.ecommpay.msdk.ui.entry.itemPaymentMethod.ItemPaymentMethodIntents
 import com.ecommpay.msdk.ui.entry.itemPaymentMethod.ItemPaymentMethodViewData
 import com.ecommpay.msdk.ui.entry.itemSaveCard.ItemSaveCardIntents
 import com.ecommpay.msdk.ui.entry.itemSaveCard.ItemSaveCardViewData
+import com.ecommpay.msdk.ui.main.InitData
+import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.initData
+import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.msdkSession
 import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.paymentInfo
 
 class EntryViewModel : BaseViewModel<EntryViewData>() {
-
-    val config = MSDKCoreSessionConfig("pp-sdk.westresscode.net", "paymentpage.ecommpay.com")
-    val msdkSession = MSDKCoreSession(config)
 
     override fun obtainIntent(
         intent: ViewIntents,
@@ -70,7 +68,7 @@ class EntryViewModel : BaseViewModel<EntryViewData>() {
     }
 
     private fun moveToEnterCVVBottomSheet(intent: ItemSaveCardIntents.Click) {
-        launchAction(NavigationViewActions.PaymentMethodsListScreenToEnterCVVBottomSheet(navRoute = "enterCVV/${intent.id}"))
+        launchAction(NavigationViewActions.PaymentMethodsListScreenToEnterCVVBottomSheet(navRoute = "enterCVVScreen/${intent.id}"))
     }
 
     private fun editCard() {
@@ -91,6 +89,14 @@ class EntryViewModel : BaseViewModel<EntryViewData>() {
         val removeInteractor = msdkSession.getCardRemoveInteractor()
         //Remove card
         removeInteractor.execute(CardRemoveRequest(id), object : CardRemoveDelegate {
+            override fun onError(message: String) {
+                updateState(DefaultViewStates.Display(viewData = viewState.value?.viewData
+                    ?: defaultViewData()))
+                launchAction(DefaultViewActions.ShowMessage(MessageAlert("Ошибка сети",
+                    message ?: "",
+                    true)))
+            }
+
             override fun onSuccess(result: Boolean) {
                 updateState(DefaultViewStates.Display(
                     viewState.value?.viewData?.copy(
@@ -98,14 +104,6 @@ class EntryViewModel : BaseViewModel<EntryViewData>() {
                             ?: listOf()
                     ) ?: defaultViewData()
                 ))
-            }
-
-            override fun onError(error: Throwable, message: String?) {
-                updateState(DefaultViewStates.Display(viewData = viewState.value?.viewData
-                    ?: defaultViewData()))
-                launchAction(DefaultViewActions.ShowMessage(MessageAlert("Ошибка сети",
-                    message ?: "",
-                    true)))
             }
         })
     }
@@ -121,8 +119,7 @@ class EntryViewModel : BaseViewModel<EntryViewData>() {
         updateState(DefaultViewStates.Loading(viewState.value?.viewData ?: defaultViewData()))
         msdkSession.init(
             paymentInfo = paymentInfo,
-            threeDSecureInfo = null,
-            object : InitDelegate {
+            delegate = object : InitDelegate {
                 //Init
                 override fun onInitReceived(
                     paymentMethods: List<InitPaymentMethod>,
@@ -130,11 +127,18 @@ class EntryViewModel : BaseViewModel<EntryViewData>() {
                     savedAccounts: List<InitSavedAccount>,
                     secureLogos: Map<String, String>,
                 ) {
+                    initData = InitData(
+                        paymentMethods = paymentMethods,
+                        translations = translations,
+                        savedAccounts = savedAccounts,
+                        secureLogos = secureLogos
+                    )
+
                     updateState(
                         DefaultViewStates.Display(
                             EntryViewData(
-                                paymentMethodList = paymentMethods.map { it.toViewData() },
-                                saveCardList = savedAccounts.map { it.toViewData() },
+                                paymentMethodList = initData.paymentMethods.map { it.toViewData() },
+                                saveCardList = initData.savedAccounts.map { it.toViewData() },
                                 isEditableSavedCards = false,
                                 deleteDialogViewData = DeleteDialogViewData(
                                     "Do you want to delete card?",
@@ -145,13 +149,7 @@ class EntryViewModel : BaseViewModel<EntryViewData>() {
                             )))
                 }
 
-                //Restore payment
-                override fun onPaymentRestored(payment: Payment) {
-
-                }
-
-                //Error
-                override fun onError(error: Throwable, message: String?) {
+                override fun onError(message: String) {
                     updateState(DefaultViewStates.Display(viewData = viewState.value?.viewData
                         ?: defaultViewData()))
                     launchAction(DefaultViewActions.ShowMessage(MessageAlert("Ошибка сети",
@@ -159,6 +157,10 @@ class EntryViewModel : BaseViewModel<EntryViewData>() {
                         true)))
                 }
 
+                //Restore payment
+                override fun onPaymentRestored(payment: Payment) {
+
+                }
             })
     }
 

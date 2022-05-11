@@ -19,7 +19,8 @@
         <activity
             android:name=".main.PaymentActivity"
             android:exported="true"
-            android:theme="@style/Theme.SDKThemeAppCompat">
+            android:theme="@style/Theme.SDKThemeAppCompat"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
