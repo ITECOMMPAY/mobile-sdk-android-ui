@@ -1,11 +1,12 @@
 package com.ecommpay.msdk.ui.entry
 
-import com.ecommpay.msdk.core.domain.entities.init.InitPaymentMethod
-import com.ecommpay.msdk.core.domain.entities.init.InitSavedAccount
+import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
+import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.core.domain.interactors.card.remove.CardRemoveDelegate
 import com.ecommpay.msdk.core.domain.interactors.card.remove.CardRemoveRequest
 import com.ecommpay.msdk.core.domain.interactors.init.InitDelegate
+import com.ecommpay.msdk.core.domain.interactors.init.InitRequest
 import com.ecommpay.msdk.ui.base.*
 import com.ecommpay.msdk.ui.entry.deleteDialog.DeleteDialogIntents
 import com.ecommpay.msdk.ui.entry.deleteDialog.DeleteDialogViewData
@@ -14,8 +15,6 @@ import com.ecommpay.msdk.ui.entry.itemPaymentMethod.ItemPaymentMethodIntents
 import com.ecommpay.msdk.ui.entry.itemPaymentMethod.ItemPaymentMethodViewData
 import com.ecommpay.msdk.ui.entry.itemSaveCard.ItemSaveCardIntents
 import com.ecommpay.msdk.ui.entry.itemSaveCard.ItemSaveCardViewData
-import com.ecommpay.msdk.ui.main.InitData
-import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.initData
 import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.msdkSession
 import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.paymentInfo
 
@@ -117,28 +116,21 @@ class EntryViewModel : BaseViewModel<EntryViewData>() {
     //Testing API
     private fun getData() {
         updateState(DefaultViewStates.Loading(viewState.value?.viewData ?: defaultViewData()))
-        msdkSession.init(
-            paymentInfo = paymentInfo,
-            delegate = object : InitDelegate {
+        val initInteractor = msdkSession.getInitInteractor()
+        initInteractor.execute(
+            request = InitRequest(
+                paymentInfo = paymentInfo,
+                recurrentInfo = null,
+                threeDSecureInfo = null
+            ),
+            callback = object : InitDelegate {
                 //Init
-                override fun onInitReceived(
-                    paymentMethods: List<InitPaymentMethod>,
-                    translations: Map<String, String>,
-                    savedAccounts: List<InitSavedAccount>,
-                    secureLogos: Map<String, String>,
-                ) {
-                    initData = InitData(
-                        paymentMethods = paymentMethods,
-                        translations = translations,
-                        savedAccounts = savedAccounts,
-                        secureLogos = secureLogos
-                    )
-
+                override fun onInitReceived() {
                     updateState(
                         DefaultViewStates.Display(
                             EntryViewData(
-                                paymentMethodList = initData.paymentMethods.map { it.toViewData() },
-                                saveCardList = initData.savedAccounts.map { it.toViewData() },
+                                paymentMethodList = msdkSession.getPaymentMethods()?.map { it.toViewData() } ?: emptyList(),
+                                saveCardList = msdkSession.getSavedAccounts()?.map { it.toViewData() } ?: emptyList(),
                                 isEditableSavedCards = false,
                                 deleteDialogViewData = DeleteDialogViewData(
                                     "Do you want to delete card?",
@@ -161,16 +153,17 @@ class EntryViewModel : BaseViewModel<EntryViewData>() {
                 override fun onPaymentRestored(payment: Payment) {
 
                 }
-            })
+            }
+        )
     }
 
 
-    fun InitPaymentMethod.toViewData() = ItemPaymentMethodViewData(
+    fun PaymentMethod.toViewData() = ItemPaymentMethodViewData(
         name = name ?: "",
         iconUrl = iconUrl ?: ""
     )
 
-    fun InitSavedAccount.toViewData() = ItemSaveCardViewData(
+    fun SavedAccount.toViewData() = ItemSaveCardViewData(
         cardNumber = number?.takeLast(8) ?: "",
         clickIntent = ItemSaveCardIntents.Click(id = id ?: -1),
         deleteIntent = ItemSaveCardIntents.Delete(id = id ?: -1),

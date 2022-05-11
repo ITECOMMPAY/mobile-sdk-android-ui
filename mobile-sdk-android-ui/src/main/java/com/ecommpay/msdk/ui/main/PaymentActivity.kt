@@ -7,8 +7,6 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentCompositionLocalContext
-import androidx.compose.ui.platform.LocalContext
 import com.ecommpay.msdk.core.MSDKCoreSession
 import com.ecommpay.msdk.core.MSDKCoreSessionConfig
 import com.ecommpay.msdk.core.domain.entities.PaymentInfo
@@ -29,12 +27,11 @@ class PaymentActivity : ComponentActivity() {
     }
 
     companion object {
-
         lateinit var paymentInfo: PaymentInfo
-        lateinit var initData: InitData
         lateinit var payment: Payment
         val config = MSDKCoreSessionConfig("pp-sdk.westresscode.net", "paymentpage.ecommpay.com")
         val msdkSession = MSDKCoreSession(config)
+        val stringResourceManager = msdkSession.getStringResourceManager()
 
 
         fun buildPaymentIntent(context: Context, paymentInfo: PaymentInfo): Intent {

@@ -2,7 +2,7 @@ package com.ecommpay.msdk.ui.bottomSheetScreens.enterCVV
 
 import android.os.Bundle
 import com.ecommpay.msdk.core.domain.entities.clarification.ClarificationField
-import com.ecommpay.msdk.core.domain.entities.init.InitSavedAccount
+import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.core.domain.entities.payment.PaymentStatus
 import com.ecommpay.msdk.core.domain.interactors.card.sale.AcsPage
@@ -10,17 +10,16 @@ import com.ecommpay.msdk.core.domain.interactors.card.sale.card.CardSaleDelegate
 import com.ecommpay.msdk.core.domain.interactors.card.sale.card.savedCard.SavedCardSaleRequest
 import com.ecommpay.msdk.ui.base.*
 import com.ecommpay.msdk.ui.main.PaymentActivity
-import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.initData
 import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.msdkSession
-import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.payment
 import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.paymentInfo
+import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.stringResourceManager
 import com.ecommpay.msdk.ui.navigation.NavigationViewActions
 
 class EnterCVVViewModel : BaseViewModel<EnterCVVViewData>() {
 
     override fun entryPoint(arguments: Bundle?) {
         val id = arguments?.getString("id")?.toLong()
-        val viewData = initData.savedAccounts.find { it.id == id }?.toViewData() ?: defaultViewData()
+        val viewData = msdkSession.getSavedAccounts()?.find { it.id == id }?.toViewData() ?: defaultViewData()
         updateState(DefaultViewStates.Display(viewData = viewData))
     }
 
@@ -36,8 +35,8 @@ class EnterCVVViewModel : BaseViewModel<EnterCVVViewData>() {
     }
 
     private fun getDataForResultScreen(intent: EnterCVVViewIntents.PayClick) {
-        updateState(DefaultViewStates.Loading(viewData = viewState.value?.viewData?.copy(buttonPayText = "${initData.translations["button_pay_loading"]}") ?: defaultViewData()))
-        msdkSession.getSavedCardSaleInteractor().execute(
+        updateState(DefaultViewStates.Loading(viewData = viewState.value?.viewData?.copy(buttonPayText = "${stringResourceManager.payButtonLoadingLabel}") ?: defaultViewData()))
+        msdkSession.getCardSaleInteractor().execute(
             SavedCardSaleRequest(
                 cvv = intent.cvv,
                 accountId = intent.id
@@ -92,9 +91,9 @@ class EnterCVVViewModel : BaseViewModel<EnterCVVViewData>() {
     override fun defaultViewData() = EnterCVVViewData.defaultViewData
 }
 
-private fun InitSavedAccount.toViewData() = EnterCVVViewData(
+private fun SavedAccount.toViewData() = EnterCVVViewData(
     cardUrlLogo = cardUrlLogo ?: "",
     cardNumber = number?.takeLast(8) ?: "",
-    payClickIntent = EnterCVVViewIntents.PayClick(id = id ?: -1, cvv = ""),
-    buttonPayText = "${initData.translations["button_pay"]} ${paymentInfo.paymentAmount} ${paymentInfo.paymentCurrency}"
+    payClickIntent = EnterCVVViewIntents.PayClick(id = id, cvv = ""),
+    buttonPayText = "${stringResourceManager.payButtonLabel} ${paymentInfo.paymentAmount} ${paymentInfo.paymentCurrency}"
 )

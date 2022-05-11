@@ -47,7 +47,7 @@ android {
 
 dependencies {
     //msdkCore
-    implementation 'com.ecommpay.msdk.core:msdkCore:+'
+    implementation 'com.ecommpay.msdk:EcmpMsdkCore-android:+'
     //Android
     implementation 'com.google.android.gms:play-services-wallet:19.1.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
