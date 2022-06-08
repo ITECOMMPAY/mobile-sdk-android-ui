@@ -16,7 +16,7 @@ fun EntryState(
     navController: NavHostController,
     defaultActionListener: (defaultAction: DefaultViewActions) -> Unit,
 ) {
-    val state: ViewStates<EntryViewData>? by entryViewModel.viewState.observeAsState()
+    val state: ViewStates<EntryViewData> by entryViewModel.viewState.observeAsState(DefaultViewStates.Default(entryViewModel.defaultViewData()))
     val viewAction: ViewActions? by entryViewModel.viewAction.observeAsState()
 
     when (state) {
@@ -28,8 +28,6 @@ fun EntryState(
     )
     viewAction?.Invoke {
         when (viewAction) {
-            is NavigationViewActions.PaymentMethodsListScreenToPaymentMethodScreen,
-            is NavigationViewActions.PaymentMethodsListScreenToEnterCVVBottomSheet -> navController.navigate((viewAction as NavigationViewActions).navRoute)
             is DefaultViewActions -> defaultActionListener(viewAction as DefaultViewActions)
         }
     }

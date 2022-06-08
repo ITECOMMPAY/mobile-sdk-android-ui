@@ -36,15 +36,15 @@ fun ResultScreen(
                             .background(Color.White),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = state.viewData.amount.toString())
+                        Text(text = state.viewData.amount)
                         Text(text = state.viewData.currency)
+                        Text(text = state.viewData.resultTitle)
                         Text(text = state.viewData.cardWalletTitle)
                         Text(text = state.viewData.cardWalletValue)
                         Text(text = state.viewData.paymentDateTitle)
                         Text(text = state.viewData.paymentDateValue)
                         Text(text = state.viewData.paymentIdTitle)
                         Text(text = state.viewData.paymentIdValue)
-                        Text(text = state.viewData.resultTitle)
                         Text(text = state.viewData.vatAmountTitle)
                         Text(text = state.viewData.vatAmountValue)
                         Text(text = state.viewData.vatCurrencyTitle)

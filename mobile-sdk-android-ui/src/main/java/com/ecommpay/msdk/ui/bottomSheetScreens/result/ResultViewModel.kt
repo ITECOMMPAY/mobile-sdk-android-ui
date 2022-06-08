@@ -1,5 +1,6 @@
 package com.ecommpay.msdk.ui.bottomSheetScreens.result
 
+import com.ecommpay.msdk.ui.Utils
 import com.ecommpay.msdk.ui.base.*
 import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.payment
 import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.paymentInfo
@@ -8,8 +9,7 @@ import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.stringResourceManager
 class ResultViewModel: BaseViewModel<ResultViewData>() {
 
     override fun entryPoint() {
-        val viewData = toViewData()
-        updateState(DefaultViewStates.Display(viewData = viewData))
+        updateState(DefaultViewStates.Display(viewData = mapDataToViewData()))
     }
 
     override fun obtainIntent(intent: ViewIntents, currentState: ViewStates<ResultViewData>) {
@@ -22,9 +22,9 @@ class ResultViewModel: BaseViewModel<ResultViewData>() {
 
     override fun defaultViewData() = ResultViewData.defaultViewData
 
-    private fun toViewData() = ResultViewData(
-        amount = paymentInfo.paymentAmount,
-        currency = paymentInfo.paymentCurrency,
+    private fun mapDataToViewData() = ResultViewData(
+        amount = Utils.getFormattedAmount(payment.sum),
+        currency = payment.currency ?: "",
         resultTitle = stringResourceManager.payment.successPaymentTitle ?: "",
 
         cardWalletTitle = stringResourceManager.getStringByKey("title_card_wallet") ?: "",

@@ -3,7 +3,7 @@ package com.ecommpay.msdk.ui.bottomSheetScreens.result
 import com.ecommpay.msdk.ui.base.ViewData
 
 data class ResultViewData(
-    val amount: Long,
+    val amount: String,
     val currency: String,
     val resultTitle: String,
 
@@ -27,7 +27,7 @@ data class ResultViewData(
 ) : ViewData {
     companion object {
         val defaultViewData = ResultViewData(
-            amount = 10,
+            amount = "10",
             currency = "USD",
             resultTitle = "Payment is successful",
 

@@ -6,7 +6,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.ecommpay.msdk.core.MSDKCoreSession
 import com.ecommpay.msdk.core.MSDKCoreSessionConfig
 import com.ecommpay.msdk.core.domain.entities.PaymentInfo
@@ -67,7 +71,10 @@ class PaymentActivity : ComponentActivity() {
                     }
                 }
             }
-            NavigationState(defaultActionListener = defaultActionListener)
+            Box(modifier = Modifier
+                .padding(20.dp)) {
+                NavigationState(defaultActionListener = defaultActionListener)
+            }
         }
     }
 }
