@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 
@@ -33,6 +34,7 @@ fun ItemPaymentMethod(
             .fillMaxWidth()
             .height(80.dp)
             .border(1.dp, MaterialTheme.colors.secondary, RoundedCornerShape(5.dp))
+            .background(Color.White)
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -52,9 +54,7 @@ fun ItemPaymentMethod(
                 .align(Alignment.CenterVertically),
             text = name,
             textAlign = TextAlign.Center,
-            style = TextStyle(
-                fontSize = 20.sp,
-            ),
+            style = MaterialTheme.typography.body2
         )
     }
 }

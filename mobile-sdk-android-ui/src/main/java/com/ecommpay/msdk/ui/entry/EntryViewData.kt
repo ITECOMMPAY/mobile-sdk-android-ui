@@ -12,8 +12,12 @@ data class EntryViewData(
     companion object {
         val defaultViewData = EntryViewData(
             topAppBarTitle = "Payment Methods",
-            paymentDetailsTitle = "",
+            paymentDetailsTitle = "Payment details",
             paymentMethodList = listOf(
+                ShimmerViewData,
+                ShimmerViewData,
+                ShimmerViewData,
+                ShimmerViewData,
                 ShimmerViewData,
                 ShimmerViewData,
                 ShimmerViewData

@@ -11,19 +11,49 @@ import androidx.compose.ui.unit.sp
 
 // Set of Material typography styles to start with
 @Composable
-fun SDKTypography(isInverseTheme: Boolean = false) = Typography(
-    body1 = if (if (isInverseTheme) !isSystemInDarkTheme() else isSystemInDarkTheme()) {
+fun SDKTypography(darkTheme: Boolean = isSystemInDarkTheme()) = Typography(
+    h1 = if (darkTheme) {
         TextStyle(
             fontFamily = FontFamily.Default,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight.W700,
+            fontSize = 22.sp,
+            color = Color.White
+        )
+    } else {
+        TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.W700,
+            fontSize = 22.sp,
+            color = Color.Black
+        )
+    },
+    body1 = if (darkTheme) {
+        TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.W700,
             fontSize = 16.sp,
             color = Color.White
         )
     } else {
         TextStyle(
             fontFamily = FontFamily.Default,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight.W700,
             fontSize = 16.sp,
+            color = Color.Black
+        )
+    },
+    body2 = if (darkTheme) {
+        TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.W400,
+            fontSize = 14.sp,
+            color = Color.White
+        )
+    } else {
+        TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.W400,
+            fontSize = 14.sp,
             color = Color.Black
         )
     }

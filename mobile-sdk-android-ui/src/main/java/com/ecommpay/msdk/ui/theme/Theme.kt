@@ -39,9 +39,11 @@ fun SDKTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable ()
         LightColorPalette
     }
 
+    val typography = SDKTypography(darkTheme)
+
     MaterialTheme(
         colors = colors,
-        typography = MaterialTheme.typography,
+        typography = typography,
         shapes = Shapes,
         content = content
     )

@@ -6,13 +6,13 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ecommpay.msdk.ui.theme.SDKTheme
-import com.ecommpay.msdk.ui.theme.SDKTypography
+import com.ecommpay.msdk.ui.theme.TopAppBarCloseButton
+import java.lang.reflect.Modifier
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -26,32 +26,34 @@ fun SDKTopAppBar(
     TopAppBar(
         title = {
             Text(
-                style = SDKTypography(true).body1,
-                text = title)
+                style = MaterialTheme.typography.h1,
+                text = title
+            )
         },
         navigationIcon = {
-            IconButton(
-                onClick = {
-                    //Скрываем системную клавиатуру при переходе на предыдщий экран
-                    keyboardController?.hide()
-                    listener()
-                }) {
-                arrowIcon?.let {
+            if (arrowIcon != null) {
+                IconButton(
+                    onClick = {
+                        //Скрываем системную клавиатуру при переходе на предыдщий экран
+                        keyboardController?.hide()
+                        listener()
+                    }) {
                     Icon(
-                        it,
+                        arrowIcon,
                         "")
                 }
             }
         },
         backgroundColor = MaterialTheme.colors.primary,
-        contentColor = Color.White,
+        contentColor = TopAppBarCloseButton,
         elevation = 0.dp,
         actions = {
             IconButton(
                 onClick = {}) {
                 Icon(
-                    Icons.Default.Close,
-                    contentDescription = ""
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "",
+                    tint = TopAppBarCloseButton
                 )
             }
         }

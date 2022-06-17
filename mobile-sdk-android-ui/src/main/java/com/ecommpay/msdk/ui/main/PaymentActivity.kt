@@ -7,9 +7,12 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.ecommpay.msdk.core.MSDKCoreSession
 import com.ecommpay.msdk.core.MSDKCoreSessionConfig
@@ -44,36 +47,48 @@ class PaymentActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     private fun Main() {
-        SDKTheme {
-            val defaultActionListener: (ViewActions) -> Unit = { action ->
-                when (action) {
-                    is DefaultViewActions.ShowMessage -> {
-                        when (val message = action.message) {
-                            is MessageAlert -> {
-                                Toast.makeText(
-                                    this,
-                                    message.message,
-                                    Toast.LENGTH_LONG).show()
-                            }
-                            is MessageToast -> {
-                                Toast.makeText(
-                                    this,
-                                    message.message,
-                                    Toast.LENGTH_SHORT).show()
+        Surface(
+            modifier = Modifier
+                .fillMaxSize(),
+            color = Color.Black.copy(alpha = 0.2f)
+        ) {
+            SDKTheme {
+                val defaultActionListener: (ViewActions) -> Unit = { action ->
+                    when (action) {
+                        is DefaultViewActions.ShowMessage -> {
+                            when (val message = action.message) {
+                                is MessageAlert -> {
+                                    Toast.makeText(
+                                        this,
+                                        message.message,
+                                        Toast.LENGTH_LONG).show()
+                                }
+                                is MessageToast -> {
+                                    Toast.makeText(
+                                        this,
+                                        message.message,
+                                        Toast.LENGTH_SHORT).show()
+                                }
                             }
                         }
-                    }
-                    is DefaultViewActions.SetResult -> {
-                        setResult(action.resultCode)
-                        finish()
+                        is DefaultViewActions.SetResult -> {
+                            setResult(action.resultCode)
+                            finish()
+                        }
                     }
                 }
-            }
-            Box(modifier = Modifier
-                .padding(20.dp)) {
-                NavigationState(defaultActionListener = defaultActionListener)
+                val sheetState = rememberModalBottomSheetState(
+                    initialValue = ModalBottomSheetValue.Expanded,
+                    confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }
+                )
+                ModalBottomSheetLayout(
+                    sheetContent = { NavigationState(defaultActionListener = defaultActionListener) },
+                    sheetState = sheetState,
+                    content = {}
+                )
             }
         }
     }
