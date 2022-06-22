@@ -6,7 +6,6 @@
     </style>
 
     <style name="Theme.SDKThemeAppCompat" parent="Theme.AppCompat">
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>

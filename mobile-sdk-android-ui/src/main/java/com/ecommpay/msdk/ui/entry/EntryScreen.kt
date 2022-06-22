@@ -11,7 +11,8 @@ import com.ecommpay.msdk.ui.base.*
 import com.ecommpay.msdk.ui.entry.itemPaymentMethod.ItemPaymentMethod
 import com.ecommpay.msdk.ui.entry.itemPaymentMethod.ItemPaymentMethodIntents
 import com.ecommpay.msdk.ui.entry.itemPaymentMethod.ItemPaymentMethodViewData
-import com.ecommpay.msdk.ui.views.SDKTopAppBar
+import com.ecommpay.msdk.ui.theme.SDKTheme
+import com.ecommpay.msdk.ui.views.SDKTopBar
 import com.ecommpay.msdk.ui.views.ShimmerAnimation
 
 @Composable
@@ -19,17 +20,19 @@ fun EntryScreen(
     state: ViewStates<EntryViewData>,
     intentListener: (intent: ViewIntents) -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            SDKTopAppBar(
-                title = state.viewData.topAppBarTitle,
-                arrowIcon = null
-            )
-        },
+    Column(
+        modifier = Modifier
+            .wrapContentHeight()
+            .background(SDKTheme.colors.backgroundPaymentMethods),
         content = {
             Column(
-                modifier = Modifier.padding(20.dp)
+                modifier = Modifier
+                    .padding(SDKTheme.dimensions.paddingDp20)
             ) {
+                SDKTopBar(
+                    title = state.viewData.topAppBarTitle,
+                    arrowIcon = null
+                )
                 when (state) {
                     is DefaultViewStates.Loading -> {
                         ShimmerAnimation(
@@ -71,7 +74,9 @@ fun EntryScreen(
                     }
                     else -> {
                         Text(
-                            text = state.viewData.paymentDetailsTitle)
+                            text = state.viewData.paymentDetailsTitle,
+                            style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand)
+                        )
                     }
                 }
                 Spacer(
@@ -79,8 +84,7 @@ fun EntryScreen(
                 )
                 PaymentMethodList(
                     paymentMethodList = state.viewData.paymentMethodList,
-                    intentListener = intentListener,
-                    modifier = Modifier.padding(it)
+                    intentListener = intentListener
                 )
             }
         }
@@ -91,10 +95,9 @@ fun EntryScreen(
 private fun PaymentMethodList(
     paymentMethodList: List<ViewData>,
     intentListener: (intent: ItemPaymentMethodIntents) -> Unit,
-    modifier: Modifier,
 ) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())) {
         paymentMethodList.forEach { itemPaymentMethodViewData ->

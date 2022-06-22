@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.ecommpay.msdk.ui.theme.BackgroundLightShimmerItem
 
 @Composable
 fun ShimmerAnimation(
@@ -56,9 +56,9 @@ fun ShimmerAnimation(
         Column(content = {
             SDKShimmerItem(
                 colors = listOf(
-                    Color.LightGray.copy(alpha = 0.9f),
-                    Color.LightGray.copy(alpha = 0.2f),
-                    Color.LightGray.copy(alpha = 0.9f),
+                    BackgroundLightShimmerItem.copy(alpha = 1f),
+                    BackgroundLightShimmerItem.copy(alpha = 0f),
+                    BackgroundLightShimmerItem.copy(alpha = 1f),
                 ),
                 xShimmer = xShimmer.value,
                 yShimmer = yShimmer.value,
