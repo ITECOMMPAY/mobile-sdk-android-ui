@@ -16,11 +16,11 @@ fun EntryState(
     navController: NavHostController,
     defaultActionListener: (defaultAction: DefaultViewActions) -> Unit,
 ) {
-    val state: ViewStates<EntryViewData> by entryViewModel.viewState.observeAsState(DefaultViewStates.Default(entryViewModel.defaultViewData()))
+    val state: ViewStates<EntryViewData> by entryViewModel.viewState.observeAsState(DefaultViewStates.Loading(entryViewModel.defaultViewData()))
     val viewAction: ViewActions? by entryViewModel.viewAction.observeAsState()
 
-    when (state) {
-        is DefaultViewStates.Default -> entryViewModel.entryPoint()
+    LaunchedEffect(key1 = Unit) {
+        entryViewModel.entryPoint()
     }
     EntryScreen(
         state = state,

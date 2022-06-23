@@ -71,7 +71,7 @@ fun SampleMainScreen() {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Blue)
+                    .background(Color.White)
                     .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center) {

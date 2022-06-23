@@ -1,6 +1,8 @@
 package com.ecommpay.msdk.ui.entry
 
+import com.ecommpay.msdk.core.base.ErrorCode
 import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
+import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.core.domain.interactors.init.InitDelegate
 import com.ecommpay.msdk.core.domain.interactors.init.InitRequest
@@ -37,17 +39,20 @@ class EntryViewModel : BaseViewModel<EntryViewData>() {
                 threeDSecureInfo = null
             ),
             callback = object : InitDelegate {
-                //Init
-                override fun onInitReceived() {
+                override fun onInitReceived(
+                    paymentMethods: List<PaymentMethod>,
+                    savedAccounts: List<SavedAccount>,
+                ) {
                     updateState(
-                        DefaultViewStates.Display(
+                        DefaultViewStates.Content(
                             EntryViewData(
                                 paymentMethodList = msdkSession.getPaymentMethods()?.map { it.toViewData() } ?: emptyList(),
                                 topAppBarTitle = msdkSession.getStringResourceManager().payment.methodsTitle ?: "",
-                            paymentDetailsTitle = "Payment Details")))
+                                paymentDetailsTitle = "Payment Details")))
                 }
-                override fun onError(message: String, code: String?) {
-                    updateState(DefaultViewStates.Display(viewData = viewState.value?.viewData
+
+                override fun onError(code: ErrorCode, message: String) {
+                    updateState(DefaultViewStates.Content(viewData = viewState.value?.viewData
                         ?: defaultViewData()))
                     launchAction(DefaultViewActions.ShowMessage(MessageAlert("Ошибка сети",
                         message ?: "",

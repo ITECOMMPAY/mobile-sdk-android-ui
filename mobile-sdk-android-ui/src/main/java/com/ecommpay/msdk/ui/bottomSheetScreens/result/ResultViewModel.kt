@@ -9,7 +9,7 @@ import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.stringResourceManager
 class ResultViewModel: BaseViewModel<ResultViewData>() {
 
     override fun entryPoint() {
-        updateState(DefaultViewStates.Display(viewData = mapDataToViewData()))
+        updateState(DefaultViewStates.Content(viewData = mapDataToViewData()))
     }
 
     override fun obtainIntent(intent: ViewIntents, currentState: ViewStates<ResultViewData>) {

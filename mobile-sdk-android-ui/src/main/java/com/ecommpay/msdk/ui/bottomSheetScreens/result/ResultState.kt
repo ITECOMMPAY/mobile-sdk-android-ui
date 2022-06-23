@@ -1,6 +1,7 @@
 package com.ecommpay.msdk.ui.bottomSheetScreens.result
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -16,12 +17,13 @@ fun ResultState(
     navController: NavHostController,
     defaultActionListener: (defaultAction: DefaultViewActions) -> Unit,
 ) {
-    val state: ViewStates<ResultViewData> by resultViewModel.viewState.observeAsState(DefaultViewStates.Default(resultViewModel.defaultViewData()))
+    val state: ViewStates<ResultViewData> by resultViewModel.viewState.observeAsState(DefaultViewStates.Loading(resultViewModel.defaultViewData()))
     val viewAction: ViewActions? by resultViewModel.viewAction.observeAsState()
 
-    when (state) {
-        is DefaultViewStates.Default -> resultViewModel.entryPoint()
+    LaunchedEffect(key1 = Unit) {
+        resultViewModel.entryPoint()
     }
+
     viewAction?.Invoke {
         when (viewAction) {
             is DefaultViewActions -> defaultActionListener(viewAction as DefaultViewActions)

@@ -109,7 +109,8 @@ class PaymentActivity : ComponentActivity() {
                 drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded),
                 drawerBackgroundColor = Color.Transparent,
                 gesturesEnabled = false,
-                drawerShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)) {
+                drawerShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+            ) {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()

@@ -21,7 +21,7 @@ fun ResultScreen(
     intentListener: (intent: ResultViewIntents) -> Unit,
 ) {
     when (state) {
-        is DefaultViewStates.Display -> {
+        is DefaultViewStates.Content -> {
             Box(contentAlignment = Alignment.BottomEnd,
                 modifier = Modifier
                     .background(Color.Black.copy(alpha = ContentAlpha.disabled))
@@ -66,6 +66,6 @@ fun ResultScreen(
 @Composable
 @Preview(showSystemUi = true, showBackground = true)
 fun ResultScreenPreview() {
-    ResultScreen(state = DefaultViewStates.Display(ResultViewData.defaultViewData),
+    ResultScreen(state = DefaultViewStates.Content(ResultViewData.defaultViewData),
         intentListener = {})
 }
