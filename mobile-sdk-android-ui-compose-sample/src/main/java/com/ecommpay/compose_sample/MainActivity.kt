@@ -45,9 +45,9 @@ class MainActivity : ComponentActivity() {
 @Preview(showSystemUi = true)
 fun SampleMainScreen() {
     val paymentInfo = PaymentInfo(
-        projectId = 627,
+        projectId = 111781,
         //paymentId = "msdk_core_payment_id_" + getRandomNumber(),
-        paymentId = "sdk_android_163243243",
+        paymentId = "sdk_android_163243123123",
         paymentAmount = 123,
         paymentCurrency = "RUB",
         customerId = "12"

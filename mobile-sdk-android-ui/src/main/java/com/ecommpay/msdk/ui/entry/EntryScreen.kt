@@ -45,16 +45,12 @@ fun EntryScreen(
                             itemWidth = 125.dp,
                             borderRadius = 4.dp
                         )
-                        Spacer(
-                            modifier = Modifier.size(10.dp)
-                        )
+                        Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
                         ShimmerAnimation(
                             itemHeight = 150.dp,
                             borderRadius = 12.dp
                         )
-                        Spacer(
-                            modifier = Modifier.size(10.dp)
-                        )
+                        Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
                         Row {
                             Column(
                                 modifier = Modifier.weight(1f)
@@ -64,9 +60,7 @@ fun EntryScreen(
                                     borderRadius = 6.dp,
                                 )
                             }
-                            Spacer(
-                                modifier = Modifier.size(10.dp)
-                            )
+                            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
                             Column(
                                 modifier = Modifier.weight(1f)
                             ) {
@@ -83,6 +77,7 @@ fun EntryScreen(
                             style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand),
                             modifier = Modifier.align(Alignment.Start)
                         )
+                        Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
                         SDKCardView(
                             brandLogoUrl = "url",
                             price = "238.00",
@@ -94,7 +89,7 @@ fun EntryScreen(
                     }
                 }
                 Spacer(
-                    modifier = Modifier.size(10.dp)
+                    modifier = Modifier.size(SDKTheme.dimensions.paddingDp15)
                 )
                 PaymentMethodList(
                     paymentMethodList = state.viewData.paymentMethodList,
@@ -122,7 +117,7 @@ private fun PaymentMethodList(
             when (itemPaymentMethodViewData) {
                 is ShimmerViewData -> {
                     ShimmerAnimation(
-                        itemHeight = 50.dp,
+                        itemHeight = SDKTheme.dimensions.paymentMethodItemHeight,
                         borderRadius = 6.dp
                     )
                 }
@@ -133,9 +128,7 @@ private fun PaymentMethodList(
                         iconUrl = itemPaymentMethodViewData.iconUrl)
                 }
             }
-            Spacer(
-                modifier = Modifier.size(10.dp)
-            )
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.ecommpay.msdk.ui.views
 
-import androidx.appcompat.R
+import com.ecommpay.msdk.ui.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -8,10 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -48,7 +49,7 @@ fun SDKCardView(
                         .data(brandLogoUrl)
                         .crossfade(true)
                         .build(),
-                    fallback = painterResource(R.drawable.abc_star_black_48dp),
+                    fallback = painterResource(R.drawable.sdk_logo),
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -63,18 +64,27 @@ fun SDKCardView(
                     verticalAlignment = Alignment.Bottom
                 ) {
                     Text(
+                        modifier = Modifier.baselinePadding(
+                            firstBaselineToTop = 0.dp,
+                            lastBaselineToBottom = 0.dp
+                        ),
                         text = price,
-                        style = SDKTheme.typography.s28Bold.copy(color = Color.White),
+                        style = SDKTheme.typography.s28Bold.copy(color = Color.White)
                     )
                     Text(
                         text = " "
                     )
                     Text(
+                        modifier = Modifier.baselinePadding(
+                            firstBaselineToTop = 0.dp,
+                            lastBaselineToBottom = 0.dp
+                        ),
                         text = currency,
                         style = SDKTheme.typography.s16Normal.copy(color = Color.White)
                     )
                 }
                 if (vatIncluded) {
+                    Spacer(modifier = Modifier.height(SDKTheme.dimensions.paddingDp10))
                     Row {
                         Text(
                             text = totalPriceTitle,
@@ -93,6 +103,32 @@ fun SDKCardView(
         }
     }
 }
+
+fun Modifier.baselinePadding(
+    firstBaselineToTop: Dp,
+    lastBaselineToBottom: Dp
+) = layout { measurable, constraints ->
+    val placeable = measurable.measure(constraints)
+
+    check(placeable[FirstBaseline] != AlignmentLine.Unspecified)
+    val firstBaseline = placeable[FirstBaseline]
+
+    check(placeable[LastBaseline] != AlignmentLine.Unspecified)
+    val lastBaseline = placeable[LastBaseline]
+
+    val lastBaselineToBottomHeight = placeable.height - lastBaseline
+
+    val lastBaselineToBottomDelta = lastBaselineToBottom.roundToPx() - lastBaselineToBottomHeight
+
+    val totalHeight = placeable.height +
+            (firstBaselineToTop.roundToPx() - firstBaseline)
+
+    val placeableY = totalHeight - placeable.height
+    layout(placeable.width, totalHeight + lastBaselineToBottomDelta) {
+        placeable.placeRelative(0, placeableY)
+    }
+}
+
 
 @Composable
 @Preview
