@@ -14,7 +14,7 @@
         android:theme="@style/Theme.SDKThemeAppCompat"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".main.PaymentActivity"
+            android:name=".PaymentActivity"
             android:exported="true"
             android:theme="@style/Theme.SDKThemeAppCompat"
             android:windowSoftInputMode="adjustResize">

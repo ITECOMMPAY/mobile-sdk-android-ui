@@ -1,11 +1,11 @@
 package com.ecommpay.compose_sample
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -23,8 +23,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.ecommpay.compose_sample.ui.theme.AppTheme
 import com.ecommpay.compose_sample.utils.SignatureGenerator
-import com.ecommpay.msdk.core.domain.entities.PaymentInfo
-import com.ecommpay.msdk.ui.main.PaymentActivity
+import com.ecommpay.msdk.ui.PaymentInfo
+import com.ecommpay.msdk.ui.PaymentSDK
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,20 +52,30 @@ fun SampleMainScreen() {
         paymentCurrency = "RUB",
         customerId = "12"
     )
-
-    val result = remember { mutableStateOf(-999) }
-    val launcher = rememberLauncherForActivityResult(PaymentActivityContract()) {
-        if (it != null) {
-            result.value = it
-        }
-    }
-
     paymentInfo.signature = SignatureGenerator.generateSignature(paymentInfo.getParamsForSignature(), "123")
-    when (result.value) {
-        0 -> {
-            Toast.makeText(LocalContext.current, "Woow", Toast.LENGTH_SHORT).show()
-        }
+
+    val sdk = PaymentSDK(context = LocalContext.current, paymentInfo = paymentInfo)
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
     }
+
+
+//    val result = remember { mutableStateOf(-999) }
+//    val launcher = rememberLauncherForActivityResult(PaymentActivityContract()) {
+//        if (it != null) {
+//            result.value = it
+//        }
+//    }
+//
+//
+//    paymentInfo.signature = SignatureGenerator.generateSignature(paymentInfo.getParamsForSignature(), "123")
+//    when (result.value) {
+//        0 -> {
+//            Toast.makeText(LocalContext.current, "Woow", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
+
     Scaffold(
         content = {
             LazyColumn(
@@ -78,7 +88,7 @@ fun SampleMainScreen() {
                 item {
                     Row(horizontalArrangement = Arrangement.Center) {
                         Button(onClick = {
-                            launcher.launch(paymentInfo)
+                            launcher.launch(sdk.intent)
                         }) {
                             Text(text = "Sale")
                         }
