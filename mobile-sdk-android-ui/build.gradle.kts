@@ -58,6 +58,7 @@ dependencies {
     debugImplementation(Dependencies.AndroidX.customView)
     debugImplementation(Dependencies.AndroidX.customViewPoolingContainer)
     implementation(Dependencies.AndroidX.coreKtx)
+    implementation(Dependencies.AndroidX.activityKtx)
     //Gson
     //implementation("com.google.code.gson:gson:2.9.0")
     //Coil

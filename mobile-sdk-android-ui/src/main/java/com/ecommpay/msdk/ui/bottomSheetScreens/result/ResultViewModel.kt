@@ -2,9 +2,9 @@ package com.ecommpay.msdk.ui.bottomSheetScreens.result
 
 import com.ecommpay.msdk.ui.Utils
 import com.ecommpay.msdk.ui.base.*
-import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.payment
-import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.paymentInfo
-import com.ecommpay.msdk.ui.main.PaymentActivity.Companion.stringResourceManager
+import com.ecommpay.msdk.ui.PaymentActivity.Companion.payment
+import com.ecommpay.msdk.ui.PaymentActivity.Companion.paymentInfo
+import com.ecommpay.msdk.ui.PaymentActivity.Companion.stringResourceManager
 
 class ResultViewModel: BaseViewModel<ResultViewData>() {
 

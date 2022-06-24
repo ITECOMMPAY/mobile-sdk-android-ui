@@ -51,7 +51,7 @@ android {
 dependencies {
     //Projects
     implementation (project(":mobile-sdk-android-ui"))
-    implementation ("com.ecommpay:msdk-core:+")
+    //implementation ("com.ecommpay:msdk-core:+")
 
     //AndroidX
     implementation(Dependencies.AndroidX.coreKtx)

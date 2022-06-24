@@ -35,6 +35,7 @@ object Dependencies {
         const val customViewPoolingContainer =
             "androidx.customview:customview-poolingcontainer:1.0.0-rc01"
         const val coreKtx = "androidx.core:core-ktx:1.8.0"
+        const val activityKtx = "androidx.activity:activity-ktx:1.6.0-alpha05"
     }
 
     object Coil {

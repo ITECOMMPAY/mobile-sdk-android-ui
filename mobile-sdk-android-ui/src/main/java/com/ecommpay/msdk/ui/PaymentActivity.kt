@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.main
+package com.ecommpay.msdk.ui
 
 import android.R
 import android.annotation.SuppressLint
@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.ecommpay.msdk.core.MSDKCoreSession
 import com.ecommpay.msdk.core.MSDKCoreSessionConfig
-import com.ecommpay.msdk.core.domain.entities.PaymentInfo
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.ui.base.DefaultViewActions
 import com.ecommpay.msdk.ui.base.MessageAlert
@@ -30,7 +29,7 @@ import com.ecommpay.msdk.ui.base.ViewActions
 import com.ecommpay.msdk.ui.navigation.NavigationState
 import com.ecommpay.msdk.ui.theme.*
 
-class PaymentActivity : ComponentActivity() {
+internal class PaymentActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterialApi::class)
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +38,7 @@ class PaymentActivity : ComponentActivity() {
             window.setBackgroundDrawable(ColorDrawable(R.color.transparent))
         }
         super.onCreate(savedInstanceState)
+
         setContent {
             val colors = if (isSystemInDarkTheme()) {
                 SDKDarkColorPalette
@@ -127,13 +127,13 @@ class PaymentActivity : ComponentActivity() {
     companion object {
         lateinit var paymentInfo: PaymentInfo
         lateinit var payment: Payment
-        val config = MSDKCoreSessionConfig("pp-sdk.westresscode.net", "paymentpage.ecommpay.com")
+        private val config = MSDKCoreSessionConfig.nl3WithDebug()
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
 
 
         fun buildPaymentIntent(context: Context, paymentInfo: PaymentInfo): Intent {
-            this.paymentInfo = paymentInfo
+            Companion.paymentInfo = paymentInfo
             return Intent(context, PaymentActivity::class.java)
         }
     }
