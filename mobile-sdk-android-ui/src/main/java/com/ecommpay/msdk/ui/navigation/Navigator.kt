@@ -15,6 +15,7 @@ class Navigator {
     }
 
     enum class NavTarget {
+        Init,
         Main,
         Result
     }

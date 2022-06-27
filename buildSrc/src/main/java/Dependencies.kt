@@ -18,7 +18,7 @@ object Dependencies {
         const val runtimeLiveData = "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
         const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
         const val junit4 = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
-        const val navigation = "androidx.navigation:navigation-compose:2.5.0-rc01"
+        const val navigation = "androidx.navigation:navigation-compose:2.4.2"
         const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1"
         const val activity = "androidx.activity:activity-compose:1.4.0"
     }
