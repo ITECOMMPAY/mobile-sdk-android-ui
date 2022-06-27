@@ -1,3 +1,5 @@
+@file:Suppress("PrivatePropertyName", "unused")
+
 package com.ecommpay.msdk.ui
 
 enum class ActionType {
@@ -7,7 +9,7 @@ enum class ActionType {
 /**
  * Payment configuration
  */
-class PaymentInfo(
+class PaymentInfo @JvmOverloads constructor(
     /**
      * project (merchant) ID
      */

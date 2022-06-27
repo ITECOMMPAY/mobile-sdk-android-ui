@@ -1,6 +1,8 @@
-package com.ecommpay.msdk.ui.views
+@file:Suppress("unused")
 
-import android.R
+package com.ecommpay.msdk.ui.views.card
+
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -30,7 +32,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
-@OptIn(ExperimentalComposeUiApi::class)
+@SuppressLint("PrivateResource", "ComposableNaming")
+@ExperimentalComposeUiApi
 @Composable
 fun SDKSavedCardCVVTextField(
     cardUrlLogo: String,
@@ -42,8 +45,8 @@ fun SDKSavedCardCVVTextField(
     }
     //Запоминаем стейт иконки замка
     var isLocked by rememberSaveable { mutableStateOf(true) }
-    val lockIcon = painterResource(id = R.drawable.ic_lock_idle_lock)
-    val unlockIcon = painterResource(id = R.drawable.ic_lock_idle_low_battery)
+    val lockIcon = painterResource(id = android.R.drawable.ic_lock_idle_lock)
+    val unlockIcon = painterResource(id = android.R.drawable.ic_lock_idle_low_battery)
     //Получаем контроллер системной клавиатуры
     val keyboardController = LocalSoftwareKeyboardController.current
     //Получаем фокус-реквестер и фокус-менеджер для того, чтобы программно передать фокус CVV-полю при открытии экрана

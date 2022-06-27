@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.views
+package com.ecommpay.msdk.ui.views.common
 
 import com.ecommpay.msdk.ui.R
 import androidx.annotation.DrawableRes

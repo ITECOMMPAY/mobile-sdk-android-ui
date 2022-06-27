@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.views
+package com.ecommpay.msdk.ui.views.shimmer
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.BoxWithConstraints
