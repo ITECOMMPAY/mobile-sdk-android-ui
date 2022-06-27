@@ -6,4 +6,6 @@
     <style name="Theme.SDKThemeAppCompat" parent="Theme.AppCompat">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
+    <style name="DebugDialogTheme" parent="android:Theme.Material.Dialog" />
 </resources>

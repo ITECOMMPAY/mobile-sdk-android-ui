@@ -6,6 +6,7 @@ object Versions {
     const val compose = "1.2.0-beta03"
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
+    const val dagger = "2.38.1"
 }
 
 object Dependencies {
@@ -50,6 +51,13 @@ object Dependencies {
     object Google {
         const val wallet = "com.google.android.gms:play-services-wallet:19.1.0"
         const val material = "com.google.android.material:material:1.6.1"
+    }
+
+    object Dagger {
+        const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
+        const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+        const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.dagger}"
+        const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.dagger}"
     }
 
 }

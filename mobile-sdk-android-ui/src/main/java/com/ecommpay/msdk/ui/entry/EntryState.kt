@@ -1,6 +1,8 @@
 package com.ecommpay.msdk.ui.entry
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -8,7 +10,6 @@ import com.ecommpay.msdk.ui.base.DefaultViewActions
 import com.ecommpay.msdk.ui.base.DefaultViewStates
 import com.ecommpay.msdk.ui.base.ViewActions
 import com.ecommpay.msdk.ui.base.ViewStates
-import com.ecommpay.msdk.ui.navigation.NavigationViewActions
 
 @Composable
 fun EntryState(
@@ -16,7 +17,9 @@ fun EntryState(
     navController: NavHostController,
     defaultActionListener: (defaultAction: DefaultViewActions) -> Unit,
 ) {
-    val state: ViewStates<EntryViewData> by entryViewModel.viewState.observeAsState(DefaultViewStates.Loading(entryViewModel.defaultViewData()))
+    val state: ViewStates<EntryViewData> by entryViewModel.viewState.observeAsState(
+        DefaultViewStates.Loading(entryViewModel.defaultViewData())
+    )
     val viewAction: ViewActions? by entryViewModel.viewAction.observeAsState()
 
     LaunchedEffect(key1 = Unit) {
