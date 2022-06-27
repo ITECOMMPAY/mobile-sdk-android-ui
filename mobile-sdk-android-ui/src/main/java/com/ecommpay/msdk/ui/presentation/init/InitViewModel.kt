@@ -11,6 +11,7 @@ import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.base.mvi.Reducer
 import com.ecommpay.msdk.ui.base.mvi.TimeMachine
 import com.ecommpay.msdk.ui.base.mvvm.BaseViewModel
+import com.ecommpay.msdk.ui.presentation.main.data.UIPaymentMethod
 import kotlinx.coroutines.flow.StateFlow
 
 class InitViewModel : BaseViewModel<InitScreenState, InitScreenUiEvent>() {
@@ -50,7 +51,17 @@ class InitViewModel : BaseViewModel<InitScreenState, InitScreenUiEvent>() {
                     paymentMethods: List<PaymentMethod>,
                     savedAccounts: List<SavedAccount>,
                 ) {
-                    sendEvent(InitScreenUiEvent.InitLoaded)
+                    sendEvent(
+                        InitScreenUiEvent.InitLoaded(
+                            paymentMethods.map {
+                                UIPaymentMethod(
+                                    code = it.code,
+                                    name = it.name ?: "",
+                                    iconUrl = it.iconUrl
+                                )
+                            }
+                        )
+                    )
                 }
 
                 override fun onError(code: ErrorCode, message: String) {
@@ -69,12 +80,14 @@ class InitViewModel : BaseViewModel<InitScreenState, InitScreenUiEvent>() {
             when (event) {
                 is InitScreenUiEvent.InitLoaded -> setState(
                     oldState.copy(
-                        isInitLoaded = true
+                        isInitLoaded = true,
+                        data = event.data
                     )
                 )
                 is InitScreenUiEvent.ShowLoading -> setState(
                     oldState.copy(
-                        isInitLoaded = false
+                        isInitLoaded = false,
+                        data = emptyList()
                     )
                 )
             }

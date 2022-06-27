@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.utils
+package com.ecommpay.msdk.ui.utils.extensions
 
 import java.util.*
 

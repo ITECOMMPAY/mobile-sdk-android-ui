@@ -22,10 +22,11 @@ import com.ecommpay.msdk.core.MSDKCoreSession
 import com.ecommpay.msdk.core.MSDKCoreSessionConfig
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.ui.navigation.NavigationComponent
-import com.ecommpay.msdk.ui.navigation.Navigator
 import com.ecommpay.msdk.ui.theme.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
-internal class PaymentActivity : ComponentActivity() {
+class PaymentActivity : ComponentActivity() {
     @ExperimentalAnimationApi
     @ExperimentalMaterialApi
     @SuppressLint("ResourceAsColor")
@@ -54,7 +55,7 @@ internal class PaymentActivity : ComponentActivity() {
                         colors = colors,
                         typography = typography
                     ) {
-                        NavigationComponent(navigator = navigator)
+                        NavigationComponent()
                     }
                 },
                 drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded),
@@ -85,7 +86,7 @@ internal class PaymentActivity : ComponentActivity() {
         private val config = MSDKCoreSessionConfig.nl3WithDebug()
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
-        private val navigator = Navigator()
+        val gson: Gson = GsonBuilder().create()
 
 
         fun buildPaymentIntent(context: Context, paymentInfo: PaymentInfo): Intent {

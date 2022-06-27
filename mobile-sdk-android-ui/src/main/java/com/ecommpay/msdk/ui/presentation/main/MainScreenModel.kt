@@ -8,7 +8,7 @@ import com.ecommpay.msdk.ui.presentation.init.InitScreenUiEvent
 
 @Immutable
 sealed class MainScreenUiEvent : UiEvent {
-    data class ShowData(val data: List<PaymentMethod>) : MainScreenUiEvent()
+
 }
 
 @Immutable

@@ -72,7 +72,7 @@ dependencies {
     debugImplementation(Dependencies.AndroidX.customViewPoolingContainer)
     implementation(Dependencies.AndroidX.coreKtx)
     //Gson
-    //implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.9.0")
     //Coil
     implementation(Dependencies.Coil.compose)
     //Serialization

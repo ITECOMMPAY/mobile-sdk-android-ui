@@ -1,34 +1,30 @@
-@file:OptIn(ExperimentalAnimationApi::class)
-
 package com.ecommpay.msdk.ui.navigation
+
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.ecommpay.msdk.ui.presentation.init.InitScreen
 import com.ecommpay.msdk.ui.presentation.main.MainScreen
+import com.ecommpay.msdk.ui.presentation.main.data.UIPaymentMethod
 import com.ecommpay.msdk.ui.presentation.result.ResultScreen
+import com.ecommpay.msdk.ui.utils.extensions.getData
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 
+@ExperimentalAnimationApi
 @Composable
-fun NavigationComponent(
-    navigator: Navigator
-) {
+fun NavigationComponent() {
     val navController = rememberAnimatedNavController()
-    LaunchedEffect("navigation") {
-        navigator.sharedFlow.onEach { navController.navigate(it.name) }.launchIn(this)
-    }
 
     AnimatedNavHost(
         navController = navController,
-        startDestination = Navigator.NavTarget.Init.name,
+        startDestination = "${Route.Init}",
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentScope.SlideDirection.Up,
@@ -54,15 +50,21 @@ fun NavigationComponent(
             )
         }
     ) {
-        composable(route = Navigator.NavTarget.Init.name) {
-            InitScreen(navigator = navigator)
+        composable(route = "${Route.Init}") {
+            InitScreen(navController = navController)
         }
-        composable(route = Navigator.NavTarget.Main.name) {
-            MainScreen(navigator = navigator)
+        composable(
+            route = "${Route.Main}",
+            arguments = listOf(navArgument(name = Route.Main.key) {
+                type = NavType.StringType
+            })
+        ) { backStackEntry ->
+            val paymentMethods =
+                backStackEntry.getData<List<UIPaymentMethod>>(Route.Main.key) ?: emptyList()
+            MainScreen(navController = navController, paymentMethods = paymentMethods)
         }
-        composable(route = Navigator.NavTarget.Result.name) {
+        composable(route = "${Route.Result}") {
             ResultScreen()
         }
-
     }
 }

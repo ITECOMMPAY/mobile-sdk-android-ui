@@ -11,10 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.R
-import com.ecommpay.msdk.ui.navigation.Navigator
+import com.ecommpay.msdk.ui.navigation.Route
 import com.ecommpay.msdk.ui.theme.SDKTheme
+import com.ecommpay.msdk.ui.utils.extensions.navigate
 import com.ecommpay.msdk.ui.views.common.SDKFooter
 import com.ecommpay.msdk.ui.views.common.SDKTopBar
 import com.ecommpay.msdk.ui.views.shimmer.ShimmerAnimation
@@ -23,12 +25,12 @@ import kotlinx.coroutines.flow.onEach
 
 
 @Composable
-fun InitScreen(viewModel: InitViewModel = viewModel(), navigator: Navigator) {
+fun InitScreen(viewModel: InitViewModel = viewModel(), navController: NavController) {
 
     LaunchedEffect(Unit) {
         viewModel.state.onEach {
-            if (it.isInitLoaded) {
-                navigator.navigateTo(Navigator.NavTarget.Main)
+            if (it.isInitLoaded && it.data.isNotEmpty()) {
+                navController.navigate(Route.Main, it.data)
             }
 
         }.collect()
