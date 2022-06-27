@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.entry.itemPaymentMethod
+package com.ecommpay.msdk.ui.presentation.main.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,14 +27,13 @@ import com.ecommpay.msdk.ui.theme.SDKTheme
 
 
 @Composable
-fun ItemPaymentMethod(
+fun PaymentMethodItem(
     name: String,
     iconUrl: String? = "",
-    intentListener: (intent: ItemPaymentMethodIntents) -> Unit
 ) {
     Box(
         modifier = Modifier
-            .clickable { intentListener(ItemPaymentMethodIntents.Click(name = name)) }
+            .clickable { }
             .fillMaxWidth()
             .height(SDKTheme.dimensions.paymentMethodItemHeight)
             .background(
@@ -80,7 +79,7 @@ fun ItemPaymentMethod(
                         indication = null, //отключаем анимацию при клике
                         interactionSource = remember { MutableInteractionSource() },
                         onClick = {
-                            intentListener(ItemPaymentMethodIntents.Click(name = name))
+
                         }
                     ),
                     imageVector = Icons.Default.KeyboardArrowDown,
@@ -95,10 +94,10 @@ fun ItemPaymentMethod(
 @Preview
 @Composable
 fun ItemPaymentMethodPreview() {
-    ItemPaymentMethod(
+    PaymentMethodItem(
         name = "Bank card",
-        iconUrl = null,
-        intentListener = {})
+        iconUrl = null
+    )
 }
 
 

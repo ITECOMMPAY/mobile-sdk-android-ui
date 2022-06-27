@@ -26,7 +26,20 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(
+                "Boolean",
+                "IS_TIME_TRAVEL",
+                "false"
+            )
         }
+        debug {
+            buildConfigField(
+                "Boolean",
+                "IS_TIME_TRAVEL",
+                "true"
+            )
+        }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -58,7 +71,6 @@ dependencies {
     debugImplementation(Dependencies.AndroidX.customView)
     debugImplementation(Dependencies.AndroidX.customViewPoolingContainer)
     implementation(Dependencies.AndroidX.coreKtx)
-    implementation(Dependencies.AndroidX.activityKtx)
     //Gson
     //implementation("com.google.code.gson:gson:2.9.0")
     //Coil
@@ -81,9 +93,9 @@ dependencies {
     implementation(Dependencies.Compose.activity)
     //Accompanist
     implementation(Dependencies.Accompanist.navigation)
-
     //Testing
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.test.ext:junit:1.1.3")
     testImplementation("androidx.test.espresso:espresso-core:3.4.0")
+
 }

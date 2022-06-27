@@ -1,15 +1,14 @@
 package com.ecommpay.msdk.ui
 
-import android.R
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,20 +21,19 @@ import androidx.compose.ui.unit.dp
 import com.ecommpay.msdk.core.MSDKCoreSession
 import com.ecommpay.msdk.core.MSDKCoreSessionConfig
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
-import com.ecommpay.msdk.ui.base.DefaultViewActions
-import com.ecommpay.msdk.ui.base.MessageAlert
-import com.ecommpay.msdk.ui.base.MessageToast
-import com.ecommpay.msdk.ui.base.ViewActions
-import com.ecommpay.msdk.ui.navigation.NavigationState
+import com.ecommpay.msdk.ui.navigation.NavigationComponent
+import com.ecommpay.msdk.ui.navigation.Navigator
 import com.ecommpay.msdk.ui.theme.*
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 internal class PaymentActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterialApi::class)
+    @ExperimentalAnimationApi
+    @ExperimentalMaterialApi
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             setTranslucent(true)
-            window.setBackgroundDrawable(ColorDrawable(R.color.transparent))
+            window.setBackgroundDrawable(ColorDrawable(android.R.color.transparent))
         }
         super.onCreate(savedInstanceState)
 
@@ -50,30 +48,32 @@ internal class PaymentActivity : ComponentActivity() {
             } else {
                 SDKLightTypography
             }
-            val defaultActionListener: (ViewActions) -> Unit = { action ->
-                when (action) {
-                    is DefaultViewActions.ShowMessage -> {
-                        when (val message = action.message) {
-                            is MessageAlert -> {
-                                Toast.makeText(
-                                    this,
-                                    message.message,
-                                    Toast.LENGTH_LONG).show()
-                            }
-                            is MessageToast -> {
-                                Toast.makeText(
-                                    this,
-                                    message.message,
-                                    Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
-                    is DefaultViewActions.SetResult -> {
-                        setResult(action.resultCode)
-                        finish()
-                    }
-                }
-            }
+//            val defaultActionListener: (ViewActions) -> Unit = { action ->
+//                when (action) {
+//                    is DefaultViewActions.ShowMessage -> {
+//                        when (val message = action.message) {
+//                            is MessageAlert -> {
+//                                Toast.makeText(
+//                                    this,
+//                                    message.message,
+//                                    Toast.LENGTH_LONG
+//                                ).show()
+//                            }
+//                            is MessageToast -> {
+//                                Toast.makeText(
+//                                    this,
+//                                    message.message,
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                            }
+//                        }
+//                    }
+//                    is DefaultViewActions.SetResult -> {
+//                        setResult(action.resultCode)
+//                        finish()
+//                    }
+//                }
+//            }
 //            BottomSheetScaffold(
 //                sheetContent = {
 //                    SDKTheme { NavigationState(defaultActionListener = defaultActionListener) }
@@ -98,13 +98,19 @@ internal class PaymentActivity : ComponentActivity() {
 //
 //                }
 //            }
+            val navController = rememberAnimatedNavController()
             BottomDrawer(
                 modifier = Modifier.wrapContentHeight(),
                 drawerContent = {
                     SDKTheme(
                         colors = colors,
                         typography = typography
-                    ) { NavigationState(defaultActionListener = defaultActionListener) }
+                    ) {
+                        NavigationComponent(
+                            navController = navController,
+                            navigator = navigator
+                        )
+                    }
                 },
                 drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded),
                 drawerBackgroundColor = Color.Transparent,
@@ -123,6 +129,10 @@ internal class PaymentActivity : ComponentActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        msdkSession.cancel()
+    }
 
     companion object {
         lateinit var paymentInfo: PaymentInfo
@@ -130,6 +140,7 @@ internal class PaymentActivity : ComponentActivity() {
         private val config = MSDKCoreSessionConfig.nl3WithDebug()
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
+        val navigator = Navigator()
 
 
         fun buildPaymentIntent(context: Context, paymentInfo: PaymentInfo): Intent {

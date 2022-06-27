@@ -1,6 +1,6 @@
 package com.ecommpay.msdk.ui.bottomSheetScreens.result
 
-import com.ecommpay.msdk.ui.Utils
+import com.ecommpay.msdk.ui.utils.Utils
 import com.ecommpay.msdk.ui.base.*
 import com.ecommpay.msdk.ui.PaymentActivity.Companion.payment
 import com.ecommpay.msdk.ui.PaymentActivity.Companion.paymentInfo
