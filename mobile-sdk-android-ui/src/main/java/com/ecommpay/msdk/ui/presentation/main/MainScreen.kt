@@ -16,14 +16,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.R
-import com.ecommpay.msdk.ui.base.mvi.TimeMachine
 import com.ecommpay.msdk.ui.presentation.main.views.PaymentMethodItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.Utils
-import com.ecommpay.msdk.ui.views.SDKCardView
-import com.ecommpay.msdk.ui.views.SDKFooter
-import com.ecommpay.msdk.ui.views.SDKTopBar
-import com.ecommpay.msdk.ui.views.ShimmerAnimation
+import com.ecommpay.msdk.ui.views.card.SDKCardView
+import com.ecommpay.msdk.ui.views.common.SDKFooter
+import com.ecommpay.msdk.ui.views.common.SDKTopBar
+import com.ecommpay.msdk.ui.views.shimmer.ShimmerAnimation
 
 
 @Composable
@@ -136,7 +135,7 @@ private fun Loading() {
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
     ) {
-        for (i in 1..5) {
+        (1..5).forEach { _ ->
             ShimmerAnimation(
                 itemHeight = SDKTheme.dimensions.paymentMethodItemHeight,
                 borderRadius = 6.dp

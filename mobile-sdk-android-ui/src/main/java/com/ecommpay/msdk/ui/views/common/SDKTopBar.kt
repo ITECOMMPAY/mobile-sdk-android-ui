@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.views
+package com.ecommpay.msdk.ui.views.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
