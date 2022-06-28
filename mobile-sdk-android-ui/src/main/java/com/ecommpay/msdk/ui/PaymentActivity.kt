@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,10 +26,9 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
 internal class PaymentActivity : ComponentActivity() {
-    @ExperimentalAnimationApi
-    @ExperimentalMaterialApi
+    @OptIn(ExperimentalMaterialApi::class)
     @SuppressLint("ResourceAsColor")
-    override fun onCreate(savedInstanceState: Bundle?) {
+    public override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             setTranslucent(true)
             window.setBackgroundDrawable(ColorDrawable(android.R.color.transparent))
@@ -38,25 +36,16 @@ internal class PaymentActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val colors = if (isSystemInDarkTheme()) {
-                SDKDarkColorPalette
-            } else {
-                SDKLightColorPalette
-            }
-            val typography = if (isSystemInDarkTheme()) {
-                SDKDarkTypography
-            } else {
-                SDKLightTypography
-            }
+            val colors = if (isSystemInDarkTheme()) SDKDarkColorPalette else SDKLightColorPalette
+            val typography = if (isSystemInDarkTheme()) SDKDarkTypography else SDKLightTypography
+
             BottomDrawer(
                 modifier = Modifier.wrapContentHeight(),
                 drawerContent = {
                     SDKTheme(
                         colors = colors,
                         typography = typography
-                    ) {
-                        NavigationComponent()
-                    }
+                    ) { NavigationComponent() }
                 },
                 drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded),
                 drawerBackgroundColor = Color.Transparent,
@@ -68,9 +57,7 @@ internal class PaymentActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(Color.Transparent),
                     color = Color.Black.copy(alpha = 0.2f)
-                ) {
-
-                }
+                ) { }
             }
         }
     }
