@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -44,22 +45,19 @@ private fun Content(paymentMethods: List<UIPaymentMethod>) {
     ) {
         SDKTopBar(
             title = PaymentActivity.stringResourceManager.payment.methodsTitle
-                ?: "Payment Methods",
+                ?: stringResource(R.string.payment_methods_label),
             arrowIcon = null
         )
         Text(
-            text = "Payment Details",
+            text = stringResource(R.string.payment_details_label),
             style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand),
             modifier = Modifier.align(Alignment.Start)
         )
         Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
         SDKCardView(
-            brandLogoUrl = "url",
             price = PaymentActivity.paymentInfo?.paymentAmount.amountToCoins(),
             currency = PaymentActivity.paymentInfo?.paymentCurrency?.uppercase() ?: "USD",
-            totalPriceTitle = "Total price",
-            vatIncluded = true,
-            vatIncludedTitle = "(VAT included)"
+            vatIncludedTitle = stringResource(id = R.string.vat_included_label)
         )
         Spacer(
             modifier = Modifier.size(SDKTheme.dimensions.paddingDp15)
@@ -68,7 +66,7 @@ private fun Content(paymentMethods: List<UIPaymentMethod>) {
         Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
         SDKFooter(
             iconLogo = R.drawable.sdk_logo,
-            poweredByText = "Powered by"
+            poweredByText = stringResource(id = R.string.powered_by_label)
         )
     }
 }

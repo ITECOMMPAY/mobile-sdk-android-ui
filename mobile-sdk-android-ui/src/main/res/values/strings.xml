@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">SDK COMPOSE UI</string>
+
+    <string name="payment_methods_label">Payment Methods</string>
+    <string name="payment_details_label">Payment Details</string>
+    <string name="total_price_label">Total price</string>
+    <string name="vat_included_label">VAT included</string>
+    <string name="powered_by_label">Powered by</string>
 </resources>
