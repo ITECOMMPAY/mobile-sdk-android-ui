@@ -10,7 +10,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-class SDKTypography(
+internal class SDKTypography(
     s12Light: TextStyle,
     s12Normal: TextStyle,
     s14Light: TextStyle,
@@ -224,7 +224,7 @@ private val typographyDarkS28Bold: TextStyle = TextStyle(
     color = Color.White,
     fontSize = 28.sp,
 )
-fun lightTypography(
+internal fun lightTypography(
     s12Light: TextStyle = typographyLightS12Light,
     s12Normal: TextStyle = typographyLightS12Normal,
     s14Light: TextStyle = typographyLightS14Light,
@@ -251,7 +251,7 @@ fun lightTypography(
     isLight = true
 )
 
-fun darkTypography(
+internal fun darkTypography(
     s12Light: TextStyle = typographyDarkS12Light,
     s12Normal: TextStyle = typographyDarkS12Normal,
     s14Light: TextStyle = typographyDarkS14Light,

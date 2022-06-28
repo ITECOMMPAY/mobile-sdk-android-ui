@@ -6,7 +6,7 @@ import androidx.navigation.NavController
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.navigation.Route
 
-inline fun <reified T> NavBackStackEntry.getData(key: String): T? {
+internal inline fun <reified T> NavBackStackEntry.getData(key: String): T? {
     val data = arguments?.getString(key)
 
     return when {
@@ -15,7 +15,7 @@ inline fun <reified T> NavBackStackEntry.getData(key: String): T? {
     }
 }
 
-inline fun <reified T> NavController.navigate(
+internal inline fun <reified T> NavController.navigate(
     route: Route,
     data: T
 ) {

@@ -23,7 +23,7 @@ import com.ecommpay.msdk.ui.views.common.SDKTopBar
 
 
 @Composable
-fun MainScreen(
+internal fun MainScreen(
     viewModel: MainViewModel = viewModel(),
     navController: NavController,
     paymentMethods: List<UIPaymentMethod>,
@@ -93,7 +93,7 @@ private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
 
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
-fun PaymentMethods() {
+internal fun PaymentMethods() {
     Content(
         UIPaymentMethod.previewData(10)
     )

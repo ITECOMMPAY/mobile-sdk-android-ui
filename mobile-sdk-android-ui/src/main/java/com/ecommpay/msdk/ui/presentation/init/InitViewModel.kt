@@ -14,7 +14,7 @@ import com.ecommpay.msdk.ui.base.mvvm.BaseViewModel
 import com.ecommpay.msdk.ui.presentation.main.data.UIPaymentMethod
 import kotlinx.coroutines.flow.StateFlow
 
-class InitViewModel : BaseViewModel<InitScreenState, InitScreenUiEvent>() {
+internal class InitViewModel : BaseViewModel<InitScreenState, InitScreenUiEvent>() {
     override val reducer = InitReducer(InitScreenState.initial())
     private val initInteractor = PaymentActivity.msdkSession.getInitInteractor()
 

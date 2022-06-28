@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
-fun SDKShimmerItem(
+internal fun SDKShimmerItem(
     xShimmer: Float,
     yShimmer: Float,
     itemHeight: Dp,

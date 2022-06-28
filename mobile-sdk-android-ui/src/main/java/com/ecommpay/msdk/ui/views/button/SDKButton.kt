@@ -1,7 +1,10 @@
-package com.ecommpay.msdk.ui.views
+package com.ecommpay.msdk.ui.views.button
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -15,7 +18,7 @@ import com.ecommpay.msdk.ui.theme.SDKLightTypography
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
-fun SDKButton(
+internal fun SDKButton(
     modifier: Modifier = Modifier,
     payLabel: String,
     amount: String,
@@ -27,7 +30,7 @@ fun SDKButton(
         modifier = Modifier
             .wrapContentSize()
             .background(SDKTheme.colors.backgroundPaymentMethods)
-    ){
+    ) {
         Button(
             onClick = onClick,
             content = {
@@ -38,12 +41,18 @@ fun SDKButton(
                 Text(text = " ")
                 Text(
                     text = amount,
-                    style = SDKLightTypography.s16Normal.copy(color = Color.White, fontWeight = FontWeight.Bold)
+                    style = SDKLightTypography.s16Normal.copy(
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
                 Text(text = " ")
                 Text(
                     text = currency,
-                    style = SDKLightTypography.s16Normal.copy(color = Color.White, fontWeight = FontWeight.Bold)
+                    style = SDKLightTypography.s16Normal.copy(
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
             },
             colors = ButtonDefaults.buttonColors(
@@ -67,7 +76,8 @@ private fun SDKButtonDefaultPreview() {
             payLabel = "Pay",
             amount = "100.00",
             currency = "USD",
-            isEnabled = true) {
+            isEnabled = true
+        ) {
         }
     }
 }
@@ -80,7 +90,8 @@ private fun SDKButtonDisabledPreview() {
             payLabel = "Pay",
             amount = "100.00",
             currency = "USD",
-            isEnabled = false) {
+            isEnabled = false
+        ) {
         }
     }
 }

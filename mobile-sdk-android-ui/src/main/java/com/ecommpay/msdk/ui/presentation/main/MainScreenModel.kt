@@ -7,12 +7,12 @@ import com.ecommpay.msdk.ui.base.mvi.UiState
 import com.ecommpay.msdk.ui.presentation.init.InitScreenUiEvent
 
 @Immutable
-sealed class MainScreenUiEvent : UiEvent {
+internal sealed class MainScreenUiEvent : UiEvent {
 
 }
 
 @Immutable
-data class MainScreenState(
+internal data class MainScreenState(
     val data: List<PaymentMethod>,
 ) : UiState {
 

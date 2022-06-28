@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.onEach
 
 
 @Composable
-fun InitScreen(viewModel: InitViewModel = viewModel(), navController: NavController) {
+internal fun InitScreen(viewModel: InitViewModel = viewModel(), navController: NavController) {
 
     LaunchedEffect(Unit) {
         viewModel.state.onEach {

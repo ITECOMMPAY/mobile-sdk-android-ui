@@ -24,7 +24,7 @@ import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SDKTopBar(
+internal fun SDKTopBar(
     title: String,
     arrowIcon: ImageVector? = Icons.Filled.ArrowBack,
     listener: () -> Unit = {},
@@ -81,7 +81,7 @@ fun SDKTopBar(
 
 @Composable
 @Preview
-fun PreviewLightToolbar() {
+internal fun PreviewLightToolbar() {
     SDKTheme() {
         SDKTopBar("Payment Methods")
     }
@@ -89,7 +89,7 @@ fun PreviewLightToolbar() {
 
 @Composable
 @Preview
-fun PreviewDarkToolbar() {
+internal fun PreviewDarkToolbar() {
     SDKTheme(
         colors = SDKDarkColorPalette,
         typography = SDKDarkTypography,

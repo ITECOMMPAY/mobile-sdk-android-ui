@@ -3,7 +3,7 @@
 package com.ecommpay.msdk.ui.navigation
 
 
-sealed class Route(
+internal sealed class Route(
     private val route: String,
     val key: String = ""
 ) {

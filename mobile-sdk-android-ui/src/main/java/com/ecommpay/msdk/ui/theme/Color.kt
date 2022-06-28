@@ -20,10 +20,10 @@ val BackgroundDarkShimmerItem = Color(0xFF2D2B2B)
 val BackgroundLightPaymentMethods = Color(0xFFFFFFFF)
 val BackgroundDarkPaymentMethods = Color(0xFF141414)
 
-val SDKLightColorPalette = lightColors(
+internal val SDKLightColorPalette = lightColors(
     brand = BrandLight,
 )
 
-val SDKDarkColorPalette = darkColors(
+internal val SDKDarkColorPalette = darkColors(
     brand = BrandDark,
 )

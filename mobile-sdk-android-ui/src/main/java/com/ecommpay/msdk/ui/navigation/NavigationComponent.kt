@@ -20,7 +20,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @ExperimentalAnimationApi
 @Composable
-fun NavigationComponent() {
+internal fun NavigationComponent() {
     val navController = rememberAnimatedNavController()
 
     AnimatedNavHost(

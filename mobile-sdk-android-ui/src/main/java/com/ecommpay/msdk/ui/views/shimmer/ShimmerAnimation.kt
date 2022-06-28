@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ShimmerAnimation(
+internal fun ShimmerAnimation(
     itemHeight: Dp,
     itemWidth: Dp? = null,
     padding: Dp = 0.dp,

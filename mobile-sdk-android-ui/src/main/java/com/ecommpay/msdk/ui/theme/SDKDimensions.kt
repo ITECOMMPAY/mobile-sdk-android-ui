@@ -4,7 +4,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-data class SDKDimensions(
+internal data class SDKDimensions(
     val paddingDp5: Dp = 5.dp,
     val paddingDp10: Dp = 10.dp,
     val paddingDp15: Dp = 15.dp,

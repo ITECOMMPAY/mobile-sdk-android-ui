@@ -19,7 +19,7 @@ import coil.request.ImageRequest
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
-fun SDKCardView(
+internal fun SDKCardView(
     brandLogoUrl: String,
     price: String,
     currency: String,
