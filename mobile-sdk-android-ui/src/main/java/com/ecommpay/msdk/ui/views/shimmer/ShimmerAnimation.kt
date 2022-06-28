@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.ecommpay.msdk.ui.theme.BackgroundLightShimmerItem
 
 @Composable
 fun ShimmerAnimation(
@@ -55,11 +55,6 @@ fun ShimmerAnimation(
 
         Column(content = {
             SDKShimmerItem(
-                colors = listOf(
-                    BackgroundLightShimmerItem.copy(alpha = 1f),
-                    BackgroundLightShimmerItem.copy(alpha = 0f),
-                    BackgroundLightShimmerItem.copy(alpha = 1f),
-                ),
                 xShimmer = xShimmer.value,
                 yShimmer = yShimmer.value,
                 itemHeight = itemHeight,
@@ -69,4 +64,10 @@ fun ShimmerAnimation(
                 borderRadius = borderRadius)
         })
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ShimmerAnimationPreview() {
+    ShimmerAnimation(itemHeight = 200.dp)
 }

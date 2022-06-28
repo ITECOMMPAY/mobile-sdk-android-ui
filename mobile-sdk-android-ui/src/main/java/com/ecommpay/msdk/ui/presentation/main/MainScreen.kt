@@ -26,7 +26,7 @@ import com.ecommpay.msdk.ui.views.common.SDKTopBar
 fun MainScreen(
     viewModel: MainViewModel = viewModel(),
     navController: NavController,
-    paymentMethods: List<UIPaymentMethod>
+    paymentMethods: List<UIPaymentMethod>,
 ) {
     // val state by viewModel.state.collectAsState()
     Content(paymentMethods)
@@ -38,36 +38,15 @@ private fun Content(paymentMethods: List<UIPaymentMethod>) {
     Column(
         modifier = Modifier
             .wrapContentHeight()
-            .background(SDKTheme.colors.backgroundPaymentMethods),
-        content = {
-            Column(
-                modifier = Modifier.padding(SDKTheme.dimensions.paddingDp20),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                SDKTopBar(
-                    title = PaymentActivity.stringResourceManager.payment.methodsTitle
-                        ?: "Payment Methods",
-                    arrowIcon = null
-                )
-                PaymentMethodList(paymentMethods = paymentMethods)
-                Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
-
-                SDKFooter(
-                    iconLogo = R.drawable.sdk_logo,
-                    poweredByText = "Powered by"
-                )
-            }
-        }
-    )
-}
-
-@Composable
-private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
+            .background(SDKTheme.colors.backgroundPaymentMethods)
+            .padding(SDKTheme.dimensions.paddingDp20),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        SDKTopBar(
+            title = PaymentActivity.stringResourceManager.payment.methodsTitle
+                ?: "Payment Methods",
+            arrowIcon = null
+        )
         Text(
             text = "Payment Details",
             style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand),
@@ -77,7 +56,7 @@ private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
         SDKCardView(
             brandLogoUrl = "url",
             price = PaymentActivity.paymentInfo?.paymentAmount.amountToCoins(),
-            currency = PaymentActivity.paymentInfo?.paymentCurrency?.uppercase() ?: "CUR",
+            currency = PaymentActivity.paymentInfo?.paymentCurrency?.uppercase() ?: "USD",
             totalPriceTitle = "Total price",
             vatIncluded = true,
             vatIncludedTitle = "(VAT included)"
@@ -85,6 +64,22 @@ private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
         Spacer(
             modifier = Modifier.size(SDKTheme.dimensions.paddingDp15)
         )
+        PaymentMethodList(paymentMethods = paymentMethods)
+        Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
+        SDKFooter(
+            iconLogo = R.drawable.sdk_logo,
+            poweredByText = "Powered by"
+        )
+    }
+}
+
+@Composable
+private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+    ) {
         paymentMethods.forEach { paymentMethod ->
             PaymentMethodItem(
                 name = paymentMethod.name ?: "",
@@ -100,6 +95,6 @@ private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
 @Preview(showBackground = true, showSystemUi = true)
 fun PaymentMethods() {
     Content(
-        listOf(UIPaymentMethod(name = "Card", iconUrl = "", code = "card"))
+        UIPaymentMethod.previewData(10)
     )
 }
