@@ -85,7 +85,7 @@ private val colorLightBorderPaymentMethodItem = Color(0xFFEBEBEE)
 private val colorLightFooterContent = Color(0xFFBCBDBE)
 //Default Dark theme
 private val colorDarkBrand = Color(0xFF0065B8)
-private val colorDarkBackgroundTopBar = Color(0xFF2D2B2B)
+private val colorDarkBackgroundTopBar = Color(0xFF141414)
 private val colorDarkTopBarCloseButton = Color(0xFF0065B8)
 private val colorDarkBackgroundShimmerItem = Color(0xFF2D2B2B)
 private val colorDarkBackgroundPaymentMethods = Color(0xFF141414)
