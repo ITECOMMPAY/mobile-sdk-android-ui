@@ -1,6 +1,7 @@
 package com.ecommpay.msdk.ui.navigation
 
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -24,7 +25,7 @@ fun NavigationComponent() {
 
     AnimatedNavHost(
         navController = navController,
-        startDestination = "${Route.Init}",
+        startDestination = Route.Init.getPath(),
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentScope.SlideDirection.Up,
@@ -50,20 +51,23 @@ fun NavigationComponent() {
             )
         }
     ) {
-        composable(route = "${Route.Init}") {
+        composable(route = Route.Init.getPath()) {
+            BackHandler(true) { }
             InitScreen(navController = navController)
         }
         composable(
-            route = "${Route.Main}",
+            route = Route.Main.getPath(),
             arguments = listOf(navArgument(name = Route.Main.key) {
                 type = NavType.StringType
             })
         ) { backStackEntry ->
             val paymentMethods =
                 backStackEntry.getData<List<UIPaymentMethod>>(Route.Main.key) ?: emptyList()
+            BackHandler(true) { }
             MainScreen(navController = navController, paymentMethods = paymentMethods)
         }
         composable(route = "${Route.Result}") {
+            BackHandler(true) { }
             ResultScreen()
         }
     }
