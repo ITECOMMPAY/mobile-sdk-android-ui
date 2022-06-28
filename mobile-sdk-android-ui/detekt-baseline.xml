@@ -77,7 +77,7 @@
     <ID>NewLineAtEndOfFile:PaymentInfo.kt$com.ecommpay.msdk.ui.PaymentInfo.kt</ID>
     <ID>NewLineAtEndOfFile:PaymentSDK.kt$com.ecommpay.msdk.ui.PaymentSDK.kt</ID>
     <ID>NewLineAtEndOfFile:ResultScreen.kt$.ResultScreen.kt</ID>
-    <ID>NewLineAtEndOfFile:SDKButton.kt$com.ecommpay.msdk.ui.views.SDKButton.kt</ID>
+    <ID>NewLineAtEndOfFile:SDKButton.kt$com.ecommpay.msdk.ui.views.button.SDKButton.kt</ID>
     <ID>NewLineAtEndOfFile:SDKColors.kt$com.ecommpay.msdk.ui.theme.SDKColors.kt</ID>
     <ID>NewLineAtEndOfFile:SDKDimensions.kt$com.ecommpay.msdk.ui.theme.SDKDimensions.kt</ID>
     <ID>NewLineAtEndOfFile:SDKFooter.kt$com.ecommpay.msdk.ui.views.common.SDKFooter.kt</ID>

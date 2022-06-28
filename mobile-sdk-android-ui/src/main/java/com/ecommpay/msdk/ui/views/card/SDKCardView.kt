@@ -1,6 +1,5 @@
 package com.ecommpay.msdk.ui.views.card
 
-import com.ecommpay.msdk.ui.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -11,21 +10,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
-fun SDKCardView(
-    brandLogoUrl: String,
+internal fun SDKCardView(
+    brandLogoUrl: String? = null,
     price: String,
     currency: String,
-    vatIncluded: Boolean = false,
-    totalPriceTitle: String,
-    vatIncludedTitle: String,
+    vatIncludedTitle: String? = null,
 ) {
     Box(
         modifier = Modifier
@@ -44,18 +43,20 @@ fun SDKCardView(
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.Start
             ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(brandLogoUrl)
-                        .crossfade(true)
-                        .build(),
-                    fallback = painterResource(R.drawable.sdk_logo),
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .size(height = 50.dp, width = 100.dp)
-                )
+                brandLogoUrl?.let {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(it)
+                            .crossfade(true)
+                            .build(),
+                        fallback = painterResource(R.drawable.sdk_logo),
+                        contentDescription = "",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .size(height = 50.dp, width = 100.dp)
+                    )
+                }
             }
             Column(
                 horizontalAlignment = Alignment.Start
@@ -83,18 +84,18 @@ fun SDKCardView(
                         style = SDKTheme.typography.s16Normal.copy(color = Color.White)
                     )
                 }
-                if (vatIncluded) {
+                if (!vatIncludedTitle.isNullOrEmpty()) {
                     Spacer(modifier = Modifier.height(SDKTheme.dimensions.paddingDp10))
                     Row {
                         Text(
-                            text = totalPriceTitle,
+                            text = stringResource(R.string.total_price_label),
                             style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
                         )
                         Text(
                             text = " "
                         )
                         Text(
-                            text = vatIncludedTitle,
+                            text = "(${vatIncludedTitle})",
                             style = SDKTheme.typography.s14Light.copy(color = Color.White)
                         )
                     }
@@ -137,8 +138,6 @@ fun SDKCardViewPreview() {
         brandLogoUrl = "url",
         price = "238.00",
         currency = "EUR",
-        totalPriceTitle = "Total price",
-        vatIncluded = true,
-        vatIncludedTitle = "(VAT included)"
+        vatIncludedTitle = stringResource(id = R.string.vat_included_label)
     )
 }

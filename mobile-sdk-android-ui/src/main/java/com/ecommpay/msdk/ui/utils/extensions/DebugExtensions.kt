@@ -12,7 +12,7 @@ import com.ecommpay.msdk.ui.base.mvi.TimeMachine
 import com.ecommpay.msdk.ui.base.mvi.UiState
 
 
-fun Modifier.debugInputPointer(
+internal fun Modifier.debugInputPointer(
     context: Context,
     timeTravel: TimeMachine<out UiState>,
 ): Modifier {

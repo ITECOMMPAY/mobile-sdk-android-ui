@@ -3,7 +3,7 @@ package com.ecommpay.msdk.ui.presentation.result
 import androidx.compose.runtime.Composable
 
 @Composable
-fun ResultScreen() {
+internal fun ResultScreen() {
 
 }
 

@@ -5,7 +5,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 
 @Composable
-fun SDKTheme(
+internal fun SDKTheme(
     colors: SDKColors = SDKTheme.colors,
     typography: SDKTypography = SDKTheme.typography,
     dimensions: SDKDimensions = SDKTheme.dimensions,

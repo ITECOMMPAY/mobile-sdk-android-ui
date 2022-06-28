@@ -3,7 +3,7 @@ package com.ecommpay.msdk.ui.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 
-object SDKTheme {
+internal object SDKTheme {
     val colors: SDKColors
         @Composable
         @ReadOnlyComposable

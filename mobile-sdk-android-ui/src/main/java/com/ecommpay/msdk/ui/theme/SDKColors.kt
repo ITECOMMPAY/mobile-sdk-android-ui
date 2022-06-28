@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-class SDKColors(
+internal class SDKColors(
     //Brand color
     brand: Color,
     //TopBar
@@ -93,7 +93,7 @@ private val colorDarkBackgroundPaymentMethodItem = Color(0xFF141414)
 private val colorDarkBorderPaymentMethodItem = Color(0xFFEBEBEE)
 private val colorDarkFooterContent = Color(0xFFBCBDBE)
 
-fun lightColors(
+internal fun lightColors(
     brand: Color? = null,
     backgroundTopBar: Color = colorLightBackgroundTopBar,
     topBarCloseButton: Color = brand ?: colorLightTopBarCloseButton,
@@ -114,7 +114,7 @@ fun lightColors(
     isLight = true
 )
 
-fun darkColors(
+internal fun darkColors(
     brand: Color? = null,
     backgroundTopBar: Color = colorDarkBackgroundTopBar,
     topBarCloseButton: Color = brand ?: colorDarkTopBarCloseButton,

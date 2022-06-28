@@ -27,7 +27,7 @@ import com.ecommpay.msdk.ui.theme.SDKTheme
 
 
 @Composable
-fun PaymentMethodItem(
+internal fun PaymentMethodItem(
     name: String,
     iconUrl: String? = "",
 ) {

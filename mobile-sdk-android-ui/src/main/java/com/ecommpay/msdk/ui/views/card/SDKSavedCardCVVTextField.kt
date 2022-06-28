@@ -35,7 +35,7 @@ import coil.request.ImageRequest
 @SuppressLint("PrivateResource", "ComposableNaming")
 @ExperimentalComposeUiApi
 @Composable
-fun SDKSavedCardCVVTextField(
+internal fun SDKSavedCardCVVTextField(
     cardUrlLogo: String,
     cardNumber: String,
 ): TextFieldValue {

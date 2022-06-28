@@ -1,6 +1,4 @@
 package com.ecommpay.msdk.ui.theme
 
-import androidx.compose.ui.graphics.Color
-
-val SDKLightTypography = lightTypography()
-val SDKDarkTypography = darkTypography()
+internal val SDKLightTypography = lightTypography()
+internal val SDKDarkTypography = darkTypography()

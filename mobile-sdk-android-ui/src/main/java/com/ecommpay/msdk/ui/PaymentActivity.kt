@@ -26,7 +26,7 @@ import com.ecommpay.msdk.ui.theme.*
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
-class PaymentActivity : ComponentActivity() {
+internal class PaymentActivity : ComponentActivity() {
     @ExperimentalAnimationApi
     @ExperimentalMaterialApi
     @SuppressLint("ResourceAsColor")
