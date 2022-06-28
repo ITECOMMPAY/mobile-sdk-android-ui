@@ -22,11 +22,11 @@ import com.ecommpay.msdk.core.MSDKCoreSession
 import com.ecommpay.msdk.core.MSDKCoreSessionConfig
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.ui.navigation.NavigationComponent
-import com.ecommpay.msdk.ui.navigation.Navigator
 import com.ecommpay.msdk.ui.theme.*
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
-internal class PaymentActivity : ComponentActivity() {
+class PaymentActivity : ComponentActivity() {
     @ExperimentalAnimationApi
     @ExperimentalMaterialApi
     @SuppressLint("ResourceAsColor")
@@ -48,57 +48,6 @@ internal class PaymentActivity : ComponentActivity() {
             } else {
                 SDKLightTypography
             }
-//            val defaultActionListener: (ViewActions) -> Unit = { action ->
-//                when (action) {
-//                    is DefaultViewActions.ShowMessage -> {
-//                        when (val message = action.message) {
-//                            is MessageAlert -> {
-//                                Toast.makeText(
-//                                    this,
-//                                    message.message,
-//                                    Toast.LENGTH_LONG
-//                                ).show()
-//                            }
-//                            is MessageToast -> {
-//                                Toast.makeText(
-//                                    this,
-//                                    message.message,
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                            }
-//                        }
-//                    }
-//                    is DefaultViewActions.SetResult -> {
-//                        setResult(action.resultCode)
-//                        finish()
-//                    }
-//                }
-//            }
-//            BottomSheetScaffold(
-//                sheetContent = {
-//                    SDKTheme { NavigationState(defaultActionListener = defaultActionListener) }
-//                },
-//                scaffoldState = bottomSheetScaffoldState,
-//                sheetGesturesEnabled = false,
-//                drawerGesturesEnabled = false,
-//                sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-//                backgroundColor = Color.Transparent,
-//                sheetPeekHeight = 0.dp,
-//                drawerContent = {
-//
-//                }
-//            ) {
-//                Surface(
-//                    modifier = Modifier
-//                        .fillMaxSize()
-//                        .padding(it)
-//                        .background(Color.Transparent),
-//                    color = Color.Black.copy(alpha = 0.2f)
-//                ) {
-//
-//                }
-//            }
-            val navController = rememberAnimatedNavController()
             BottomDrawer(
                 modifier = Modifier.wrapContentHeight(),
                 drawerContent = {
@@ -106,10 +55,7 @@ internal class PaymentActivity : ComponentActivity() {
                         colors = colors,
                         typography = typography
                     ) {
-                        NavigationComponent(
-                            navController = navController,
-                            navigator = navigator
-                        )
+                        NavigationComponent()
                     }
                 },
                 drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded),
@@ -135,12 +81,12 @@ internal class PaymentActivity : ComponentActivity() {
     }
 
     companion object {
-        lateinit var paymentInfo: PaymentInfo
-        lateinit var payment: Payment
+        var paymentInfo: PaymentInfo? = null
+        var payment: Payment? = null
         private val config = MSDKCoreSessionConfig.nl3WithDebug()
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
-        val navigator = Navigator()
+        val gson: Gson = GsonBuilder().create()
 
 
         fun buildPaymentIntent(context: Context, paymentInfo: PaymentInfo): Intent {
