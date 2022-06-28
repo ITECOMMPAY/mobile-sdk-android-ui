@@ -51,6 +51,7 @@ object Dependencies {
     object Google {
         const val wallet = "com.google.android.gms:play-services-wallet:19.1.0"
         const val material = "com.google.android.material:material:1.6.1"
+        const val gson = "com.google.android.gms:play-services-wallet:19.1.0"
     }
 
     object Dagger {

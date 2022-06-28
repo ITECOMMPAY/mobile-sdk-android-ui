@@ -8,7 +8,7 @@ sealed class Route(
     val key: String = ""
 ) {
     object Init : Route(route = "main")
-    object Main : Route(route = "main", key = "payment")
+    object Main : Route(route = "main", key = "paymentMethods")
     object Result : Route(route = "result", key = "payment")
 
     override fun toString(): String {
@@ -17,4 +17,6 @@ sealed class Route(
             else -> route
         }
     }
+
+    fun getPath() = toString()
 }

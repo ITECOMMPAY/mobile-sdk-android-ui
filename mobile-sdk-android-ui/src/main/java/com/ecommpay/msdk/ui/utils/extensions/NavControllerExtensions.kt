@@ -6,7 +6,6 @@ import androidx.navigation.NavController
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.navigation.Route
 
-
 inline fun <reified T> NavBackStackEntry.getData(key: String): T? {
     val data = arguments?.getString(key)
 
