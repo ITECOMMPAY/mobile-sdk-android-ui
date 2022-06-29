@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.presentation.main.data
+package com.ecommpay.msdk.ui.model.init
 
 internal data class UIPaymentMethod(
     val code: String,

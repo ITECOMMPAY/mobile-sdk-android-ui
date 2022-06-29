@@ -16,7 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.R
-import com.ecommpay.msdk.ui.presentation.main.data.UIPaymentMethod
+import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 import com.ecommpay.msdk.ui.presentation.main.views.ExpandablePaymentMethodItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.amountToCoins
@@ -48,8 +48,8 @@ private fun Content(paymentMethods: List<UIPaymentMethod>) {
         )
         Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
         SDKCardView(
-            price = PaymentActivity.paymentInfo?.paymentAmount.amountToCoins(),
-            currency = PaymentActivity.paymentInfo?.paymentCurrency?.uppercase() ?: "USD",
+            price = PaymentActivity.paymentOptions?.paymentAmount.amountToCoins(),
+            currency = PaymentActivity.paymentOptions?.paymentCurrency?.uppercase() ?: "USD",
             vatIncludedTitle = stringResource(id = R.string.vat_included_label)
         )
         Spacer(
@@ -62,7 +62,7 @@ private fun Content(paymentMethods: List<UIPaymentMethod>) {
 @Composable
 private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
     val isPaymentMethodItemExpanded by remember { mutableStateOf(false) } // testing event handling for accordion logic
-    
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,9 +73,11 @@ private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
                 name = paymentMethod.name,
                 iconUrl = paymentMethod.iconUrl
             ) {
-                Spacer(modifier = Modifier // testing content
-                    .fillMaxWidth()
-                    .height(100.dp))
+                Spacer(
+                    modifier = Modifier // testing content
+                        .fillMaxWidth()
+                        .height(100.dp)
+                )
             }
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
         }

@@ -1,7 +1,6 @@
 package com.ecommpay.compose_sample
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -14,8 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,8 +20,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.ecommpay.compose_sample.ui.theme.AppTheme
 import com.ecommpay.compose_sample.utils.SignatureGenerator
-import com.ecommpay.msdk.ui.PaymentInfo
 import com.ecommpay.msdk.ui.PaymentSDK
+import com.ecommpay.msdk.ui.paymentOptions
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +29,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
                     SampleMainScreen()
                 }
             }
@@ -44,36 +43,22 @@ class MainActivity : ComponentActivity() {
 @Composable
 @Preview(showSystemUi = true)
 fun SampleMainScreen() {
-    val paymentInfo = PaymentInfo(
-        projectId = 111781,
+    val paymentOptions = paymentOptions {
+        projectId = 111781
         //paymentId = "msdk_core_payment_id_" + getRandomNumber(),
-        paymentId = "sdk_android_163243123123",
-        paymentAmount = 123,
-        paymentCurrency = "RUB",
+        //paymentId = "sdk_android_163243123123"
+        paymentAmount = 123
+        paymentCurrency = "RUB"
         customerId = "12"
-    )
-    paymentInfo.signature = SignatureGenerator.generateSignature(paymentInfo.getParamsForSignature(), "123")
-
-    val sdk = PaymentSDK(context = LocalContext.current, paymentInfo = paymentInfo)
-
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
     }
+    paymentOptions.signature =
+        SignatureGenerator.generateSignature(paymentOptions.getParamsForSignature(), "123")
 
+    val sdk = PaymentSDK(context = LocalContext.current, paymentOptions = paymentOptions)
 
-//    val result = remember { mutableStateOf(-999) }
-//    val launcher = rememberLauncherForActivityResult(PaymentActivityContract()) {
-//        if (it != null) {
-//            result.value = it
-//        }
-//    }
-//
-//
-//    paymentInfo.signature = SignatureGenerator.generateSignature(paymentInfo.getParamsForSignature(), "123")
-//    when (result.value) {
-//        0 -> {
-//            Toast.makeText(LocalContext.current, "Woow", Toast.LENGTH_SHORT).show()
-//        }
-//    }
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        }
 
 
     Scaffold(
@@ -84,7 +69,8 @@ fun SampleMainScreen() {
                     .background(Color.White)
                     .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center) {
+                verticalArrangement = Arrangement.Center
+            ) {
                 item {
                     Row(horizontalArrangement = Arrangement.Center) {
                         Button(onClick = {

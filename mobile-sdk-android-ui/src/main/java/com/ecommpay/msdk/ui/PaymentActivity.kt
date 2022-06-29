@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.ecommpay.msdk.core.MSDKCoreSession
 import com.ecommpay.msdk.core.MSDKCoreSessionConfig
-import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.ui.navigation.NavigationComponent
 import com.ecommpay.msdk.ui.theme.*
 import com.google.gson.Gson
@@ -68,16 +67,16 @@ internal class PaymentActivity : ComponentActivity() {
     }
 
     companion object {
-        var paymentInfo: PaymentInfo? = null
-        var payment: Payment? = null
+        var paymentOptions: PaymentOptions? = null
         private val config = MSDKCoreSessionConfig.nl3WithDebug()
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
+        val currentPayment = msdkSession.getCurrentPayment()
         val gson: Gson = GsonBuilder().create()
 
 
-        fun buildPaymentIntent(context: Context, paymentInfo: PaymentInfo): Intent {
-            Companion.paymentInfo = paymentInfo
+        fun buildPaymentIntent(context: Context, paymentOptions: PaymentOptions): Intent {
+            this.paymentOptions = paymentOptions
             return Intent(context, PaymentActivity::class.java)
         }
     }

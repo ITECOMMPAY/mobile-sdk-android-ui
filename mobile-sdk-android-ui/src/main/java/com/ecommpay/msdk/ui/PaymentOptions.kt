@@ -1,59 +1,61 @@
-@file:Suppress("PrivatePropertyName", "unused")
+@file:Suppress("PrivatePropertyName", "unused", "MemberVisibilityCanBePrivate")
 
 package com.ecommpay.msdk.ui
+
+import java.util.*
 
 enum class ActionType {
     Sale, Auth, Tokenize, Verify
 }
 
+fun paymentOptions(block: PaymentOptions.() -> Unit): PaymentOptions = PaymentOptions().apply(block)
+
 /**
  * Payment configuration
  */
-class PaymentInfo @JvmOverloads constructor(
+class PaymentOptions {
+
     /**
      * project (merchant) ID
      */
-    val projectId: Int,
+    var projectId: Int = 0
+
     /**
      * must be unique within the project
      */
-    val paymentId: String,
+    var paymentId: String = UUID.randomUUID().toString()
+
     /**
      * payment amount in minor currency units
      */
-    val paymentAmount: Long,
+    var paymentAmount: Long = 0
+
     /**
      * payment currency code according to ISO-4217 alpha-3
      */
-    val paymentCurrency: String,
-    /**
-     * payment description (this parameter is available not only to the merchant, but also to the customer; if paymentDescription is specified in the request, it is visible to the customer in the payment form (in the dialog box containing information about the payment); if this parameter is not specified in the request, it is not visible to the customer)
-     */
-    var paymentDescription: String? = null,
-    var customerId: String? = null,
-    /**
-     * customer country
-     */
-    var regionCode: String? = null,
+    var paymentCurrency: String = ""
+
+    var paymentDescription: String? = null
+    var customerId: String? = null
+    var regionCode: String? = null
+
     /**
      * card token
      */
-    var token: String? = null,
-    var languageCode: String? = null,
-    var receiptData: String? = null,
-    var bankId: Int? = null,
-    var actionType: ActionType = ActionType.Sale,
+    var token: String? = null
+    var languageCode: String? = null
+    var forcePaymentMethod: String? = null
+
     /**
      * hiding or displaying saved payment instruments in the payment form
      */
-    var hideSavedWallets: Boolean = false,
-    /**
-     * the identifier of the payment method which is opened to the customer without an option for the customer to select another payment method. The list of codes is provided in the IDs of payment methods supported on Payment Page section
-     */
-    var forcePaymentMethod: String? = null,
-    //var merchantId: String? = null,
+    var hideSavedWallets: Boolean = false
     var signature: String? = null
-) {
+    var actionType: ActionType = ActionType.Sale
+
+    var receiptData: String? = null
+    var bankId: Int? = null
+
 
     private val PROJECT_ID = "project_id"
     private val PAYMENT_ID = "payment_id"

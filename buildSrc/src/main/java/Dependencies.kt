@@ -51,7 +51,7 @@ object Dependencies {
     object Google {
         const val wallet = "com.google.android.gms:play-services-wallet:19.1.0"
         const val material = "com.google.android.material:material:1.6.1"
-        const val gson = "com.google.android.gms:play-services-wallet:19.1.0"
+        const val gson = "com.google.code.gson:gson:2.9.0"
     }
 
     object Dagger {
@@ -59,6 +59,10 @@ object Dependencies {
         const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
         const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.dagger}"
         const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.dagger}"
+    }
+
+    object Msdk {
+        const val core = "com.ecommpay:msdk-core:+"
     }
 
 }
