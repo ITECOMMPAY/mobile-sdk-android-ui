@@ -48,8 +48,8 @@ private fun Content(paymentMethods: List<UIPaymentMethod>) {
         )
         Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
         SDKCardView(
-            price = PaymentActivity.paymentInfo?.paymentAmount.amountToCoins(),
-            currency = PaymentActivity.paymentInfo?.paymentCurrency?.uppercase() ?: "USD",
+            price = PaymentActivity.paymentOptions?.paymentAmount.amountToCoins(),
+            currency = PaymentActivity.paymentOptions?.paymentCurrency?.uppercase() ?: "USD",
             vatIncludedTitle = stringResource(id = R.string.vat_included_label)
         )
         Spacer(

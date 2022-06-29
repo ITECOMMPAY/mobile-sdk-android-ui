@@ -67,7 +67,7 @@ internal class PaymentActivity : ComponentActivity() {
     }
 
     companion object {
-        var paymentInfo: PaymentInfo? = null
+        var paymentOptions: PaymentOptions? = null
         private val config = MSDKCoreSessionConfig.nl3WithDebug()
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
@@ -75,8 +75,8 @@ internal class PaymentActivity : ComponentActivity() {
         val gson: Gson = GsonBuilder().create()
 
 
-        fun buildPaymentIntent(context: Context, paymentInfo: PaymentInfo): Intent {
-            Companion.paymentInfo = paymentInfo
+        fun buildPaymentIntent(context: Context, paymentOptions: PaymentOptions): Intent {
+            this.paymentOptions = paymentOptions
             return Intent(context, PaymentActivity::class.java)
         }
     }

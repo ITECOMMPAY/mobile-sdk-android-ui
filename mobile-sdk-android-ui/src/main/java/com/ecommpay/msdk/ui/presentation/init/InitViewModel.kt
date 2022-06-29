@@ -30,7 +30,7 @@ internal class InitViewModel : BaseViewModel<InitScreenState, InitScreenUiEvent>
 
     private fun loadInit() {
         //map payment info to core object
-        val paymentInfo = PaymentActivity.paymentInfo ?: return
+        val paymentInfo = PaymentActivity.paymentOptions ?: return
         val sdkPaymentInfo = PaymentInfo.create(
             projectId = paymentInfo.projectId,
             paymentId = paymentInfo.paymentId,
