@@ -11,6 +11,7 @@ import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.base.mvi.Reducer
 import com.ecommpay.msdk.ui.base.mvi.TimeMachine
 import com.ecommpay.msdk.ui.base.mvvm.BaseViewModel
+import com.ecommpay.msdk.ui.model.common.ErrorResult
 import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 import kotlinx.coroutines.flow.StateFlow
 
@@ -65,6 +66,7 @@ internal class InitViewModel : BaseViewModel<InitScreenState, InitScreenUiEvent>
                 }
 
                 override fun onError(code: ErrorCode, message: String) {
+                    sendEvent(InitScreenUiEvent.ShowError(ErrorResult(code, message)))
                 }
 
                 //Restore payment
@@ -88,6 +90,12 @@ internal class InitViewModel : BaseViewModel<InitScreenState, InitScreenUiEvent>
                     oldState.copy(
                         isInitLoaded = false,
                         data = emptyList()
+                    )
+                )
+                is InitScreenUiEvent.ShowError -> setState(
+                    oldState.copy(
+                        isInitLoaded = false,
+                        error = event.error
                     )
                 )
             }

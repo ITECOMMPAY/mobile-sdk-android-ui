@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.ecommpay.msdk.ui.PaymentDelegate
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.navigation.Route
 import com.ecommpay.msdk.ui.theme.SDKTheme
@@ -22,12 +23,21 @@ import kotlinx.coroutines.flow.onEach
 
 
 @Composable
-internal fun InitScreen(navController: NavController) {
+internal fun InitScreen(
+    navController: NavController,
+    delegate: PaymentDelegate
+) {
     val viewModel: InitViewModel = viewModel()
     LaunchedEffect(Unit) {
         viewModel.state.onEach {
-            if (it.isInitLoaded && it.data.isNotEmpty())  //navigate to payment methods screen (MainScreen)
-                navController.navigate(Route.Main, it.data)
+            when {
+                it.error != null -> delegate.onError(it.error.code, it.error.message)
+                it.isInitLoaded && it.data.isNotEmpty() ->
+                    navController.navigate(
+                        Route.Main,
+                        it.data
+                    )
+            }
         }.collect()
     }
 

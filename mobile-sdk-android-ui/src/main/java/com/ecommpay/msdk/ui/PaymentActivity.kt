@@ -19,12 +19,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.ecommpay.msdk.core.MSDKCoreSession
 import com.ecommpay.msdk.core.MSDKCoreSessionConfig
+import com.ecommpay.msdk.core.base.ErrorCode
+import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.ui.navigation.NavigationComponent
 import com.ecommpay.msdk.ui.theme.*
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
-internal class PaymentActivity : ComponentActivity() {
+internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
     @OptIn(ExperimentalMaterialApi::class)
     @SuppressLint("ResourceAsColor")
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +46,7 @@ internal class PaymentActivity : ComponentActivity() {
                     SDKTheme(
                         colors = colors,
                         typography = typography
-                    ) { NavigationComponent() }
+                    ) { NavigationComponent(this@PaymentActivity) }
                 },
                 drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded),
                 drawerBackgroundColor = Color.Transparent,
@@ -66,6 +68,7 @@ internal class PaymentActivity : ComponentActivity() {
         msdkSession.cancel()
     }
 
+
     companion object {
         var paymentOptions: PaymentOptions? = null
         private val config = MSDKCoreSessionConfig.nl3WithDebug()
@@ -80,4 +83,38 @@ internal class PaymentActivity : ComponentActivity() {
             return Intent(context, PaymentActivity::class.java)
         }
     }
+
+    override fun onError(code: ErrorCode, message: String?) {
+        val dataIntent = Intent()
+        dataIntent.putExtra(
+            PaymentSDK.EXTRA_ERROR_CODE, code.name
+        )
+        dataIntent.putExtra(
+            PaymentSDK.EXTRA_ERROR_MESSAGE, message
+        )
+        setResult(PaymentSDK.RESULT_ERROR, dataIntent)
+        finish()
+    }
+
+    override fun onCompleteWithSuccess(payment: Payment) {
+        val dataIntent = Intent()
+        setResult(PaymentSDK.RESULT_SUCCESS, dataIntent)
+        finish()
+    }
+
+    override fun onCompleteWithFail(status: String?, payment: Payment) {
+        val dataIntent = Intent()
+        dataIntent.putExtra(
+            PaymentSDK.EXTRA_PAYMENT_STATUS, payment.serverStatusName
+        )
+        setResult(PaymentSDK.RESULT_FAILED, dataIntent)
+        finish()
+    }
+
+    override fun onCompleteWithDecline(payment: Payment) {
+        val dataIntent = Intent()
+        setResult(PaymentSDK.RESULT_DECLINE, dataIntent)
+        finish()
+    }
+
 }

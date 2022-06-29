@@ -2,15 +2,14 @@ package com.ecommpay.msdk.ui.navigation
 
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.ecommpay.msdk.ui.PaymentDelegate
+import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 import com.ecommpay.msdk.ui.presentation.init.InitScreen
 import com.ecommpay.msdk.ui.presentation.main.MainScreen
-import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 import com.ecommpay.msdk.ui.presentation.result.ResultScreen
 import com.ecommpay.msdk.ui.utils.extensions.getData
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -20,40 +19,40 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-internal fun NavigationComponent() {
+internal fun NavigationComponent(delegate: PaymentDelegate) {
     val navController = rememberAnimatedNavController()
 
     AnimatedNavHost(
         navController = navController,
         startDestination = Route.Init.getPath(),
-        enterTransition = {
-            slideIntoContainer(
-                AnimatedContentScope.SlideDirection.Up,
-                animationSpec = tween(700)
-            )
-        },
-        exitTransition = {
-            slideOutOfContainer(
-                AnimatedContentScope.SlideDirection.Down,
-                animationSpec = tween(700)
-            )
-        },
-        popEnterTransition = {
-            slideIntoContainer(
-                AnimatedContentScope.SlideDirection.Up,
-                animationSpec = tween(700)
-            )
-        },
-        popExitTransition = {
-            slideOutOfContainer(
-                AnimatedContentScope.SlideDirection.Down,
-                animationSpec = tween(700)
-            )
-        }
+//        enterTransition = {
+//            slideIntoContainer(
+//                AnimatedContentScope.SlideDirection.Up,
+//                animationSpec = tween(700)
+//            )
+//        },
+//        exitTransition = {
+//            slideOutOfContainer(
+//                AnimatedContentScope.SlideDirection.Down,
+//                animationSpec = tween(700)
+//            )
+//        },
+//        popEnterTransition = {
+//            slideIntoContainer(
+//                AnimatedContentScope.SlideDirection.Up,
+//                animationSpec = tween(700)
+//            )
+//        },
+//        popExitTransition = {
+//            slideOutOfContainer(
+//                AnimatedContentScope.SlideDirection.Down,
+//                animationSpec = tween(700)
+//            )
+//        }
     ) {
         composable(route = Route.Init.getPath()) {
             BackHandler(true) { }
-            InitScreen(navController = navController)
+            InitScreen(navController = navController, delegate = delegate)
         }
         composable(
             route = Route.Main.getPath(),
