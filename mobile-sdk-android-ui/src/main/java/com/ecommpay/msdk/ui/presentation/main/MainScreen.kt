@@ -1,22 +1,23 @@
 package com.ecommpay.msdk.ui.presentation.main
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.presentation.main.data.UIPaymentMethod
-import com.ecommpay.msdk.ui.presentation.main.views.PaymentMethodItem
+import com.ecommpay.msdk.ui.presentation.main.views.ExpandablePaymentMethodItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.amountToCoins
 import com.ecommpay.msdk.ui.views.card.SDKCardView
@@ -60,16 +61,22 @@ private fun Content(paymentMethods: List<UIPaymentMethod>) {
 
 @Composable
 private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
+    val isPaymentMethodItemExpanded by remember { mutableStateOf(false) } // testing event handling for accordion logic
+    
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
     ) {
         paymentMethods.forEach { paymentMethod ->
-            PaymentMethodItem(
-                name = paymentMethod.name ?: "",
+            ExpandablePaymentMethodItem(
+                name = paymentMethod.name,
                 iconUrl = paymentMethod.iconUrl
-            )
+            ) {
+                Spacer(modifier = Modifier // testing content
+                    .fillMaxWidth()
+                    .height(100.dp))
+            }
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
         }
     }
