@@ -3,7 +3,7 @@ package com.ecommpay.msdk.ui.presentation.init
 import androidx.compose.runtime.Immutable
 import com.ecommpay.msdk.ui.base.mvi.UiEvent
 import com.ecommpay.msdk.ui.base.mvi.UiState
-import com.ecommpay.msdk.ui.presentation.main.data.UIPaymentMethod
+import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 
 @Immutable
 internal sealed class InitScreenUiEvent : UiEvent {

@@ -2,7 +2,6 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    kotlin("plugin.serialization")
     id("io.gitlab.arturbosch.detekt")
 }
 
@@ -63,7 +62,7 @@ android {
 
 dependencies {
     //msdkCore
-    implementation("com.ecommpay:msdk-core:+")
+    implementation(Dependencies.Msdk.core)
     //AndroidX
     implementation(Dependencies.AndroidX.appCompat)
     implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
@@ -71,25 +70,20 @@ dependencies {
     debugImplementation(Dependencies.AndroidX.customView)
     debugImplementation(Dependencies.AndroidX.customViewPoolingContainer)
     implementation(Dependencies.AndroidX.coreKtx)
-    //Gson
-    implementation("com.google.code.gson:gson:2.9.0")
     //Coil
     implementation(Dependencies.Coil.compose)
-    //Serialization
-    implementation(Dependencies.Serialization.json)
     //Google
     implementation(Dependencies.Google.wallet)
     implementation(Dependencies.Google.material)
+    implementation(Dependencies.Google.gson)
     //Compose
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.animationCore)
     implementation(Dependencies.Compose.toolingPreview)
-    implementation(Dependencies.Compose.runtimeLiveData)
     testImplementation(Dependencies.Compose.junit4)
     debugImplementation(Dependencies.Compose.uiTooling)
     implementation(Dependencies.Compose.navigation)
-    implementation(Dependencies.Compose.lifecycleViewModel)
     implementation(Dependencies.Compose.activity)
     //Accompanist
     implementation(Dependencies.Accompanist.navigation)

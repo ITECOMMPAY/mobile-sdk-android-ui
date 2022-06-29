@@ -10,7 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.ecommpay.msdk.ui.presentation.init.InitScreen
 import com.ecommpay.msdk.ui.presentation.main.MainScreen
-import com.ecommpay.msdk.ui.presentation.main.data.UIPaymentMethod
+import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 import com.ecommpay.msdk.ui.presentation.result.ResultScreen
 import com.ecommpay.msdk.ui.utils.extensions.getData
 import com.google.accompanist.navigation.animation.AnimatedNavHost
