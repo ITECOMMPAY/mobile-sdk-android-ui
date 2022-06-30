@@ -58,6 +58,17 @@ fun SampleMainScreen() {
 
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            when (result.resultCode) {
+                PaymentSDK.RESULT_SUCCESS -> {}
+                PaymentSDK.RESULT_CANCELLED -> {}
+                PaymentSDK.RESULT_DECLINE -> {}
+                PaymentSDK.RESULT_FAILED -> {}
+                PaymentSDK.RESULT_ERROR -> {
+                    val errorCode = result.data?.getStringExtra(PaymentSDK.EXTRA_ERROR_CODE)
+                    val message = result.data?.getStringExtra(PaymentSDK.EXTRA_ERROR_MESSAGE)
+                }
+            }
+
         }
 
 
