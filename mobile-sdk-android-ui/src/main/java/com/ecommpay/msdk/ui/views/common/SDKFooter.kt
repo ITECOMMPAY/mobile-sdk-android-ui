@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import com.ecommpay.msdk.ui.theme.SDKTheme
@@ -43,6 +44,6 @@ internal fun SDKFooter(
 @Preview(showBackground = true)
 internal fun SDKFooterPreview() {
     SDKTheme {
-        SDKFooter(iconLogo = R.drawable.sdk_logo, poweredByText = "Powered by")
+        SDKFooter(iconLogo = R.drawable.ic_sdk_logo, poweredByText = stringResource(id = R.string.powered_by_label))
     }
 }

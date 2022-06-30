@@ -1,13 +1,8 @@
 package com.ecommpay.msdk.ui.presentation.main
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,44 +34,49 @@ internal fun MainScreen(
 private fun Content(paymentMethods: List<UIPaymentMethod>) {
     SDKScaffold(
         title = PaymentActivity.stringResourceManager.payment.methodsTitle
-            ?: stringResource(R.string.payment_methods_label)
-    ) {
-        Text(
-            text = stringResource(R.string.payment_details_label),
-            style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand),
-            //modifier = Modifier.align(Alignment.Start)
-        )
-        Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
-        SDKCardView(
-            price = PaymentActivity.paymentOptions?.paymentAmount.amountToCoins(),
-            currency = PaymentActivity.paymentOptions?.paymentCurrency?.uppercase() ?: "USD",
-            vatIncludedTitle = stringResource(id = R.string.vat_included_label)
-        )
-        Spacer(
-            modifier = Modifier.size(SDKTheme.dimensions.paddingDp15)
-        )
-        PaymentMethodList(paymentMethods = paymentMethods)
-    }
+            ?: stringResource(R.string.payment_methods_label),
+        notScrollableContent = {
+            Text(
+                text = stringResource(R.string.payment_details_label),
+                style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand),
+                //modifier = Modifier.align(Alignment.Start)
+            )
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
+            SDKCardView(
+                price = PaymentActivity.currentPayment?.paymentAmount.amountToCoins(),
+                currency = PaymentActivity.currentPayment?.paymentCurrency?.uppercase() ?: "USD",
+                vatIncludedTitle = stringResource(id = R.string.vat_included_label)
+            )
+            Spacer(
+                modifier = Modifier.size(SDKTheme.dimensions.paddingDp15)
+            )
+        },
+        scrollableContent = {
+            PaymentMethodList(paymentMethods = paymentMethods)
+        }
+    )
 }
 
 @Composable
 private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
-    val isPaymentMethodItemExpanded by remember { mutableStateOf(false) } // testing event handling for accordion logic
-
+    var expandedPosition by remember { mutableStateOf(0) }
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
     ) {
-        paymentMethods.forEach { paymentMethod ->
+        paymentMethods.forEachIndexed { position, paymentMethod ->
             ExpandablePaymentMethodItem(
+                position = position,
                 name = paymentMethod.name,
-                iconUrl = paymentMethod.iconUrl
+                iconUrl = paymentMethod.iconUrl,
+                onExpand = { expandPosition ->
+                    expandedPosition = expandPosition
+                },
+                isExpanded = expandedPosition == position
             ) {
-                Spacer(
-                    modifier = Modifier // testing content
-                        .fillMaxWidth()
-                        .height(100.dp)
+                Spacer(modifier = Modifier // testing content
+                    .fillMaxWidth()
+                    .height(100.dp)
                 )
             }
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))

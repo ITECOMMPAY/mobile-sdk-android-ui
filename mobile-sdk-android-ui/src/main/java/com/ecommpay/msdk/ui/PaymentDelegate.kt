@@ -1,7 +1,6 @@
 package com.ecommpay.msdk.ui
 
 import com.ecommpay.msdk.core.base.ErrorCode
-import com.ecommpay.msdk.core.domain.entities.init.translation.LinkMessage
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
 
 internal interface PaymentDelegate {

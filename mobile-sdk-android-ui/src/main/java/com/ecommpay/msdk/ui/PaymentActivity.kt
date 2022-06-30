@@ -10,10 +10,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -41,24 +41,25 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
             val typography = if (isSystemInDarkTheme()) SDKDarkTypography else SDKLightTypography
 
             BottomDrawer(
-                modifier = Modifier.wrapContentHeight(),
+                modifier = Modifier.wrapContentSize(),
                 drawerContent = {
                     SDKTheme(
                         colors = colors,
                         typography = typography
-                    ) { NavigationComponent(this@PaymentActivity) }
+                    ) {
+                        Box(contentAlignment = Alignment.BottomCenter) { NavigationComponent(this@PaymentActivity) }
+                    }
                 },
                 drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded),
                 drawerBackgroundColor = Color.Transparent,
                 gesturesEnabled = false,
                 drawerShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
             ) {
-                Surface(
+                Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color.Transparent),
-                    color = Color.Black.copy(alpha = 0.2f)
-                ) { }
+                        .background(Color.Black.copy(alpha = 0.2f)),
+                )
             }
         }
     }
@@ -68,13 +69,12 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
         msdkSession.cancel()
     }
 
-
     companion object {
         var paymentOptions: PaymentOptions? = null
         private val config = MSDKCoreSessionConfig.nl3WithDebug()
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
-        val currentPayment = msdkSession.getCurrentPayment()
+        val currentPayment = msdkSession.getPaymentInfo()
         val gson: Gson = GsonBuilder().create()
 
 
