@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun ShimmerAnimation(
+internal fun SDKShimmerAnimatedItem(
     itemHeight: Dp,
     itemWidth: Dp? = null,
     padding: Dp = 0.dp,
@@ -69,5 +69,5 @@ internal fun ShimmerAnimation(
 @Composable
 @Preview(showBackground = true)
 fun ShimmerAnimationPreview() {
-    ShimmerAnimation(itemHeight = 200.dp)
+    SDKShimmerAnimatedItem(itemHeight = 200.dp)
 }

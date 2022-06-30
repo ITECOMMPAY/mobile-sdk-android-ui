@@ -49,7 +49,7 @@ internal fun SDKCardView(
                             .data(it)
                             .crossfade(true)
                             .build(),
-                        fallback = painterResource(R.drawable.sdk_logo),
+                        fallback = painterResource(R.drawable.ic_sdk_logo),
                         contentDescription = "",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier

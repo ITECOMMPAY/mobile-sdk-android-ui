@@ -28,13 +28,14 @@ import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
 internal fun ExpandablePaymentMethodItem(
+    position: Int,
     iconUrl: String? = null,
     name: String,
+    onExpand: (position: Int) -> Unit,
     isExpanded: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    var expandState by remember { mutableStateOf(isExpanded) }
-    val rotationState by animateFloatAsState(if (expandState) 180f else 0f)
+    val rotationState by animateFloatAsState(if (isExpanded) 180f else 0f)
     Box(
         modifier = Modifier
             .background(
@@ -92,7 +93,11 @@ internal fun ExpandablePaymentMethodItem(
                             .clickable(
                                 indication = null, //отключаем анимацию при клике
                                 interactionSource = remember { MutableInteractionSource() },
-                                onClick = { expandState = !expandState }
+                                onClick = {
+                                    if (!isExpanded) {
+                                        onExpand(position)
+                                    }
+                                }
                             )
                             .rotate(rotationState),
                         imageVector = Icons.Default.KeyboardArrowDown,
@@ -101,7 +106,7 @@ internal fun ExpandablePaymentMethodItem(
                     )
                 }
             }
-            if (expandState) {
+            if (isExpanded) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -116,7 +121,9 @@ internal fun ExpandablePaymentMethodItem(
 @Preview
 fun ExpandablePaymentMethodItemPreview() {
     ExpandablePaymentMethodItem(
-        name = "Bank card"
+        position = 0,
+        name = "Bank card",
+        onExpand = {}
     ) {
         Text(text = "sdfsdfsdf") // testing content (delete later)
     }

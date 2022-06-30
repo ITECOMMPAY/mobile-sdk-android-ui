@@ -1,8 +1,6 @@
 package com.ecommpay.msdk.ui.presentation.init
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -17,7 +15,7 @@ import com.ecommpay.msdk.ui.navigation.Route
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.navigate
 import com.ecommpay.msdk.ui.views.common.SDKScaffold
-import com.ecommpay.msdk.ui.views.shimmer.ShimmerAnimation
+import com.ecommpay.msdk.ui.views.shimmer.SDKShimmerAnimatedItem
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
@@ -40,27 +38,29 @@ internal fun InitScreen(
             }
         }.collect()
     }
-
     Content()
 }
 
 
 @Composable
 private fun Content() {
-    SDKScaffold(title = stringResource(R.string.payment_methods_label)) {
-        Loading()
-    }
+    SDKScaffold(
+        title = stringResource(R.string.payment_methods_label),
+        notScrollableContent = {
+            Loading()
+        }
+    )
 }
 
 @Composable
 private fun Loading() {
-    ShimmerAnimation(
+    SDKShimmerAnimatedItem(
         itemHeight = 20.dp,
         itemWidth = 125.dp,
         borderRadius = 4.dp
     )
     Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
-    ShimmerAnimation(
+    SDKShimmerAnimatedItem(
         itemHeight = 150.dp,
         borderRadius = 12.dp
     )
@@ -69,7 +69,7 @@ private fun Loading() {
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            ShimmerAnimation(
+            SDKShimmerAnimatedItem(
                 itemHeight = 50.dp,
                 borderRadius = 6.dp,
             )
@@ -78,25 +78,19 @@ private fun Loading() {
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            ShimmerAnimation(
+            SDKShimmerAnimatedItem(
                 itemHeight = 50.dp,
                 borderRadius = 6.dp,
             )
         }
     }
     Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-    ) {
-        (1..5).forEach { _ ->
-            ShimmerAnimation(
-                itemHeight = SDKTheme.dimensions.paymentMethodItemHeight,
-                borderRadius = 6.dp
-            )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
-        }
+    (1..5).forEach { _ ->
+        SDKShimmerAnimatedItem(
+            itemHeight = SDKTheme.dimensions.paymentMethodItemHeight,
+            borderRadius = 6.dp
+        )
+        Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
     }
 }
 
