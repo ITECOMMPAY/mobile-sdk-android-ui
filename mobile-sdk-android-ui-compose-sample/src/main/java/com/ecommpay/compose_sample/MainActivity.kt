@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.ecommpay.compose_sample.ui.theme.AppTheme
 import com.ecommpay.compose_sample.utils.SignatureGenerator
+import com.ecommpay.msdk.ui.AdditionalFieldType
 import com.ecommpay.msdk.ui.PaymentSDK
 import com.ecommpay.msdk.ui.paymentOptions
 
@@ -50,6 +51,16 @@ fun SampleMainScreen() {
         paymentAmount = 123
         paymentCurrency = "RUB"
         customerId = "12"
+//        additionalFields {
+//            field {
+//                type = AdditionalFieldType.CUSTOMER_EMAIL
+//                value = "mail@mail.ru"
+//            }
+//            field {
+//                type = AdditionalFieldType.CUSTOMER_ADDRESS
+//                value = "Earth"
+//            }
+//        }
     }
     paymentOptions.signature =
         SignatureGenerator.generateSignature(paymentOptions.getParamsForSignature(), "123")
