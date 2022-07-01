@@ -75,7 +75,6 @@ dependencies {
     //Google
     implementation(Dependencies.Google.wallet)
     implementation(Dependencies.Google.material)
-    implementation(Dependencies.Google.gson)
     //Compose
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)

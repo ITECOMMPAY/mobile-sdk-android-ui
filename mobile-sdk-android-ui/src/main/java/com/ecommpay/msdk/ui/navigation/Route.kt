@@ -5,11 +5,11 @@ package com.ecommpay.msdk.ui.navigation
 
 internal sealed class Route(
     private val route: String,
-    val key: String = ""
+    private val key: String = ""
 ) {
-    object Init : Route(route = "main")
-    object Main : Route(route = "main", key = "paymentMethods")
-    object Result : Route(route = "result", key = "payment")
+    object Init : Route(route = "init")
+    object Main : Route(route = "main")
+    object Result : Route(route = "result")
 
     override fun toString(): String {
         return when {

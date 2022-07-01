@@ -10,9 +10,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.BottomDrawer
+import androidx.compose.material.BottomDrawerState
+import androidx.compose.material.BottomDrawerValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,9 +27,8 @@ import com.ecommpay.msdk.core.MSDKCoreSessionConfig
 import com.ecommpay.msdk.core.base.ErrorCode
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.ui.navigation.NavigationComponent
+import com.ecommpay.msdk.ui.navigation.Navigator
 import com.ecommpay.msdk.ui.theme.*
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 
 internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
     @OptIn(ExperimentalMaterialApi::class)
@@ -47,7 +51,12 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
                         colors = colors,
                         typography = typography
                     ) {
-                        Box(contentAlignment = Alignment.BottomCenter) { NavigationComponent(this@PaymentActivity) }
+                        Box(contentAlignment = Alignment.BottomCenter) {
+                            NavigationComponent(
+                                navigator = navigator,
+                                delegate = this@PaymentActivity
+                            )
+                        }
                     }
                 },
                 drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded),
@@ -75,7 +84,7 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
         val currentPayment = msdkSession.getPaymentInfo()
-        val gson: Gson = GsonBuilder().create()
+        val navigator = Navigator()
 
 
         fun buildPaymentIntent(context: Context, paymentOptions: PaymentOptions): Intent {
