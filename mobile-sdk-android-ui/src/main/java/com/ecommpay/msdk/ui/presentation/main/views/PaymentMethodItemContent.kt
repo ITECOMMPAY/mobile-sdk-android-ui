@@ -1,8 +1,34 @@
 package com.ecommpay.msdk.ui.presentation.main.views
 
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import com.ecommpay.msdk.ui.theme.SDKTheme
+import com.ecommpay.msdk.ui.views.button.SDKButton
 
 @Composable
-fun PaymentMethodItemContent() {
+fun PaymentMethodItemContent(
+    payLabel: String,
+    amount: String,
+    currency: String,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    var isPayButtonEnabled by remember { mutableStateOf(true) }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        content = {
+            content()
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
+            SDKButton(
+                payLabel = payLabel,
+                amount = amount,
+                currency = currency,
+                isEnabled = isPayButtonEnabled
+            ) {
 
+            }
+        }
+    )
 }

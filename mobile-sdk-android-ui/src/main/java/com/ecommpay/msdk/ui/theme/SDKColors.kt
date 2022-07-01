@@ -12,12 +12,14 @@ internal class SDKColors(
     //TopBar
     backgroundTopBar: Color,
     topBarCloseButton: Color,
+    //Shimmer Screen
+    backgroundShimmerItem: Color,
     //Payment Methods Screen
+    backgroundExpandedPaymentDetails: Color,
+    expandedPaymentDetailsCloseButton: Color,
     backgroundPaymentMethods: Color,
     backgroundPaymentMethodItem: Color,
     borderPaymentMethodItem: Color,
-    //Shimmer Screen
-    backgroundShimmerItem: Color,
     //Footer content
     footerContent: Color,
     isLight: Boolean,
@@ -29,6 +31,10 @@ internal class SDKColors(
     var topBarCloseButton by mutableStateOf(topBarCloseButton)
         private set
     var backgroundShimmerItem by mutableStateOf(backgroundShimmerItem)
+        private set
+    var backgroundExpandedPaymentDetails by mutableStateOf(backgroundExpandedPaymentDetails)
+        private set
+    var expandedPaymentDetailsCloseButton by mutableStateOf(expandedPaymentDetailsCloseButton)
         private set
     var backgroundPaymentMethods by mutableStateOf(backgroundPaymentMethods)
         private set
@@ -46,6 +52,8 @@ internal class SDKColors(
         backgroundTopBar: Color = this.backgroundTopBar,
         topBarCloseButton: Color = this.topBarCloseButton,
         backgroundShimmerItem: Color = this.backgroundShimmerItem,
+        backgroundExpandedPaymentDetails: Color = this.backgroundExpandedPaymentDetails,
+        expandedPaymentDetailsCloseButton: Color = this.expandedPaymentDetailsCloseButton,
         backgroundPaymentMethods: Color = this.backgroundPaymentMethods,
         backgroundPaymentMethodItem: Color = this.backgroundPaymentMethodItem,
         borderPaymentMethodItem: Color = this.borderPaymentMethodItem,
@@ -56,6 +64,8 @@ internal class SDKColors(
         backgroundTopBar,
         topBarCloseButton,
         backgroundShimmerItem,
+        backgroundExpandedPaymentDetails,
+        expandedPaymentDetailsCloseButton,
         backgroundPaymentMethods,
         backgroundPaymentMethodItem,
         borderPaymentMethodItem,
@@ -68,6 +78,8 @@ internal class SDKColors(
         backgroundTopBar = other.backgroundTopBar
         topBarCloseButton = other.topBarCloseButton
         backgroundShimmerItem = other.backgroundShimmerItem
+        backgroundExpandedPaymentDetails = other.backgroundExpandedPaymentDetails
+        expandedPaymentDetailsCloseButton = other.expandedPaymentDetailsCloseButton
         backgroundPaymentMethods = other.backgroundPaymentMethods
         backgroundPaymentMethodItem = other.backgroundPaymentMethodItem
         borderPaymentMethodItem = other.borderPaymentMethodItem
@@ -79,6 +91,8 @@ private val colorLightBrand = Color(0xFF00579E)
 private val colorLightBackgroundTopBar = Color(0xFFFFFFFF)
 private val colorLightTopBarCloseButton = Color(0xFF00579E)
 private val colorLightBackgroundShimmerItem = Color(0xFFF6F7F9)
+private val colorLightBackgroundExpandedPaymentDetails = Color(0xFFF6F7F9)
+private val colorLightExpandedPaymentDetailsCloseButton = Color(0xFF000000)
 private val colorLightBackgroundPaymentMethods = Color(0xFFFFFFFF)
 private val colorLightBackgroundPaymentMethodItem = Color(0xFFFFFFFF)
 private val colorLightBorderPaymentMethodItem = Color(0xFFEBEBEE)
@@ -88,6 +102,8 @@ private val colorDarkBrand = Color(0xFF0065B8)
 private val colorDarkBackgroundTopBar = Color(0xFF141414)
 private val colorDarkTopBarCloseButton = Color(0xFF0065B8)
 private val colorDarkBackgroundShimmerItem = Color(0xFF2D2B2B)
+private val colorDarkBackgroundExpandedPaymentDetails = Color(0xFFF6F7F9)
+private val colorDarkExpandedPaymentDetailsCloseButton = Color(0xFFFFFFFF)
 private val colorDarkBackgroundPaymentMethods = Color(0xFF141414)
 private val colorDarkBackgroundPaymentMethodItem = Color(0xFF141414)
 private val colorDarkBorderPaymentMethodItem = Color(0xFFEBEBEE)
@@ -98,6 +114,8 @@ internal fun lightColors(
     backgroundTopBar: Color = colorLightBackgroundTopBar,
     topBarCloseButton: Color = brand ?: colorLightTopBarCloseButton,
     backgroundShimmerItem: Color = colorLightBackgroundShimmerItem,
+    backgroundExpandedPaymentDetails: Color = colorLightBackgroundExpandedPaymentDetails,
+    expandedPaymentDetailsCloseButton: Color = colorLightExpandedPaymentDetailsCloseButton,
     backgroundPaymentMethods: Color = colorLightBackgroundPaymentMethods,
     backgroundPaymentMethodItem: Color = colorLightBackgroundPaymentMethodItem,
     borderPaymentMethodItem: Color = colorLightBorderPaymentMethodItem,
@@ -107,6 +125,8 @@ internal fun lightColors(
     backgroundTopBar = backgroundTopBar,
     topBarCloseButton = topBarCloseButton,
     backgroundShimmerItem = backgroundShimmerItem,
+    backgroundExpandedPaymentDetails = backgroundExpandedPaymentDetails,
+    expandedPaymentDetailsCloseButton = expandedPaymentDetailsCloseButton,
     backgroundPaymentMethods = backgroundPaymentMethods,
     backgroundPaymentMethodItem = backgroundPaymentMethodItem,
     borderPaymentMethodItem = borderPaymentMethodItem,
@@ -119,6 +139,8 @@ internal fun darkColors(
     backgroundTopBar: Color = colorDarkBackgroundTopBar,
     topBarCloseButton: Color = brand ?: colorDarkTopBarCloseButton,
     backgroundShimmerItem: Color = colorDarkBackgroundShimmerItem,
+    backgroundExpandedPaymentDetails: Color = colorDarkBackgroundExpandedPaymentDetails,
+    expandedPaymentDetailsCloseButton: Color = colorDarkExpandedPaymentDetailsCloseButton,
     backgroundPaymentMethods: Color = colorDarkBackgroundPaymentMethods,
     backgroundPaymentMethodItem: Color = colorDarkBackgroundPaymentMethodItem,
     borderPaymentMethodItem: Color = colorDarkBorderPaymentMethodItem,
@@ -128,6 +150,8 @@ internal fun darkColors(
     backgroundTopBar = backgroundTopBar,
     topBarCloseButton = topBarCloseButton,
     backgroundShimmerItem = backgroundShimmerItem,
+    backgroundExpandedPaymentDetails = backgroundExpandedPaymentDetails,
+    expandedPaymentDetailsCloseButton = expandedPaymentDetailsCloseButton,
     backgroundPaymentMethods = backgroundPaymentMethods,
     backgroundPaymentMethodItem = backgroundPaymentMethodItem,
     borderPaymentMethodItem = borderPaymentMethodItem,

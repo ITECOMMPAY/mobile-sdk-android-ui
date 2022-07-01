@@ -16,6 +16,7 @@ internal class SDKTypography(
     s14Light: TextStyle,
     s14Normal: TextStyle,
     s14SemiBold: TextStyle,
+    s14Bold: TextStyle,
     s16Normal: TextStyle,
     s16Bold: TextStyle,
     s18Bold: TextStyle,
@@ -33,6 +34,8 @@ internal class SDKTypography(
     var s14Normal by mutableStateOf(s14Normal)
         private set
     var s14SemiBold by mutableStateOf(s14SemiBold)
+        private set
+    var s14Bold by mutableStateOf(s14Bold)
         private set
     var s16Normal by mutableStateOf(s16Normal)
         private set
@@ -55,6 +58,7 @@ internal class SDKTypography(
         s14Light: TextStyle = this.s14Light,
         s14Normal: TextStyle = this.s14Normal,
         s14SemiBold: TextStyle = this.s14SemiBold,
+        s14Bold: TextStyle = this.s14Bold,
         s16Normal: TextStyle = this.s16Normal,
         s16Bold: TextStyle = this.s16Bold,
         s18Bold: TextStyle = this.s18Bold,
@@ -68,6 +72,7 @@ internal class SDKTypography(
         s14Light = s14Light,
         s14Normal = s14Normal,
         s14SemiBold = s14SemiBold,
+        s14Bold = s14Bold,
         s16Normal = s16Normal,
         s16Bold = s16Bold,
         s18Bold = s18Bold,
@@ -83,6 +88,7 @@ internal class SDKTypography(
         s14Light = other.s14Light
         s14Normal = other.s14Normal
         s14SemiBold = other.s14SemiBold
+        s14Bold = other.s14Bold
         s16Normal = other.s16Normal
         s16Bold = other.s16Bold
         s18Bold = other.s18Bold
@@ -119,6 +125,12 @@ private val typographyLightS14Normal: TextStyle = TextStyle(
 private val typographyLightS14SemiBold: TextStyle = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.SemiBold,
+    color = Color.Black,
+    fontSize = 14.sp
+)
+private val typographyLightS14Bold: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
     color = Color.Black,
     fontSize = 14.sp
 )
@@ -188,6 +200,12 @@ private val typographyDarkS14SemiBold: TextStyle = TextStyle(
     color = Color.White,
     fontSize = 14.sp
 )
+private val typographyDarkS14Bold: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    color = Color.White,
+    fontSize = 14.sp
+)
 private val typographyDarkS16Normal: TextStyle = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Normal,
@@ -230,6 +248,7 @@ internal fun lightTypography(
     s14Light: TextStyle = typographyLightS14Light,
     s14Normal: TextStyle = typographyLightS14Normal,
     s14SemiBold: TextStyle = typographyLightS14SemiBold,
+    s14Bold: TextStyle = typographyLightS14Bold,
     s16Normal: TextStyle = typographyLightS16Normal,
     s16Bold: TextStyle = typographyLightS16Bold,
     s18Bold: TextStyle = typographyLightS18Bold,
@@ -242,6 +261,7 @@ internal fun lightTypography(
     s14Light = s14Light,
     s14Normal = s14Normal,
     s14SemiBold = s14SemiBold,
+    s14Bold = s14Bold,
     s16Normal = s16Normal,
     s16Bold = s16Bold,
     s18Bold = s18Bold,
@@ -257,6 +277,7 @@ internal fun darkTypography(
     s14Light: TextStyle = typographyDarkS14Light,
     s14Normal: TextStyle = typographyDarkS14Normal,
     s14SemiBold: TextStyle = typographyDarkS14SemiBold,
+    s14Bold: TextStyle = typographyDarkS14Bold,
     s16Normal: TextStyle = typographyDarkS16Normal,
     s16Bold: TextStyle = typographyDarkS16Bold,
     s18Bold: TextStyle = typographyDarkS18Bold,
@@ -269,6 +290,7 @@ internal fun darkTypography(
     s14Light = s14Light,
     s14Normal = s14Normal,
     s14SemiBold = s14SemiBold,
+    s14Bold = s14Bold,
     s16Normal = s16Normal,
     s16Bold = s16Bold,
     s18Bold = s18Bold,

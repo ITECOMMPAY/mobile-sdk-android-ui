@@ -45,7 +45,8 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
             BackHandler(true) { }
             MainScreen(
                 navigator = navigator,
-                paymentMethods = PaymentActivity.msdkSession.getPaymentMethods().map()
+                paymentMethods = PaymentActivity.msdkSession.getPaymentMethods().map(),
+                paymentOptions = PaymentActivity.paymentOptions!! // Сделал без проверки на null, чтобы пока не заморачиваться
             )
         }
         composable(route = Route.Result.getPath()) {

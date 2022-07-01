@@ -1,18 +1,18 @@
 package com.ecommpay.msdk.ui.presentation.main
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.ecommpay.msdk.ui.PaymentActivity
+import com.ecommpay.msdk.ui.PaymentOptions
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 import com.ecommpay.msdk.ui.navigation.Navigator
+import com.ecommpay.msdk.ui.presentation.main.views.ExpandablePaymentDetails
 import com.ecommpay.msdk.ui.presentation.main.views.ExpandablePaymentMethodItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.amountToCoins
@@ -25,23 +25,20 @@ internal fun MainScreen(
     viewModel: MainViewModel = viewModel(),
     navigator: Navigator,
     paymentMethods: List<UIPaymentMethod>,
+    paymentOptions: PaymentOptions,
 ) {
     // val state by viewModel.state.collectAsState()
-    Content(paymentMethods)
+    Content(paymentMethods, paymentOptions)
 }
 
 
 @Composable
-private fun Content(paymentMethods: List<UIPaymentMethod>) {
+private fun Content(paymentMethods: List<UIPaymentMethod>, paymentOptions: PaymentOptions) {
     SDKScaffold(
         title = PaymentActivity.stringResourceManager.payment.methodsTitle
             ?: stringResource(R.string.payment_methods_label),
         notScrollableContent = {
-            Text(
-                text = stringResource(R.string.payment_details_label),
-                style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand),
-                //modifier = Modifier.align(Alignment.Start)
-            )
+            ExpandablePaymentDetails(paymentOptions = paymentOptions)
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
             SDKCardView(
                 price = PaymentActivity.paymentOptions?.paymentAmount.amountToCoins(),
@@ -90,6 +87,7 @@ private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
 @Preview(showBackground = true, showSystemUi = true)
 internal fun PaymentMethods() {
     Content(
-        UIPaymentMethod.previewData(10)
+        paymentMethods = UIPaymentMethod.previewData(10),
+        paymentOptions = PaymentOptions()
     )
 }
