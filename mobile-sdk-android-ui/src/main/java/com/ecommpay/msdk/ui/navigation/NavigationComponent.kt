@@ -32,33 +32,23 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
     AnimatedNavHost(
         navController = navController,
         startDestination = Route.Init.getPath(),
-        enterTransition = {
-            EnterTransition.None
-        },
-        exitTransition = {
-            ExitTransition.None
-        },
-        popEnterTransition = {
-            EnterTransition.None
-        },
-        popExitTransition = {
-            ExitTransition.None
-        }
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None }
     ) {
         composable(route = Route.Init.getPath()) {
             BackHandler(true) { }
             InitScreen(navigator = navigator, delegate = delegate)
         }
-        composable(
-            route = Route.Main.getPath()
-        ) {
+        composable(route = Route.Main.getPath()) {
             BackHandler(true) { }
             MainScreen(
                 navigator = navigator,
                 paymentMethods = PaymentActivity.msdkSession.getPaymentMethods().map()
             )
         }
-        composable(route = "${Route.Result}") {
+        composable(route = Route.Result.getPath()) {
             BackHandler(true) { }
             ResultScreen()
         }
