@@ -6,6 +6,7 @@ import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
 import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.core.domain.interactors.init.InitDelegate
+import com.ecommpay.msdk.core.domain.interactors.init.InitInteractor
 import com.ecommpay.msdk.core.domain.interactors.init.InitRequest
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.base.mvi.Reducer
@@ -14,9 +15,9 @@ import com.ecommpay.msdk.ui.base.mvvm.BaseViewModel
 import com.ecommpay.msdk.ui.model.common.ErrorResult
 import kotlinx.coroutines.flow.StateFlow
 
-internal class InitViewModel : BaseViewModel<InitScreenState, InitScreenUiEvent>() {
+internal class InitViewModel(private val initInteractor: InitInteractor) :
+    BaseViewModel<InitScreenState, InitScreenUiEvent>() {
     override val reducer = InitReducer(InitScreenState.initial())
-    private val initInteractor = PaymentActivity.msdkSession.getInitInteractor()
 
     override val state: StateFlow<InitScreenState>
         get() = reducer.state
@@ -50,15 +51,10 @@ internal class InitViewModel : BaseViewModel<InitScreenState, InitScreenUiEvent>
                 override fun onInitReceived(
                     paymentMethods: List<PaymentMethod>,
                     savedAccounts: List<SavedAccount>,
-                ) {
-                    sendEvent(
-                        InitScreenUiEvent.InitLoaded
-                    )
-                }
+                ) = sendEvent(InitScreenUiEvent.InitLoaded)
 
-                override fun onError(code: ErrorCode, message: String) {
+                override fun onError(code: ErrorCode, message: String) =
                     sendEvent(InitScreenUiEvent.ShowError(ErrorResult(code, message)))
-                }
 
                 //Restore payment
                 override fun onPaymentRestored(payment: Payment) {

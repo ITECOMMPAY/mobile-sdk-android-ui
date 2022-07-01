@@ -83,7 +83,6 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
         private val config = MSDKCoreSessionConfig.nl3WithDebug()
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
-        val currentPayment = msdkSession.getPaymentInfo()
         val navigator = Navigator()
 
 
