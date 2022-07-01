@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
+import com.ecommpay.msdk.ui.navigation.Navigator
 import com.ecommpay.msdk.ui.presentation.main.views.ExpandablePaymentMethodItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.amountToCoins
@@ -22,7 +23,7 @@ import com.ecommpay.msdk.ui.views.common.SDKScaffold
 @Composable
 internal fun MainScreen(
     viewModel: MainViewModel = viewModel(),
-    navController: NavController,
+    navigator: Navigator,
     paymentMethods: List<UIPaymentMethod>,
 ) {
     // val state by viewModel.state.collectAsState()
@@ -43,8 +44,8 @@ private fun Content(paymentMethods: List<UIPaymentMethod>) {
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
             SDKCardView(
-                price = PaymentActivity.currentPayment?.paymentAmount.amountToCoins(),
-                currency = PaymentActivity.currentPayment?.paymentCurrency?.uppercase() ?: "USD",
+                price = PaymentActivity.paymentOptions?.paymentAmount.amountToCoins(),
+                currency = PaymentActivity.paymentOptions?.paymentCurrency?.uppercase() ?: "USD",
                 vatIncludedTitle = stringResource(id = R.string.vat_included_label)
             )
             Spacer(

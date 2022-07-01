@@ -9,14 +9,13 @@ import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 @Immutable
 internal sealed class InitScreenUiEvent : UiEvent {
     object ShowLoading : InitScreenUiEvent()
-    class InitLoaded(val data: List<UIPaymentMethod>) : InitScreenUiEvent()
+    object InitLoaded : InitScreenUiEvent()
     class ShowError(val error: ErrorResult) : InitScreenUiEvent()
 }
 
 @Immutable
 internal data class InitScreenState(
     val isInitLoaded: Boolean = false,
-    val data: List<UIPaymentMethod> = emptyList(),
     val error: ErrorResult? = null
 ) : UiState {
 
@@ -25,6 +24,6 @@ internal data class InitScreenState(
     }
 
     override fun toString(): String {
-        return "isInitLoaded: $isInitLoaded, data.size: ${data.size}, error: $error"
+        return "isInitLoaded: $isInitLoaded, error: $error"
     }
 }
