@@ -11,11 +11,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.PaymentDelegate
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.navigation.Navigator
 import com.ecommpay.msdk.ui.navigation.Route
 import com.ecommpay.msdk.ui.theme.SDKTheme
+import com.ecommpay.msdk.ui.utils.viewModelFactory
 import com.ecommpay.msdk.ui.views.common.SDKScaffold
 import com.ecommpay.msdk.ui.views.shimmer.SDKShimmerAnimatedItem
 import kotlinx.coroutines.flow.collect
@@ -24,7 +26,11 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 internal fun InitScreen(
-    viewModel: InitViewModel = viewModel(),
+    viewModel: InitViewModel = viewModel(
+        factory = viewModelFactory {
+            InitViewModel(PaymentActivity.msdkSession.getInitInteractor())
+        }
+    ),
     navigator: Navigator,
     delegate: PaymentDelegate
 ) {
@@ -44,9 +50,7 @@ internal fun InitScreen(
 private fun Content() {
     SDKScaffold(
         title = stringResource(R.string.payment_methods_label),
-        notScrollableContent = {
-            Loading()
-        }
+        notScrollableContent = { Loading() }
     )
 }
 

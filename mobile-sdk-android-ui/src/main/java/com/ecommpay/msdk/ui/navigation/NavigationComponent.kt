@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.PaymentDelegate
-import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 import com.ecommpay.msdk.ui.presentation.init.InitScreen
 import com.ecommpay.msdk.ui.presentation.main.MainScreen
 import com.ecommpay.msdk.ui.presentation.result.ResultScreen
+import com.ecommpay.msdk.ui.utils.extensions.map
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -55,15 +55,7 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
             BackHandler(true) { }
             MainScreen(
                 navigator = navigator,
-                paymentMethods = PaymentActivity.msdkSession.getPaymentMethods()?.let { list ->
-                    list.map {
-                        UIPaymentMethod(
-                            code = it.code,
-                            name = it.name ?: "",
-                            iconUrl = it.iconUrl
-                        )
-                    }
-                } ?: emptyList()
+                paymentMethods = PaymentActivity.msdkSession.getPaymentMethods().map()
             )
         }
         composable(route = "${Route.Result}") {
