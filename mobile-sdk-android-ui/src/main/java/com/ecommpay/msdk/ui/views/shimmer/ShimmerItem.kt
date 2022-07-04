@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
-internal fun SDKShimmerItem(
+internal fun ShimmerItem(
     xShimmer: Float,
     yShimmer: Float,
     itemHeight: Dp,
@@ -38,11 +38,9 @@ internal fun SDKShimmerItem(
         ) {
             Spacer(
                 modifier = if (itemWidth != null) {
-                    Modifier
-                        .width(itemWidth)
+                    Modifier.width(itemWidth)
                 } else {
-                    Modifier
-                        .fillMaxWidth()
+                    Modifier.fillMaxWidth()
                 }
                     .height(itemHeight)
                     .background(brush)

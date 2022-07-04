@@ -20,7 +20,7 @@ import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
-internal fun SDKCardView(
+internal fun CardView(
     brandLogoUrl: String? = null,
     price: String,
     currency: String,
@@ -49,7 +49,7 @@ internal fun SDKCardView(
                             .data(it)
                             .crossfade(true)
                             .build(),
-                        fallback = painterResource(R.drawable.ic_sdk_logo),
+                        fallback = painterResource(SDKTheme.images.sdkLogoResId),
                         contentDescription = "",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -133,8 +133,8 @@ fun Modifier.baselinePadding(
 
 @Composable
 @Preview
-fun SDKCardViewPreview() {
-    SDKCardView(
+fun CardViewPreview() {
+    CardView(
         brandLogoUrl = "url",
         price = "238.00",
         currency = "EUR",

@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.ecommpay.msdk.ui.theme.SDKTheme
-import com.ecommpay.msdk.ui.views.button.SDKButton
+import com.ecommpay.msdk.ui.views.button.PayButton
 
 @Composable
 fun PaymentMethodItemContent(
@@ -21,7 +21,7 @@ fun PaymentMethodItemContent(
         content = {
             content()
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
-            SDKButton(
+            PayButton(
                 payLabel = payLabel,
                 amount = amount,
                 currency = currency,

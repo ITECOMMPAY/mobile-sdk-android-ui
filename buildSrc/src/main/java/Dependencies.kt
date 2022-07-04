@@ -62,7 +62,7 @@ object Dependencies {
     }
 
     object Msdk {
-        const val core = "com.ecommpay:msdk-core:+"
+        const val core = "com.ecommpay:msdk-core-android:+"
     }
 
 }

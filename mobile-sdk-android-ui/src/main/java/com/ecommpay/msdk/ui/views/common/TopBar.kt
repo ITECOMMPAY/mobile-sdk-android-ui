@@ -4,7 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
@@ -18,13 +19,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ecommpay.msdk.ui.theme.SDKDarkColorPalette
-import com.ecommpay.msdk.ui.theme.SDKDarkTypography
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-internal fun SDKTopBar(
+internal fun TopBar(
     title: String,
     arrowIcon: ImageVector? = Icons.Filled.ArrowBack,
     listener: () -> Unit = {},
@@ -83,20 +82,18 @@ internal fun SDKTopBar(
 @Preview
 internal fun PreviewLightToolbar() {
     SDKTheme() {
-        SDKTopBar("Payment Methods")
+        TopBar("Payment Methods")
     }
 }
 
 @Composable
 @Preview
 internal fun PreviewDarkToolbar() {
-    SDKTheme(
-        colors = SDKDarkColorPalette,
-        typography = SDKDarkTypography,
-    ) {
-        SDKTopBar(
+    SDKTheme() {
+        TopBar(
             title = "Payment Methods",
-            arrowIcon = null)
+            arrowIcon = null
+        )
     }
 }
 

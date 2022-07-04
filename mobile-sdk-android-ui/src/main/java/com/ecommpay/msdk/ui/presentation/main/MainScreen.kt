@@ -16,8 +16,8 @@ import com.ecommpay.msdk.ui.presentation.main.views.ExpandablePaymentDetails
 import com.ecommpay.msdk.ui.presentation.main.views.ExpandablePaymentMethodItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.amountToCoins
-import com.ecommpay.msdk.ui.views.card.SDKCardView
-import com.ecommpay.msdk.ui.views.common.SDKScaffold
+import com.ecommpay.msdk.ui.views.card.CardView
+import com.ecommpay.msdk.ui.views.common.Scaffold
 
 
 @Composable
@@ -34,13 +34,13 @@ internal fun MainScreen(
 
 @Composable
 private fun Content(paymentMethods: List<UIPaymentMethod>, paymentOptions: PaymentOptions) {
-    SDKScaffold(
+    Scaffold(
         title = PaymentActivity.stringResourceManager.payment.methodsTitle
             ?: stringResource(R.string.payment_methods_label),
         notScrollableContent = {
             ExpandablePaymentDetails(paymentOptions = paymentOptions)
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
-            SDKCardView(
+            CardView(
                 price = PaymentActivity.paymentOptions?.paymentAmount.amountToCoins(),
                 currency = PaymentActivity.paymentOptions?.paymentCurrency?.uppercase() ?: "USD",
                 vatIncludedTitle = stringResource(id = R.string.vat_included_label)
@@ -72,9 +72,10 @@ private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
                 },
                 isExpanded = expandedPosition == position
             ) {
-                Spacer(modifier = Modifier // testing content
-                    .fillMaxWidth()
-                    .height(100.dp)
+                Spacer(
+                    modifier = Modifier // testing content
+                        .fillMaxWidth()
+                        .height(100.dp)
                 )
             }
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))

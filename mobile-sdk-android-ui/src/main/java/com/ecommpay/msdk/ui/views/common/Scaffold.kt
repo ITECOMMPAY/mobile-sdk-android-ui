@@ -15,7 +15,7 @@ import com.ecommpay.msdk.ui.theme.SDKTheme
 
 
 @Composable
-internal fun SDKScaffold(
+internal fun Scaffold(
     title: String = "",
     isFloatingFooter: Boolean = false,
     notScrollableContent: @Composable () -> Unit = {},
@@ -31,7 +31,7 @@ internal fun SDKScaffold(
                 modifier = Modifier.padding(SDKTheme.dimensions.paddingDp20),
                 horizontalAlignment = Alignment.Start
             ) {
-                SDKTopBar(
+                TopBar(
                     title = title,
                     arrowIcon = null
                 )
@@ -40,16 +40,16 @@ internal fun SDKScaffold(
                     scrollableContent()
                     if (!isFloatingFooter) {
                         Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
-                        SDKFooter(
-                            iconLogo = R.drawable.ic_sdk_logo,
+                        Footer(
+                            iconLogo = SDKTheme.images.sdkLogoResId,
                             poweredByText = stringResource(R.string.powered_by_label)
                         )
                     }
                 }
                 if (isFloatingFooter) {
                     Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
-                    SDKFooter(
-                        iconLogo = R.drawable.ic_sdk_logo,
+                    Footer(
+                        iconLogo = SDKTheme.images.sdkLogoResId,
                         poweredByText = stringResource(R.string.powered_by_label)
                     )
                 }

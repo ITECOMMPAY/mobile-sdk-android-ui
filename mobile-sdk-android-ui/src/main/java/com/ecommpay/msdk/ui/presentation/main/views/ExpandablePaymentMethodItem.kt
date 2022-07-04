@@ -4,13 +4,18 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -23,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
@@ -62,18 +66,10 @@ internal fun ExpandablePaymentMethodItem(
                         .data(iconUrl)
                         .crossfade(true)
                         .build(),
-                    fallback = painterResource(
-                        id = if (SDKTheme.colors.isLight)
-                            R.drawable.sdk_card_logo_light
-                        else R.drawable.sdk_card_logo_dark
-                    ),
+                    fallback = painterResource(id = SDKTheme.images.cardLogoResId),
                     contentDescription = "",
                     contentScale = ContentScale.Inside,
-                    placeholder = painterResource(
-                        id = if (SDKTheme.colors.isLight)
-                            R.drawable.sdk_card_logo_light
-                        else R.drawable.sdk_card_logo_dark
-                    ),
+                    placeholder = painterResource(id = SDKTheme.images.cardLogoResId),
                     modifier = Modifier.size(height = 20.dp, width = 50.dp),
                     alignment = Alignment.CenterStart
                 )

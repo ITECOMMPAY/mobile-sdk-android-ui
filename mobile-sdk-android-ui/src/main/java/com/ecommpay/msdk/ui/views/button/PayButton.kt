@@ -14,11 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ecommpay.msdk.ui.theme.SDKLightTypography
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
-internal fun SDKButton(
+internal fun PayButton(
     modifier: Modifier = Modifier,
     payLabel: String,
     amount: String,
@@ -36,12 +35,12 @@ internal fun SDKButton(
             content = {
                 Text(
                     text = payLabel,
-                    style = SDKLightTypography.s16Normal.copy(color = Color.White)
+                    style = SDKTheme.typography.s16Normal.copy(color = Color.White)
                 )
                 Text(text = " ")
                 Text(
                     text = amount,
-                    style = SDKLightTypography.s16Normal.copy(
+                    style = SDKTheme.typography.s16Normal.copy(
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
@@ -49,7 +48,7 @@ internal fun SDKButton(
                 Text(text = " ")
                 Text(
                     text = currency,
-                    style = SDKLightTypography.s16Normal.copy(
+                    style = SDKTheme.typography.s16Normal.copy(
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
@@ -70,9 +69,9 @@ internal fun SDKButton(
 
 @Composable
 @Preview
-private fun SDKButtonDefaultPreview() {
+private fun PayButtonDefaultPreview() {
     SDKTheme {
-        SDKButton(
+        PayButton(
             payLabel = "Pay",
             amount = "100.00",
             currency = "USD",
@@ -84,9 +83,9 @@ private fun SDKButtonDefaultPreview() {
 
 @Composable
 @Preview
-private fun SDKButtonDisabledPreview() {
+private fun PayButtonDisabledPreview() {
     SDKTheme {
-        SDKButton(
+        PayButton(
             payLabel = "Pay",
             amount = "100.00",
             currency = "USD",

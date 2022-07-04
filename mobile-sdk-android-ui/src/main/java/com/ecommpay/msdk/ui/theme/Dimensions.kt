@@ -4,7 +4,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-internal data class SDKDimensions(
+internal data class Dimensions(
     val paddingDp5: Dp = 5.dp,
     val paddingDp10: Dp = 10.dp,
     val paddingDp15: Dp = 15.dp,
@@ -13,4 +13,4 @@ internal data class SDKDimensions(
     val paymentMethodItemHeight: Dp = 50.dp
 )
 
-internal val LocalDimensions = staticCompositionLocalOf { SDKDimensions() }
+internal val LocalDimensions = staticCompositionLocalOf { Dimensions() }

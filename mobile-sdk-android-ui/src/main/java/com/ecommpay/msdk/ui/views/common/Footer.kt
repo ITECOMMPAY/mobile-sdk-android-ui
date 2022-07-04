@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
-internal fun SDKFooter(
+internal fun Footer(
     @DrawableRes iconLogo: Int,
     poweredByText: String,
 ) {
@@ -42,8 +42,8 @@ internal fun SDKFooter(
 
 @Composable
 @Preview(showBackground = true)
-internal fun SDKFooterPreview() {
+internal fun FooterPreview() {
     SDKTheme {
-        SDKFooter(iconLogo = R.drawable.ic_sdk_logo, poweredByText = stringResource(id = R.string.powered_by_label))
+        Footer(iconLogo = SDKTheme.images.sdkLogoResId, poweredByText = stringResource(id = R.string.powered_by_label))
     }
 }

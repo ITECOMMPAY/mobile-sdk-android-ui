@@ -41,16 +41,10 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val colors = if (isSystemInDarkTheme()) SDKDarkColorPalette else SDKLightColorPalette
-            val typography = if (isSystemInDarkTheme()) SDKDarkTypography else SDKLightTypography
-
             BottomDrawer(
                 modifier = Modifier.wrapContentSize(),
                 drawerContent = {
-                    SDKTheme(
-                        colors = colors,
-                        typography = typography
-                    ) {
+                    SDKTheme( ) {
                         Box(contentAlignment = Alignment.BottomCenter) {
                             NavigationComponent(
                                 navigator = navigator,

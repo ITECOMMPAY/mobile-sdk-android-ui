@@ -18,8 +18,8 @@ import com.ecommpay.msdk.ui.navigation.Navigator
 import com.ecommpay.msdk.ui.navigation.Route
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.viewModelFactory
-import com.ecommpay.msdk.ui.views.common.SDKScaffold
-import com.ecommpay.msdk.ui.views.shimmer.SDKShimmerAnimatedItem
+import com.ecommpay.msdk.ui.views.common.Scaffold
+import com.ecommpay.msdk.ui.views.shimmer.ShimmerAnimatedItem
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
@@ -48,7 +48,7 @@ internal fun InitScreen(
 
 @Composable
 private fun Content() {
-    SDKScaffold(
+    Scaffold(
         title = stringResource(R.string.payment_methods_label),
         notScrollableContent = { Loading() }
     )
@@ -56,13 +56,13 @@ private fun Content() {
 
 @Composable
 private fun Loading() {
-    SDKShimmerAnimatedItem(
+    ShimmerAnimatedItem(
         itemHeight = 20.dp,
         itemWidth = 125.dp,
         borderRadius = 4.dp
     )
     Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
-    SDKShimmerAnimatedItem(
+    ShimmerAnimatedItem(
         itemHeight = 150.dp,
         borderRadius = 12.dp
     )
@@ -71,7 +71,7 @@ private fun Loading() {
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            SDKShimmerAnimatedItem(
+            ShimmerAnimatedItem(
                 itemHeight = 50.dp,
                 borderRadius = 6.dp,
             )
@@ -80,7 +80,7 @@ private fun Loading() {
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            SDKShimmerAnimatedItem(
+            ShimmerAnimatedItem(
                 itemHeight = 50.dp,
                 borderRadius = 6.dp,
             )
@@ -88,7 +88,7 @@ private fun Loading() {
     }
     Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
     (1..5).forEach { _ ->
-        SDKShimmerAnimatedItem(
+        ShimmerAnimatedItem(
             itemHeight = SDKTheme.dimensions.paymentMethodItemHeight,
             borderRadius = 6.dp
         )
