@@ -51,6 +51,7 @@ fun SampleMainScreen() {
         paymentAmount = 123
         paymentCurrency = "RUB"
         customerId = "12"
+        paymentDescription = "Test payment"
 //        additionalFields {
 //            field {
 //                type = AdditionalFieldType.CUSTOMER_EMAIL

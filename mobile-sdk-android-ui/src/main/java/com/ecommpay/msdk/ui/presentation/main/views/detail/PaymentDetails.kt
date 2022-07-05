@@ -1,7 +1,10 @@
-package com.ecommpay.msdk.ui.presentation.main.views
+package com.ecommpay.msdk.ui.presentation.main.views.detail
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.SnapSpec
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -36,7 +39,8 @@ fun PaymentDetails(
                 ),
             //modifier = Modifier.align(Alignment.Start)
         )
-        if (isExpanded) {
+        AnimatedVisibility(visible = isExpanded) {
+
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
             Column(
                 modifier = Modifier
