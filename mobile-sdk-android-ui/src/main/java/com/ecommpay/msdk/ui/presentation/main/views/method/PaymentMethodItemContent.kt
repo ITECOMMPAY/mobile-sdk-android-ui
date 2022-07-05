@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.presentation.main.views
+package com.ecommpay.msdk.ui.presentation.main.views.method
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*

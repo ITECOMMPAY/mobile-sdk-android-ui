@@ -1,7 +1,6 @@
 package com.ecommpay.msdk.ui.presentation.init
 
 import com.ecommpay.msdk.core.base.ErrorCode
-import com.ecommpay.msdk.core.domain.entities.PaymentInfo
 import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
 import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
@@ -13,6 +12,7 @@ import com.ecommpay.msdk.ui.base.mvi.Reducer
 import com.ecommpay.msdk.ui.base.mvi.TimeMachine
 import com.ecommpay.msdk.ui.base.mvvm.BaseViewModel
 import com.ecommpay.msdk.ui.model.common.ErrorResult
+import com.ecommpay.msdk.ui.utils.extensions.map
 import kotlinx.coroutines.flow.StateFlow
 
 internal class InitViewModel(private val initInteractor: InitInteractor) :
@@ -31,19 +31,11 @@ internal class InitViewModel(private val initInteractor: InitInteractor) :
 
     private fun loadInit() {
         //map payment info to core object
-        val paymentInfo = PaymentActivity.paymentOptions ?: return
-        val sdkPaymentInfo = PaymentInfo.create(
-            projectId = paymentInfo.projectId,
-            paymentId = paymentInfo.paymentId,
-            paymentAmount = paymentInfo.paymentAmount,
-            paymentCurrency = paymentInfo.paymentCurrency,
-        )
-        sdkPaymentInfo.customerId = paymentInfo.customerId
-        sdkPaymentInfo.signature = paymentInfo.signature
+        val paymentOptions = PaymentActivity.paymentOptions ?: return
 
         initInteractor.execute(
             request = InitRequest(
-                paymentInfo = sdkPaymentInfo,
+                paymentInfo = paymentOptions.map(),
                 recurrentInfo = null,
                 threeDSecureInfo = null
             ),

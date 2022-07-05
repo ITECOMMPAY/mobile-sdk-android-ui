@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.presentation.main.views
+package com.ecommpay.msdk.ui.presentation.main.views.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -13,18 +13,17 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
 fun PaymentDetailsContent(
-    paymentIDLabel: String?,
-    paymentIDValue: String?,
-    paymentDescriptionLabel: String?,
+    paymentIdLabel: String,
+    paymentIdValue: String?,
+    paymentDescriptionLabel: String,
     paymentDescriptionValue: String?,
-    paymentAddressLabel: String?,
-    paymentAddressValue: String?,
+    merchantAddressLabel: String,
+    merchantAddressValue: String?,
     closeButtonCallback: () -> Unit
 ) {
     Column {
@@ -32,8 +31,8 @@ fun PaymentDetailsContent(
         Row {
             Text(
                 modifier = Modifier.weight(1f),
-                text = paymentIDLabel ?: "",
-                style = SDKTheme.typography.s14Normal.copy(color = Color.DarkGray)
+                text = paymentIdLabel,
+                style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.secondaryTextColor)
             )
             //Close button
             Image(
@@ -49,19 +48,19 @@ fun PaymentDetailsContent(
                 contentDescription = "",
             )
         }
-        if (paymentIDValue != null) {
+        if (paymentIdValue != null) {
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp5))
             Text(
-                text = paymentIDValue,
+                text = paymentIdValue,
                 style = SDKTheme.typography.s14Bold
             )
         }
         //Description
-        if (paymentDescriptionLabel != null && paymentDescriptionValue != null) {
+        if (paymentDescriptionValue != null) {
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp25))
             Text(
                 text = paymentDescriptionLabel,
-                style = SDKTheme.typography.s14Normal.copy(color = Color.DarkGray)
+                style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.secondaryTextColor)
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp5))
             Text(
@@ -70,15 +69,15 @@ fun PaymentDetailsContent(
             )
         }
         //Address
-        if (paymentAddressLabel != null && paymentAddressValue != null) {
+        if (merchantAddressValue != null) {
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp25))
             Text(
-                text = paymentAddressLabel,
-                style = SDKTheme.typography.s14Normal.copy(color = Color.DarkGray)
+                text = merchantAddressLabel,
+                style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.secondaryTextColor)
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp5))
             Text(
-                text = paymentAddressValue,
+                text = merchantAddressValue,
                 style = SDKTheme.typography.s14Normal
             )
         }

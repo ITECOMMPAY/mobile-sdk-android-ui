@@ -9,6 +9,8 @@ import androidx.compose.ui.graphics.Color
 internal class SDKColors(
     //Brand color
     brand: Color,
+    primaryTextColor: Color,
+    secondaryTextColor: Color,
     //TopBar
     backgroundTopBar: Color,
     topBarCloseButton: Color,
@@ -24,6 +26,10 @@ internal class SDKColors(
     footerContent: Color,
 ) {
     var brand by mutableStateOf(brand)
+        private set
+    var primaryTextColor by mutableStateOf(primaryTextColor)
+        private set
+    var secondaryTextColor by mutableStateOf(secondaryTextColor)
         private set
     var backgroundTopBar by mutableStateOf(backgroundTopBar)
         private set
@@ -58,9 +64,13 @@ private val colorLightBackgroundPaymentMethods = Color(0xFFFFFFFF)
 private val colorLightBackgroundPaymentMethodItem = Color(0xFFFFFFFF)
 private val colorLightBorderPaymentMethodItem = Color(0xFFEBEBEE)
 private val colorLightFooterContent = Color(0xFFBCBDBE)
+private val colorLightPrimaryText = Color(0xFF000000)
+private val colorLightSecondaryText = Color(0xFF666666)
 
 internal fun lightColors(brand: Color = colorLightBrand): SDKColors = SDKColors(
     brand = brand,
+    primaryTextColor = colorLightPrimaryText,
+    secondaryTextColor = colorLightSecondaryText,
     backgroundTopBar = colorLightBackgroundTopBar,
     topBarCloseButton = colorLightTopBarCloseButton,
     backgroundShimmerItem = colorLightBackgroundShimmerItem,

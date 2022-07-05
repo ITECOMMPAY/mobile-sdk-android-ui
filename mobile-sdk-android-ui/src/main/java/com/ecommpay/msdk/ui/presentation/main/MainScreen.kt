@@ -12,8 +12,8 @@ import com.ecommpay.msdk.ui.PaymentOptions
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 import com.ecommpay.msdk.ui.navigation.Navigator
-import com.ecommpay.msdk.ui.presentation.main.views.ExpandablePaymentDetails
-import com.ecommpay.msdk.ui.presentation.main.views.ExpandablePaymentMethodItem
+import com.ecommpay.msdk.ui.presentation.main.views.detail.ExpandablePaymentDetails
+import com.ecommpay.msdk.ui.presentation.main.views.method.ExpandablePaymentMethodItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.amountToCoins
 import com.ecommpay.msdk.ui.views.card.CardView

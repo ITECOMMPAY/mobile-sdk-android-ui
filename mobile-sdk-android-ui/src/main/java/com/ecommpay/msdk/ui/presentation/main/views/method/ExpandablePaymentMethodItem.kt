@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.presentation.main.views
+package com.ecommpay.msdk.ui.presentation.main.views.method
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -59,6 +59,15 @@ internal fun ExpandablePaymentMethodItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(SDKTheme.dimensions.paddingDp15)
+                .clickable(
+                    indication = null, //отключаем анимацию при клике
+                    interactionSource = remember { MutableInteractionSource() },
+                    onClick = {
+                        if (!isExpanded) {
+                            onExpand(position)
+                        }
+                    }
+                )
         ) {
             Row {
                 AsyncImage(
@@ -70,7 +79,8 @@ internal fun ExpandablePaymentMethodItem(
                     contentDescription = "",
                     contentScale = ContentScale.Inside,
                     placeholder = painterResource(id = SDKTheme.images.cardLogoResId),
-                    modifier = Modifier.size(height = 20.dp, width = 50.dp),
+                    modifier = Modifier
+                        .size(height = 20.dp, width = 50.dp),
                     alignment = Alignment.CenterStart
                 )
                 Row(
@@ -86,15 +96,6 @@ internal fun ExpandablePaymentMethodItem(
                     Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
                     Image(
                         modifier = Modifier
-                            .clickable(
-                                indication = null, //отключаем анимацию при клике
-                                interactionSource = remember { MutableInteractionSource() },
-                                onClick = {
-                                    if (!isExpanded) {
-                                        onExpand(position)
-                                    }
-                                }
-                            )
                             .rotate(rotationState),
                         imageVector = Icons.Default.KeyboardArrowDown,
                         colorFilter = ColorFilter.tint(SDKTheme.colors.topBarCloseButton),
