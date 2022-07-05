@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.utils.extensions
+package com.ecommpay.msdk.ui.utils.extensions.core
 
 import com.ecommpay.msdk.core.domain.entities.PaymentInfo
 import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
@@ -14,20 +14,3 @@ internal fun List<PaymentMethod>?.map() = this?.let { list ->
         )
     }
 } ?: emptyList()
-
-
-internal fun PaymentOptions.map(): PaymentInfo {
-    val paymentInfo = PaymentInfo(
-        projectId,
-        paymentId,
-        paymentAmount,
-        paymentCurrency,
-        paymentDescription,
-        customerId,
-        regionCode,
-        token,
-        languageCode
-    )
-    paymentInfo.signature = signature
-    return paymentInfo
-}

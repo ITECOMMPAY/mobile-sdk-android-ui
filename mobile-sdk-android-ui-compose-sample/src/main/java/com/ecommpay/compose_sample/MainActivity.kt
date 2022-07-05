@@ -20,9 +20,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.ecommpay.compose_sample.ui.theme.AppTheme
 import com.ecommpay.compose_sample.utils.SignatureGenerator
-import com.ecommpay.msdk.ui.AdditionalFieldType
+import com.ecommpay.msdk.core.domain.entities.PaymentInfo
+import com.ecommpay.msdk.ui.ActionType
 import com.ecommpay.msdk.ui.PaymentSDK
 import com.ecommpay.msdk.ui.paymentOptions
+import java.util.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,14 +46,20 @@ class MainActivity : ComponentActivity() {
 @Composable
 @Preview(showSystemUi = true)
 fun SampleMainScreen() {
-    val paymentOptions = paymentOptions {
-        projectId = 111781
-        //paymentId = "msdk_core_payment_id_" + getRandomNumber(),
-        //paymentId = "sdk_android_163243123123"
-        paymentAmount = 123
-        paymentCurrency = "RUB"
-        customerId = "12"
+    val payment = PaymentInfo(
+        projectId = 111781,
+        paymentId = UUID.randomUUID().toString(),
+        paymentAmount = 123,
+        paymentCurrency = "RUB",
+        customerId = "12",
         paymentDescription = "Test payment"
+    )
+    payment.signature =
+        SignatureGenerator.generateSignature(payment.getParamsForSignature(), "123")
+
+    val paymentOptions = paymentOptions {
+        paymentInfo = payment
+        actionType = ActionType.Sale
 //        additionalFields {
 //            field {
 //                type = AdditionalFieldType.CUSTOMER_EMAIL
@@ -63,9 +71,6 @@ fun SampleMainScreen() {
 //            }
 //        }
     }
-    paymentOptions.signature =
-        SignatureGenerator.generateSignature(paymentOptions.getParamsForSignature(), "123")
-
     val sdk = PaymentSDK(context = LocalContext.current, paymentOptions = paymentOptions)
 
     val launcher =

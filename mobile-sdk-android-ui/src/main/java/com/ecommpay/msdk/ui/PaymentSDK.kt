@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.ecommpay.msdk.ui
 
 import android.app.Activity
@@ -13,6 +15,7 @@ class PaymentSDK(context: Context, paymentOptions: PaymentOptions) {
         activity.startActivityForResult(intent, requestCode)
     }
 
+    @Suppress("DEPRECATION")
     fun openPaymentScreen(fragment: Fragment, requestCode: Int) {
         fragment.startActivityForResult(intent, requestCode)
     }

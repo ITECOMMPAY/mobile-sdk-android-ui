@@ -10,8 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.theme.SDKTheme
+import com.ecommpay.msdk.ui.utils.extensions.core.annotatedString
 
 
 @Composable
@@ -42,7 +44,8 @@ internal fun Scaffold(
                         Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
                         Footer(
                             iconLogo = SDKTheme.images.sdkLogoResId,
-                            poweredByText = stringResource(R.string.powered_by_label)
+                            poweredByText = stringResource(R.string.powered_by_label),
+                            privacyPolicy = PaymentActivity.stringResourceManager.policy.footerPrivacyPolicy?.annotatedString()
                         )
                     }
                 }

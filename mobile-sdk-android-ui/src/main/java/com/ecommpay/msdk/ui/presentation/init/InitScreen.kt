@@ -28,7 +28,11 @@ import kotlinx.coroutines.flow.onEach
 internal fun InitScreen(
     viewModel: InitViewModel = viewModel(
         factory = viewModelFactory {
-            InitViewModel(PaymentActivity.msdkSession.getInitInteractor())
+            InitViewModel(
+                initInteractor = PaymentActivity.msdkSession.getInitInteractor(),
+                paymentInfo = PaymentActivity.paymentOptions.paymentInfo
+                    ?: throw IllegalAccessException("Payment Info can not be null")
+            )
         }
     ),
     navigator: Navigator,

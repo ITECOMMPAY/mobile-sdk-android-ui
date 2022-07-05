@@ -9,7 +9,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
@@ -28,7 +27,7 @@ import com.ecommpay.msdk.core.base.ErrorCode
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.ui.navigation.NavigationComponent
 import com.ecommpay.msdk.ui.navigation.Navigator
-import com.ecommpay.msdk.ui.theme.*
+import com.ecommpay.msdk.ui.theme.SDKTheme
 
 internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
     @OptIn(ExperimentalMaterialApi::class)
@@ -44,7 +43,7 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
             BottomDrawer(
                 modifier = Modifier.wrapContentSize(),
                 drawerContent = {
-                    SDKTheme( ) {
+                    SDKTheme() {
                         Box(contentAlignment = Alignment.BottomCenter) {
                             NavigationComponent(
                                 navigator = navigator,
@@ -73,7 +72,7 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
     }
 
     companion object {
-        var paymentOptions: PaymentOptions? = null
+        lateinit var paymentOptions: PaymentOptions
         private val config = MSDKCoreSessionConfig.nl3WithDebug()
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()

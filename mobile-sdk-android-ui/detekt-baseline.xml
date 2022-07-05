@@ -2,123 +2,131 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>EmptyFunctionBlock:MainViewModel.kt$MainViewModel.&lt;no name provided>${ }</ID>
-    <ID>EmptyFunctionBlock:SKDTableRow.kt${ }</ID>
-    <ID>ForEachOnRange:MainScreen.kt$forEach { _ -> ShimmerAnimation( itemHeight = SDKTheme.dimensions.paymentMethodItemHeight, borderRadius = 6.dp ) Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10)) }</ID>
-    <ID>FunctionNaming:MainScreen.kt$@Composable @Preview(showBackground = true, showSystemUi = true) fun LoadingPreview()</ID>
-    <ID>FunctionNaming:MainScreen.kt$@Composable @Preview(showBackground = true, showSystemUi = true) fun PaymentMethods()</ID>
-    <ID>FunctionNaming:MainScreen.kt$@Composable fun MainScreen(viewModel: MainViewModel = viewModel())</ID>
-    <ID>FunctionNaming:MainScreen.kt$@Composable private fun Content(state: MainScreenState)</ID>
-    <ID>FunctionNaming:MainScreen.kt$@Composable private fun Loading()</ID>
-    <ID>FunctionNaming:MainScreen.kt$@Composable private fun PaymentMethodList(paymentMethods: List&lt;PaymentMethod>)</ID>
-    <ID>FunctionNaming:NavigationComponent.kt$@Composable fun NavigationComponent( navController: NavHostController, navigator: Navigator )</ID>
-    <ID>FunctionNaming:PaymentMethodItem.kt$@Composable fun PaymentMethodItem( name: String, iconUrl: String? = "", )</ID>
-    <ID>FunctionNaming:PaymentMethodItem.kt$@Preview @Composable fun ItemPaymentMethodPreview()</ID>
-    <ID>FunctionNaming:SDKButton.kt$@Composable @Preview private fun SDKButtonDefaultPreview()</ID>
-    <ID>FunctionNaming:SDKButton.kt$@Composable @Preview private fun SDKButtonDisabledPreview()</ID>
-    <ID>FunctionNaming:SDKButton.kt$@Composable fun SDKButton( modifier: Modifier = Modifier, payLabel: String, amount: String, currency: String, isEnabled: Boolean, onClick: () -> Unit, )</ID>
-    <ID>FunctionNaming:SDKCardView.kt$@Composable @Preview fun SDKCardViewPreview()</ID>
-    <ID>FunctionNaming:SDKCardView.kt$@Composable fun SDKCardView( brandLogoUrl: String, price: String, currency: String, vatIncluded: Boolean = false, totalPriceTitle: String, vatIncludedTitle: String, )</ID>
-    <ID>FunctionNaming:SDKFooter.kt$@Composable @Preview(showBackground = true) fun SDKFooterPreview()</ID>
-    <ID>FunctionNaming:SDKFooter.kt$@Composable fun SDKFooter( @DrawableRes iconLogo: Int, poweredByText: String, )</ID>
-    <ID>FunctionNaming:SDKSavedCardCVVTextField.kt$@SuppressLint("PrivateResource", "ComposableNaming") @ExperimentalComposeUiApi @Composable fun SDKSavedCardCVVTextField( cardUrlLogo: String, cardNumber: String, ): TextFieldValue</ID>
-    <ID>FunctionNaming:SDKShimmerItem.kt$@Composable fun SDKShimmerItem( colors: List&lt;Color>, xShimmer: Float, yShimmer: Float, itemHeight: Dp, itemWidth: Dp? = null, gradientWidth: Float, padding: Dp, borderRadius: Dp = 0.dp, )</ID>
-    <ID>FunctionNaming:SDKTopBar.kt$@Composable @Preview fun PreviewDarkToolbar()</ID>
-    <ID>FunctionNaming:SDKTopBar.kt$@Composable @Preview fun PreviewLightToolbar()</ID>
-    <ID>FunctionNaming:SDKTopBar.kt$@OptIn(ExperimentalComposeUiApi::class) @Composable fun SDKTopBar( title: String, arrowIcon: ImageVector? = Icons.Filled.ArrowBack, listener: () -> Unit = {}, )</ID>
-    <ID>FunctionNaming:SKDTableRow.kt$@Composable fun RowScope.TableCell( value: String, )</ID>
-    <ID>FunctionNaming:ShimmerAnimation.kt$@Composable fun ShimmerAnimation( itemHeight: Dp, itemWidth: Dp? = null, padding: Dp = 0.dp, borderRadius: Dp = 0.dp )</ID>
-    <ID>FunctionNaming:Theme.kt$@Composable fun SDKTheme( colors: SDKColors = SDKTheme.colors, typography: SDKTypography = SDKTheme.typography, dimensions: SDKDimensions = SDKTheme.dimensions, shapes: SDKShapes = SDKTheme.shapes, content: @Composable () -> Unit )</ID>
-    <ID>LongMethod:SDKCardView.kt$@Composable fun SDKCardView( brandLogoUrl: String, price: String, currency: String, vatIncluded: Boolean = false, totalPriceTitle: String, vatIncludedTitle: String, )</ID>
-    <ID>LongMethod:SDKSavedCardCVVTextField.kt$@SuppressLint("PrivateResource", "ComposableNaming") @ExperimentalComposeUiApi @Composable fun SDKSavedCardCVVTextField( cardUrlLogo: String, cardNumber: String, ): TextFieldValue</ID>
-    <ID>LongParameterList:PaymentInfo.kt$PaymentInfo$( /** * project (merchant) ID */ val projectId: Int, /** * must be unique within the project */ val paymentId: String, /** * payment amount in minor currency units */ val paymentAmount: Long, /** * payment currency code according to ISO-4217 alpha-3 */ val paymentCurrency: String, /** * payment description (this parameter is available not only to the merchant, but also to the customer; if paymentDescription is specified in the request, it is visible to the customer in the payment form (in the dialog box containing information about the payment); if this parameter is not specified in the request, it is not visible to the customer) */ var paymentDescription: String? = null, var customerId: String? = null, /** * customer country */ var regionCode: String? = null, /** * card token */ var token: String? = null, var languageCode: String? = null, var receiptData: String? = null, var bankId: Int? = null, var actionType: ActionType = ActionType.Sale, /** * hiding or displaying saved payment instruments in the payment form */ var hideSavedWallets: Boolean = false, /** * the identifier of the payment method which is opened to the customer without an option for the customer to select another payment method. The list of codes is provided in the IDs of payment methods supported on Payment Page section */ var forcePaymentMethod: String? = null, //var merchantId: String? = null, var signature: String? = null )</ID>
-    <ID>LongParameterList:SDKButton.kt$( modifier: Modifier = Modifier, payLabel: String, amount: String, currency: String, isEnabled: Boolean, onClick: () -> Unit, )</ID>
-    <ID>LongParameterList:SDKCardView.kt$( brandLogoUrl: String, price: String, currency: String, vatIncluded: Boolean = false, totalPriceTitle: String, vatIncludedTitle: String, )</ID>
-    <ID>LongParameterList:SDKColors.kt$( brand: Color? = null, backgroundTopBar: Color = colorDarkBackgroundTopBar, topBarCloseButton: Color = brand ?: colorDarkTopBarCloseButton, backgroundShimmerItem: Color = colorDarkBackgroundShimmerItem, backgroundPaymentMethods: Color = colorDarkBackgroundPaymentMethods, backgroundPaymentMethodItem: Color = colorDarkBackgroundPaymentMethodItem, borderPaymentMethodItem: Color = colorDarkBorderPaymentMethodItem, footerContent: Color = colorDarkFooterContent )</ID>
-    <ID>LongParameterList:SDKColors.kt$( brand: Color? = null, backgroundTopBar: Color = colorLightBackgroundTopBar, topBarCloseButton: Color = brand ?: colorLightTopBarCloseButton, backgroundShimmerItem: Color = colorLightBackgroundShimmerItem, backgroundPaymentMethods: Color = colorLightBackgroundPaymentMethods, backgroundPaymentMethodItem: Color = colorLightBackgroundPaymentMethodItem, borderPaymentMethodItem: Color = colorLightBorderPaymentMethodItem, footerContent: Color = colorLightFooterContent )</ID>
-    <ID>LongParameterList:SDKColors.kt$SDKColors$( //Brand color brand: Color, //TopBar backgroundTopBar: Color, topBarCloseButton: Color, //Payment Methods Screen backgroundPaymentMethods: Color, backgroundPaymentMethodItem: Color, borderPaymentMethodItem: Color, //Shimmer Screen backgroundShimmerItem: Color, //Footer content footerContent: Color, isLight: Boolean, )</ID>
-    <ID>LongParameterList:SDKColors.kt$SDKColors$( brand: Color = this.brand, backgroundTopBar: Color = this.backgroundTopBar, topBarCloseButton: Color = this.topBarCloseButton, backgroundShimmerItem: Color = this.backgroundShimmerItem, backgroundPaymentMethods: Color = this.backgroundPaymentMethods, backgroundPaymentMethodItem: Color = this.backgroundPaymentMethodItem, borderPaymentMethodItem: Color = this.borderPaymentMethodItem, footerContent: Color = this.footerContent, isLight: Boolean = this.isLight, )</ID>
-    <ID>LongParameterList:SDKShimmerItem.kt$( colors: List&lt;Color>, xShimmer: Float, yShimmer: Float, itemHeight: Dp, itemWidth: Dp? = null, gradientWidth: Float, padding: Dp, borderRadius: Dp = 0.dp, )</ID>
-    <ID>LongParameterList:SDKTypography.kt$( s12Light: TextStyle = typographyDarkS12Light, s12Normal: TextStyle = typographyDarkS12Normal, s14Light: TextStyle = typographyDarkS14Light, s14Normal: TextStyle = typographyDarkS14Normal, s14SemiBold: TextStyle = typographyDarkS14SemiBold, s16Normal: TextStyle = typographyDarkS16Normal, s16Bold: TextStyle = typographyDarkS16Bold, s18Bold: TextStyle = typographyDarkS18Bold, s22Bold: TextStyle = typographyDarkS22Bold, s24Bold: TextStyle = typographyDarkS24Bold, s28Bold: TextStyle = typographyDarkS28Bold )</ID>
-    <ID>LongParameterList:SDKTypography.kt$( s12Light: TextStyle = typographyLightS12Light, s12Normal: TextStyle = typographyLightS12Normal, s14Light: TextStyle = typographyLightS14Light, s14Normal: TextStyle = typographyLightS14Normal, s14SemiBold: TextStyle = typographyLightS14SemiBold, s16Normal: TextStyle = typographyLightS16Normal, s16Bold: TextStyle = typographyLightS16Bold, s18Bold: TextStyle = typographyLightS18Bold, s22Bold: TextStyle = typographyLightS22Bold, s24Bold: TextStyle = typographyLightS24Bold, s28Bold: TextStyle = typographyLightS28Bold )</ID>
-    <ID>LongParameterList:SDKTypography.kt$SDKTypography$( s12Light: TextStyle = this.s12Light, s12Normal: TextStyle = this.s12Normal, s14Light: TextStyle = this.s14Light, s14Normal: TextStyle = this.s14Normal, s14SemiBold: TextStyle = this.s14SemiBold, s16Normal: TextStyle = this.s16Normal, s16Bold: TextStyle = this.s16Bold, s18Bold: TextStyle = this.s18Bold, s22Bold: TextStyle = this.s22Bold, s24Bold: TextStyle = this.s24Bold, s28Bold: TextStyle = this.s28Bold, isLight: Boolean = this.isLight )</ID>
-    <ID>LongParameterList:SDKTypography.kt$SDKTypography$( s12Light: TextStyle, s12Normal: TextStyle, s14Light: TextStyle, s14Normal: TextStyle, s14SemiBold: TextStyle, s16Normal: TextStyle, s16Bold: TextStyle, s18Bold: TextStyle, s22Bold: TextStyle, s24Bold: TextStyle, s28Bold: TextStyle, isLight: Boolean )</ID>
-    <ID>MagicNumber:Color.kt$0xFF00579E</ID>
-    <ID>MagicNumber:Color.kt$0xFF0065B8</ID>
-    <ID>MagicNumber:Color.kt$0xFF141414</ID>
-    <ID>MagicNumber:Color.kt$0xFF2D2B2B</ID>
-    <ID>MagicNumber:Color.kt$0xFFF6F7F9</ID>
-    <ID>MagicNumber:Color.kt$0xFFFFFFFF</ID>
-    <ID>MagicNumber:MainScreen.kt$5</ID>
-    <ID>MagicNumber:SDKColors.kt$0xFF00579E</ID>
-    <ID>MagicNumber:SDKColors.kt$0xFF0065B8</ID>
-    <ID>MagicNumber:SDKColors.kt$0xFF141414</ID>
-    <ID>MagicNumber:SDKColors.kt$0xFF2D2B2B</ID>
-    <ID>MagicNumber:SDKColors.kt$0xFFBCBDBE</ID>
-    <ID>MagicNumber:SDKColors.kt$0xFFEBEBEE</ID>
-    <ID>MagicNumber:SDKColors.kt$0xFFF6F7F9</ID>
-    <ID>MagicNumber:SDKColors.kt$0xFFFFFFFF</ID>
-    <ID>MagicNumber:SDKSavedCardCVVTextField.kt$3</ID>
-    <ID>MagicNumber:SDKShimmerItem.kt$0.5f</ID>
-    <ID>MagicNumber:ShimmerAnimation.kt$250f</ID>
-    <ID>MagicNumber:Utils.kt$Utils$100.0</ID>
-    <ID>MaxLineLength:PaymentInfo.kt$PaymentInfo$* payment description (this parameter is available not only to the merchant, but also to the customer; if paymentDescription is specified in the request, it is visible to the customer in the payment form (in the dialog box containing information about the payment); if this parameter is not specified in the request, it is not visible to the customer)</ID>
-    <ID>MaxLineLength:PaymentInfo.kt$PaymentInfo$* the identifier of the payment method which is opened to the customer without an option for the customer to select another payment method. The list of codes is provided in the IDs of payment methods supported on Payment Page section</ID>
+    <ID>EmptyClassBlock:MainScreenModel.kt$MainScreenUiEvent${ }</ID>
+    <ID>EmptyFunctionBlock:InitViewModel.kt$InitViewModel.&lt;no name provided>${ }</ID>
+    <ID>EmptyFunctionBlock:ResultScreen.kt${ }</ID>
+    <ID>EmptyWhenBlock:MainViewModel.kt$MainViewModel.MainReducer$when (event) { }</ID>
+    <ID>ForEachOnRange:InitScreen.kt$forEach { _ -> ShimmerAnimatedItem( itemHeight = SDKTheme.dimensions.paymentMethodItemHeight, borderRadius = 6.dp ) Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10)) }</ID>
+    <ID>FunctionNaming:CardView.kt$@Composable @Preview fun CardViewPreview()</ID>
+    <ID>FunctionNaming:CardView.kt$@Composable internal fun CardView( brandLogoUrl: String? = null, price: String, currency: String, vatIncludedTitle: String? = null, )</ID>
+    <ID>FunctionNaming:ExpandablePaymentDetails.kt$@Composable fun ExpandablePaymentDetails(paymentOptions: PaymentOptions)</ID>
+    <ID>FunctionNaming:ExpandablePaymentMethodItem.kt$@Composable @Preview fun ExpandablePaymentMethodItemPreview()</ID>
+    <ID>FunctionNaming:ExpandablePaymentMethodItem.kt$@Composable internal fun ExpandablePaymentMethodItem( position: Int, iconUrl: String? = null, name: String, onExpand: (position: Int) -> Unit, isExpanded: Boolean = false, content: @Composable ColumnScope.() -> Unit, )</ID>
+    <ID>FunctionNaming:Footer.kt$@Composable @Preview(showBackground = true) internal fun FooterPreview()</ID>
+    <ID>FunctionNaming:Footer.kt$@Composable internal fun Footer( @DrawableRes iconLogo: Int, poweredByText: String, privacyPolicy: AnnotatedString? = null )</ID>
+    <ID>FunctionNaming:InitScreen.kt$@Composable @Preview(showBackground = true, showSystemUi = true) fun LoadingPreview()</ID>
+    <ID>FunctionNaming:InitScreen.kt$@Composable internal fun InitScreen( viewModel: InitViewModel = viewModel( factory = viewModelFactory { InitViewModel(PaymentActivity.msdkSession.getInitInteractor()) } ), navigator: Navigator, delegate: PaymentDelegate )</ID>
+    <ID>FunctionNaming:InitScreen.kt$@Composable private fun Content()</ID>
+    <ID>FunctionNaming:InitScreen.kt$@Composable private fun Loading()</ID>
+    <ID>FunctionNaming:MainScreen.kt$@Composable @Preview(showBackground = true, showSystemUi = true) internal fun PaymentMethods()</ID>
+    <ID>FunctionNaming:MainScreen.kt$@Composable private fun Content(paymentMethods: List&lt;UIPaymentMethod>, paymentOptions: PaymentOptions)</ID>
+    <ID>FunctionNaming:MainScreen.kt$@Composable private fun PaymentMethodList(paymentMethods: List&lt;UIPaymentMethod>)</ID>
+    <ID>FunctionNaming:MainScreen.kt$@Suppress("UNUSED_PARAMETER") @Composable internal fun MainScreen( viewModel: MainViewModel = viewModel(), navigator: Navigator, paymentMethods: List&lt;UIPaymentMethod>, paymentOptions: PaymentOptions, )</ID>
+    <ID>FunctionNaming:NavigationComponent.kt$@OptIn(ExperimentalAnimationApi::class) @Composable internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate)</ID>
+    <ID>FunctionNaming:PayButton.kt$@Composable @Preview private fun PayButtonDefaultPreview()</ID>
+    <ID>FunctionNaming:PayButton.kt$@Composable @Preview private fun PayButtonDisabledPreview()</ID>
+    <ID>FunctionNaming:PayButton.kt$@Composable internal fun PayButton( modifier: Modifier = Modifier, payLabel: String, amount: String, currency: String, isEnabled: Boolean, onClick: () -> Unit, )</ID>
+    <ID>FunctionNaming:PaymentDetails.kt$@Composable fun PaymentDetails( paymentDetailsLabel: String = stringResource(R.string.payment_details_label), isExpanded: Boolean = false, onExpandCallback: () -> Unit, content: @Composable ColumnScope.() -> Unit, )</ID>
+    <ID>FunctionNaming:PaymentDetailsContent.kt$@Composable fun PaymentDetailsContent( paymentIdLabel: String, paymentIdValue: String?, paymentDescriptionLabel: String, paymentDescriptionValue: String?, merchantAddressLabel: String, merchantAddressValue: String?, closeButtonCallback: () -> Unit )</ID>
+    <ID>FunctionNaming:PaymentMethodItemContent.kt$@Composable fun PaymentMethodItemContent( payLabel: String, amount: String, currency: String, content: @Composable ColumnScope.() -> Unit, )</ID>
+    <ID>FunctionNaming:ResultScreen.kt$@Composable internal fun ResultScreen()</ID>
+    <ID>FunctionNaming:SDKTheme.kt$@Composable internal fun SDKTheme( isDark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit )</ID>
+    <ID>FunctionNaming:Scaffold.kt$@Composable internal fun Scaffold( title: String = "", isFloatingFooter: Boolean = false, notScrollableContent: @Composable () -> Unit = {}, scrollableContent: @Composable () -> Unit = {}, )</ID>
+    <ID>FunctionNaming:ShimmerAnimatedItem.kt$@Composable @Preview(showBackground = true) fun ShimmerAnimationPreview()</ID>
+    <ID>FunctionNaming:ShimmerAnimatedItem.kt$@Composable internal fun ShimmerAnimatedItem( itemHeight: Dp, itemWidth: Dp? = null, padding: Dp = 0.dp, borderRadius: Dp = 0.dp )</ID>
+    <ID>FunctionNaming:ShimmerItem.kt$@Composable internal fun ShimmerItem( xShimmer: Float, yShimmer: Float, itemHeight: Dp, itemWidth: Dp? = null, gradientWidth: Float, padding: Dp, borderRadius: Dp = 0.dp, )</ID>
+    <ID>FunctionNaming:TopBar.kt$@Composable @Preview internal fun PreviewDarkToolbar()</ID>
+    <ID>FunctionNaming:TopBar.kt$@Composable @Preview internal fun PreviewLightToolbar()</ID>
+    <ID>FunctionNaming:TopBar.kt$@OptIn(ExperimentalComposeUiApi::class) @Composable internal fun TopBar( title: String, arrowIcon: ImageVector? = Icons.Filled.ArrowBack, listener: () -> Unit = {}, )</ID>
+    <ID>LongMethod:CardView.kt$@Composable internal fun CardView( brandLogoUrl: String? = null, price: String, currency: String, vatIncludedTitle: String? = null, )</ID>
+    <ID>LongMethod:ExpandablePaymentMethodItem.kt$@Composable internal fun ExpandablePaymentMethodItem( position: Int, iconUrl: String? = null, name: String, onExpand: (position: Int) -> Unit, isExpanded: Boolean = false, content: @Composable ColumnScope.() -> Unit, )</ID>
+    <ID>LongParameterList:Colors.kt$SDKColors$( //Brand color brand: Color, primaryTextColor: Color, secondaryTextColor: Color, //TopBar backgroundTopBar: Color, topBarCloseButton: Color, //Shimmer Screen backgroundShimmerItem: Color, //Payment Methods Screen backgroundExpandedPaymentDetails: Color, expandedPaymentDetailsCloseButton: Color, backgroundPaymentMethods: Color, backgroundPaymentMethodItem: Color, borderPaymentMethodItem: Color, //Footer content footerContent: Color, )</ID>
+    <ID>LongParameterList:ExpandablePaymentMethodItem.kt$( position: Int, iconUrl: String? = null, name: String, onExpand: (position: Int) -> Unit, isExpanded: Boolean = false, content: @Composable ColumnScope.() -> Unit, )</ID>
+    <ID>LongParameterList:PayButton.kt$( modifier: Modifier = Modifier, payLabel: String, amount: String, currency: String, isEnabled: Boolean, onClick: () -> Unit, )</ID>
+    <ID>LongParameterList:PaymentDetailsContent.kt$( paymentIdLabel: String, paymentIdValue: String?, paymentDescriptionLabel: String, paymentDescriptionValue: String?, merchantAddressLabel: String, merchantAddressValue: String?, closeButtonCallback: () -> Unit )</ID>
+    <ID>LongParameterList:ShimmerItem.kt$( xShimmer: Float, yShimmer: Float, itemHeight: Dp, itemWidth: Dp? = null, gradientWidth: Float, padding: Dp, borderRadius: Dp = 0.dp, )</ID>
+    <ID>LongParameterList:Typography.kt$Typography$( s12Light: TextStyle, s12Normal: TextStyle, s14Light: TextStyle, s14Normal: TextStyle, s14SemiBold: TextStyle, s14Bold: TextStyle, s16Normal: TextStyle, s16Bold: TextStyle, s18Bold: TextStyle, s22Bold: TextStyle, s24Bold: TextStyle, s28Bold: TextStyle, )</ID>
+    <ID>MagicNumber:Colors.kt$0xFF000000</ID>
+    <ID>MagicNumber:Colors.kt$0xFF00579E</ID>
+    <ID>MagicNumber:Colors.kt$0xFF666666</ID>
+    <ID>MagicNumber:Colors.kt$0xFFBCBDBE</ID>
+    <ID>MagicNumber:Colors.kt$0xFFEBEBEE</ID>
+    <ID>MagicNumber:Colors.kt$0xFFF6F7F9</ID>
+    <ID>MagicNumber:Colors.kt$0xFFFFFFFF</ID>
+    <ID>MagicNumber:ExpandablePaymentMethodItem.kt$180f</ID>
+    <ID>MagicNumber:InitScreen.kt$5</ID>
+    <ID>MagicNumber:MainScreen.kt$10</ID>
+    <ID>MagicNumber:Scaffold.kt$0.9f</ID>
+    <ID>MagicNumber:ShimmerAnimatedItem.kt$250f</ID>
+    <ID>MagicNumber:ShimmerItem.kt$0.5f</ID>
+    <ID>MagicNumber:StringExtensions.kt$100.0</ID>
+    <ID>MatchingDeclarationName:Colors.kt$SDKColors</ID>
+    <ID>MaxLineLength:NavigationComponent.kt$paymentOptions = PaymentActivity.paymentOptions!!</ID>
+    <ID>MaxLineLength:Scaffold.kt$privacyPolicy = PaymentActivity.stringResourceManager.policy.footerPrivacyPolicy?.annotatedString()</ID>
+    <ID>NewLineAtEndOfFile:AdditionalField.kt$com.ecommpay.msdk.ui.AdditionalField.kt</ID>
     <ID>NewLineAtEndOfFile:BaseMVI.kt$com.ecommpay.msdk.ui.base.mvi.BaseMVI.kt</ID>
     <ID>NewLineAtEndOfFile:BaseViewModel.kt$com.ecommpay.msdk.ui.base.mvvm.BaseViewModel.kt</ID>
-    <ID>NewLineAtEndOfFile:Color.kt$com.ecommpay.msdk.ui.theme.Color.kt</ID>
-    <ID>NewLineAtEndOfFile:DebugExtensions.kt$com.ecommpay.msdk.ui.utils.DebugExtensions.kt</ID>
+    <ID>NewLineAtEndOfFile:Colors.kt$com.ecommpay.msdk.ui.theme.Colors.kt</ID>
+    <ID>NewLineAtEndOfFile:DataMappersExtensions.kt$com.ecommpay.msdk.ui.utils.extensions.core.DataMappersExtensions.kt</ID>
+    <ID>NewLineAtEndOfFile:DebugExtensions.kt$com.ecommpay.msdk.ui.utils.extensions.DebugExtensions.kt</ID>
+    <ID>NewLineAtEndOfFile:Dimensions.kt$com.ecommpay.msdk.ui.theme.Dimensions.kt</ID>
+    <ID>NewLineAtEndOfFile:ErrorResult.kt$com.ecommpay.msdk.ui.model.common.ErrorResult.kt</ID>
     <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.ecommpay.msdk.ui.ExampleUnitTest.kt</ID>
+    <ID>NewLineAtEndOfFile:ExpandablePaymentDetails.kt$com.ecommpay.msdk.ui.presentation.main.views.detail.ExpandablePaymentDetails.kt</ID>
+    <ID>NewLineAtEndOfFile:ExpandablePaymentMethodItem.kt$com.ecommpay.msdk.ui.presentation.main.views.method.ExpandablePaymentMethodItem.kt</ID>
+    <ID>NewLineAtEndOfFile:Footer.kt$com.ecommpay.msdk.ui.views.common.Footer.kt</ID>
+    <ID>NewLineAtEndOfFile:Images.kt$com.ecommpay.msdk.ui.theme.Images.kt</ID>
+    <ID>NewLineAtEndOfFile:InitViewModel.kt$com.ecommpay.msdk.ui.presentation.init.InitViewModel.kt</ID>
+    <ID>NewLineAtEndOfFile:LinkMessageExtensions.kt$com.ecommpay.msdk.ui.utils.extensions.core.LinkMessageExtensions.kt</ID>
     <ID>NewLineAtEndOfFile:MainScreen.kt$com.ecommpay.msdk.ui.presentation.main.MainScreen.kt</ID>
     <ID>NewLineAtEndOfFile:MainViewModel.kt$com.ecommpay.msdk.ui.presentation.main.MainViewModel.kt</ID>
     <ID>NewLineAtEndOfFile:NavigationComponent.kt$com.ecommpay.msdk.ui.navigation.NavigationComponent.kt</ID>
     <ID>NewLineAtEndOfFile:Navigator.kt$com.ecommpay.msdk.ui.navigation.Navigator.kt</ID>
+    <ID>NewLineAtEndOfFile:PayButton.kt$com.ecommpay.msdk.ui.views.button.PayButton.kt</ID>
     <ID>NewLineAtEndOfFile:PaymentActivity.kt$com.ecommpay.msdk.ui.PaymentActivity.kt</ID>
-    <ID>NewLineAtEndOfFile:PaymentInfo.kt$com.ecommpay.msdk.ui.PaymentInfo.kt</ID>
+    <ID>NewLineAtEndOfFile:PaymentDelegate.kt$com.ecommpay.msdk.ui.PaymentDelegate.kt</ID>
+    <ID>NewLineAtEndOfFile:PaymentDetails.kt$com.ecommpay.msdk.ui.presentation.main.views.detail.PaymentDetails.kt</ID>
+    <ID>NewLineAtEndOfFile:PaymentDetailsContent.kt$com.ecommpay.msdk.ui.presentation.main.views.detail.PaymentDetailsContent.kt</ID>
+    <ID>NewLineAtEndOfFile:PaymentMethodItemContent.kt$com.ecommpay.msdk.ui.presentation.main.views.method.PaymentMethodItemContent.kt</ID>
+    <ID>NewLineAtEndOfFile:PaymentOptions.kt$com.ecommpay.msdk.ui.PaymentOptions.kt</ID>
     <ID>NewLineAtEndOfFile:PaymentSDK.kt$com.ecommpay.msdk.ui.PaymentSDK.kt</ID>
-    <ID>NewLineAtEndOfFile:ResultScreen.kt$.ResultScreen.kt</ID>
-    <ID>NewLineAtEndOfFile:SDKButton.kt$com.ecommpay.msdk.ui.views.button.SDKButton.kt</ID>
-    <ID>NewLineAtEndOfFile:SDKColors.kt$com.ecommpay.msdk.ui.theme.SDKColors.kt</ID>
-    <ID>NewLineAtEndOfFile:SDKDimensions.kt$com.ecommpay.msdk.ui.theme.SDKDimensions.kt</ID>
-    <ID>NewLineAtEndOfFile:SDKFooter.kt$com.ecommpay.msdk.ui.views.common.SDKFooter.kt</ID>
-    <ID>NewLineAtEndOfFile:SDKSavedCardCVVTextField.kt$com.ecommpay.msdk.ui.views.card.SDKSavedCardCVVTextField.kt</ID>
-    <ID>NewLineAtEndOfFile:SDKShapes.kt$com.ecommpay.msdk.ui.theme.SDKShapes.kt</ID>
-    <ID>NewLineAtEndOfFile:SDKShimmerItem.kt$com.ecommpay.msdk.ui.views.shimmer.SDKShimmerItem.kt</ID>
+    <ID>NewLineAtEndOfFile:Route.kt$com.ecommpay.msdk.ui.navigation.Route.kt</ID>
     <ID>NewLineAtEndOfFile:SDKTheme.kt$com.ecommpay.msdk.ui.theme.SDKTheme.kt</ID>
-    <ID>NewLineAtEndOfFile:SDKTypography.kt$com.ecommpay.msdk.ui.theme.SDKTypography.kt</ID>
-    <ID>NewLineAtEndOfFile:SKDTableRow.kt$com.ecommpay.msdk.ui.views.table.SKDTableRow.kt</ID>
-    <ID>NewLineAtEndOfFile:ShimmerAnimation.kt$com.ecommpay.msdk.ui.views.shimmer.ShimmerAnimation.kt</ID>
-    <ID>NewLineAtEndOfFile:Theme.kt$com.ecommpay.msdk.ui.theme.Theme.kt</ID>
+    <ID>NewLineAtEndOfFile:Scaffold.kt$com.ecommpay.msdk.ui.views.common.Scaffold.kt</ID>
+    <ID>NewLineAtEndOfFile:Shapes.kt$com.ecommpay.msdk.ui.theme.Shapes.kt</ID>
+    <ID>NewLineAtEndOfFile:ShimmerAnimatedItem.kt$com.ecommpay.msdk.ui.views.shimmer.ShimmerAnimatedItem.kt</ID>
+    <ID>NewLineAtEndOfFile:ShimmerItem.kt$com.ecommpay.msdk.ui.views.shimmer.ShimmerItem.kt</ID>
+    <ID>NewLineAtEndOfFile:StringExtensions.kt$com.ecommpay.msdk.ui.utils.extensions.StringExtensions.kt</ID>
     <ID>NewLineAtEndOfFile:TimeMachine.kt$com.ecommpay.msdk.ui.base.mvi.TimeMachine.kt</ID>
-    <ID>NewLineAtEndOfFile:Type.kt$com.ecommpay.msdk.ui.theme.Type.kt</ID>
-    <ID>NewLineAtEndOfFile:Utils.kt$com.ecommpay.msdk.ui.utils.Utils.kt</ID>
-    <ID>UnusedPrivateMember:SDKButton.kt$@Composable @Preview private fun SDKButtonDefaultPreview()</ID>
-    <ID>UnusedPrivateMember:SDKButton.kt$@Composable @Preview private fun SDKButtonDisabledPreview()</ID>
-    <ID>UnusedPrivateMember:SKDTableRow.kt$value: String</ID>
-    <ID>VariableNaming:PaymentInfo.kt$PaymentInfo$private val CUSTOMER_ID = "customer_id"</ID>
-    <ID>VariableNaming:PaymentInfo.kt$PaymentInfo$private val FORCE_PAYMENT_METHOD_CODE = "force_payment_method"</ID>
-    <ID>VariableNaming:PaymentInfo.kt$PaymentInfo$private val HIDE_SAVE_WALLETS_CODE = "hide_saved_wallets"</ID>
-    <ID>VariableNaming:PaymentInfo.kt$PaymentInfo$private val LANGUAGE_CODE = "language_code"</ID>
-    <ID>VariableNaming:PaymentInfo.kt$PaymentInfo$private val PAYMENT_AMOUNT = "payment_amount"</ID>
-    <ID>VariableNaming:PaymentInfo.kt$PaymentInfo$private val PAYMENT_CURRENCY = "payment_currency"</ID>
-    <ID>VariableNaming:PaymentInfo.kt$PaymentInfo$private val PAYMENT_DESCRIPTION = "payment_description"</ID>
-    <ID>VariableNaming:PaymentInfo.kt$PaymentInfo$private val PAYMENT_ID = "payment_id"</ID>
-    <ID>VariableNaming:PaymentInfo.kt$PaymentInfo$private val PROJECT_ID = "project_id"</ID>
-    <ID>VariableNaming:PaymentInfo.kt$PaymentInfo$private val REGION_CODE = "region_code"</ID>
-    <ID>VariableNaming:PaymentInfo.kt$PaymentInfo$private val TOKEN_CODE = "account_token"</ID>
+    <ID>NewLineAtEndOfFile:Typography.kt$com.ecommpay.msdk.ui.theme.Typography.kt</ID>
+    <ID>NewLineAtEndOfFile:UIPaymentMethod.kt$com.ecommpay.msdk.ui.model.init.UIPaymentMethod.kt</ID>
+    <ID>NewLineAtEndOfFile:ViewModels.kt$com.ecommpay.msdk.ui.utils.ViewModels.kt</ID>
+    <ID>UnusedPrivateMember:PayButton.kt$@Composable @Preview private fun PayButtonDefaultPreview()</ID>
+    <ID>UnusedPrivateMember:PayButton.kt$@Composable @Preview private fun PayButtonDisabledPreview()</ID>
+    <ID>VariableNaming:PaymentOptions.kt$PaymentOptions$private val CUSTOMER_ID = "customer_id"</ID>
+    <ID>VariableNaming:PaymentOptions.kt$PaymentOptions$private val FORCE_PAYMENT_METHOD_CODE = "force_payment_method"</ID>
+    <ID>VariableNaming:PaymentOptions.kt$PaymentOptions$private val HIDE_SAVE_WALLETS_CODE = "hide_saved_wallets"</ID>
+    <ID>VariableNaming:PaymentOptions.kt$PaymentOptions$private val LANGUAGE_CODE = "language_code"</ID>
+    <ID>VariableNaming:PaymentOptions.kt$PaymentOptions$private val PAYMENT_AMOUNT = "payment_amount"</ID>
+    <ID>VariableNaming:PaymentOptions.kt$PaymentOptions$private val PAYMENT_CURRENCY = "payment_currency"</ID>
+    <ID>VariableNaming:PaymentOptions.kt$PaymentOptions$private val PAYMENT_DESCRIPTION = "payment_description"</ID>
+    <ID>VariableNaming:PaymentOptions.kt$PaymentOptions$private val PAYMENT_ID = "payment_id"</ID>
+    <ID>VariableNaming:PaymentOptions.kt$PaymentOptions$private val PROJECT_ID = "project_id"</ID>
+    <ID>VariableNaming:PaymentOptions.kt$PaymentOptions$private val REGION_CODE = "region_code"</ID>
+    <ID>VariableNaming:PaymentOptions.kt$PaymentOptions$private val TOKEN_CODE = "account_token"</ID>
+    <ID>WildcardImport:CardView.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:CardView.kt$import androidx.compose.ui.layout.*</ID>
+    <ID>WildcardImport:ExpandablePaymentDetails.kt$import androidx.compose.runtime.*</ID>
+    <ID>WildcardImport:ExpandablePaymentMethodItem.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:Footer.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:MainScreen.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:PaymentActivity.kt$import androidx.compose.material.*</ID>
-    <ID>WildcardImport:PaymentActivity.kt$import com.ecommpay.msdk.ui.theme.*</ID>
-    <ID>WildcardImport:PaymentMethodItem.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:SDKButton.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:SDKCardView.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:SDKCardView.kt$import androidx.compose.ui.layout.*</ID>
-    <ID>WildcardImport:SDKSavedCardCVVTextField.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:SDKSavedCardCVVTextField.kt$import androidx.compose.runtime.*</ID>
-    <ID>WildcardImport:SDKSavedCardCVVTextField.kt$import androidx.compose.ui.text.input.*</ID>
-    <ID>WildcardImport:SDKShimmerItem.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:SDKTopBar.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:SDKTopBar.kt$import androidx.compose.material.*</ID>
-    <ID>WildcardImport:ShimmerAnimation.kt$import androidx.compose.animation.core.*</ID>
+    <ID>WildcardImport:MainScreen.kt$import androidx.compose.runtime.*</ID>
+    <ID>WildcardImport:PaymentDetails.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:PaymentMethodItemContent.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:PaymentMethodItemContent.kt$import androidx.compose.runtime.*</ID>
+    <ID>WildcardImport:Scaffold.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:ShimmerAnimatedItem.kt$import androidx.compose.animation.core.*</ID>
+    <ID>WildcardImport:ShimmerItem.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:TopBar.kt$import androidx.compose.foundation.layout.*</ID>
   </CurrentIssues>
 </SmellBaseline>

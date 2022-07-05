@@ -12,7 +12,7 @@ import com.ecommpay.msdk.ui.PaymentOptions
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 import com.ecommpay.msdk.ui.navigation.Navigator
-import com.ecommpay.msdk.ui.presentation.main.views.detail.ExpandablePaymentDetails
+import com.ecommpay.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.ecommpay.msdk.ui.presentation.main.views.method.ExpandablePaymentMethodItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.amountToCoins
@@ -20,6 +20,7 @@ import com.ecommpay.msdk.ui.views.card.CardView
 import com.ecommpay.msdk.ui.views.common.Scaffold
 
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 internal fun MainScreen(
     viewModel: MainViewModel = viewModel(),
@@ -38,11 +39,11 @@ private fun Content(paymentMethods: List<UIPaymentMethod>, paymentOptions: Payme
         title = PaymentActivity.stringResourceManager.payment.methodsTitle
             ?: stringResource(R.string.payment_methods_label),
         notScrollableContent = {
-            ExpandablePaymentDetails(paymentOptions = paymentOptions)
+            PaymentDetailsView(paymentOptions = paymentOptions)
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
             CardView(
-                price = PaymentActivity.paymentOptions?.paymentAmount.amountToCoins(),
-                currency = PaymentActivity.paymentOptions?.paymentCurrency?.uppercase() ?: "USD",
+                price = PaymentActivity.paymentOptions?.paymentInfo?.paymentAmount.amountToCoins(),
+                currency = PaymentActivity.paymentOptions?.paymentInfo?.paymentCurrency?.uppercase() ?: "USD",
                 vatIncludedTitle = stringResource(id = R.string.vat_included_label)
             )
             Spacer(

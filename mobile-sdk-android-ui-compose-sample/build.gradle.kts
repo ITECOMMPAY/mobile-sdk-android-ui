@@ -49,6 +49,8 @@ android {
 
 
 dependencies {
+    //msdkCore
+    implementation(Dependencies.Msdk.core)
     //Projects
     implementation (project(":mobile-sdk-android-ui"))
     //implementation ("com.ecommpay:msdk-core:+")

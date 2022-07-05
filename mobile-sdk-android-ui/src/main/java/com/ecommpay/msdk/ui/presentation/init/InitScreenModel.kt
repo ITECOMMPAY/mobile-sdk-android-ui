@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import com.ecommpay.msdk.ui.base.mvi.UiEvent
 import com.ecommpay.msdk.ui.base.mvi.UiState
 import com.ecommpay.msdk.ui.model.common.ErrorResult
-import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 
 @Immutable
 internal sealed class InitScreenUiEvent : UiEvent {

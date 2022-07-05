@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_PARAMETER")
+
 package com.ecommpay.msdk.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme

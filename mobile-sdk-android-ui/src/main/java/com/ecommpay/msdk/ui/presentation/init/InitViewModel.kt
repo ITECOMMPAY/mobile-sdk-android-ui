@@ -1,21 +1,23 @@
 package com.ecommpay.msdk.ui.presentation.init
 
 import com.ecommpay.msdk.core.base.ErrorCode
+import com.ecommpay.msdk.core.domain.entities.PaymentInfo
 import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
 import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.core.domain.interactors.init.InitDelegate
 import com.ecommpay.msdk.core.domain.interactors.init.InitInteractor
 import com.ecommpay.msdk.core.domain.interactors.init.InitRequest
-import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.base.mvi.Reducer
 import com.ecommpay.msdk.ui.base.mvi.TimeMachine
 import com.ecommpay.msdk.ui.base.mvvm.BaseViewModel
 import com.ecommpay.msdk.ui.model.common.ErrorResult
-import com.ecommpay.msdk.ui.utils.extensions.map
 import kotlinx.coroutines.flow.StateFlow
 
-internal class InitViewModel(private val initInteractor: InitInteractor) :
+internal class InitViewModel(
+    private val initInteractor: InitInteractor,
+    private val paymentInfo: PaymentInfo
+) :
     BaseViewModel<InitScreenState, InitScreenUiEvent>() {
     override val reducer = InitReducer(InitScreenState.initial())
 
@@ -30,12 +32,9 @@ internal class InitViewModel(private val initInteractor: InitInteractor) :
     }
 
     private fun loadInit() {
-        //map payment info to core object
-        val paymentOptions = PaymentActivity.paymentOptions ?: return
-
         initInteractor.execute(
             request = InitRequest(
-                paymentInfo = paymentOptions.map(),
+                paymentInfo = paymentInfo,
                 recurrentInfo = null,
                 threeDSecureInfo = null
             ),
