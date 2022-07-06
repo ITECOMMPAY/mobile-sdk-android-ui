@@ -42,11 +42,8 @@ internal fun ExpandablePaymentMethodItem(
     val rotationState by animateFloatAsState(if (isExpanded) 180f else 0f)
     Box(
         modifier = Modifier
-            .background(
-                color = SDKTheme.colors.backgroundPaymentMethodItem,
-                shape = SDKTheme.shapes.radius6
-            )
-            .border(width = 1.dp, color = SDKTheme.colors.borderPaymentMethodItem)
+            .background(color = SDKTheme.colors.backgroundPaymentMethodItem)
+            .border(width = 1.dp, color = SDKTheme.colors.borderPaymentMethodItem, shape =  SDKTheme.shapes.radius6)
             .animateContentSize(
                 animationSpec = tween(
                     durationMillis = 400,

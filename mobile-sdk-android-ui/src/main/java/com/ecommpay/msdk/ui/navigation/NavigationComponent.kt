@@ -14,7 +14,6 @@ import com.ecommpay.msdk.ui.PaymentDelegate
 import com.ecommpay.msdk.ui.presentation.init.InitScreen
 import com.ecommpay.msdk.ui.presentation.main.MainScreen
 import com.ecommpay.msdk.ui.presentation.result.ResultScreen
-import com.ecommpay.msdk.ui.utils.extensions.core.map
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -57,8 +56,9 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
             BackHandler(true) { }
             MainScreen(
                 navigator = navigator,
-                paymentMethods = PaymentActivity.msdkSession.getPaymentMethods().map(),
-                paymentOptions = PaymentActivity.paymentOptions!! // Сделал без проверки на null, чтобы пока не заморачиваться
+                paymentMethods = PaymentActivity.msdkSession.getPaymentMethods() ?: emptyList(),
+                savedAccounts = PaymentActivity.msdkSession.getSavedAccounts() ?: emptyList(),
+                paymentOptions = PaymentActivity.paymentOptions
             )
         }
         composable(route = Route.Result.getPath()) {
