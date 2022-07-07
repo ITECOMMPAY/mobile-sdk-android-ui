@@ -8,7 +8,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 
 internal object SDKTheme {
-    val colors: SDKColors
+    val colors: Colors
         @Composable
         @ReadOnlyComposable
         get() = LocalColors.current

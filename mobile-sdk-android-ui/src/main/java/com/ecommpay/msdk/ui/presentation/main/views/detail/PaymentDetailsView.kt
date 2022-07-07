@@ -4,12 +4,14 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.SnapSpec
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.PaymentOptions
 import com.ecommpay.msdk.ui.R
@@ -58,7 +60,12 @@ fun ExpandablePaymentDetails(
             Column(
                 modifier = Modifier
                     .background(
-                        color = SDKTheme.colors.backgroundExpandedPaymentDetails,
+                        color = SDKTheme.colors.lightGray,
+                        shape = SDKTheme.shapes.radius12
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = SDKTheme.colors.gray,
                         shape = SDKTheme.shapes.radius12
                     )
                     .padding(SDKTheme.dimensions.paddingDp20),

@@ -1,95 +1,84 @@
 package com.ecommpay.msdk.ui.presentation.main
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
+import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.PaymentOptions
 import com.ecommpay.msdk.ui.R
-import com.ecommpay.msdk.ui.model.init.UIPaymentMethod
 import com.ecommpay.msdk.ui.navigation.Navigator
+import com.ecommpay.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.ecommpay.msdk.ui.presentation.main.views.PaymentMethodList
 import com.ecommpay.msdk.ui.presentation.main.views.detail.PaymentDetailsView
-import com.ecommpay.msdk.ui.presentation.main.views.method.ExpandablePaymentMethodItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.amountToCoins
-import com.ecommpay.msdk.ui.views.card.CardView
-import com.ecommpay.msdk.ui.views.common.Scaffold
+import com.ecommpay.msdk.ui.utils.viewModelFactory
+import com.ecommpay.msdk.ui.views.common.CardView
+import com.ecommpay.msdk.ui.views.common.SDKScaffold
 
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
 internal fun MainScreen(
-    viewModel: MainViewModel = viewModel(),
+    viewModel: MainViewModel = viewModel(
+        factory = viewModelFactory {
+            MainViewModel(
+                payInteractor = PaymentActivity.msdkSession.getPayInteractor(),
+                paymentInfo = PaymentActivity.paymentOptions.paymentInfo
+                    ?: throw IllegalAccessException("Payment Info can not be null")
+            )
+        }
+    ),
     navigator: Navigator,
-    paymentMethods: List<UIPaymentMethod>,
+    paymentMethods: List<PaymentMethod>,
+    savedAccounts: List<SavedAccount>,
     paymentOptions: PaymentOptions,
 ) {
     // val state by viewModel.state.collectAsState()
-    Content(paymentMethods, paymentOptions)
+    Content(paymentMethods, savedAccounts, paymentOptions)
 }
 
 
 @Composable
-private fun Content(paymentMethods: List<UIPaymentMethod>, paymentOptions: PaymentOptions) {
-    Scaffold(
+private fun Content(
+    paymentMethods: List<PaymentMethod>,
+    savedAccounts: List<SavedAccount>,
+    paymentOptions: PaymentOptions,
+) {
+    var selectedPaymentMethod by remember { mutableStateOf<UIPaymentMethod?>(null) }
+    SDKScaffold(
         title = PaymentActivity.stringResourceManager.payment.methodsTitle
             ?: stringResource(R.string.payment_methods_label),
         notScrollableContent = {
             PaymentDetailsView(paymentOptions = paymentOptions)
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
             CardView(
-                price = PaymentActivity.paymentOptions?.paymentInfo?.paymentAmount.amountToCoins(),
-                currency = PaymentActivity.paymentOptions?.paymentInfo?.paymentCurrency?.uppercase() ?: "USD",
-                vatIncludedTitle = stringResource(id = R.string.vat_included_label)
+                amount = PaymentActivity.paymentOptions.paymentInfo?.paymentAmount.amountToCoins(),
+                currency = PaymentActivity.paymentOptions.paymentInfo?.paymentCurrency?.uppercase()
+                    ?: "",
+                vatIncludedTitle = when (selectedPaymentMethod?.paymentMethod?.isVatInfo) {
+                    true -> PaymentActivity.stringResourceManager.getStringByKey("vat_included")
+                    else -> null
+                }
             )
             Spacer(
                 modifier = Modifier.size(SDKTheme.dimensions.paddingDp15)
             )
         },
         scrollableContent = {
-            PaymentMethodList(paymentMethods = paymentMethods)
-        }
-    )
-}
-
-@Composable
-private fun PaymentMethodList(paymentMethods: List<UIPaymentMethod>) {
-    var expandedPosition by remember { mutableStateOf(0) }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        paymentMethods.forEachIndexed { position, paymentMethod ->
-            ExpandablePaymentMethodItem(
-                position = position,
-                name = paymentMethod.name,
-                iconUrl = paymentMethod.iconUrl,
-                onExpand = { expandPosition ->
-                    expandedPosition = expandPosition
-                },
-                isExpanded = expandedPosition == position
+            PaymentMethodList(
+                paymentMethods,
+                savedAccounts,
+                paymentOptions,
             ) {
-                Spacer(
-                    modifier = Modifier // testing content
-                        .fillMaxWidth()
-                        .height(100.dp)
-                )
+                selectedPaymentMethod = it
             }
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
-        }
-    }
-}
-
-
-@Composable
-@Preview(showBackground = true, showSystemUi = true)
-internal fun PaymentMethods() {
-    Content(
-        paymentMethods = UIPaymentMethod.previewData(10),
-        paymentOptions = PaymentOptions()
+        },
     )
 }
+

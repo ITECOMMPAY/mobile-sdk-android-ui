@@ -40,7 +40,7 @@
     <ID>FunctionNaming:TopBar.kt$@OptIn(ExperimentalComposeUiApi::class) @Composable internal fun TopBar( title: String, arrowIcon: ImageVector? = Icons.Filled.ArrowBack, listener: () -> Unit = {}, )</ID>
     <ID>LongMethod:CardView.kt$@Composable internal fun CardView( brandLogoUrl: String? = null, price: String, currency: String, vatIncludedTitle: String? = null, )</ID>
     <ID>LongMethod:ExpandablePaymentMethodItem.kt$@Composable internal fun ExpandablePaymentMethodItem( position: Int, iconUrl: String? = null, name: String, onExpand: (position: Int) -> Unit, isExpanded: Boolean = false, content: @Composable ColumnScope.() -> Unit, )</ID>
-    <ID>LongParameterList:Colors.kt$SDKColors$( //Brand color brand: Color, primaryTextColor: Color, secondaryTextColor: Color, //TopBar backgroundTopBar: Color, topBarCloseButton: Color, //Shimmer Screen backgroundShimmerItem: Color, //Payment Methods Screen backgroundExpandedPaymentDetails: Color, expandedPaymentDetailsCloseButton: Color, backgroundPaymentMethods: Color, backgroundPaymentMethodItem: Color, borderPaymentMethodItem: Color, //Footer content footerContent: Color, )</ID>
+    <ID>LongParameterList:Colors.kt$SDKColors$( //Brand color brand: Color, primaryTextColor: Color, secondaryTextColor: Color, //TopBar backgroundTopBar: Color, topBarCloseButton: Color, //Shimmer Screen backgroundShimmerItem: Color, //Payment Methods Screen backgroundExpandedPaymentDetails: Color, expandedPaymentDetailsCloseButton: Color, backgroundColor: Color, backgroundColor: Color, borderPaymentMethodItem: Color, //Footer content footerContent: Color, )</ID>
     <ID>LongParameterList:ExpandablePaymentMethodItem.kt$( position: Int, iconUrl: String? = null, name: String, onExpand: (position: Int) -> Unit, isExpanded: Boolean = false, content: @Composable ColumnScope.() -> Unit, )</ID>
     <ID>LongParameterList:PayButton.kt$( modifier: Modifier = Modifier, payLabel: String, amount: String, currency: String, isEnabled: Boolean, onClick: () -> Unit, )</ID>
     <ID>LongParameterList:PaymentDetailsContent.kt$( paymentIdLabel: String, paymentIdValue: String?, paymentDescriptionLabel: String, paymentDescriptionValue: String?, merchantAddressLabel: String, merchantAddressValue: String?, closeButtonCallback: () -> Unit )</ID>
@@ -70,7 +70,7 @@
     <ID>NewLineAtEndOfFile:DataMappersExtensions.kt$com.ecommpay.msdk.ui.utils.extensions.core.DataMappersExtensions.kt</ID>
     <ID>NewLineAtEndOfFile:DebugExtensions.kt$com.ecommpay.msdk.ui.utils.extensions.DebugExtensions.kt</ID>
     <ID>NewLineAtEndOfFile:Dimensions.kt$com.ecommpay.msdk.ui.theme.Dimensions.kt</ID>
-    <ID>NewLineAtEndOfFile:ErrorResult.kt$com.ecommpay.msdk.ui.model.common.ErrorResult.kt</ID>
+    <ID>NewLineAtEndOfFile:ErrorResult.kt$com.ecommpay.msdk.ui.base.ErrorResult.kt</ID>
     <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.ecommpay.msdk.ui.ExampleUnitTest.kt</ID>
     <ID>NewLineAtEndOfFile:ExpandablePaymentDetails.kt$com.ecommpay.msdk.ui.presentation.main.views.detail.ExpandablePaymentDetails.kt</ID>
     <ID>NewLineAtEndOfFile:ExpandablePaymentMethodItem.kt$com.ecommpay.msdk.ui.presentation.main.views.method.ExpandablePaymentMethodItem.kt</ID>

@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -32,21 +33,23 @@ import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
 internal fun ExpandablePaymentMethodItem(
-    position: Int,
+    index: Int,
     iconUrl: String? = null,
     name: String,
-    onExpand: (position: Int) -> Unit,
+    onExpand: (index: Int) -> Unit,
     isExpanded: Boolean = false,
+    headerBackgroundColor: Color = SDKTheme.colors.backgroundColor,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val rotationState by animateFloatAsState(if (isExpanded) 180f else 0f)
     Box(
         modifier = Modifier
-            .background(
-                color = SDKTheme.colors.backgroundPaymentMethodItem,
+            .background(color = if (isExpanded) SDKTheme.colors.backgroundColor else headerBackgroundColor)
+            .border(
+                width = 1.dp,
+                color = SDKTheme.colors.gray,
                 shape = SDKTheme.shapes.radius6
             )
-            .border(width = 1.dp, color = SDKTheme.colors.borderPaymentMethodItem)
             .animateContentSize(
                 animationSpec = tween(
                     durationMillis = 400,
@@ -64,7 +67,7 @@ internal fun ExpandablePaymentMethodItem(
                     interactionSource = remember { MutableInteractionSource() },
                     onClick = {
                         if (!isExpanded) {
-                            onExpand(position)
+                            onExpand(index)
                         }
                     }
                 )
@@ -98,7 +101,7 @@ internal fun ExpandablePaymentMethodItem(
                         modifier = Modifier
                             .rotate(rotationState),
                         imageVector = Icons.Default.KeyboardArrowDown,
-                        colorFilter = ColorFilter.tint(SDKTheme.colors.topBarCloseButton),
+                        colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
                         contentDescription = "",
                     )
                 }
@@ -118,7 +121,7 @@ internal fun ExpandablePaymentMethodItem(
 @Preview
 fun ExpandablePaymentMethodItemPreview() {
     ExpandablePaymentMethodItem(
-        position = 0,
+        index = 0,
         name = "Bank card",
         onExpand = {}
     ) {

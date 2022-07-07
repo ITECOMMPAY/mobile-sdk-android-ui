@@ -9,6 +9,7 @@ internal data class Dimensions(
     val paddingDp10: Dp = 10.dp,
     val paddingDp15: Dp = 15.dp,
     val paddingDp20: Dp = 20.dp,
+    val paddingDp22: Dp = 22.dp,
     val paddingDp25: Dp = 25.dp,
     val paymentMethodItemHeight: Dp = 50.dp
 )

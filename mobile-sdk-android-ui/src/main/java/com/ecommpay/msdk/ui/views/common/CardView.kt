@@ -1,12 +1,15 @@
-package com.ecommpay.msdk.ui.views.card
+package com.ecommpay.msdk.ui.views.common
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -22,21 +25,32 @@ import com.ecommpay.msdk.ui.theme.SDKTheme
 @Composable
 internal fun CardView(
     brandLogoUrl: String? = null,
-    price: String,
+    amount: String,
     currency: String,
     vatIncludedTitle: String? = null,
 ) {
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(160.dp)
-            .background(
-                color = SDKTheme.colors.brand,
-                shape = SDKTheme.shapes.radius12
-            )
-            .padding(SDKTheme.dimensions.paddingDp20)
+            .height(150.dp)
     ) {
-        Column {
+        Image(
+            painter = painterResource(id = R.drawable.card_lines_bg),
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+            colorFilter = ColorFilter.tint(
+                color = SDKTheme.colors.brand,
+                blendMode = BlendMode.Multiply
+            ),
+            modifier = Modifier.clip(SDKTheme.shapes.radius12)
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(SDKTheme.dimensions.paddingDp20),
+        ) {
             Row(
                 modifier = Modifier
                     .weight(1f),
@@ -69,7 +83,7 @@ internal fun CardView(
                             firstBaselineToTop = 0.dp,
                             lastBaselineToBottom = 0.dp
                         ),
-                        text = price,
+                        text = amount,
                         style = SDKTheme.typography.s28Bold.copy(color = Color.White)
                     )
                     Text(
@@ -84,22 +98,23 @@ internal fun CardView(
                         style = SDKTheme.typography.s16Normal.copy(color = Color.White)
                     )
                 }
-                if (!vatIncludedTitle.isNullOrEmpty()) {
-                    Spacer(modifier = Modifier.height(SDKTheme.dimensions.paddingDp10))
-                    Row {
+
+                Spacer(modifier = Modifier.height(SDKTheme.dimensions.paddingDp10))
+                Row {
+                    Text(
+                        text = stringResource(R.string.total_price_label),
+                        style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
+                    )
+                    Text(
+                        text = " "
+                    )
+                    if (!vatIncludedTitle.isNullOrEmpty())
                         Text(
-                            text = stringResource(R.string.total_price_label),
-                            style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
-                        )
-                        Text(
-                            text = " "
-                        )
-                        Text(
-                            text = "(${vatIncludedTitle})",
+                            text = vatIncludedTitle,
                             style = SDKTheme.typography.s14Light.copy(color = Color.White)
                         )
-                    }
                 }
+
             }
         }
     }
@@ -136,8 +151,8 @@ fun Modifier.baselinePadding(
 fun CardViewPreview() {
     CardView(
         brandLogoUrl = "url",
-        price = "238.00",
+        amount = "238.00",
         currency = "EUR",
-        vatIncludedTitle = stringResource(id = R.string.vat_included_label)
+        vatIncludedTitle = ""
     )
 }

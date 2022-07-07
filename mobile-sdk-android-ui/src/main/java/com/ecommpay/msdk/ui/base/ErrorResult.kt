@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.model.common
+package com.ecommpay.msdk.ui.base
 
 import com.ecommpay.msdk.core.base.ErrorCode
 

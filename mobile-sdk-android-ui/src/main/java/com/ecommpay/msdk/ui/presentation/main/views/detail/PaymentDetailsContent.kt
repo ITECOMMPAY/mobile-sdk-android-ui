@@ -44,7 +44,7 @@ fun PaymentDetailsContent(
                     }
                 ),
                 imageVector = Icons.Default.Close,
-                colorFilter = ColorFilter.tint(SDKTheme.colors.expandedPaymentDetailsCloseButton),
+                colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
                 contentDescription = "",
             )
         }
