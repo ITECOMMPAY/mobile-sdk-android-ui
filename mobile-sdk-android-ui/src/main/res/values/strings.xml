@@ -2,7 +2,8 @@
     <string name="app_name">SDK COMPOSE UI</string>
 
     <string name="total_price_label">Total price</string>
-    <string name="vat_included_label">VAT included</string>
     <string name="powered_by_label">Powered by</string>
+
+    <string name="button_pay_title">Pay</string>
 
 </resources>

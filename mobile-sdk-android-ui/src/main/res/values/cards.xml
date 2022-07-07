@@ -1,0 +1,4 @@
+<resources>
+    <string name="expiry_title">Expiry</string>
+    <string name="cvv_title">CVV</string>
+</resources>

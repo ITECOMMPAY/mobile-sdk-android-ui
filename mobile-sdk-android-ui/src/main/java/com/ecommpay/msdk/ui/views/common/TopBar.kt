@@ -29,8 +29,8 @@ internal fun TopBar(
     listener: () -> Unit = {},
 ) {
     Surface(
-        color = SDKTheme.colors.backgroundTopBar,
-        contentColor = SDKTheme.colors.topBarCloseButton
+        color = SDKTheme.colors.backgroundColor,
+        contentColor = SDKTheme.colors.iconColor
     ) {
         Row(
             Modifier
@@ -58,7 +58,7 @@ internal fun TopBar(
                         )
                         .padding(end = 35.dp),
                     imageVector = arrowIcon,
-                    colorFilter = ColorFilter.tint(SDKTheme.colors.topBarCloseButton),
+                    colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
                     contentDescription = "",
                 )
             }
@@ -71,7 +71,7 @@ internal fun TopBar(
                     }
                 ),
                 imageVector = Icons.Default.Close,
-                colorFilter = ColorFilter.tint(SDKTheme.colors.topBarCloseButton),
+                colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
                 contentDescription = "",
             )
         }

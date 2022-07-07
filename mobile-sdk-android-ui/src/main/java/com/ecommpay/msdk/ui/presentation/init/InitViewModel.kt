@@ -11,7 +11,7 @@ import com.ecommpay.msdk.core.domain.interactors.init.InitRequest
 import com.ecommpay.msdk.ui.base.mvi.Reducer
 import com.ecommpay.msdk.ui.base.mvi.TimeMachine
 import com.ecommpay.msdk.ui.base.mvvm.BaseViewModel
-import com.ecommpay.msdk.ui.model.common.ErrorResult
+import com.ecommpay.msdk.ui.base.ErrorResult
 import kotlinx.coroutines.flow.StateFlow
 
 internal class InitViewModel(

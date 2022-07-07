@@ -18,7 +18,7 @@ import com.ecommpay.msdk.ui.navigation.Navigator
 import com.ecommpay.msdk.ui.navigation.Route
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.viewModelFactory
-import com.ecommpay.msdk.ui.views.common.Scaffold
+import com.ecommpay.msdk.ui.views.common.SDKScaffold
 import com.ecommpay.msdk.ui.views.shimmer.ShimmerAnimatedItem
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -52,7 +52,7 @@ internal fun InitScreen(
 
 @Composable
 private fun Content() {
-    Scaffold(
+    SDKScaffold(
         title = stringResource(R.string.payment_methods_label),
         notScrollableContent = { Loading() }
     )

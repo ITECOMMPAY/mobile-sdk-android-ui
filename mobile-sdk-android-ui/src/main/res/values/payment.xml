@@ -5,4 +5,5 @@
     <string name="payment_description_title">Description</string>
 
     <string name="card_payment_method_label">Pay With a New Card</string>
+    <string name="google_pay_host_title">Google Pay</string>
 </resources>

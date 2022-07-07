@@ -28,7 +28,7 @@ internal fun PayButton(
     Box(
         modifier = Modifier
             .wrapContentSize()
-            .background(SDKTheme.colors.backgroundPaymentMethods)
+            .background(SDKTheme.colors.backgroundColor)
     ) {
         Button(
             onClick = onClick,

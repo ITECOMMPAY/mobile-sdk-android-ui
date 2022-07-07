@@ -8,24 +8,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-internal class SDKColors(
+internal class Colors(
     //Brand color
     brand: Color,
     primaryTextColor: Color,
     secondaryTextColor: Color,
-    //TopBar
-    backgroundTopBar: Color,
-    topBarCloseButton: Color,
-    //Shimmer Screen
-    backgroundShimmerItem: Color,
-    //Payment Methods Screen
-    backgroundExpandedPaymentDetails: Color,
-    expandedPaymentDetailsCloseButton: Color,
-    backgroundPaymentMethods: Color,
-    backgroundPaymentMethodItem: Color,
-    borderPaymentMethodItem: Color,
-    //Footer content
-    footerContent: Color,
+    disabledTextColor: Color,
+    backgroundColor: Color,
+    lightGray: Color,
+    mediumGray: Color,
+    gray: Color,
+    iconColor: Color,
 ) {
     var brand by mutableStateOf(brand)
         private set
@@ -33,55 +26,47 @@ internal class SDKColors(
         private set
     var secondaryTextColor by mutableStateOf(secondaryTextColor)
         private set
-    var backgroundTopBar by mutableStateOf(backgroundTopBar)
+    var disabledTextColor by mutableStateOf(disabledTextColor)
         private set
-    var topBarCloseButton by mutableStateOf(topBarCloseButton)
+    var lightGray by mutableStateOf(lightGray)
         private set
-    var backgroundShimmerItem by mutableStateOf(backgroundShimmerItem)
+    var backgroundColor by mutableStateOf(backgroundColor)
         private set
-    var backgroundExpandedPaymentDetails by mutableStateOf(backgroundExpandedPaymentDetails)
+    var mediumGray by mutableStateOf(mediumGray)
         private set
-    var expandedPaymentDetailsCloseButton by mutableStateOf(expandedPaymentDetailsCloseButton)
+    var gray by mutableStateOf(gray)
         private set
-    var backgroundPaymentMethods by mutableStateOf(backgroundPaymentMethods)
-        private set
-    var backgroundPaymentMethodItem by mutableStateOf(backgroundPaymentMethodItem)
-        private set
-    var borderPaymentMethodItem by mutableStateOf(borderPaymentMethodItem)
-        private set
-    var footerContent by mutableStateOf(footerContent)
+    var iconColor by mutableStateOf(iconColor)
         private set
 }
 
 val BrandLight = Color(0xFF00579E)
 
-//Default Light theme
-private val colorLightBrand = Color(0xFF00579E)
-private val colorLightBackgroundTopBar = Color(0xFFFFFFFF)
-private val colorLightTopBarCloseButton = Color(0xFF00579E)
-private val colorLightBackgroundShimmerItem = Color(0xFFF6F7F9)
-private val colorLightBackgroundExpandedPaymentDetails = Color(0xFFF6F7F9)
-private val colorLightExpandedPaymentDetailsCloseButton = Color(0xFF000000)
-private val colorLightBackgroundPaymentMethods = Color(0xFFFFFFFF)
-private val colorLightBackgroundPaymentMethodItem = Color(0xFFFFFFFF)
-private val colorLightBorderPaymentMethodItem = Color(0xFFEBEBEE)
-private val colorLightFooterContent = Color(0xFFBCBDBE)
-private val colorLightPrimaryText = Color(0xFF000000)
-private val colorLightSecondaryText = Color(0xFF666666)
+private val colorBlack = Color(0xFF000000)
+private val colorWhite = Color(0xFFFFFFFF)
 
-internal fun lightColors(brand: Color = colorLightBrand): SDKColors = SDKColors(
+//Default Light theme
+private val lightThemeBrandColor = Color(0xFF00579E)
+
+//private val colorLightTopBarCloseButton = Color(0xFF00579E)
+private val lightThemeLightGrayColor = Color(0xFFF6F7F9)
+private val lightThemeMediumGrayColor = Color(0xFFBCBDBE)
+private val lightThemeDarkGrayColor = Color(0xFF666666)
+private val lightThemeGrayColor = Color(0xFFEBEBEE)
+
+//private val colorLightBackgroundExpandedPaymentDetails = Color(0xFFF6F7F9)
+
+
+internal fun lightColors(brand: Color = lightThemeBrandColor): Colors = Colors(
     brand = brand,
-    primaryTextColor = colorLightPrimaryText,
-    secondaryTextColor = colorLightSecondaryText,
-    backgroundTopBar = colorLightBackgroundTopBar,
-    topBarCloseButton = colorLightTopBarCloseButton,
-    backgroundShimmerItem = colorLightBackgroundShimmerItem,
-    backgroundExpandedPaymentDetails = colorLightBackgroundExpandedPaymentDetails,
-    expandedPaymentDetailsCloseButton = colorLightExpandedPaymentDetailsCloseButton,
-    backgroundPaymentMethods = colorLightBackgroundPaymentMethods,
-    backgroundPaymentMethodItem = colorLightBackgroundPaymentMethodItem,
-    borderPaymentMethodItem = colorLightBorderPaymentMethodItem,
-    footerContent = colorLightFooterContent,
+    primaryTextColor = colorBlack,
+    secondaryTextColor = lightThemeDarkGrayColor,
+    disabledTextColor = lightThemeMediumGrayColor,
+    lightGray = lightThemeLightGrayColor,
+    backgroundColor = colorWhite,
+    mediumGray = lightThemeMediumGrayColor,
+    gray = lightThemeGrayColor,
+    iconColor = colorBlack,
 )
 
 
