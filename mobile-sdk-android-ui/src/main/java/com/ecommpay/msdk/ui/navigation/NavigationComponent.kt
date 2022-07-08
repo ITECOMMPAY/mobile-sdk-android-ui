@@ -2,11 +2,9 @@ package com.ecommpay.msdk.ui.navigation
 
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.ecommpay.msdk.ui.PaymentActivity
@@ -35,18 +33,8 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
         startDestination = Route.Init.getPath(),
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
-        popEnterTransition = {
-            slideIntoContainer(
-                AnimatedContentScope.SlideDirection.Up,
-                animationSpec = tween(700)
-            )
-        },
-        popExitTransition = {
-            slideOutOfContainer(
-                AnimatedContentScope.SlideDirection.Down,
-                animationSpec = tween(700)
-            )
-        }
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None }
     ) {
         composable(route = Route.Init.getPath()) {
             BackHandler(true) { }

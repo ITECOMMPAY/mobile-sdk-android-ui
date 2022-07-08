@@ -66,9 +66,7 @@ private fun Content(
                     else -> null
                 }
             )
-            Spacer(
-                modifier = Modifier.size(SDKTheme.dimensions.paddingDp15)
-            )
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
         },
         scrollableContent = {
             PaymentMethodList(

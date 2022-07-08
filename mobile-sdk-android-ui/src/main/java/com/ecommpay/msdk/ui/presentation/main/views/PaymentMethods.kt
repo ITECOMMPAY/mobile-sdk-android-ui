@@ -11,6 +11,7 @@ import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
 import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.ui.PaymentOptions
 import com.ecommpay.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.ecommpay.msdk.ui.presentation.main.views.method.NewCardItem
 import com.ecommpay.msdk.ui.presentation.main.views.method.PaymentMethodItem
 import com.ecommpay.msdk.ui.presentation.main.views.method.SavedCardItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
@@ -32,7 +33,6 @@ internal fun PaymentMethodList(
         onItemSelected?.invoke(mergedPaymentMethods.first())
     }
 
-
     var selectedPaymentMethod by remember { mutableStateOf(mergedPaymentMethods.first()) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -48,7 +48,7 @@ internal fun PaymentMethodList(
                     }
                 }
                 is UIPaymentMethod.UICardPayPaymentMethod -> {
-                    PaymentMethodItem(
+                    NewCardItem(
                         isExpand = selectedPaymentMethod.index == it.index,
                         paymentMethod = it,
                     ) { method ->

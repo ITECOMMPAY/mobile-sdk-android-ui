@@ -17,7 +17,7 @@ import androidx.compose.material.BottomDrawer
 import androidx.compose.material.BottomDrawerState
 import androidx.compose.material.BottomDrawerValue
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -28,6 +28,7 @@ import com.ecommpay.msdk.core.domain.entities.payment.Payment
 import com.ecommpay.msdk.ui.navigation.NavigationComponent
 import com.ecommpay.msdk.ui.navigation.Navigator
 import com.ecommpay.msdk.ui.theme.SDKTheme
+import kotlinx.coroutines.delay
 
 internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
     @OptIn(ExperimentalMaterialApi::class)
@@ -40,19 +41,22 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
         super.onCreate(savedInstanceState)
 
         setContent {
+            var drawerState by remember { mutableStateOf(BottomDrawerState(initialValue = BottomDrawerValue.Closed)) }
+            LaunchedEffect(Unit) {
+                drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded)
+            }
+
             BottomDrawer(
                 modifier = Modifier.wrapContentSize(),
                 drawerContent = {
                     SDKTheme() {
-                        Box(contentAlignment = Alignment.BottomCenter) {
-                            NavigationComponent(
-                                navigator = navigator,
-                                delegate = this@PaymentActivity
-                            )
-                        }
+                        NavigationComponent(
+                            navigator = navigator,
+                            delegate = this@PaymentActivity
+                        )
                     }
                 },
-                drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded),
+                drawerState = drawerState,
                 drawerBackgroundColor = Color.Transparent,
                 gesturesEnabled = false,
                 drawerShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
@@ -73,7 +77,7 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     companion object {
         lateinit var paymentOptions: PaymentOptions
-        private val config = MSDKCoreSessionConfig.nl3WithDebug()
+        private val config = MSDKCoreSessionConfig.nl3DebugInitCustomerFieldsReturnedSuccess()
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
         val navigator = Navigator()
@@ -81,7 +85,9 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         fun buildPaymentIntent(context: Context, paymentOptions: PaymentOptions): Intent {
             this.paymentOptions = paymentOptions
-            return Intent(context, PaymentActivity::class.java)
+            val intent = Intent(context, PaymentActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            return intent
         }
     }
 

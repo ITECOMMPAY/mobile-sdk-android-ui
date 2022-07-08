@@ -32,7 +32,7 @@ fun PaymentDetailsView(paymentOptions: PaymentOptions) {
                 ?: stringResource(R.string.payment_id_title),
             paymentDescriptionValue = paymentOptions.paymentInfo?.paymentDescription,
             merchantAddressLabel = stringResource(R.string.merchant_address_title),
-            merchantAddressValue = PaymentActivity.stringResourceManager.merchant.address
+            merchantAddressValue = null
         ) {
             expandPaymentDetailsState = false
         }
