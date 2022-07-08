@@ -14,11 +14,14 @@ internal class Colors(
     primaryTextColor: Color,
     secondaryTextColor: Color,
     disabledTextColor: Color,
+    errorTextColor: Color,
     backgroundColor: Color,
-    lightGray: Color,
-    mediumGray: Color,
-    gray: Color,
+    panelBackgroundColor: Color,
+    panelBackgroundErrorColor: Color,
+    borderColor: Color,
+    borderErrorColor: Color,
     iconColor: Color,
+    footerTextColor: Color,
 ) {
     var brand by mutableStateOf(brand)
         private set
@@ -28,14 +31,20 @@ internal class Colors(
         private set
     var disabledTextColor by mutableStateOf(disabledTextColor)
         private set
-    var lightGray by mutableStateOf(lightGray)
+    var errorTextColor by mutableStateOf(errorTextColor)
         private set
     var backgroundColor by mutableStateOf(backgroundColor)
         private set
-    var mediumGray by mutableStateOf(mediumGray)
+    var panelBackgroundColor by mutableStateOf(panelBackgroundColor)
         private set
-    var gray by mutableStateOf(gray)
+    var borderColor by mutableStateOf(borderColor)
         private set
+    var footerTextColor by mutableStateOf(footerTextColor)
+        private set
+    var panelBackgroundErrorColor by mutableStateOf(panelBackgroundErrorColor)
+        private set
+    var borderErrorColor by mutableStateOf(borderErrorColor)
+
     var iconColor by mutableStateOf(iconColor)
         private set
 }
@@ -48,13 +57,13 @@ private val colorWhite = Color(0xFFFFFFFF)
 //Default Light theme
 private val lightThemeBrandColor = Color(0xFF00579E)
 
-//private val colorLightTopBarCloseButton = Color(0xFF00579E)
 private val lightThemeLightGrayColor = Color(0xFFF6F7F9)
 private val lightThemeMediumGrayColor = Color(0xFFBCBDBE)
 private val lightThemeDarkGrayColor = Color(0xFF666666)
 private val lightThemeGrayColor = Color(0xFFEBEBEE)
 
-//private val colorLightBackgroundExpandedPaymentDetails = Color(0xFFF6F7F9)
+private val lightThemeRedColor = Color(0xFFC03230)
+private val lightThemeLightRedColor = Color(0xFFF8EAEA)
 
 
 internal fun lightColors(brand: Color = lightThemeBrandColor): Colors = Colors(
@@ -62,11 +71,14 @@ internal fun lightColors(brand: Color = lightThemeBrandColor): Colors = Colors(
     primaryTextColor = colorBlack,
     secondaryTextColor = lightThemeDarkGrayColor,
     disabledTextColor = lightThemeMediumGrayColor,
-    lightGray = lightThemeLightGrayColor,
+    errorTextColor = lightThemeRedColor,
     backgroundColor = colorWhite,
-    mediumGray = lightThemeMediumGrayColor,
-    gray = lightThemeGrayColor,
     iconColor = colorBlack,
+    panelBackgroundColor = lightThemeLightGrayColor,
+    borderColor = lightThemeGrayColor,
+    footerTextColor = lightThemeMediumGrayColor,
+    panelBackgroundErrorColor = lightThemeLightRedColor,
+    borderErrorColor = lightThemeRedColor
 )
 
 

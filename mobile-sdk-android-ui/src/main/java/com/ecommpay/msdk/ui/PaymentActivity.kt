@@ -77,7 +77,7 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     companion object {
         lateinit var paymentOptions: PaymentOptions
-        private val config = MSDKCoreSessionConfig.nl3DebugInitCustomerFieldsReturnedSuccess()
+        private val config = MSDKCoreSessionConfig.mockFullSuccessFlow()
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
         val navigator = Navigator()

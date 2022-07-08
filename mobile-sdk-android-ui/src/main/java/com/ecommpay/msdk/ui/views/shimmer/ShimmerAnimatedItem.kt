@@ -2,7 +2,6 @@ package com.ecommpay.msdk.ui.views.shimmer
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -39,7 +38,8 @@ internal fun ShimmerAnimatedItem(
                     delayMillis = 500
                 ),
                 repeatMode = RepeatMode.Restart
-            ))
+            )
+        )
 
         val yShimmer = infiniteTransition.animateFloat(
             initialValue = 0f,
@@ -51,18 +51,19 @@ internal fun ShimmerAnimatedItem(
                     delayMillis = 500
                 ),
                 repeatMode = RepeatMode.Restart
-            ))
+            )
+        )
 
-        Column(content = {
-            ShimmerItem(
-                xShimmer = xShimmer.value,
-                yShimmer = yShimmer.value,
-                itemHeight = itemHeight,
-                itemWidth = itemWidth,
-                gradientWidth = gradientWidth,
-                padding = padding,
-                borderRadius = borderRadius)
-        })
+        ShimmerItem(
+            xShimmer = xShimmer.value,
+            yShimmer = yShimmer.value,
+            itemHeight = itemHeight,
+            itemWidth = itemWidth,
+            gradientWidth = gradientWidth,
+            padding = padding,
+            borderRadius = borderRadius
+        )
+
     }
 }
 

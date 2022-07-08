@@ -73,7 +73,7 @@
     <ID>NewLineAtEndOfFile:ErrorResult.kt$com.ecommpay.msdk.ui.base.ErrorResult.kt</ID>
     <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.ecommpay.msdk.ui.ExampleUnitTest.kt</ID>
     <ID>NewLineAtEndOfFile:ExpandablePaymentDetails.kt$com.ecommpay.msdk.ui.presentation.main.views.detail.ExpandablePaymentDetails.kt</ID>
-    <ID>NewLineAtEndOfFile:ExpandablePaymentMethodItem.kt$com.ecommpay.msdk.ui.presentation.main.views.method.ExpandablePaymentMethodItem.kt</ID>
+    <ID>NewLineAtEndOfFile:ExpandablePaymentMethodItem.kt$com.ecommpay.msdk.ui.presentation.main.views.expandable.ExpandablePaymentMethodItem.kt</ID>
     <ID>NewLineAtEndOfFile:Footer.kt$com.ecommpay.msdk.ui.views.common.Footer.kt</ID>
     <ID>NewLineAtEndOfFile:Images.kt$com.ecommpay.msdk.ui.theme.Images.kt</ID>
     <ID>NewLineAtEndOfFile:InitViewModel.kt$com.ecommpay.msdk.ui.presentation.init.InitViewModel.kt</ID>

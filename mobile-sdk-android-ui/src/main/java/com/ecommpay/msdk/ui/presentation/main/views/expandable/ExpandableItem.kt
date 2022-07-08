@@ -1,4 +1,4 @@
-package com.ecommpay.msdk.ui.presentation.main.views.method
+package com.ecommpay.msdk.ui.presentation.main.views.expandable
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -32,7 +32,7 @@ import coil.request.ImageRequest
 import com.ecommpay.msdk.ui.theme.SDKTheme
 
 @Composable
-internal fun ExpandablePaymentMethodItem(
+internal fun ExpandableItem(
     index: Int,
     iconUrl: String? = null,
     name: String,
@@ -47,7 +47,7 @@ internal fun ExpandablePaymentMethodItem(
             .background(color = if (isExpanded) SDKTheme.colors.backgroundColor else headerBackgroundColor)
             .border(
                 width = 1.dp,
-                color = SDKTheme.colors.gray,
+                color = SDKTheme.colors.borderColor,
                 shape = SDKTheme.shapes.radius6
             )
             .animateContentSize(
@@ -66,13 +66,12 @@ internal fun ExpandablePaymentMethodItem(
                     indication = null, //отключаем анимацию при клике
                     interactionSource = remember { MutableInteractionSource() },
                     onClick = {
-                        if (!isExpanded) {
+                        if (!isExpanded)
                             onExpand(index)
-                        }
                     }
                 )
         ) {
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(iconUrl)
@@ -82,8 +81,7 @@ internal fun ExpandablePaymentMethodItem(
                     contentDescription = "",
                     contentScale = ContentScale.Inside,
                     placeholder = painterResource(id = SDKTheme.images.cardLogoResId),
-                    modifier = Modifier
-                        .size(height = 20.dp, width = 50.dp),
+                    modifier = Modifier.size(height = 20.dp, width = 50.dp),
                     alignment = Alignment.CenterStart
                 )
                 Row(
@@ -120,7 +118,7 @@ internal fun ExpandablePaymentMethodItem(
 @Composable
 @Preview
 fun ExpandablePaymentMethodItemPreview() {
-    ExpandablePaymentMethodItem(
+    ExpandableItem(
         index = 0,
         name = "Bank card",
         onExpand = {}

@@ -5,8 +5,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 internal data class Dimensions(
+    val paddingDp4: Dp = 4.dp,
     val paddingDp5: Dp = 5.dp,
     val paddingDp10: Dp = 10.dp,
+    val paddingDp12: Dp = 12.dp,
     val paddingDp15: Dp = 15.dp,
     val paddingDp20: Dp = 20.dp,
     val paddingDp22: Dp = 22.dp,
