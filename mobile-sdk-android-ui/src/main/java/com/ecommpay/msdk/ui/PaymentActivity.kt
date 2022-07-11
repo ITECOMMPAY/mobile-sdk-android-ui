@@ -25,6 +25,7 @@ import com.ecommpay.msdk.core.MSDKCoreSession
 import com.ecommpay.msdk.core.MSDKCoreSessionConfig
 import com.ecommpay.msdk.core.base.ErrorCode
 import com.ecommpay.msdk.core.domain.entities.payment.Payment
+import com.ecommpay.msdk.core.mock.init.MockInitCustomerFieldsConfig
 import com.ecommpay.msdk.ui.navigation.NavigationComponent
 import com.ecommpay.msdk.ui.navigation.Navigator
 import com.ecommpay.msdk.ui.theme.SDKTheme
@@ -77,7 +78,7 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     companion object {
         lateinit var paymentOptions: PaymentOptions
-        private val config = MSDKCoreSessionConfig.mockFullSuccessFlow()
+        private val config = MSDKCoreSessionConfig.mockFullSuccessFlow(customerFieldsConfig = MockInitCustomerFieldsConfig.ALL)
         val msdkSession = MSDKCoreSession(config)
         val stringResourceManager = msdkSession.getStringResourceManager()
         val navigator = Navigator()

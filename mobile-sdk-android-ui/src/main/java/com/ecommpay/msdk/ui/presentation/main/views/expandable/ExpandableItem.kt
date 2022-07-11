@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -35,6 +36,7 @@ import com.ecommpay.msdk.ui.theme.SDKTheme
 internal fun ExpandableItem(
     index: Int,
     iconUrl: String? = null,
+    fallbackIcon: Painter,
     name: String,
     onExpand: (index: Int) -> Unit,
     isExpanded: Boolean = false,
@@ -77,10 +79,10 @@ internal fun ExpandableItem(
                         .data(iconUrl)
                         .crossfade(true)
                         .build(),
-                    fallback = painterResource(id = SDKTheme.images.cardLogoResId),
+                    fallback = fallbackIcon,//painterResource(id = SDKTheme.images.cardLogoResId),
                     contentDescription = "",
                     contentScale = ContentScale.Inside,
-                    placeholder = painterResource(id = SDKTheme.images.cardLogoResId),
+                    placeholder = fallbackIcon,//painterResource(id = SDKTheme.images.cardLogoResId),
                     modifier = Modifier.size(height = 20.dp, width = 50.dp),
                     alignment = Alignment.CenterStart
                 )
@@ -121,6 +123,7 @@ fun ExpandablePaymentMethodItemPreview() {
     ExpandableItem(
         index = 0,
         name = "Bank card",
+        fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
         onExpand = {}
     ) {
         Text(text = "sdfsdfsdf") // testing content (delete later)

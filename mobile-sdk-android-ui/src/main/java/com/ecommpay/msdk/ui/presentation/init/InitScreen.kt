@@ -31,7 +31,9 @@ internal fun InitScreen(
             InitViewModel(
                 initInteractor = PaymentActivity.msdkSession.getInitInteractor(),
                 paymentInfo = PaymentActivity.paymentOptions.paymentInfo
-                    ?: throw IllegalAccessException("Payment Info can not be null")
+                    ?: throw IllegalAccessException("Payment Info can not be null"),
+                threeDSecureInfo = PaymentActivity.paymentOptions.threeDSecureInfo,
+                recurrentInfo = PaymentActivity.paymentOptions.recurrentInfo
             )
         }
     ),
