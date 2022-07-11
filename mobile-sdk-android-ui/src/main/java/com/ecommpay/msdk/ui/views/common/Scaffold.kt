@@ -21,6 +21,7 @@ internal fun SDKScaffold(
     title: String = "",
     notScrollableContent: @Composable () -> Unit = {},
     scrollableContent: @Composable () -> Unit = {},
+    onClose: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -34,7 +35,7 @@ internal fun SDKScaffold(
             ) {
                 TopBar(
                     title = title,
-                    arrowIcon = null
+                    onClose = onClose
                 )
                 notScrollableContent()
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {

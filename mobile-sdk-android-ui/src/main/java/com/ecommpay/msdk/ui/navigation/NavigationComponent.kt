@@ -41,12 +41,12 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
             InitScreen(navigator = navigator, delegate = delegate)
         }
         composable(route = Route.Main.getPath()) {
-            BackHandler(true) { }
             MainScreen(
                 navigator = navigator,
                 paymentMethods = PaymentActivity.msdkSession.getPaymentMethods() ?: emptyList(),
                 savedAccounts = PaymentActivity.msdkSession.getSavedAccounts() ?: emptyList(),
-                paymentOptions = PaymentActivity.paymentOptions
+                paymentOptions = PaymentActivity.paymentOptions,
+                delegate = delegate
             )
         }
         composable(route = Route.Result.getPath()) {

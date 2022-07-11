@@ -11,4 +11,6 @@ internal interface PaymentDelegate {
     fun onCompleteWithFail(status: String?, payment: Payment)
 
     fun onCompleteWithDecline(payment: Payment)
+
+    fun onCancel()
 }

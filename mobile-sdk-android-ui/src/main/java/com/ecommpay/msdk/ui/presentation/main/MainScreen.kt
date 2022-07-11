@@ -1,5 +1,6 @@
 package com.ecommpay.msdk.ui.presentation.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
@@ -9,6 +10,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
 import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.ui.PaymentActivity
+import com.ecommpay.msdk.ui.PaymentDelegate
 import com.ecommpay.msdk.ui.PaymentOptions
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.navigation.Navigator
@@ -35,12 +37,19 @@ internal fun MainScreen(
         }
     ),
     navigator: Navigator,
+    delegate: PaymentDelegate,
     paymentMethods: List<PaymentMethod>,
     savedAccounts: List<SavedAccount>,
     paymentOptions: PaymentOptions,
 ) {
     // val state by viewModel.state.collectAsState()
-    Content(paymentMethods, savedAccounts, paymentOptions)
+    BackHandler(true) { delegate.onCancel() }
+    Content(
+        paymentMethods = paymentMethods,
+        savedAccounts = savedAccounts,
+        paymentOptions = paymentOptions,
+        delegate = delegate
+    )
 }
 
 
@@ -49,6 +58,7 @@ private fun Content(
     paymentMethods: List<PaymentMethod>,
     savedAccounts: List<SavedAccount>,
     paymentOptions: PaymentOptions,
+    delegate: PaymentDelegate,
 ) {
     var selectedPaymentMethod by remember { mutableStateOf<UIPaymentMethod?>(null) }
     SDKScaffold(
@@ -77,6 +87,9 @@ private fun Content(
                 selectedPaymentMethod = it
             }
         },
+        onClose = {
+            delegate.onCancel()
+        }
     )
 }
 

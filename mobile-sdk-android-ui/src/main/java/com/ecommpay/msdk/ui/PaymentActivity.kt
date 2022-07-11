@@ -29,7 +29,6 @@ import com.ecommpay.msdk.core.mock.init.MockInitCustomerFieldsConfig
 import com.ecommpay.msdk.ui.navigation.NavigationComponent
 import com.ecommpay.msdk.ui.navigation.Navigator
 import com.ecommpay.msdk.ui.theme.SDKTheme
-import kotlinx.coroutines.delay
 
 internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
     @OptIn(ExperimentalMaterialApi::class)
@@ -123,6 +122,17 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
         val dataIntent = Intent()
         setResult(PaymentSDK.RESULT_DECLINE, dataIntent)
         finish()
+    }
+
+    override fun onCancel() {
+        val dataIntent = Intent()
+        setResult(PaymentSDK.RESULT_CANCELLED, dataIntent)
+        finish()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        overridePendingTransition(0, 0)
     }
 
 }
