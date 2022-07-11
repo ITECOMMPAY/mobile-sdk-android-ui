@@ -3,6 +3,7 @@ package com.ecommpay.msdk.ui.presentation.main.views.method
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
@@ -28,7 +29,8 @@ internal fun SavedCardItem(
         iconUrl = paymentMethod.savedAccount.cardUrlLogo,
         headerBackgroundColor = SDKTheme.colors.panelBackgroundColor,
         onExpand = { onItemSelected?.invoke(paymentMethod) },
-        isExpanded = isExpand
+        isExpanded = isExpand,
+        fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
     ) {
         Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
         Column(Modifier.fillMaxWidth()) {

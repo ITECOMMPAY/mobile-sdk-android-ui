@@ -14,26 +14,22 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
 ): List<UIPaymentMethod> {
     val result = mutableListOf<UIPaymentMethod>()
 
-    //val googlePayMethod = find { it.type == PaymentMethodType.GOOGLE_PAY }
+    val googlePayMethod = find { it.type == PaymentMethodType.GOOGLE_PAY }
     val cardPayMethod = find { it.type == PaymentMethodType.CARD }
 
     var position = 0
-
-    //map payment methods for ui
-
     //get google pay host
-
-//    googlePayMethod?.let {
-//        uiPaymentMethods.add(
-//            UIPaymentMethod.UIGooglePayPaymentMethod(
-//                index = position,
-//                title = PaymentActivity.stringResourceManager.getStringByKey("google_pay_host_title")
-//                    ?: stringResource(id = R.string.google_pay_host_title),
-//                paymentMethod = it
-//            )
-//        )
-//        position += 1
-//    }
+    googlePayMethod?.let {
+        result.add(
+            UIPaymentMethod.UIGooglePayPaymentMethod(
+                index = position,
+                title = PaymentActivity.stringResourceManager.getStringByKey("google_pay_host_title")
+                    ?: context.getString(R.string.google_pay_host_title),
+                paymentMethod = it
+            )
+        )
+        position += 1
+    }
 
     //get saved cards
     savedAccounts?.forEach {

@@ -13,6 +13,7 @@ import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
 import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.ui.PaymentOptions
 import com.ecommpay.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.ecommpay.msdk.ui.presentation.main.views.method.GooglePayItem
 import com.ecommpay.msdk.ui.presentation.main.views.method.NewCardItem
 import com.ecommpay.msdk.ui.presentation.main.views.method.SavedCardItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
@@ -30,11 +31,18 @@ internal fun PaymentMethodList(
         paymentMethods.mergeUIPaymentMethods(LocalContext.current, savedAccounts)
 
     if (mergedPaymentMethods.isEmpty()) return
-    LaunchedEffect(Unit) {
-        onItemSelected?.invoke(mergedPaymentMethods.first())
-    }
 
     var selectedPaymentMethod by remember { mutableStateOf(mergedPaymentMethods.first()) }
+
+
+    LaunchedEffect(Unit) {
+        val firstPaymentMethodCustomerFields =
+            mergedPaymentMethods.first().paymentMethod?.customerFields
+        if (mergedPaymentMethods.first() is UIPaymentMethod.UIGooglePayPaymentMethod && firstPaymentMethodCustomerFields.isNullOrEmpty()) //if first method is google pay without customer fields
+            selectedPaymentMethod =
+                mergedPaymentMethods[1.coerceAtMost(mergedPaymentMethods.size - 1)]
+        onItemSelected?.invoke(selectedPaymentMethod)
+    }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         mergedPaymentMethods.forEach {
@@ -58,7 +66,13 @@ internal fun PaymentMethodList(
                     }
                 }
                 is UIPaymentMethod.UIGooglePayPaymentMethod -> {
-
+                    GooglePayItem(
+                        isExpand = selectedPaymentMethod.index == it.index,
+                        paymentMethod = it
+                    ) { method ->
+                        selectedPaymentMethod = method
+                        onItemSelected?.invoke(method)
+                    }
                 }
             }
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
