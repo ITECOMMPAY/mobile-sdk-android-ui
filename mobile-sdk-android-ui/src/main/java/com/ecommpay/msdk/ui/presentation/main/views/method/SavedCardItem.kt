@@ -9,6 +9,7 @@ import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.ecommpay.msdk.ui.presentation.main.views.expandable.ExpandableItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.amountToCoins
 import com.ecommpay.msdk.ui.views.button.PayButton
@@ -21,11 +22,11 @@ internal fun SavedCardItem(
     paymentMethod: UIPaymentMethod.UISavedCardPayPaymentMethod,
     onItemSelected: ((method: UIPaymentMethod) -> Unit)? = null,
 ) {
-    ExpandablePaymentMethodItem(
+    ExpandableItem(
         index = paymentMethod.index,
         name = paymentMethod.savedAccount.number ?: "***",
         iconUrl = paymentMethod.savedAccount.cardUrlLogo,
-        headerBackgroundColor = SDKTheme.colors.lightGray,
+        headerBackgroundColor = SDKTheme.colors.panelBackgroundColor,
         onExpand = { onItemSelected?.invoke(paymentMethod) },
         isExpanded = isExpand
     ) {
@@ -34,9 +35,9 @@ internal fun SavedCardItem(
             Row {
                 ExpiryField(
                     modifier = Modifier.weight(1f),
-                    value = paymentMethod.savedAccount.cardExpiry ?: "",
+                    value = paymentMethod.savedAccount.cardExpiry?.stringValue ?: "",
                     isDisabled = true,
-                    onValueChange = {}
+                    onValueEntered = {}
                 )
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
                 CvvField(
@@ -44,7 +45,6 @@ internal fun SavedCardItem(
                     onCvvEntered = {}
                 )
             }
-
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp22))
             PayButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay")
@@ -71,7 +71,6 @@ private fun SavedCardItemPreview() {
             savedAccount = SavedAccount(
                 id = 0,
                 number = "**** 3456",
-                cardExpiry = "02/30",
                 cardUrlLogo = "https://pp-sdk.westresscode.net/card_icons/mastercard.png"
             ),
             paymentMethod = null

@@ -23,9 +23,7 @@ internal class MainViewModel(
     class MainReducer(initial: MainScreenState) :
         Reducer<MainScreenState, MainScreenUiEvent>(initial) {
         override fun reduce(oldState: MainScreenState, event: MainScreenUiEvent) {
-            when (event) {
 
-            }
         }
     }
 }

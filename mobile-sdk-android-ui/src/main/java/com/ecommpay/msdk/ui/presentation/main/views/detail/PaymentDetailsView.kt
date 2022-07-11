@@ -60,12 +60,12 @@ fun ExpandablePaymentDetails(
             Column(
                 modifier = Modifier
                     .background(
-                        color = SDKTheme.colors.lightGray,
+                        color = SDKTheme.colors.panelBackgroundColor,
                         shape = SDKTheme.shapes.radius12
                     )
                     .border(
                         width = 1.dp,
-                        color = SDKTheme.colors.gray,
+                        color = SDKTheme.colors.borderColor,
                         shape = SDKTheme.shapes.radius12
                     )
                     .padding(SDKTheme.dimensions.paddingDp20),

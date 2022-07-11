@@ -57,6 +57,8 @@ private fun Content(
         notScrollableContent = {
             PaymentDetailsView(paymentOptions = paymentOptions)
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
+        },
+        scrollableContent = {
             CardView(
                 amount = PaymentActivity.paymentOptions.paymentInfo?.paymentAmount.amountToCoins(),
                 currency = PaymentActivity.paymentOptions.paymentInfo?.paymentCurrency?.uppercase()
@@ -67,8 +69,6 @@ private fun Content(
                 }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
-        },
-        scrollableContent = {
             PaymentMethodList(
                 paymentMethods,
                 savedAccounts,

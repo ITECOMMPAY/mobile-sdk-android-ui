@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_PARAMETER")
+
 package com.ecommpay.msdk.ui.presentation.main.views
 
 import androidx.compose.foundation.layout.Column
@@ -12,7 +14,6 @@ import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.ui.PaymentOptions
 import com.ecommpay.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.ecommpay.msdk.ui.presentation.main.views.method.NewCardItem
-import com.ecommpay.msdk.ui.presentation.main.views.method.PaymentMethodItem
 import com.ecommpay.msdk.ui.presentation.main.views.method.SavedCardItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.core.mergeUIPaymentMethods

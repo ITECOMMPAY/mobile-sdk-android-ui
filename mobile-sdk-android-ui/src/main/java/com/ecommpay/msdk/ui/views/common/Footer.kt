@@ -47,7 +47,7 @@ internal fun Footer(
                 text = poweredByText,
                 style = SDKTheme.typography.s12Light
                     .copy(
-                        color = SDKTheme.colors.mediumGray,
+                        color = SDKTheme.colors.footerTextColor,
                         fontStyle = FontStyle.Italic
                     )
             )

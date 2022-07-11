@@ -19,7 +19,7 @@ internal class Images(
 
 internal fun lightImages(): Images = Images(
     sdkLogoResId = R.drawable.sdk_logo,
-    cardLogoResId = R.drawable.sdk_card_logo_light,
+    cardLogoResId = R.drawable.card_logo,
 )
 
 
