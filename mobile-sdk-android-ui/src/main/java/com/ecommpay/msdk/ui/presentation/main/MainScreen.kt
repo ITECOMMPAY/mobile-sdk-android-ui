@@ -19,9 +19,11 @@ import com.ecommpay.msdk.ui.presentation.main.views.PaymentMethodList
 import com.ecommpay.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.utils.extensions.amountToCoins
+import com.ecommpay.msdk.ui.utils.extensions.core.annotatedString
 import com.ecommpay.msdk.ui.utils.viewModelFactory
 import com.ecommpay.msdk.ui.views.common.CardView
-import com.ecommpay.msdk.ui.views.common.SDKScaffold
+import com.ecommpay.msdk.ui.views.common.Footer
+import com.ecommpay.msdk.ui.views.common.Scaffold
 
 
 @Suppress("UNUSED_PARAMETER")
@@ -32,7 +34,7 @@ internal fun MainScreen(
             MainViewModel(
                 payInteractor = PaymentActivity.msdkSession.getPayInteractor(),
                 paymentInfo = PaymentActivity.paymentOptions.paymentInfo
-                    ?: throw IllegalAccessException("Payment Info can not be null")
+                    ?: throw IllegalAccessException("PaymentInfo can not be null")
             )
         }
     ),
@@ -40,7 +42,7 @@ internal fun MainScreen(
     delegate: PaymentDelegate,
     paymentMethods: List<PaymentMethod>,
     savedAccounts: List<SavedAccount>,
-    paymentOptions: PaymentOptions,
+    paymentOptions: PaymentOptions
 ) {
     // val state by viewModel.state.collectAsState()
     BackHandler(true) { delegate.onCancel() }
@@ -58,12 +60,11 @@ private fun Content(
     paymentMethods: List<PaymentMethod>,
     savedAccounts: List<SavedAccount>,
     paymentOptions: PaymentOptions,
-    delegate: PaymentDelegate,
+    delegate: PaymentDelegate
 ) {
     var selectedPaymentMethod by remember { mutableStateOf<UIPaymentMethod?>(null) }
-    SDKScaffold(
-        title = PaymentActivity.stringResourceManager.payment.methodsTitle
-            ?: stringResource(R.string.payment_methods_label),
+    Scaffold(
+        title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
         notScrollableContent = {
             PaymentDetailsView(paymentOptions = paymentOptions)
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
@@ -71,8 +72,7 @@ private fun Content(
         scrollableContent = {
             CardView(
                 amount = PaymentActivity.paymentOptions.paymentInfo?.paymentAmount.amountToCoins(),
-                currency = PaymentActivity.paymentOptions.paymentInfo?.paymentCurrency?.uppercase()
-                    ?: "",
+                currency = PaymentActivity.paymentOptions.paymentInfo?.paymentCurrency?.uppercase(),
                 vatIncludedTitle = when (selectedPaymentMethod?.paymentMethod?.isVatInfo) {
                     true -> PaymentActivity.stringResourceManager.getStringByKey("vat_included")
                     else -> null
@@ -80,16 +80,24 @@ private fun Content(
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
             PaymentMethodList(
-                paymentMethods,
-                savedAccounts,
-                paymentOptions,
+                paymentMethods = paymentMethods,
+                savedAccounts = savedAccounts,
+                paymentOptions = paymentOptions,
             ) {
                 selectedPaymentMethod = it
             }
         },
-        onClose = {
-            delegate.onCancel()
-        }
+        footerContent = {
+            Footer(
+                iconLogo = SDKTheme.images.sdkLogoResId,
+                poweredByText = stringResource(R.string.powered_by_label),
+                privacyPolicy = PaymentActivity
+                    .stringResourceManager
+                    .getLinkMessageByKey("footer_privacy_policy")
+                    .annotatedString()
+            )
+        },
+        onClose = { delegate.onCancel() }
     )
 }
 

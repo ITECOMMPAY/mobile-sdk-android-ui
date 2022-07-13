@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.ecommpay.msdk.ui.navigation
 
 
@@ -19,7 +21,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate) {
     val navController = rememberAnimatedNavController()

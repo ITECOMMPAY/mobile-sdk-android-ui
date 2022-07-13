@@ -25,13 +25,11 @@ fun PaymentDetailsView(paymentOptions: PaymentOptions) {
         isExpanded = expandPaymentDetailsState
     ) {
         PaymentDetailsContent(
-            paymentIdLabel = PaymentActivity.stringResourceManager.payment.infoPaymentIdTitle
-                ?: stringResource(R.string.payment_id_title),
+            paymentIdLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_id"),
             paymentIdValue = paymentOptions.paymentInfo?.paymentId,
-            paymentDescriptionLabel = PaymentActivity.stringResourceManager.payment.descriptionTitle
-                ?: stringResource(R.string.payment_id_title),
+            paymentDescriptionLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_information_screen"),
             paymentDescriptionValue = paymentOptions.paymentInfo?.paymentDescription,
-            merchantAddressLabel = stringResource(R.string.merchant_address_title),
+            merchantAddressLabel = "",
             merchantAddressValue = null
         ) {
             expandPaymentDetailsState = false

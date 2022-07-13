@@ -1,15 +1,12 @@
 package com.ecommpay.msdk.ui.utils.extensions.core
 
-import android.content.Context
 import com.ecommpay.msdk.core.domain.entities.init.PaymentMethod
 import com.ecommpay.msdk.core.domain.entities.init.PaymentMethodType
 import com.ecommpay.msdk.core.domain.entities.init.SavedAccount
 import com.ecommpay.msdk.ui.PaymentActivity
-import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.presentation.main.models.UIPaymentMethod
 
 internal fun List<PaymentMethod>.mergeUIPaymentMethods(
-    context: Context,
     savedAccounts: List<SavedAccount>? = null
 ): List<UIPaymentMethod> {
     val result = mutableListOf<UIPaymentMethod>()
@@ -23,8 +20,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
         result.add(
             UIPaymentMethod.UIGooglePayPaymentMethod(
                 index = position,
-                title = PaymentActivity.stringResourceManager.getStringByKey("google_pay_host_title")
-                    ?: context.getString(R.string.google_pay_host_title),
+                title = PaymentActivity.stringResourceManager.getStringByKey("google_pay_host_title"),
                 paymentMethod = it
             )
         )
@@ -49,8 +45,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
         result.add(
             UIPaymentMethod.UICardPayPaymentMethod(
                 index = position,
-                title = PaymentActivity.stringResourceManager.getStringByKey("button_add_new_card")
-                    ?: context.getString(R.string.card_payment_method_label),
+                title = PaymentActivity.stringResourceManager.getStringByKey("button_add_new_card"),
                 paymentMethod = it,
             )
         )

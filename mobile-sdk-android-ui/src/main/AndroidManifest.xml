@@ -11,12 +11,12 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SDKThemeAppCompat"
+        android:theme="@style/Theme.SDKTheme"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".PaymentActivity"
             android:exported="true"
-            android:theme="@style/Theme.SDKThemeAppCompat"
+            android:theme="@style/Theme.SDKTheme"
             android:windowSoftInputMode="adjustResize">
         </activity>
     </application>

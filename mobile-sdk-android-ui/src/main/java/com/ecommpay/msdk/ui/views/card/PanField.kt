@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,20 +26,15 @@ internal fun PanField(
     cardTypes: List<PaymentMethodCard>,
     onValueChange: (String) -> Unit,
 ) {
-    var cardNumber by remember { mutableStateOf("") }
     var cardType by remember { mutableStateOf<PaymentMethodCard?>(null) }
     val cardTypesManager = CardTypesManager(cardTypes)
 
     CustomTextField(
         modifier = modifier,
-        value = cardNumber,
         keyboardType = KeyboardType.Number,
-        onTransform = { value -> value.filter { it.isDigit() } },
-        onValueChange = { value ->
-            cardNumber =
-                if (value.length >= 19) value.substring(0..18) else value
-            onValueChange.invoke(cardNumber)
-        },
+        onFilterValueBefore = { value -> value.filter { it.isDigit() } },
+        maxLength = 19,
+        onValueChange = onValueChange,
         visualTransformation = { number ->
             val trimmedCardNumber = number.text.replace(" ", "")
             cardType = cardTypesManager.search(trimmedCardNumber)
@@ -50,8 +44,7 @@ internal fun PanField(
                 else -> formatOtherCardNumbers(number)
             }
         },
-        label = PaymentActivity.stringResourceManager.getStringByKey("title_card_number")
-            ?: stringResource(R.string.card_number_title),
+        label = PaymentActivity.stringResourceManager.getStringByKey("title_card_number"),
         trailingIcon = {
             val name = "card_type_${cardType?.code ?: ""}"
             val context = LocalContext.current

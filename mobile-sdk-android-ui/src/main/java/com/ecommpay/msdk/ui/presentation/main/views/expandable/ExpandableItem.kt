@@ -46,7 +46,10 @@ internal fun ExpandableItem(
     val rotationState by animateFloatAsState(if (isExpanded) 180f else 0f)
     Box(
         modifier = Modifier
-            .background(color = if (isExpanded) SDKTheme.colors.backgroundColor else headerBackgroundColor)
+            .background(
+                color = if (isExpanded) SDKTheme.colors.backgroundColor else headerBackgroundColor,
+                shape = SDKTheme.shapes.radius6
+            )
             .border(
                 width = 1.dp,
                 color = SDKTheme.colors.borderColor,

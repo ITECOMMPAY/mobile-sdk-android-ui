@@ -17,10 +17,11 @@ import com.ecommpay.msdk.ui.utils.extensions.core.annotatedString
 
 
 @Composable
-internal fun SDKScaffold(
+internal fun Scaffold(
     title: String = "",
     notScrollableContent: @Composable () -> Unit = {},
     scrollableContent: @Composable () -> Unit = {},
+    footerContent: @Composable () -> Unit = {},
     onClose: () -> Unit = {},
 ) {
     Box(
@@ -38,14 +39,13 @@ internal fun SDKScaffold(
                     onClose = onClose
                 )
                 notScrollableContent()
-                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                ) {
                     scrollableContent()
                     Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
-                    Footer(
-                        iconLogo = SDKTheme.images.sdkLogoResId,
-                        poweredByText = stringResource(R.string.powered_by_label),
-                        privacyPolicy = PaymentActivity.stringResourceManager.policy.footerPrivacyPolicy?.annotatedString()
-                    )
+                    footerContent()
                 }
             }
         }

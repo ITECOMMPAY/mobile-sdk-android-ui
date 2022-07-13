@@ -54,13 +54,6 @@ object Dependencies {
         const val gson = "com.google.code.gson:gson:2.9.0"
     }
 
-    object Dagger {
-        const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
-        const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
-        const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.dagger}"
-        const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.dagger}"
-    }
-
     object Msdk {
         const val core = "com.ecommpay:msdk-core-android:+"
     }

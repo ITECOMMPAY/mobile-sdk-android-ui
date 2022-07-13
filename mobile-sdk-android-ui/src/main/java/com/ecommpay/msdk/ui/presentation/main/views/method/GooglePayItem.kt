@@ -11,18 +11,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.ecommpay.msdk.ui.PaymentActivity
+import com.ecommpay.msdk.ui.PaymentOptions
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.ecommpay.msdk.ui.presentation.main.views.expandable.ExpandableItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
+import com.ecommpay.msdk.ui.utils.extensions.amountToCoins
+import com.ecommpay.msdk.ui.views.button.PayButton
+import com.ecommpay.msdk.ui.views.customerFields.CustomerFields
 
 @Composable
 internal fun GooglePayItem(
     isExpand: Boolean,
-    paymentMethod: UIPaymentMethod.UIGooglePayPaymentMethod,
+    method: UIPaymentMethod.UIGooglePayPaymentMethod,
+    paymentOptions: PaymentOptions,
     onItemSelected: ((method: UIPaymentMethod) -> Unit)? = null,
 ) {
-    val customerFields = remember { paymentMethod.paymentMethod?.customerFields }
+    val customerFields = remember { method.paymentMethod?.customerFields }
     if (customerFields.isNullOrEmpty()) {
         Box() {
             Button(
@@ -45,15 +51,27 @@ internal fun GooglePayItem(
         }
     } else {
         ExpandableItem(
-            index = paymentMethod.index,
-            name = paymentMethod.title,
-            iconUrl = paymentMethod.paymentMethod?.iconUrl,
+            index = method.index,
+            name = method.title,
+            iconUrl = method.paymentMethod?.iconUrl,
             headerBackgroundColor = SDKTheme.colors.panelBackgroundColor,
-            onExpand = { onItemSelected?.invoke(paymentMethod) },
+            onExpand = { onItemSelected?.invoke(method) },
             isExpanded = isExpand,
             fallbackIcon = painterResource(id = SDKTheme.images.googlePayMethodResId),
         ) {
-            Spacer(modifier = Modifier.size(100.dp))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
+            CustomerFields(
+                customerFields = customerFields,
+                additionalFields = paymentOptions.additionalFields
+            )
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp22))
+            PayButton(
+                payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
+                amount = paymentOptions.paymentInfo?.paymentAmount.amountToCoins(),
+                currency = paymentOptions.paymentInfo?.paymentCurrency?.uppercase() ?: "",
+                isEnabled = true,
+                onClick = {}
+            )
         }
     }
 

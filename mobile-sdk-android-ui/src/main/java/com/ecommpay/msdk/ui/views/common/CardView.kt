@@ -26,14 +26,14 @@ import com.ecommpay.msdk.ui.theme.SDKTheme
 internal fun CardView(
     brandLogoUrl: String? = null,
     amount: String,
-    currency: String,
+    currency: String?,
     vatIncludedTitle: String? = null,
 ) {
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp)
+            .height(95.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.card_lines_bg),
@@ -86,17 +86,19 @@ internal fun CardView(
                         text = amount,
                         style = SDKTheme.typography.s28Bold.copy(color = Color.White)
                     )
-                    Text(
-                        text = " "
-                    )
-                    Text(
-                        modifier = Modifier.baselinePadding(
-                            firstBaselineToTop = 0.dp,
-                            lastBaselineToBottom = 0.dp
-                        ),
-                        text = currency,
-                        style = SDKTheme.typography.s16Normal.copy(color = Color.White)
-                    )
+                    if (currency != null) {
+                        Text(
+                            text = " "
+                        )
+                        Text(
+                            modifier = Modifier.baselinePadding(
+                                firstBaselineToTop = 0.dp,
+                                lastBaselineToBottom = 0.dp
+                            ),
+                            text = currency,
+                            style = SDKTheme.typography.s16Normal.copy(color = Color.White)
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(SDKTheme.dimensions.paddingDp10))
