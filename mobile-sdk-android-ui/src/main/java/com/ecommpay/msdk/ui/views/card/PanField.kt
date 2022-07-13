@@ -24,17 +24,18 @@ import com.ecommpay.msdk.ui.views.common.CustomTextField
 internal fun PanField(
     modifier: Modifier = Modifier,
     cardTypes: List<PaymentMethodCard>,
-    onValueChange: (String) -> Unit,
+    onValueEntered: (String) -> Unit,
 ) {
     var cardType by remember { mutableStateOf<PaymentMethodCard?>(null) }
     val cardTypesManager = CardTypesManager(cardTypes)
 
     CustomTextField(
+        isRequired = true,
         modifier = modifier,
         keyboardType = KeyboardType.Number,
         onFilterValueBefore = { value -> value.filter { it.isDigit() } },
         maxLength = 19,
-        onValueChange = onValueChange,
+        onValueChanged = onValueEntered,
         visualTransformation = { number ->
             val trimmedCardNumber = number.text.replace(" ", "")
             cardType = cardTypesManager.search(trimmedCardNumber)
@@ -71,7 +72,7 @@ private fun PanFieldPreview() {
     PanField(
         modifier = Modifier,
         cardTypes = emptyList(),
-        onValueChange = {}
+        onValueEntered = {}
     )
 }
 

@@ -53,7 +53,7 @@ fun ExpandablePaymentDetails(
             style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand.copy(alpha = if (isExpanded) 0.3f else 1f)),
         )
         if (isExpanded)
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
         AnimatedVisibility(visible = isExpanded) {
             Column(
                 modifier = Modifier
@@ -66,7 +66,7 @@ fun ExpandablePaymentDetails(
                         color = SDKTheme.colors.borderColor,
                         shape = SDKTheme.shapes.radius12
                     )
-                    .padding(SDKTheme.dimensions.paddingDp20),
+                    .padding(SDKTheme.dimensions.padding20),
                 content = content
             )
         }

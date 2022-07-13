@@ -37,7 +37,7 @@ internal fun ExpandableItem(
     index: Int,
     iconUrl: String? = null,
     fallbackIcon: Painter,
-    name: String,
+    name: String? = null,
     onExpand: (index: Int) -> Unit,
     isExpanded: Boolean = false,
     headerBackgroundColor: Color = SDKTheme.colors.backgroundColor,
@@ -66,7 +66,7 @@ internal fun ExpandableItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(SDKTheme.dimensions.paddingDp15)
+                .padding(SDKTheme.dimensions.padding15)
                 .clickable(
                     indication = null, //отключаем анимацию при клике
                     interactionSource = remember { MutableInteractionSource() },
@@ -94,12 +94,13 @@ internal fun ExpandableItem(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = name,
-                        textAlign = TextAlign.Center,
-                        style = SDKTheme.typography.s14Normal
-                    )
-                    Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
+                    if (!name.isNullOrEmpty())
+                        Text(
+                            text = name,
+                            textAlign = TextAlign.Center,
+                            style = SDKTheme.typography.s14Normal
+                        )
+                    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                     Image(
                         modifier = Modifier
                             .rotate(rotationState),

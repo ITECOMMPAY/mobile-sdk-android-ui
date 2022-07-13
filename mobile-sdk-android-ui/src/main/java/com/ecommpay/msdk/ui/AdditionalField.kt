@@ -2,11 +2,12 @@
 
 package com.ecommpay.msdk.ui
 
-import com.ecommpay.msdk.core.domain.entities.customer.CustomerFieldType
+import com.ecommpay.msdk.core.domain.entities.field.FieldType
+
 
 @PaymentOptionsDsl
 class AdditionalField {
-    var type: CustomerFieldType = CustomerFieldType.UNKNOWN
+    var type: FieldType = FieldType.UNKNOWN
     var value: String = ""
 }
 

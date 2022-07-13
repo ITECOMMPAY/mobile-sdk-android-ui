@@ -49,7 +49,7 @@ internal fun CardView(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(SDKTheme.dimensions.paddingDp20),
+                .padding(SDKTheme.dimensions.padding20),
         ) {
             Row(
                 modifier = Modifier
@@ -101,7 +101,7 @@ internal fun CardView(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(SDKTheme.dimensions.paddingDp10))
+                Spacer(modifier = Modifier.height(SDKTheme.dimensions.padding10))
                 Row {
                     Text(
                         text = stringResource(R.string.total_price_label),

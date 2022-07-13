@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.ecommpay.compose_sample.ui.theme.AppTheme
 import com.ecommpay.compose_sample.utils.SignatureGenerator
 import com.ecommpay.msdk.core.domain.entities.PaymentInfo
+import com.ecommpay.msdk.core.domain.entities.field.FieldType
 import com.ecommpay.msdk.ui.ActionType
 import com.ecommpay.msdk.ui.PaymentSDK
 import com.ecommpay.msdk.ui.paymentOptions
@@ -58,16 +59,12 @@ fun SampleMainScreen() {
     val paymentOptions = paymentOptions {
         paymentInfo = payment
         actionType = ActionType.Sale
-//        additionalFields {
-//            field {
-//                type = AdditionalFieldType.CUSTOMER_EMAIL
-//                value = "mail@mail.ru"
-//            }
-//            field {
-//                type = AdditionalFieldType.CUSTOMER_ADDRESS
-//                value = "Earth"
-//            }
-//        }
+        additionalFields {
+            field {
+                type = FieldType.CUSTOMER_EMAIL
+                value = "mail@mail.ru"
+            }
+        }
     }
     val sdk = PaymentSDK(context = LocalContext.current, paymentOptions = paymentOptions)
 

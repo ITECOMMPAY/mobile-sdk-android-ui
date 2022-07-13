@@ -7,14 +7,14 @@ import com.ecommpay.msdk.core.domain.entities.customer.CustomerFieldValue
 
 @Composable
 fun NumberCustomerTextField(
-    value: String?,
-    onValueChange: (CustomerFieldValue) -> Unit = {},
+    value: String? = null,
+    onValueChanged: (CustomerFieldValue) -> Unit = {},
     customerField: CustomerField
 ) {
     BaseCustomerTextField(
         initialValue = value,
         customerField = customerField,
-        onValueChange = onValueChange,
+        onValueChanged = onValueChanged,
         keyboardType = KeyboardType.Number,
         onFilterValueBefore = { value -> value.filter { it.isDigit() } },
     )

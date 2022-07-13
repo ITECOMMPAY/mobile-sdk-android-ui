@@ -28,7 +28,7 @@ internal fun ExpiryField(
                 else -> null
             }
         },
-        onValueChange = {
+        onValueChanged = {
             val expiryDate = SdkExpiry(it)
             if (expiryDate.month != null && expiryDate.year != null)
                 onValueEntered(expiryDate.stringValue)
@@ -37,7 +37,8 @@ internal fun ExpiryField(
         label = PaymentActivity.stringResourceManager.getStringByKey("title_expiry"),
         isDisabled = isDisabled,
         keyboardType = KeyboardType.Number,
-        maxLength = 4
+        maxLength = 4,
+        isRequired = true
     )
 }
 

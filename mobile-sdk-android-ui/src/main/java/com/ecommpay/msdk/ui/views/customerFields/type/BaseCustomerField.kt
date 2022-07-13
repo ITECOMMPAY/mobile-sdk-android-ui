@@ -12,7 +12,7 @@ import com.ecommpay.msdk.ui.views.common.CustomTextField
 @Composable
 fun BaseCustomerTextField(
     initialValue: String?,
-    onValueChange: (CustomerFieldValue) -> Unit = {},
+    onValueChanged: (CustomerFieldValue) -> Unit = {},
     customerField: CustomerField,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardType: KeyboardType = KeyboardType.Text,
@@ -40,8 +40,8 @@ fun BaseCustomerTextField(
             }
             resultMessage
         },
-        onValueChange = {
-            onValueChange(CustomerFieldValue.fromTypeWithValue(customerField.type, it))
+        onValueChanged = {
+            onValueChanged(CustomerFieldValue.fromTypeWithValue(customerField.type, it))
         },
         label = customerField.label,
         placeholder = customerField.placeholder ?: customerField.hint,

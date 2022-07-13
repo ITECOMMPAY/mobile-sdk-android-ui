@@ -12,19 +12,26 @@ import com.ecommpay.msdk.ui.views.common.CustomTextField
 internal fun CvvField(
     modifier: Modifier,
     length: Int = 3,
-    onCvvEntered: (String) -> Unit,
+    onValueEntered: (String) -> Unit,
 ) {
     CustomTextField(
         modifier = modifier,
         keyboardType = KeyboardType.Number,
         onFilterValueBefore = { value -> value.filter { it.isDigit() } },
-        onValueChange = {
+        onValidate = {
+            if (it.length != length)
+                PaymentActivity.stringResourceManager.getStringByKey("message_invalid_cvv")
+            else
+                null
+        },
+        onValueChanged = {
             if (it.length == length)
-                onCvvEntered(it)
+                onValueEntered(it)
         },
         visualTransformation = PasswordVisualTransformation(),
         label = PaymentActivity.stringResourceManager.getStringByKey("title_cvv"),
-        maxLength = length
+        maxLength = length,
+        isRequired = true
     )
 }
 
@@ -33,6 +40,6 @@ internal fun CvvField(
 private fun CvvFieldPreview() {
     CvvField(
         modifier = Modifier,
-        onCvvEntered = {}
+        onValueEntered = {}
     )
 }

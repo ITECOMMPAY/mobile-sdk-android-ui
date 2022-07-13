@@ -51,7 +51,7 @@ internal fun PaymentMethodList(
                 selectedPaymentMethod = method
                 onItemSelected?.invoke(method)
             }
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
         }
     }
 }

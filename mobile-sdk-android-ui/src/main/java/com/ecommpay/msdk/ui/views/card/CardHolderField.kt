@@ -18,7 +18,7 @@ internal fun CardHolderField(
     CustomTextField(
         modifier = modifier,
         onFilterValueBefore = { value -> value.filter { it.isLetter() || it == ' ' } },
-        onValueChange = {
+        onValueChanged = {
             onValueChange.invoke(it.uppercase())
         },
         onValidate = {
@@ -30,6 +30,7 @@ internal fun CardHolderField(
         },
         visualTransformation = VisualTransformation.None,
         label = PaymentActivity.stringResourceManager.getStringByKey("title_holder_name"),
-        isDisabled = isDisabled
+        isDisabled = isDisabled,
+        isRequired = true
     )
 }

@@ -9,14 +9,14 @@ import com.ecommpay.msdk.ui.utils.MaskVisualTransformation
 
 @Composable
 fun DateCustomerTextField(
-    value: String?,
-    onValueChange: (CustomerFieldValue) -> Unit = {},
+    value: String? = null,
+    onValueChanged: (CustomerFieldValue) -> Unit = {},
     customerField: CustomerField
 ) {
     BaseCustomerTextField(
         initialValue = value?.replace("-", ""),
         customerField = customerField,
-        onValueChange = onValueChange,
+        onValueChanged = onValueChanged,
         keyboardType = KeyboardType.Number,
         onFilterValueBefore = { value -> value.filter { it.isDigit() } },
         maxLength = 8,

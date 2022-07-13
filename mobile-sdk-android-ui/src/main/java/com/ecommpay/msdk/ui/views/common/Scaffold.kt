@@ -8,12 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.ecommpay.msdk.ui.PaymentActivity
-import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.theme.SDKTheme
-import com.ecommpay.msdk.ui.utils.extensions.core.annotatedString
 
 
 @Composable
@@ -31,7 +27,7 @@ internal fun Scaffold(
             .fillMaxWidth(),
         content = {
             Column(
-                modifier = Modifier.padding(SDKTheme.dimensions.paddingDp20),
+                modifier = Modifier.padding(SDKTheme.dimensions.padding20),
                 horizontalAlignment = Alignment.Start
             ) {
                 TopBar(
@@ -44,7 +40,7 @@ internal fun Scaffold(
                         .verticalScroll(rememberScrollState())
                 ) {
                     scrollableContent()
-                    Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
+                    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
                     footerContent()
                 }
             }

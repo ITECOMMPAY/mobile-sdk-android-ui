@@ -49,7 +49,7 @@ fun PaymentDetailsContent(
             )
         }
         if (paymentIdValue != null) {
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp5))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding5))
             Text(
                 text = paymentIdValue,
                 style = SDKTheme.typography.s14Bold
@@ -57,12 +57,12 @@ fun PaymentDetailsContent(
         }
         //Description
         if (paymentDescriptionValue != null) {
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp25))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding25))
             Text(
                 text = paymentDescriptionLabel,
                 style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.secondaryTextColor)
             )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp5))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding5))
             Text(
                 text = paymentDescriptionValue,
                 style = SDKTheme.typography.s14Normal
@@ -70,12 +70,12 @@ fun PaymentDetailsContent(
         }
         //Address
         if (merchantAddressValue != null) {
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp25))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding25))
             Text(
                 text = merchantAddressLabel,
                 style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.secondaryTextColor)
             )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp5))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding5))
             Text(
                 text = merchantAddressValue,
                 style = SDKTheme.typography.s14Normal

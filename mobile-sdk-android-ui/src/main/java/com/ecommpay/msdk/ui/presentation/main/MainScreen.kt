@@ -67,7 +67,7 @@ private fun Content(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
         notScrollableContent = {
             PaymentDetailsView(paymentOptions = paymentOptions)
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
         },
         scrollableContent = {
             CardView(
@@ -78,7 +78,7 @@ private fun Content(
                     else -> null
                 }
             )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp15))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
             PaymentMethodList(
                 paymentMethods = paymentMethods,
                 savedAccounts = savedAccounts,

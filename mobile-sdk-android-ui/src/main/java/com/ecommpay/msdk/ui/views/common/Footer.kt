@@ -38,7 +38,7 @@ internal fun Footer(
                 }
             )
         }
-        Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp20))
+        Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding20))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center

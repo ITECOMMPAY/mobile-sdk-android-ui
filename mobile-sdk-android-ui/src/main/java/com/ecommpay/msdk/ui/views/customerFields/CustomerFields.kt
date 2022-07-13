@@ -7,9 +7,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.ecommpay.msdk.core.domain.entities.customer.CustomerField
-import com.ecommpay.msdk.core.domain.entities.customer.CustomerFieldServerType
+import com.ecommpay.msdk.core.domain.entities.customer.FieldServerType
 import com.ecommpay.msdk.ui.AdditionalField
 import com.ecommpay.msdk.ui.theme.SDKTheme
 import com.ecommpay.msdk.ui.views.customerFields.type.*
@@ -19,48 +20,53 @@ internal fun CustomerFields(
     customerFields: List<CustomerField>,
     additionalFields: List<AdditionalField> = emptyList()
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        customerFields.filter { !it.isHidden }.forEach { field ->
+    val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
+    val visibleRequiredCustomerFields = remember { visibleCustomerFields.filter { it.isRequired } }
 
+    Column(modifier = Modifier.fillMaxWidth()) {
+        visibleCustomerFields.forEachIndexed { index, field ->
+            val foundAdditionalField = additionalFields.firstOrNull { it.type == field.type }
             when (field.serverType) {
-                CustomerFieldServerType.TEL ->
+                FieldServerType.TEL ->
                     TelCustomerTextField(
-                        value = if (additionalFields.isNotEmpty()) additionalFields.first { it.type == field.type }.value else null,
-                        onValueChange = {},
+                        value = foundAdditionalField?.value,
+                        onValueChanged = {},
                         customerField = field
                     )
-                CustomerFieldServerType.DATE ->
+                FieldServerType.DATE ->
                     DateCustomerTextField(
-                        value = if (additionalFields.isNotEmpty()) additionalFields.first { it.type == field.type }.value else null,
-                        onValueChange = {},
+                        value = foundAdditionalField?.value,
+                        onValueChanged = {},
                         customerField = field
                     )
-                CustomerFieldServerType.NUMBER ->
+                FieldServerType.NUMBER ->
                     NumberCustomerTextField(
-                        value = if (additionalFields.isNotEmpty()) additionalFields.first { it.type == field.type }.value else null,
-                        onValueChange = {},
+                        value = foundAdditionalField?.value,
+                        onValueChanged = {},
                         customerField = field
                     )
-                CustomerFieldServerType.PASSWORD ->
+                FieldServerType.PASSWORD ->
                     PasswordCustomerTextField(
-                        value = if (additionalFields.isNotEmpty()) additionalFields.first { it.type == field.type }.value else null,
-                        onValueChange = {},
+                        value = foundAdditionalField?.value,
+                        onValueChanged = {},
                         customerField = field
                     )
-                CustomerFieldServerType.EMAIL ->
+                FieldServerType.EMAIL ->
                     EmailCustomerTextField(
-                        value = if (additionalFields.isNotEmpty()) additionalFields.first { it.type == field.type }.value else null,
-                        onValueChange = {},
+                        value = foundAdditionalField?.value,
+                        onValueChanged = {},
                         customerField = field
                     )
                 else ->
                     TextCustomerTextField(
-                        value = if (additionalFields.isNotEmpty()) additionalFields.first { it.type == field.type }.value else null,
-                        onValueChange = {},
+                        value = foundAdditionalField?.value,
+                        onValueChanged = {},
                         customerField = field
                     )
             }
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
+
+            if (index < customerFields.size)
+                Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
         }
     }
 

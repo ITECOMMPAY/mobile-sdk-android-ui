@@ -54,17 +54,17 @@ internal fun GooglePayItem(
             index = method.index,
             name = method.title,
             iconUrl = method.paymentMethod?.iconUrl,
-            headerBackgroundColor = SDKTheme.colors.panelBackgroundColor,
+            headerBackgroundColor = SDKTheme.colors.backgroundColor,
             onExpand = { onItemSelected?.invoke(method) },
             isExpanded = isExpand,
             fallbackIcon = painterResource(id = SDKTheme.images.googlePayMethodResId),
         ) {
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
             CustomerFields(
                 customerFields = customerFields,
                 additionalFields = paymentOptions.additionalFields
             )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp22))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
             PayButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = paymentOptions.paymentInfo?.paymentAmount.amountToCoins(),

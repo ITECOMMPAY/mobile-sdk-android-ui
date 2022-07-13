@@ -27,7 +27,7 @@ import com.ecommpay.msdk.ui.theme.SDKTheme
 fun CustomTextField(
     modifier: Modifier,
     initialValue: String? = null,
-    onValueChange: (String) -> Unit = {},
+    onValueChanged: (String) -> Unit = {},
     onValidate: ((String) -> String?)? = null,
     onFilterValueBefore: ((String) -> String)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -56,7 +56,7 @@ fun CustomTextField(
                 var text =
                     if (maxLength != null && it.length > maxLength) it.substring(0 until maxLength) else it
                 if (onFilterValueBefore != null)
-                    text = onFilterValueBefore.invoke(text)
+                    text = onFilterValueBefore(text)
                 errorMessage =
                     if (isRequired && text.isEmpty())
                         PaymentActivity.stringResourceManager.getStringByKey("message_required_field")
@@ -64,7 +64,8 @@ fun CustomTextField(
                         onValidate?.invoke(text)
 
                 textValue = text
-                onValueChange(text)
+                if (errorMessage == null)
+                    onValueChanged(text)
             },
             visualTransformation = visualTransformation,
             colors = TextFieldDefaults.textFieldColors(
@@ -97,7 +98,11 @@ fun CustomTextField(
                 )
                 .onFocusChanged {
                     if (it.hasFocus)
-                        errorMessage = onValidate?.invoke(textValue)
+                        errorMessage =
+                            if (isRequired && textValue.isEmpty())
+                                PaymentActivity.stringResourceManager.getStringByKey("message_required_field")
+                            else
+                                onValidate?.invoke(textValue)
                 },
             label = {
                 Row {
@@ -129,7 +134,7 @@ fun CustomTextField(
         )
 
         if (errorMessage != null) {
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp4))
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding4))
             Text(
                 text = errorMessage ?: "",
                 color = SDKTheme.colors.errorTextColor,
@@ -147,7 +152,7 @@ private fun CustomTextFieldPreview() {
         modifier = Modifier,
         initialValue = "VALUE",
         keyboardType = KeyboardType.Number,
-        onValueChange = {
+        onValueChanged = {
         },
         label = "LABEL",
     )

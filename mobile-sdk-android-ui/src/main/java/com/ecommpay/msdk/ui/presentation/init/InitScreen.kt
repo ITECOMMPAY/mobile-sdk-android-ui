@@ -74,12 +74,12 @@ private fun Loading() {
         itemWidth = 125.dp,
         borderRadius = 4.dp
     )
-    Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
+    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
     ShimmerAnimatedItem(
-        itemHeight = 95.dp,
+        itemHeight = 150.dp,
         borderRadius = 12.dp
     )
-    Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
+    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
     Row {
         Column(
             modifier = Modifier.weight(1f)
@@ -89,7 +89,7 @@ private fun Loading() {
                 borderRadius = 6.dp,
             )
         }
-        Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
+        Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
         Column(
             modifier = Modifier.weight(1f)
         ) {
@@ -99,13 +99,13 @@ private fun Loading() {
             )
         }
     }
-    Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
+    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
     (1..5).forEach { _ ->
         ShimmerAnimatedItem(
-            itemHeight = SDKTheme.dimensions.paymentMethodItemHeight,
+            itemHeight = 50.dp,
             borderRadius = 6.dp
         )
-        Spacer(modifier = Modifier.size(SDKTheme.dimensions.paddingDp10))
+        Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
     }
 }
 
