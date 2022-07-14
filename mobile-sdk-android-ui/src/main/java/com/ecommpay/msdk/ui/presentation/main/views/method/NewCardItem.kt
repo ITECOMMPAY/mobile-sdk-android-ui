@@ -1,12 +1,22 @@
 package com.ecommpay.msdk.ui.presentation.main.views.method
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.sp
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.PaymentOptions
+import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.ecommpay.msdk.ui.presentation.main.views.expandable.ExpandableItem
 import com.ecommpay.msdk.ui.theme.SDKTheme
@@ -26,6 +36,7 @@ internal fun NewCardItem(
     onItemSelected: ((method: UIPaymentMethod) -> Unit)? = null,
 ) {
     val customerFields = remember { method.paymentMethod?.customerFields }
+    val checkedState = remember { mutableStateOf(true) }
     ExpandableItem(
         index = method.index,
         name = method.title,
@@ -45,7 +56,7 @@ internal fun NewCardItem(
                 }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
-            CardHolderField(modifier = Modifier.fillMaxWidth(), onValueChange = {})
+            CardHolderField(modifier = Modifier.fillMaxWidth(), onValueChanged = {})
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
             Row {
                 ExpiryField(
@@ -64,13 +75,36 @@ internal fun NewCardItem(
                 )
             }
             if (!customerFields.isNullOrEmpty()) {
-                Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                 CustomerFields(
                     customerFields = customerFields,
                     additionalFields = paymentOptions.additionalFields
                 )
             }
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                    ) {
+                        checkedState.value = !checkedState.value
+                    },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = checkedState.value,
+                    onCheckedChange = { checkedState.value = it },
+                    colors = CheckboxDefaults.colors(checkedColor = SDKTheme.colors.brand)
+                )
+                Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding12))
+                Text(
+                    stringResource(R.string.save_card_label),
+                    color = SDKTheme.colors.primaryTextColor,
+                    fontSize = 16.sp,
+                )
+            }
+            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
             PayButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = paymentOptions.paymentInfo?.paymentAmount.amountToCoins(),

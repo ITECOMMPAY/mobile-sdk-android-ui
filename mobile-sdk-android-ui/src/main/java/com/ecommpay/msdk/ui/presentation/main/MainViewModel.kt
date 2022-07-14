@@ -1,6 +1,6 @@
 package com.ecommpay.msdk.ui.presentation.main
 
-import com.ecommpay.msdk.core.domain.entities.PaymentInfo
+import com.ecommpay.msdk.ui.models.PaymentInfo
 import com.ecommpay.msdk.core.domain.interactors.pay.PayInteractor
 import com.ecommpay.msdk.ui.base.mvi.Reducer
 import com.ecommpay.msdk.ui.base.mvi.TimeMachine

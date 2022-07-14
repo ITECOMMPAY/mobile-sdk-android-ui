@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ecommpay.compose_sample.ui.theme.AppTheme
 import com.ecommpay.compose_sample.utils.SignatureGenerator
-import com.ecommpay.msdk.core.domain.entities.PaymentInfo
+import com.ecommpay.msdk.ui.models.PaymentInfo
 import com.ecommpay.msdk.core.domain.entities.field.FieldType
 import com.ecommpay.msdk.ui.ActionType
 import com.ecommpay.msdk.ui.PaymentSDK

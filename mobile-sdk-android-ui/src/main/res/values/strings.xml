@@ -1,4 +1,7 @@
 <resources>
+    <string name="ok_label">OK</string>
+    <string name="cancel_label">Cancel</string>
+
     <string name="total_price_label">Total price</string>
     <string name="powered_by_label">Powered by</string>
 </resources>

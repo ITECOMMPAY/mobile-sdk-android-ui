@@ -2,9 +2,11 @@
 
 package com.ecommpay.msdk.ui
 
-import com.ecommpay.msdk.core.domain.entities.PaymentInfo
-import com.ecommpay.msdk.core.domain.entities.RecurrentInfo
-import com.ecommpay.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
+
+import com.ecommpay.msdk.ui.models.PaymentInfo
+import com.ecommpay.msdk.ui.models.RecipientInfo
+import com.ecommpay.msdk.ui.models.RecurrentInfo
+import com.ecommpay.msdk.ui.models.threeDSecure.ThreeDSecureInfo
 
 enum class ActionType {
     Sale, Auth, Tokenize, Verify
@@ -19,10 +21,11 @@ fun paymentOptions(block: PaymentOptions.() -> Unit): PaymentOptions = PaymentOp
  * Payment configuration
  */
 @PaymentOptionsDsl
-class PaymentOptions {
+class PaymentOptions() {
     var paymentInfo: PaymentInfo? = null
     var recurrentInfo: RecurrentInfo? = null
     var threeDSecureInfo: ThreeDSecureInfo? = null
+    var recipientInfo: RecipientInfo? = null
     var actionType: ActionType = ActionType.Sale
     var bankId: Int? = null
     var merchantId: String? = null

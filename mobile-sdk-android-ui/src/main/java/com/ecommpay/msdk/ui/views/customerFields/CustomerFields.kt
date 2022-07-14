@@ -25,6 +25,8 @@ internal fun CustomerFields(
 
     Column(modifier = Modifier.fillMaxWidth()) {
         visibleCustomerFields.forEachIndexed { index, field ->
+            if (index < customerFields.size - 1)
+                Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
             val foundAdditionalField = additionalFields.firstOrNull { it.type == field.type }
             when (field.serverType) {
                 FieldServerType.TEL ->
@@ -64,9 +66,6 @@ internal fun CustomerFields(
                         customerField = field
                     )
             }
-
-            if (index < customerFields.size)
-                Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
         }
     }
 

@@ -3,6 +3,9 @@ package com.ecommpay.msdk.ui.presentation.main
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -45,7 +48,6 @@ internal fun MainScreen(
     paymentOptions: PaymentOptions
 ) {
     // val state by viewModel.state.collectAsState()
-    BackHandler(true) { delegate.onCancel() }
     Content(
         paymentMethods = paymentMethods,
         savedAccounts = savedAccounts,
@@ -63,6 +65,10 @@ private fun Content(
     delegate: PaymentDelegate
 ) {
     var selectedPaymentMethod by remember { mutableStateOf<UIPaymentMethod?>(null) }
+    val showDialogDismissDialog = remember { mutableStateOf(false) }
+    BackHandler(true) {
+        showDialogDismissDialog.value = true
+    }
     Scaffold(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
         notScrollableContent = {
@@ -97,7 +103,19 @@ private fun Content(
                     .annotatedString()
             )
         },
-        onClose = { delegate.onCancel() }
+        onClose = { showDialogDismissDialog.value = true }
     )
+    if (showDialogDismissDialog.value)
+        AlertDialog(
+            text = { Text(text = stringResource(R.string.payment_dismiss_confirm_message)) },
+            onDismissRequest = { showDialogDismissDialog.value = false },
+            confirmButton = {
+                TextButton(onClick = { delegate.onCancel() })
+                { Text(text = stringResource(R.string.ok_label)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialogDismissDialog.value = false })
+                { Text(text = stringResource(R.string.cancel_label)) }
+            }
+        )
 }
-

@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.ecommpay.msdk.core.domain.entities.init.PaymentMethodCard
 import com.ecommpay.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.ecommpay.msdk.core.manager.card.CardTypesManager
+import com.ecommpay.msdk.core.validators.custom.PanValidator
 import com.ecommpay.msdk.ui.PaymentActivity
 import com.ecommpay.msdk.ui.R
 import com.ecommpay.msdk.ui.utils.card.formatAmex
@@ -36,6 +37,9 @@ internal fun PanField(
         onFilterValueBefore = { value -> value.filter { it.isDigit() } },
         maxLength = 19,
         onValueChanged = onValueEntered,
+        onValidate = {
+            if (!PanValidator().isValid(it)) PaymentActivity.stringResourceManager.getStringByKey("message_about_card_number") else null
+        },
         visualTransformation = { number ->
             val trimmedCardNumber = number.text.replace(" ", "")
             cardType = cardTypesManager.search(trimmedCardNumber)

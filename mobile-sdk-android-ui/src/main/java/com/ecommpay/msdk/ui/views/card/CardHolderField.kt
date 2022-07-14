@@ -11,19 +11,17 @@ import com.ecommpay.msdk.ui.views.common.CustomTextField
 internal fun CardHolderField(
     modifier: Modifier,
     isDisabled: Boolean = false,
-    onValueChange: (String) -> Unit,
+    onValueChanged: (String) -> Unit,
 ) {
-    val errorMessage = PaymentActivity.stringResourceManager.getStringByKey("message_card_holder")
-    @Suppress("NAME_SHADOWING")
     CustomTextField(
         modifier = modifier,
-        onFilterValueBefore = { value -> value.filter { it.isLetter() || it == ' ' } },
-        onValueChanged = {
-            onValueChange.invoke(it.uppercase())
-        },
+        onFilterValueBefore = { value -> value.filter { it.isLetter() || it == ' ' }.uppercase() },
+        onValueChanged = onValueChanged,
         onValidate = {
             when {
-                !CardHolderNameValidator().isValid(it) -> errorMessage
+                !CardHolderNameValidator().isValid(it) -> PaymentActivity.stringResourceManager.getStringByKey(
+                    "message_card_holder"
+                )
                 else -> null
             }
 
