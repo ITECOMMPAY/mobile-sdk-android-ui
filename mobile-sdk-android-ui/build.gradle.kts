@@ -38,6 +38,12 @@ android {
                 "true"
             )
         }
+        flavorDimensions("brand")
+        productFlavors {
+            create("ecommpay") {
+                dimension = "brand"
+            }
+        }
 
     }
     compileOptions {
@@ -62,7 +68,7 @@ android {
 
 dependencies {
     //msdkCore
-    implementation(Dependencies.Msdk.core)
+    api(Dependencies.Msdk.core)
     //AndroidX
     implementation(Dependencies.AndroidX.appCompat)
     implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
