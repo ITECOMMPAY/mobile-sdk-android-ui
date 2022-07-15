@@ -1,8 +1,3 @@
 <resources>
-    <string name="expiry_title">Expiry</string>
-    <string name="cvv_title">CVV</string>
-    <string name="card_number_title">Card Number</string>
-    <string name="holder_name_title">Cardholder name</string>
-    <string name="card_holder_invalid_message">Please enter the cardholder name as listed on your card</string>
-    <string name="expiry_invalid_message">Please enter a valid expiry date</string>
+    <string name="save_card_label">Save card details for future use</string>
 </resources>

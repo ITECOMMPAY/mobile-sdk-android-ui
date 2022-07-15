@@ -1,9 +1,5 @@
 <resources>
-    <string name="payment_id_title">Payment ID</string>
     <string name="payment_methods_label">Payment Methods</string>
     <string name="payment_details_label">Payment Details</string>
-    <string name="payment_description_title">Description</string>
-
-    <string name="card_payment_method_label">Pay With a New Card</string>
-    <string name="google_pay_host_title">Google Pay</string>
+    <string name="payment_dismiss_confirm_message">Your payment is being processed, are you sure you want to close the payment page?</string>
 </resources>

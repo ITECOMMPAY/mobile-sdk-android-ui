@@ -10,7 +10,7 @@ android {
     defaultConfig {
         minSdk = 21
         targetSdk = 32
-        applicationId = "com.ecommpay.ui.test"
+        applicationId = "com.paymentpage.ui.test"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -45,15 +45,19 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    flavorDimensions("brand")
+    productFlavors {
+        create("ecommpay") {
+            dimension = "brand"
+        }
+    }
 }
 
 
 dependencies {
-    //msdkCore
-    implementation(Dependencies.Msdk.core)
     //Projects
-    implementation (project(":mobile-sdk-android-ui"))
-    //implementation ("com.ecommpay:msdk-core:+")
+    implementation(project(":mobile-sdk-android-ui"))
 
     //AndroidX
     implementation(Dependencies.AndroidX.coreKtx)
@@ -67,7 +71,7 @@ dependencies {
     debugImplementation(Dependencies.Compose.uiTooling)
     implementation(Dependencies.Compose.activity)
 
-    testImplementation ("junit:junit:4.13.2")
-    testImplementation ("androidx.test.ext:junit:1.1.3")
-    testImplementation ("androidx.test.espresso:espresso-core:3.4.0")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("androidx.test.ext:junit:1.1.3")
+    testImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }

@@ -38,6 +38,12 @@ android {
                 "true"
             )
         }
+        flavorDimensions("brand")
+        productFlavors {
+            create("ecommpay") {
+                dimension = "brand"
+            }
+        }
 
     }
     compileOptions {
@@ -62,7 +68,7 @@ android {
 
 dependencies {
     //msdkCore
-    implementation(Dependencies.Msdk.core)
+    api(Dependencies.Msdk.core)
     //AndroidX
     implementation(Dependencies.AndroidX.appCompat)
     implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
@@ -91,4 +97,10 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.3")
     testImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+    }
 }
