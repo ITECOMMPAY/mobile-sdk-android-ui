@@ -22,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
 import com.paymentpage.msdk.core.base.ErrorCode
@@ -34,7 +35,9 @@ import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.navigation.NavigationComponent
 import com.paymentpage.msdk.ui.navigation.Navigator
+import com.paymentpage.msdk.ui.presentation.main.MainViewModel
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.viewModelFactory
 
 class PaymentActivity : ComponentActivity(), PaymentDelegate {
     @OptIn(ExperimentalMaterialApi::class)
@@ -75,10 +78,10 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
                             threeDSecureInfo = threeDSecureInfo,
                             recipientInfo = recipientInfo,
                             additionalFields = additionalFields,
-                            msdkSession = msdkSession
+                            msdkSession = msdkSession,
                         ) {
                             NavigationComponent(
-                                navigator = Navigator(),
+                                navigator = navigator,
                                 delegate = this@PaymentActivity
                             )
                         }
@@ -148,6 +151,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
     }
 
     companion object {
+        private val navigator = Navigator()
         private lateinit var paymentInfo: PaymentInfo
         private var recurrentInfo: RecurrentInfo? = null
         private var threeDSecureInfo: ThreeDSecureInfo? = null

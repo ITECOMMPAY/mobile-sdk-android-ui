@@ -1,11 +1,11 @@
 package com.paymentpage.msdk.ui.presentation.main.views.method
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.paymentpage.msdk.ui.LocalAdditionalFields
+import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentInfo
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
@@ -24,6 +24,7 @@ internal fun SavedCardItem(
     onItemSelected: ((method: UIPaymentMethod) -> Unit),
     onItemUnSelected: ((method: UIPaymentMethod) -> Unit),
 ) {
+    val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod?.customerFields }
     ExpandableItem(
         index = method.index,
@@ -36,13 +37,14 @@ internal fun SavedCardItem(
         fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
     ) {
         Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+        var cvv by remember { mutableStateOf("") }
         Column(Modifier.fillMaxWidth()) {
             Row {
                 ExpiryField(
                     modifier = Modifier.weight(1f),
                     value = method.savedAccount.cardExpiry?.stringValue ?: "",
                     isDisabled = true,
-                    onValueEntered = {}
+                    onValueEntered = { cvv = it }
                 )
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                 CvvField(
@@ -64,7 +66,12 @@ internal fun SavedCardItem(
                 currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
                 isEnabled = true
             ) {
-
+                //TODO need validate
+                viewModel.saleSavedCard(
+                    accountId = method.savedAccount.id,
+                    cvv = cvv,
+                    method = method
+                )
             }
         }
     }
