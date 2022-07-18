@@ -16,6 +16,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalAdditionalFields
+import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -30,6 +31,7 @@ internal fun GooglePayItem(
     onItemSelected: ((method: UIPaymentMethod) -> Unit),
     onItemUnSelected: ((method: UIPaymentMethod) -> Unit),
 ) {
+    val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod?.customerFields }
     if (customerFields.isNullOrEmpty()) {
         Button(
@@ -67,7 +69,10 @@ internal fun GooglePayItem(
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
             Button(
-                onClick = {},
+                onClick = {
+                    //TODO need validate
+              
+                },
                 content = {
                     Image(
                         painter = painterResource(id = R.drawable.googlepay_button_logo),

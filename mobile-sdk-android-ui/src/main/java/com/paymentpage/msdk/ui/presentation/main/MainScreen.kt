@@ -9,38 +9,39 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.navigation.Navigator
+import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.views.PaymentMethodList
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
-import com.paymentpage.msdk.ui.utils.viewModelFactory
 import com.paymentpage.msdk.ui.views.common.CardView
 import com.paymentpage.msdk.ui.views.common.Footer
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
 internal fun MainScreen(
     navigator: Navigator,
-    delegate: PaymentDelegate,
+    delegate: PaymentDelegate
 ) {
-    val paymentInfo = LocalPaymentInfo.current
-    val payInteractor = LocalMsdkSession.current.getPayInteractor()
-    val viewModel: MainViewModel = viewModel(
-        factory = viewModelFactory {
-            MainViewModel(
-                payInteractor = payInteractor,
-                paymentInfo = paymentInfo
-            )
-        }
-    )
+    val viewModel = LocalMainViewModel.current
+    LaunchedEffect(Unit) {
+        viewModel.state.onEach {
+            when {
+                it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
+            }
+        }.collect()
+    }
+
+
     Content(delegate = delegate)
 }
 

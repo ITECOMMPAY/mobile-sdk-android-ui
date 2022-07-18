@@ -59,6 +59,11 @@ internal class InitViewModel(
         )
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        initInteractor.cancel()
+    }
+
     class InitReducer(initial: InitScreenState) :
         Reducer<InitScreenState, InitScreenUiEvent>(initial) {
         override fun reduce(oldState: InitScreenState, event: InitScreenUiEvent) {
