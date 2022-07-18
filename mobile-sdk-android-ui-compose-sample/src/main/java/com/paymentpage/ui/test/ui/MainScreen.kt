@@ -1,8 +1,11 @@
 package com.paymentpage.ui.test.ui
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.Checkbox
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -50,6 +53,8 @@ fun MainScreen(
             remember { mutableStateOf(MainActivity.paymentDescription) }
         val customerId =
             remember { mutableStateOf(MainActivity.customerId) }
+
+        val mockModeState = remember { mutableStateOf(MainActivity.mockModeEnabled) }
 
         Row() {
             Text(text = "Brand")
@@ -126,7 +131,24 @@ fun MainScreen(
             label = { Text(text = "Customer Id") }
         )
 
-
+        Spacer(modifier = Modifier.height(20.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                ) {
+                    mockModeState.value = !mockModeState.value
+                },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = mockModeState.value,
+                onCheckedChange = { mockModeState.value = it },
+            )
+            Text(text = "Mock mode enabled")
+        }
         Spacer(modifier = Modifier.height(10.dp))
         Button(modifier = Modifier
             .fillMaxWidth()
@@ -143,6 +165,8 @@ fun MainScreen(
                 MainActivity.paymentCurrency = paymentCurrency.value
                 MainActivity.paymentDescription = paymentDescription.value
                 MainActivity.customerId = customerId.value
+
+                MainActivity.mockModeEnabled = mockModeState.value
 
                 activity.startPaymentPage()
             }) {

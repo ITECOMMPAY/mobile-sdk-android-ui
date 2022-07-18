@@ -48,10 +48,14 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         var config = MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
         if (BuildConfig.DEBUG) {
-            config = MSDKCoreSessionConfig.debug(
-                intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
-                intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
-            )
+            val isMockModeEnabled = intent.getBooleanExtra(Constants.EXTRA_MOCK_MODE_ENABLED, false)
+            config = when {
+                isMockModeEnabled -> MSDKCoreSessionConfig.mockFullSuccessFlow()
+                else -> MSDKCoreSessionConfig.debug(
+                    intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
+                    intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
+                )
+            }
         }
         msdkSession = MSDKCoreSession(config)
 

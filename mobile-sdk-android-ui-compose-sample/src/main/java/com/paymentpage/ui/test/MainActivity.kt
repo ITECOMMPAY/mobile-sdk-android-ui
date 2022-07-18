@@ -66,6 +66,8 @@ class MainActivity : ComponentActivity() {
         var secretKey: String = "123"
         var apiHost: String = "pp-sdk.westresscode.net"
         var wsApiHost: String = "paymentpage.westresscode.net"
+
+        var mockModeEnabled = false
     }
 
     fun startPaymentPage() {
@@ -92,6 +94,8 @@ class MainActivity : ComponentActivity() {
             Constants.EXTRA_WS_API_HOST,
             wsApiHost
         )
+        if (mockModeEnabled)
+            intent.putExtra(Constants.EXTRA_MOCK_MODE_ENABLED, mockModeEnabled)
 
         startActivityForResult(intent, 2405)
     }
