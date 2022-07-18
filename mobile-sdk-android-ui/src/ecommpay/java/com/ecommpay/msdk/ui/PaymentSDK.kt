@@ -5,7 +5,7 @@ package com.ecommpay.msdk.ui
 import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.Fragment
-import com.paymentpage.msdk.ui.Constants
+import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.PaymentActivity
 
 

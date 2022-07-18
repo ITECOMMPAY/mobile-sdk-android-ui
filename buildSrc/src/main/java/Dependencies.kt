@@ -1,5 +1,9 @@
 @file:Suppress("unused")
 
+object Ecommpay {
+    const val version = "2.0.0"
+}
+
 object Versions {
     const val gradlePlugin = "7.1.3"
     const val kotlin = "1.6.21"
@@ -57,5 +61,4 @@ object Dependencies {
     object Msdk {
         const val core = "com.ecommpay:msdk-core-android:+"
     }
-
 }

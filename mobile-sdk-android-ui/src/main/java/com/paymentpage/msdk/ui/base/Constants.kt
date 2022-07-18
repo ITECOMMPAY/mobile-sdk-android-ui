@@ -1,4 +1,4 @@
-package com.paymentpage.msdk.ui
+package com.paymentpage.msdk.ui.base
 
 object Constants {
     const val RESULT_SUCCESS = 0 //when payment completed successfully
@@ -11,4 +11,9 @@ object Constants {
     const val RESULT_ERROR = 500 //when error occurred
     const val EXTRA_ERROR_CODE = "error_code"
     const val EXTRA_ERROR_MESSAGE = "error_message"
+
+
+    const val EXTRA_API_HOST = "api_host"
+    const val EXTRA_WS_API_HOST = "ws_api_host"
+
 }

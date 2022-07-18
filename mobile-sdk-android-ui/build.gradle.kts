@@ -42,6 +42,19 @@ android {
         productFlavors {
             create("ecommpay") {
                 dimension = "brand"
+                version = System.getenv("SDK_VERSION_NAME") ?: Ecommpay.version
+
+                buildConfigField(
+                    "String",
+                    "API_HOST",
+                    "\"sdk.ecommpay.com\""
+                )
+
+                buildConfigField(
+                    "String",
+                    "WS_API_HOST",
+                    "\"paymentpage.ecommpay.com\""
+                )
             }
         }
 

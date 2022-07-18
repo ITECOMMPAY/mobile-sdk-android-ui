@@ -30,7 +30,8 @@ import com.paymentpage.msdk.core.domain.entities.RecipientInfo
 import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
-import com.paymentpage.msdk.core.mock.init.MockInitCustomerFieldsConfig
+import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
+import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.navigation.NavigationComponent
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -44,6 +45,15 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             window.setBackgroundDrawable(ColorDrawable(android.R.color.transparent))
         }
         super.onCreate(savedInstanceState)
+
+        var config = MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
+        if (BuildConfig.DEBUG) {
+            config = MSDKCoreSessionConfig.debug(
+                intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
+                intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
+            )
+        }
+        msdkSession = MSDKCoreSession(config)
 
         setContent {
             var drawerState by remember { mutableStateOf(BottomDrawerState(initialValue = BottomDrawerValue.Closed)) }
@@ -141,12 +151,9 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         private var additionalFields: List<AdditionalField> = emptyList()
         var logoImage: Bitmap? = null
 
-
-        private val config =
-            MSDKCoreSessionConfig.mockFullSuccessFlow(customerFieldsConfig = MockInitCustomerFieldsConfig.ALL)
-        private val msdkSession = MSDKCoreSession(config)
-
-        val stringResourceManager = msdkSession.getStringResourceManager()
+        private lateinit var msdkSession: MSDKCoreSession
+        val stringResourceManager: StringResourceManager
+            get() = msdkSession.getStringResourceManager()
 
         fun buildPaymentIntent(
             context: Context,

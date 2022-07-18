@@ -50,6 +50,11 @@ android {
     productFlavors {
         create("ecommpay") {
             dimension = "brand"
+            buildConfigField(
+                "String",
+                "BRAND",
+                "\"ECommPay\""
+            )
         }
     }
 }
@@ -70,6 +75,10 @@ dependencies {
     testImplementation(Dependencies.Compose.junit4)
     debugImplementation(Dependencies.Compose.uiTooling)
     implementation(Dependencies.Compose.activity)
+    implementation(Dependencies.Compose.navigation)
+
+    //Google
+    implementation(Dependencies.Google.material)
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.test.ext:junit:1.1.3")
