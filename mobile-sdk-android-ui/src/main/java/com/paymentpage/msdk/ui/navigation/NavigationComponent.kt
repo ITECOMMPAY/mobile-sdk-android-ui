@@ -13,6 +13,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.paymentpage.msdk.ui.PaymentDelegate
+import com.paymentpage.msdk.ui.presentation.customerFields.CustomerFieldsScreen
 import com.paymentpage.msdk.ui.presentation.init.InitScreen
 import com.paymentpage.msdk.ui.presentation.main.MainScreen
 import com.paymentpage.msdk.ui.presentation.result.ResultScreen
@@ -45,6 +46,9 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
                 navigator = navigator,
                 delegate = delegate
             )
+        }
+        composable(route = Route.CustomerFields.getPath()) {
+            CustomerFieldsScreen()
         }
         composable(route = Route.Result.getPath()) {
             BackHandler(true) { }

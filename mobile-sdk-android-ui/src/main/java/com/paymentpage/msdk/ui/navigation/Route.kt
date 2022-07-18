@@ -9,6 +9,7 @@ sealed class Route(
 ) {
     object Init : Route(route = "init")
     object Main : Route(route = "main")
+    object CustomerFields : Route(route = "customerFields")
     object Result : Route(route = "result")
 
     override fun toString(): String {

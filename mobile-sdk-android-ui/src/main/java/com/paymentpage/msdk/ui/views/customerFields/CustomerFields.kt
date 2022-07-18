@@ -9,20 +9,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
+import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
+import com.paymentpage.msdk.core.domain.entities.customer.FieldServerType
+import com.paymentpage.msdk.core.domain.entities.field.FieldType
 import com.paymentpage.msdk.ui.AdditionalField
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.customerFields.type.*
-import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
-import com.paymentpage.msdk.core.domain.entities.customer.FieldServerType
-import com.paymentpage.msdk.core.domain.entities.field.FieldType
 
 @Composable
 internal fun CustomerFields(
     customerFields: List<CustomerField>,
-    additionalFields: List<com.paymentpage.msdk.ui.AdditionalField> = emptyList()
+    additionalFields: List<AdditionalField> = emptyList(),
+    onCustomerFieldsSuccess: (List<CustomerFieldValue>) -> Unit = {},
+    onCustomerFieldsError: () -> Unit = {}
 ) {
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
-    val visibleRequiredCustomerFields = remember { visibleCustomerFields.filter { it.isRequired } }
+    //val visibleRequiredCustomerFields = remember { visibleCustomerFields.filter { it.isRequired } }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         visibleCustomerFields.forEachIndexed { index, field ->
