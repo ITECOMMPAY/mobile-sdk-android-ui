@@ -18,7 +18,7 @@ import com.paymentpage.msdk.ui.LocalAdditionalFields
 import com.paymentpage.msdk.ui.LocalPaymentInfo
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.views.button.PayButton
@@ -32,9 +32,9 @@ import com.paymentpage.msdk.ui.views.expandable.ExpandableItem
 @Composable
 internal fun NewCardItem(
     isExpand: Boolean,
-    method: UIPaymentMethod.UICardPayPaymentMethod,
-    onItemSelected: ((method: UIPaymentMethod) -> Unit),
-    onItemUnSelected: ((method: UIPaymentMethod) -> Unit)
+    method: UiPaymentMethod.UICardPayPaymentMethod,
+    onItemSelected: ((method: UiPaymentMethod) -> Unit),
+    onItemUnSelected: ((method: UiPaymentMethod) -> Unit)
 ) {
     val customerFields = remember { method.paymentMethod?.customerFields }
     val checkedState = remember { mutableStateOf(true) }

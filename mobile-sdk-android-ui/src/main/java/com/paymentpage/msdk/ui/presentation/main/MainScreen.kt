@@ -12,8 +12,7 @@ import androidx.compose.ui.res.stringResource
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.navigation.Navigator
-import com.paymentpage.msdk.ui.navigation.Route
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.views.PaymentMethodList
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -22,8 +21,6 @@ import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
 import com.paymentpage.msdk.ui.views.common.CardView
 import com.paymentpage.msdk.ui.views.common.Footer
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 
 
 @Suppress("UNUSED_PARAMETER")
@@ -32,23 +29,13 @@ internal fun MainScreen(
     navigator: Navigator,
     delegate: PaymentDelegate
 ) {
-    val viewModel = LocalMainViewModel.current
-    LaunchedEffect(Unit) {
-        viewModel.state.onEach {
-            when {
-                it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
-            }
-        }.collect()
-    }
-
-
     Content(delegate = delegate)
 }
 
 
 @Composable
 private fun Content(delegate: PaymentDelegate) {
-    var selectedPaymentMethod by remember { mutableStateOf<UIPaymentMethod?>(null) }
+    var selectedPaymentMethod by remember { mutableStateOf<UiPaymentMethod?>(null) }
     val showDialogDismissDialog = remember { mutableStateOf(false) }
     BackHandler(true) {
         showDialogDismissDialog.value = true

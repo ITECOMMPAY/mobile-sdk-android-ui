@@ -16,12 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.LocalInitViewModel
+import com.paymentpage.msdk.ui.PaymentDelegate
+import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.utils.viewModelFactory
 import com.paymentpage.msdk.ui.views.common.Footer
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.shimmer.ShimmerAnimatedItem
@@ -34,20 +34,7 @@ internal fun InitScreen(
     navigator: Navigator,
     delegate: PaymentDelegate
 ) {
-    val paymentInfo = LocalPaymentInfo.current
-    val recurrentInfo = LocalRecurrentInfo.current
-    val threeDSecureInfo = LocalThreeDSecureInfo.current
-    val initInteractor = LocalMsdkSession.current.getInitInteractor()
-    val viewModel: InitViewModel = viewModel(
-        factory = viewModelFactory {
-            InitViewModel(
-                initInteractor = initInteractor,
-                paymentInfo = paymentInfo,
-                recurrentInfo = recurrentInfo,
-                threeDSecureInfo = threeDSecureInfo
-            )
-        }
-    )
+    val viewModel = LocalInitViewModel.current
 
     LaunchedEffect(Unit) {
         viewModel.state.onEach {

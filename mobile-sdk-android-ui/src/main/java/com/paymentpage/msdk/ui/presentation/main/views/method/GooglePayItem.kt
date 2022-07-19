@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalAdditionalFields
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 import com.paymentpage.msdk.ui.views.expandable.ExpandableItem
@@ -27,9 +27,9 @@ import com.paymentpage.msdk.ui.views.expandable.ExpandableItem
 @Composable
 internal fun GooglePayItem(
     isExpand: Boolean,
-    method: UIPaymentMethod.UIGooglePayPaymentMethod,
-    onItemSelected: ((method: UIPaymentMethod) -> Unit),
-    onItemUnSelected: ((method: UIPaymentMethod) -> Unit),
+    method: UiPaymentMethod.UIGooglePayPaymentMethod,
+    onItemSelected: ((method: UiPaymentMethod) -> Unit),
+    onItemUnSelected: ((method: UiPaymentMethod) -> Unit),
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod?.customerFields }
@@ -71,7 +71,7 @@ internal fun GooglePayItem(
             Button(
                 onClick = {
                     //TODO need validate
-              
+
                 },
                 content = {
                     Image(

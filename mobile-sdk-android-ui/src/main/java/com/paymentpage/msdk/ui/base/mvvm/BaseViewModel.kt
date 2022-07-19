@@ -12,6 +12,9 @@ abstract class BaseViewModel<S : UiState, in E : UiEvent> : ViewModel() {
     internal abstract val reducer: Reducer<S, E>
     abstract val timeMachine: TimeMachine<S>
 
+    val lastState: S
+        get() = state.value
+
     internal fun sendEvent(event: E) {
         reducer.sendEvent(event)
     }
