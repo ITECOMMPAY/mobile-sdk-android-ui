@@ -44,12 +44,16 @@ internal fun SavedCardItem(
                     modifier = Modifier.weight(1f),
                     value = method.savedAccount.cardExpiry?.stringValue ?: "",
                     isDisabled = true,
-                    onValueEntered = { cvv = it }
+                    onValueChanged = { value, isValid ->
+
+                    }
                 )
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                 CvvField(
                     modifier = Modifier.weight(1f),
-                    onValueEntered = { cvv = it }
+                    onValueChanged = { value, isValid ->
+                        cvv = value
+                    }
                 )
             }
             if (customerFields.isNotEmpty()) {

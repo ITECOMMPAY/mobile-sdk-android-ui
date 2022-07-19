@@ -27,7 +27,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 fun CustomTextField(
     modifier: Modifier,
     initialValue: String? = null,
-    onValueChanged: (String) -> Unit = {},
+    onValueChanged: (String, Boolean) -> Unit,
     onRequestValidatorMessage: ((String) -> String?)? = null,
     onFilterValueBefore: ((String) -> String)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -59,17 +59,11 @@ fun CustomTextField(
                     if (maxLength != null && it.length > maxLength) it.substring(0 until maxLength) else it
                 if (onFilterValueBefore != null)
                     text = onFilterValueBefore(text)
-
-
-//                errorMessage =
-//                    if (isRequired && text.isEmpty())
-//                        PaymentActivity.stringResourceManager.getStringByKey("message_required_field")
-//                    else
-//                        onValidate?.invoke(text)
-
                 textValue = text
-                //if (errorMessage == null)
-                onValueChanged(text)
+                var isValid = false
+                if (isRequired)
+                    isValid = textValue.isNotEmpty()
+                onValueChanged(text, isValid)
             },
             visualTransformation = visualTransformation,
             colors = TextFieldDefaults.textFieldColors(
@@ -160,7 +154,7 @@ private fun CustomTextFieldPreview() {
         modifier = Modifier,
         initialValue = "VALUE",
         keyboardType = KeyboardType.Number,
-        onValueChanged = {
+        onValueChanged = { _, _ ->
         },
         label = "LABEL",
     )

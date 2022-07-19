@@ -14,7 +14,7 @@ internal fun ExpiryField(
     modifier: Modifier,
     value: String? = null,
     isDisabled: Boolean = false,
-    onValueEntered: (String) -> Unit,
+    onValueChanged: (String, Boolean) -> Unit,
 ) {
     CustomTextField(
         initialValue = value?.replace("/", ""),
@@ -28,10 +28,13 @@ internal fun ExpiryField(
                 else -> null
             }
         },
-        onValueChanged = {
-            val expiryDate = SdkExpiry(it)
-            if (expiryDate.month != null && expiryDate.year != null)
-                onValueEntered(expiryDate.stringValue)
+        onValueChanged = { value, isValid ->
+            val expiryDate = SdkExpiry(value)
+            //if (expiryDate.month != null && expiryDate.year != null)
+            onValueChanged(
+                expiryDate.stringValue,
+                expiryDate.month != null && expiryDate.year != null && isValid
+            )
         },
         visualTransformation = MaskVisualTransformation("##/##"),
         label = PaymentActivity.stringResourceManager.getStringByKey("title_expiry"),
@@ -48,7 +51,7 @@ private fun ExpiryFieldPreview() {
     ExpiryField(
         modifier = Modifier,
         value = "02/30",
-        onValueEntered = {}
+        onValueChanged = { _, _ -> }
     )
 }
 
@@ -59,6 +62,6 @@ private fun ExpiryFieldPreviewDisabled() {
         isDisabled = true,
         modifier = Modifier,
         value = "02/30",
-        onValueEntered = {}
+        onValueChanged = { _, _ -> }
     )
 }

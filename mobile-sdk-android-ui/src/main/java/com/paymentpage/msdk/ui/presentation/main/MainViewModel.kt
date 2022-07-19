@@ -3,6 +3,7 @@ package com.paymentpage.msdk.ui.presentation.main
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationField
+import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
@@ -45,6 +46,11 @@ internal class MainViewModel(
     fun sendCustomerFields(customerFields: List<CustomerFieldValue>) {
         sendEvent(MainScreenUiEvent.ShowLoading)
         payInteractor.sendCustomerFields(customerFields)
+    }
+
+    fun sendClarificationFields(clarificationFields: List<ClarificationFieldValue>) {
+        sendEvent(MainScreenUiEvent.ShowLoading)
+        payInteractor.sendClarificationFields(clarificationFields)
     }
 
     override fun onCleared() {

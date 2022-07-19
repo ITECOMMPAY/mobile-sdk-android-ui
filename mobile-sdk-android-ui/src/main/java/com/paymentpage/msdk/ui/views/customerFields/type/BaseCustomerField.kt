@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
-import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.views.common.CustomTextField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
+import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.views.common.CustomTextField
 
 @Composable
 fun BaseCustomerTextField(
@@ -40,8 +40,8 @@ fun BaseCustomerTextField(
             }
             resultMessage
         },
-        onValueChanged = {
-            onValueChanged(CustomerFieldValue.fromTypeWithValue(customerField.type, it))
+        onValueChanged = { value, isValid ->
+            onValueChanged(CustomerFieldValue.fromNameWithValue(customerField.name, value))
         },
         label = customerField.label,
         placeholder = customerField.placeholder ?: customerField.hint,

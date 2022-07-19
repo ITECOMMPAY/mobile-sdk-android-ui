@@ -25,7 +25,7 @@ import com.paymentpage.msdk.ui.views.common.CustomTextField
 internal fun PanField(
     modifier: Modifier = Modifier,
     cardTypes: List<PaymentMethodCard>,
-    onValueEntered: (String) -> Unit,
+    onValueChanged: (String, Boolean) -> Unit,
 ) {
     var cardType by remember { mutableStateOf<PaymentMethodCard?>(null) }
     val cardTypesManager = CardTypesManager(cardTypes)
@@ -36,7 +36,9 @@ internal fun PanField(
         keyboardType = KeyboardType.Number,
         onFilterValueBefore = { value -> value.filter { it.isDigit() } },
         maxLength = 19,
-        onValueChanged = onValueEntered,
+        onValueChanged = { value, isValid ->
+            onValueChanged(value, PanValidator().isValid(value) && isValid)
+        },
         onRequestValidatorMessage = {
             if (!PanValidator().isValid(it)) PaymentActivity.stringResourceManager.getStringByKey("message_about_card_number") else null
         },
@@ -76,7 +78,7 @@ private fun PanFieldPreview() {
     PanField(
         modifier = Modifier,
         cardTypes = emptyList(),
-        onValueEntered = {}
+        onValueChanged = { _, _ -> }
     )
 }
 
