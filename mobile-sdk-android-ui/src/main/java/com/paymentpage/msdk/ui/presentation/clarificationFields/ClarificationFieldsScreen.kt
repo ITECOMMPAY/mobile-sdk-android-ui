@@ -1,12 +1,14 @@
-package com.paymentpage.msdk.ui.presentation.customerFields
+package com.paymentpage.msdk.ui.presentation.clarificationFields
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentInfo
+import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
@@ -15,15 +17,14 @@ import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.common.CardView
 import com.paymentpage.msdk.ui.views.common.Footer
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
-import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
-@SuppressLint("StateFlowValueCalledInComposition")
+
 @Composable
-internal fun CustomerFieldsScreen(
+internal fun ClarificationFieldsScreen(
 
 ) {
     val viewModel = LocalMainViewModel.current
-    val customerFields = viewModel.lastState.customerFields
+    val clarificationFields = viewModel.lastState.clarificationFields
     val method = viewModel.lastState.method
 
     SDKScaffold(
@@ -43,10 +44,7 @@ internal fun CustomerFieldsScreen(
                 }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
-            CustomerFields(
-                customerFields = customerFields,
-                additionalFields = LocalAdditionalFields.current
-            )
+
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
             PayButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
@@ -55,7 +53,7 @@ internal fun CustomerFieldsScreen(
                 isEnabled = true
             ) {
                 //TODO need send data
-                viewModel.sendCustomerFields(emptyList())
+
             }
 
         },

@@ -14,7 +14,7 @@ import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleR
 import com.paymentpage.msdk.ui.base.mvi.Reducer
 import com.paymentpage.msdk.ui.base.mvi.TimeMachine
 import com.paymentpage.msdk.ui.base.mvvm.BaseViewModel
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import kotlinx.coroutines.flow.StateFlow
 
 internal class MainViewModel(
@@ -30,21 +30,22 @@ internal class MainViewModel(
         get() = reducer.timeMachine
 
     fun saleSavedCard(
-        method: UIPaymentMethod,
+        method: UiPaymentMethod,
         accountId: Long,
         cvv: String,
         customerFields: List<CustomerFieldValue> = emptyList()
     ) {
-        sendEvent(MainScreenUiEvent.ShowLoading(method))
+        sendEvent(MainScreenUiEvent.ShowLoading)
+        sendEvent(MainScreenUiEvent.SetPaymentMethod(method))
         val request = SavedCardSaleRequest(cvv = cvv, accountId = accountId)
         request.customerFields = customerFields
         payInteractor.execute(request, this)
     }
 
-    init {
-
+    fun sendCustomerFields(customerFields: List<CustomerFieldValue>) {
+        sendEvent(MainScreenUiEvent.ShowLoading)
+        payInteractor.sendCustomerFields(customerFields)
     }
-
 
     override fun onCleared() {
         super.onCleared()
@@ -58,8 +59,8 @@ internal class MainViewModel(
                 is MainScreenUiEvent.ShowLoading -> setState(
                     oldState.copy(
                         customerFields = emptyList(),
+                        clarificationFields = emptyList(),
                         isLoading = true,
-                        method = event.method
                     )
                 )
                 is MainScreenUiEvent.ShowError -> setState(
@@ -67,14 +68,24 @@ internal class MainViewModel(
                         customerFields = emptyList(),
                         isLoading = false,
                         error = event.error,
-                        method = null
                     )
                 )
                 is MainScreenUiEvent.ShowCustomerFields -> setState(
                     oldState.copy(
                         isLoading = false,
-                        customerFields = event.customerFields
+                        customerFields = event.customerFields,
+                        clarificationFields = emptyList()
                     )
+                )
+                is MainScreenUiEvent.ShowClarificationFields -> setState(
+                    oldState.copy(
+                        isLoading = false,
+                        customerFields = emptyList(),
+                        clarificationFields = event.clarificationFields
+                    )
+                )
+                is MainScreenUiEvent.SetPaymentMethod -> setState(
+                    oldState.copy(method = event.method)
                 )
             }
         }
@@ -84,19 +95,19 @@ internal class MainViewModel(
         clarificationFields: List<ClarificationField>,
         payment: Payment
     ) {
-        TODO("Not yet implemented")
+        sendEvent(MainScreenUiEvent.ShowClarificationFields(clarificationFields = clarificationFields))
     }
 
     override fun onCompleteWithDecline(payment: Payment) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onCompleteWithFail(status: String?, payment: Payment) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onCompleteWithSuccess(payment: Payment) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onCustomerFields(customerFields: List<CustomerField>) {
@@ -104,18 +115,18 @@ internal class MainViewModel(
     }
 
     override fun onError(code: ErrorCode, message: String) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onPaymentCreated() {
-        TODO("Not yet implemented")
+
     }
 
     override fun onStatusChanged(status: PaymentStatus, payment: Payment) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onThreeDSecure(acsPage: AcsPage, isCascading: Boolean, payment: Payment) {
-        TODO("Not yet implemented")
+
     }
 }

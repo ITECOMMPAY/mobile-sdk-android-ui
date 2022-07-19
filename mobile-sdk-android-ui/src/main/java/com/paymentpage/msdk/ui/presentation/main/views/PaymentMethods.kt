@@ -10,7 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.views.method.PaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
@@ -21,15 +21,15 @@ internal fun PaymentMethodList(
     paymentMethods: List<PaymentMethod>,
     savedAccounts: List<SavedAccount>,
     additionalFields: List<com.paymentpage.msdk.ui.AdditionalField>,
-    onItemSelected: ((method: UIPaymentMethod) -> Unit) //callback for show vat info
+    onItemSelected: ((method: UiPaymentMethod) -> Unit) //callback for show vat info
 ) {
 
     val mergedPaymentMethods = paymentMethods.mergeUIPaymentMethods(savedAccounts = savedAccounts)
     if (mergedPaymentMethods.isEmpty()) return
 
     var selectedPaymentMethod by remember {
-        mutableStateOf<UIPaymentMethod?>(
-            if (mergedPaymentMethods.first() is UIPaymentMethod.UIGooglePayPaymentMethod) //if first method is google pay
+        mutableStateOf<UiPaymentMethod?>(
+            if (mergedPaymentMethods.first() is UiPaymentMethod.UIGooglePayPaymentMethod) //if first method is google pay
                 mergedPaymentMethods[1.coerceAtMost(mergedPaymentMethods.size - 1)]
             else
                 mergedPaymentMethods.first()

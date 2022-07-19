@@ -10,6 +10,8 @@ sealed class Route(
     object Init : Route(route = "init")
     object Main : Route(route = "main")
     object CustomerFields : Route(route = "customerFields")
+    object ClarificationFields : Route(route = "clarificationFields")
+    object Loading : Route(route = "loading")
     object Result : Route(route = "result")
 
     override fun toString(): String {

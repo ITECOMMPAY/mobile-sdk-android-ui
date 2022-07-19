@@ -1,17 +1,17 @@
 package com.paymentpage.msdk.ui.presentation.main.views.method
 
 import androidx.compose.runtime.Composable
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 
 @Composable
 internal fun PaymentMethodItem(
     isExpand: Boolean,
-    method: UIPaymentMethod,
-    onItemSelected: ((method: UIPaymentMethod) -> Unit),
-    onItemUnSelected: ((method: UIPaymentMethod) -> Unit),
+    method: UiPaymentMethod,
+    onItemSelected: ((method: UiPaymentMethod) -> Unit),
+    onItemUnSelected: ((method: UiPaymentMethod) -> Unit),
 ) {
     when (method) {
-        is UIPaymentMethod.UISavedCardPayPaymentMethod -> {
+        is UiPaymentMethod.UISavedCardPayPaymentMethod -> {
             SavedCardItem(
                 isExpand = isExpand,
                 method = method,
@@ -19,7 +19,7 @@ internal fun PaymentMethodItem(
                 onItemUnSelected = onItemUnSelected
             )
         }
-        is UIPaymentMethod.UICardPayPaymentMethod -> {
+        is UiPaymentMethod.UICardPayPaymentMethod -> {
             NewCardItem(
                 isExpand = isExpand,
                 method = method,
@@ -27,7 +27,7 @@ internal fun PaymentMethodItem(
                 onItemUnSelected = onItemUnSelected
             )
         }
-        is UIPaymentMethod.UIGooglePayPaymentMethod -> {
+        is UiPaymentMethod.UIGooglePayPaymentMethod -> {
             GooglePayItem(
                 isExpand = isExpand,
                 method = method,

@@ -12,11 +12,15 @@ import androidx.compose.runtime.LaunchedEffect
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.PaymentDelegate
+import com.paymentpage.msdk.ui.presentation.clarificationFields.ClarificationFieldsScreen
 import com.paymentpage.msdk.ui.presentation.customerFields.CustomerFieldsScreen
 import com.paymentpage.msdk.ui.presentation.init.InitScreen
+import com.paymentpage.msdk.ui.presentation.loading.LoadingScreen
 import com.paymentpage.msdk.ui.presentation.main.MainScreen
 import com.paymentpage.msdk.ui.presentation.result.ResultScreen
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -27,6 +31,17 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
 
     LaunchedEffect("navigation") {
         navigator.sharedFlow.onEach { navController.navigate(it.getPath()) }.launchIn(this)
+    }
+
+    val viewModel = LocalMainViewModel.current
+    LaunchedEffect(Unit) {
+        viewModel.state.onEach {
+            when {
+                it.isLoading == true -> navigator.navigateTo(Route.Loading)
+                it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
+                it.clarificationFields.isNotEmpty() -> navigator.navigateTo(Route.ClarificationFields)
+            }
+        }.collect()
     }
 
     AnimatedNavHost(
@@ -50,9 +65,17 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
         composable(route = Route.CustomerFields.getPath()) {
             CustomerFieldsScreen()
         }
+        composable(route = Route.ClarificationFields.getPath()) {
+            BackHandler(true) { }
+            ClarificationFieldsScreen()
+        }
         composable(route = Route.Result.getPath()) {
             BackHandler(true) { }
             ResultScreen()
+        }
+        composable(route = Route.Loading.getPath()) {
+            BackHandler(true) { }
+            LoadingScreen()
         }
     }
 }

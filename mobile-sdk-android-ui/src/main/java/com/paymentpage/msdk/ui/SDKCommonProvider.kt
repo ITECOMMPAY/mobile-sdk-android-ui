@@ -9,6 +9,7 @@ import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.RecipientInfo
 import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
+import com.paymentpage.msdk.ui.presentation.init.InitViewModel
 import com.paymentpage.msdk.ui.presentation.main.MainViewModel
 import com.paymentpage.msdk.ui.utils.viewModelFactory
 
@@ -23,6 +24,9 @@ internal val LocalMsdkSession =
 
 internal val LocalMainViewModel =
     compositionLocalOf<MainViewModel> { error("No MainViewModel found!") }
+
+internal val LocalInitViewModel =
+    compositionLocalOf<InitViewModel> { error("No InitViewModel found!") }
 
 
 @Composable
@@ -47,6 +51,16 @@ internal fun SDKCommonProvider(
                 MainViewModel(
                     payInteractor = msdkSession.getPayInteractor(),
                     paymentInfo = paymentInfo
+                )
+            }
+        ),
+        LocalInitViewModel provides viewModel(
+            factory = viewModelFactory {
+                InitViewModel(
+                    initInteractor = msdkSession.getInitInteractor(),
+                    paymentInfo = paymentInfo,
+                    recurrentInfo = recurrentInfo,
+                    threeDSecureInfo = threeDSecureInfo
                 )
             }
         )

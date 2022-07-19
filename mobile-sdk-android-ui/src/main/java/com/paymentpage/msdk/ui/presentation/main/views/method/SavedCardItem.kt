@@ -8,7 +8,7 @@ import com.paymentpage.msdk.ui.LocalAdditionalFields
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentInfo
 import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.views.button.PayButton
@@ -20,9 +20,9 @@ import com.paymentpage.msdk.ui.views.expandable.ExpandableItem
 @Composable
 internal fun SavedCardItem(
     isExpand: Boolean,
-    method: UIPaymentMethod.UISavedCardPayPaymentMethod,
-    onItemSelected: ((method: UIPaymentMethod) -> Unit),
-    onItemUnSelected: ((method: UIPaymentMethod) -> Unit),
+    method: UiPaymentMethod.UISavedCardPayPaymentMethod,
+    onItemSelected: ((method: UiPaymentMethod) -> Unit),
+    onItemUnSelected: ((method: UiPaymentMethod) -> Unit),
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod?.customerFields }
@@ -49,10 +49,10 @@ internal fun SavedCardItem(
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                 CvvField(
                     modifier = Modifier.weight(1f),
-                    onValueEntered = {}
+                    onValueEntered = { cvv = it }
                 )
             }
-            if (!customerFields.isNullOrEmpty()) {
+            if (customerFields.isNotEmpty()) {
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                 CustomerFields(
                     customerFields = customerFields,
