@@ -36,12 +36,12 @@ internal fun NewCardItem(
     onItemSelected: ((method: UiPaymentMethod) -> Unit),
     onItemUnSelected: ((method: UiPaymentMethod) -> Unit)
 ) {
-    val customerFields = remember { method.paymentMethod?.customerFields }
-    val checkedState = remember { mutableStateOf(true) }
+    val customerFields = remember { method.paymentMethod.customerFields }
+    val checkedState = remember { mutableStateOf(false) }
     ExpandableItem(
         index = method.index,
         name = method.title,
-        iconUrl = method.paymentMethod?.iconUrl,
+        iconUrl = method.paymentMethod.iconUrl,
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
         onExpand = { onItemSelected(method) },
         onCollapse = { onItemUnSelected(method) },
@@ -52,31 +52,35 @@ internal fun NewCardItem(
         Column(Modifier.fillMaxWidth()) {
             PanField(
                 modifier = Modifier.fillMaxWidth(),
-                cardTypes = method.paymentMethod?.cardTypes ?: emptyList(),
-                onValueEntered = {
+                cardTypes = method.paymentMethod.cardTypes ?: emptyList(),
+                onValueChanged = { value, isValid ->
 
                 }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
-            CardHolderField(modifier = Modifier.fillMaxWidth(), onValueChanged = {})
+            CardHolderField(modifier = Modifier.fillMaxWidth(),
+                onValueChanged = { value, isValid ->
+
+                }
+            )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
             Row {
                 ExpiryField(
                     modifier = Modifier.weight(1f),
                     value = "",
-                    onValueEntered = {
+                    onValueChanged = { value, isValid ->
 
                     }
                 )
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                 CvvField(
                     modifier = Modifier.weight(1f),
-                    onValueEntered = {
+                    onValueChanged = { value, isValid ->
 
                     }
                 )
             }
-            if (!customerFields.isNullOrEmpty()) {
+            if (customerFields.isNotEmpty()) {
                 CustomerFields(
                     customerFields = customerFields,
                     additionalFields = LocalAdditionalFields.current

@@ -11,17 +11,18 @@ import com.paymentpage.msdk.ui.views.common.CustomTextField
 internal fun CardHolderField(
     modifier: Modifier,
     isDisabled: Boolean = false,
-    onValueChanged: (String) -> Unit,
+    onValueChanged: (String, Boolean) -> Unit,
 ) {
     CustomTextField(
         modifier = modifier,
         onFilterValueBefore = { value -> value.filter { it.isLetter() || it == ' ' }.uppercase() },
-        onValueChanged = onValueChanged,
+        onValueChanged = { value, isValid ->
+            onValueChanged(value, isValid && CardHolderNameValidator().isValid(value))
+        },
         onRequestValidatorMessage = {
             when {
-                !CardHolderNameValidator().isValid(it) -> PaymentActivity.stringResourceManager.getStringByKey(
-                    "message_card_holder"
-                )
+                !CardHolderNameValidator().isValid(it) ->
+                    PaymentActivity.stringResourceManager.getStringByKey("message_card_holder")
                 else -> null
             }
 

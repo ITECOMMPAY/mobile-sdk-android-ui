@@ -12,7 +12,7 @@ import com.paymentpage.msdk.ui.views.common.CustomTextField
 internal fun CvvField(
     modifier: Modifier,
     length: Int = 3,
-    onValueEntered: (String) -> Unit,
+    onValueChanged: (String, Boolean) -> Unit,
 ) {
     CustomTextField(
         modifier = modifier,
@@ -24,9 +24,8 @@ internal fun CvvField(
             else
                 null
         },
-        onValueChanged = {
-            if (it.length == length)
-                onValueEntered(it)
+        onValueChanged = { value, isValid ->
+            onValueChanged(value, value.length == length && isValid)
         },
         visualTransformation = PasswordVisualTransformation(),
         label = PaymentActivity.stringResourceManager.getStringByKey("title_cvv"),
@@ -40,6 +39,6 @@ internal fun CvvField(
 private fun CvvFieldPreview() {
     CvvField(
         modifier = Modifier,
-        onValueEntered = {}
+        onValueChanged = { _, _ -> }
     )
 }
