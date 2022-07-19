@@ -35,7 +35,7 @@ internal class MainViewModel(
         method: UiPaymentMethod,
         accountId: Long,
         cvv: String,
-        customerFields: List<CustomerFieldValue> = emptyList()
+        customerFields: List<CustomerFieldValue>? = emptyList()
     ) {
         sendEvent(MainScreenUiEvent.ShowLoading)
         sendEvent(MainScreenUiEvent.SetPaymentMethod(method))
@@ -151,14 +151,13 @@ internal class MainViewModel(
         sendEvent(MainScreenUiEvent.ShowClarificationFields(clarificationFields = clarificationFields))
     }
 
-    override fun onCompleteWithDecline(resultMessage: String?, payment: Payment) {
+    override fun onCompleteWithDecline(payment: Payment) {
 
     }
 
-    override fun onCompleteWithFail(isTryAgain: Boolean, resultMessage: String?, payment: Payment) {
+    override fun onCompleteWithFail(status: String?, payment: Payment) {
 
     }
-
 
     override fun onCompleteWithSuccess(payment: Payment) {
 

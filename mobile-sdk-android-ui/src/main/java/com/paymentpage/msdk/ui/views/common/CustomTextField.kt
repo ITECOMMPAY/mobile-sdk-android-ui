@@ -60,7 +60,7 @@ fun CustomTextField(
                 if (onFilterValueBefore != null)
                     text = onFilterValueBefore(text)
                 textValue = text
-                var isValid = false
+                var isValid = true
                 if (isRequired)
                     isValid = textValue.isNotEmpty()
                 onValueChanged(text, isValid)

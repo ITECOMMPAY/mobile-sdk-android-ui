@@ -5,14 +5,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
-import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.utils.extensions.core.validate
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 
 @Composable
 fun BaseCustomerTextField(
     initialValue: String?,
-    onValueChanged: (CustomerFieldValue) -> Unit = {},
+    onValueChanged: (CustomerField, String, Boolean) -> Unit,
     customerField: CustomerField,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardType: KeyboardType = KeyboardType.Text,
@@ -25,23 +24,10 @@ fun BaseCustomerTextField(
         maxLength = maxLength,
         initialValue = initialValue,
         onRequestValidatorMessage = {
-            val validator = customerField.validator
-            var resultMessage: String? = null
-            if (customerField.isRequired && it.isEmpty()) {
-                resultMessage =
-                    PaymentActivity.stringResourceManager.getStringByKey("message_required_field")
-            } else if (validator != null) {
-                val text = if (onTransformValueBeforeValidate != null)
-                    onTransformValueBeforeValidate(it)
-                else
-                    it
-                if (!validator.isValid(text))
-                    resultMessage = customerField.errorMessage ?: customerField.errorMessageKey
-            }
-            resultMessage
+            customerField.validate(it, onTransformValueBeforeValidate)
         },
-        onValueChanged = { value, isValid ->
-            onValueChanged(CustomerFieldValue.fromNameWithValue(customerField.name, value))
+        onValueChanged = { text, isValid ->
+            onValueChanged(customerField, text, isValid && (customerField.validate(text, onTransformValueBeforeValidate)) == null)
         },
         label = customerField.label,
         placeholder = customerField.placeholder ?: customerField.hint,

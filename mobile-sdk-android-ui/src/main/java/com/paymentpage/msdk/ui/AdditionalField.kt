@@ -12,8 +12,8 @@ class AdditionalField {
 }
 
 @PaymentOptionsDsl
-class AdditionalFields : ArrayList<com.paymentpage.msdk.ui.AdditionalField>() {
-    fun field(block: com.paymentpage.msdk.ui.AdditionalField.() -> Unit) {
-        add(com.paymentpage.msdk.ui.AdditionalField().apply(block))
+class AdditionalFields : ArrayList<AdditionalField>() {
+    fun field(block: AdditionalField.() -> Unit) {
+        add(AdditionalField().apply(block))
     }
 }
