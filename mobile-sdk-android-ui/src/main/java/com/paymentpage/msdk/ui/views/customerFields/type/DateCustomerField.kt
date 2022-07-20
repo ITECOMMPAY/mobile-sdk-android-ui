@@ -2,10 +2,10 @@ package com.paymentpage.msdk.ui.views.customerFields.type
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.input.KeyboardType
-import com.paymentpage.msdk.ui.utils.MaskVisualTransformation
 import com.paymentpage.msdk.core.domain.entities.SdkDate
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
+import com.paymentpage.msdk.ui.utils.MaskVisualTransformation
 
 @Composable
 fun DateCustomerTextField(
@@ -21,10 +21,6 @@ fun DateCustomerTextField(
         onFilterValueBefore = { value -> value.filter { it.isDigit() } },
         maxLength = 8,
         visualTransformation = MaskVisualTransformation("##-##-####"),
-        onTransformValueBeforeValidate = {
-            val sdkDate = SdkDate(it)
-            val str = sdkDate.stringValue
-            str
-        }
+        onTransformValueBeforeValidate = { SdkDate(it).stringValue }
     )
 }

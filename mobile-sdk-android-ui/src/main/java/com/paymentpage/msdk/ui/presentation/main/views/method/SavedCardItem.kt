@@ -25,7 +25,7 @@ internal fun SavedCardItem(
     onItemUnSelected: ((method: UiPaymentMethod) -> Unit),
 ) {
     val viewModel = LocalMainViewModel.current
-    val customerFields = remember { method.paymentMethod?.customerFields }
+    val customerFields = remember { method.paymentMethod.customerFields }
     ExpandableItem(
         index = method.index,
         name = method.savedAccount.number,
@@ -72,9 +72,10 @@ internal fun SavedCardItem(
             ) {
                 //TODO need validate
                 viewModel.saleSavedCard(
+                    method = method,
                     accountId = method.savedAccount.id,
                     cvv = cvv,
-                    method = method
+                    customerFields = emptyList()
                 )
             }
         }

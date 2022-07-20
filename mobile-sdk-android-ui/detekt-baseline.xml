@@ -2,79 +2,86 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>ComplexMethod:CustomTextField.kt$@Composable fun CustomTextField( modifier: Modifier, initialValue: String? = null, onValueChanged: (String) -> Unit = {}, onRequestValidatorMessage: ((String) -> String?)? = null, onFilterValueBefore: ((String) -> String)? = null, visualTransformation: VisualTransformation = VisualTransformation.None, keyboardType: KeyboardType = KeyboardType.Text, nextFocus: FocusRequester? = null, label: String, placeholder: String? = null, isDisabled: Boolean = false, isRequired: Boolean = false, trailingIcon: @Composable (() -> Unit)? = null, maxLength: Int? = null )</ID>
-    <ID>EmptyClassBlock:MainScreenModel.kt$MainScreenUiEvent${ }</ID>
-    <ID>EmptyDefaultConstructor:PaymentOptions.kt$PaymentOptions$()</ID>
+    <ID>ComplexMethod:CustomTextField.kt$@Composable fun CustomTextField( modifier: Modifier, initialValue: String? = null, onValueChanged: (String, Boolean) -> Unit, onRequestValidatorMessage: ((String) -> String?)? = null, onFilterValueBefore: ((String) -> String)? = null, visualTransformation: VisualTransformation = VisualTransformation.None, keyboardType: KeyboardType = KeyboardType.Text, nextFocus: FocusRequester? = null, label: String, placeholder: String? = null, isDisabled: Boolean = false, isRequired: Boolean = false, trailingIcon: @Composable (() -> Unit)? = null, maxLength: Int? = null )</ID>
     <ID>EmptyFunctionBlock:InitViewModel.kt$InitViewModel.&lt;no name provided>${ }</ID>
-    <ID>EmptyFunctionBlock:MainViewModel.kt$MainViewModel.MainReducer${ }</ID>
+    <ID>EmptyFunctionBlock:MainViewModel.kt$MainViewModel${ }</ID>
     <ID>EmptyFunctionBlock:ResultScreen.kt${ }</ID>
     <ID>ForEachOnRange:InitScreen.kt$forEach { _ -> ShimmerAnimatedItem( itemHeight = 50.dp, borderRadius = 6.dp ) Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10)) }</ID>
     <ID>FunctionNaming:BaseCustomerField.kt$@Composable fun BaseCustomerTextField( initialValue: String?, onValueChanged: (CustomerFieldValue) -> Unit = {}, customerField: CustomerField, visualTransformation: VisualTransformation = VisualTransformation.None, keyboardType: KeyboardType = KeyboardType.Text, onFilterValueBefore: ((String) -> String)? = null, onTransformValueBeforeValidate: ((String) -> String)? = null, maxLength: Int? = null )</ID>
-    <ID>FunctionNaming:CardHolderField.kt$@Composable internal fun CardHolderField( modifier: Modifier, isDisabled: Boolean = false, onValueChanged: (String) -> Unit, )</ID>
+    <ID>FunctionNaming:CardHolderField.kt$@Composable internal fun CardHolderField( modifier: Modifier, isDisabled: Boolean = false, onValueChanged: (String, Boolean) -> Unit, )</ID>
     <ID>FunctionNaming:CardView.kt$@Composable @Preview fun CardViewPreview()</ID>
-    <ID>FunctionNaming:CardView.kt$@Composable internal fun CardView( brandLogoUrl: String? = null, amount: String, currency: String?, vatIncludedTitle: String? = null, )</ID>
+    <ID>FunctionNaming:CardView.kt$@Composable internal fun CardView( logoImage: Bitmap? = null, amount: String, currency: String?, vatIncludedTitle: String? = null, )</ID>
+    <ID>FunctionNaming:ClarificationFieldsScreen.kt$@Composable internal fun ClarificationFieldsScreen( )</ID>
+    <ID>FunctionNaming:CustomButton.kt$@Composable @Preview private fun PayButtonDefaultPreview()</ID>
+    <ID>FunctionNaming:CustomButton.kt$@Composable @Preview private fun PayButtonDisabledPreview()</ID>
+    <ID>FunctionNaming:CustomButton.kt$@Composable internal fun CustomButton( modifier: Modifier = Modifier, content: @Composable (() -> Unit), isEnabled: Boolean, onClick: () -> Unit, color: Color = SDKTheme.colors.brand )</ID>
     <ID>FunctionNaming:CustomTextField.kt$@Composable @Preview(showBackground = true) private fun CustomTextFieldPreview()</ID>
-    <ID>FunctionNaming:CustomTextField.kt$@Composable fun CustomTextField( modifier: Modifier, initialValue: String? = null, onValueChanged: (String) -> Unit = {}, onRequestValidatorMessage: ((String) -> String?)? = null, onFilterValueBefore: ((String) -> String)? = null, visualTransformation: VisualTransformation = VisualTransformation.None, keyboardType: KeyboardType = KeyboardType.Text, nextFocus: FocusRequester? = null, label: String, placeholder: String? = null, isDisabled: Boolean = false, isRequired: Boolean = false, trailingIcon: @Composable (() -> Unit)? = null, maxLength: Int? = null )</ID>
-    <ID>FunctionNaming:CustomerFields.kt$@Composable internal fun CustomerFields( customerFields: List&lt;CustomerField>, additionalFields: List&lt;com.paymentpage.msdk.ui.AdditionalField> = emptyList() )</ID>
+    <ID>FunctionNaming:CustomTextField.kt$@Composable fun CustomTextField( modifier: Modifier, initialValue: String? = null, onValueChanged: (String, Boolean) -> Unit, onRequestValidatorMessage: ((String) -> String?)? = null, onFilterValueBefore: ((String) -> String)? = null, visualTransformation: VisualTransformation = VisualTransformation.None, keyboardType: KeyboardType = KeyboardType.Text, nextFocus: FocusRequester? = null, label: String, placeholder: String? = null, isDisabled: Boolean = false, isRequired: Boolean = false, trailingIcon: @Composable (() -> Unit)? = null, maxLength: Int? = null )</ID>
+    <ID>FunctionNaming:CustomerFields.kt$@Composable internal fun CustomerFields( customerFields: List&lt;CustomerField>, additionalFields: List&lt;AdditionalField> = emptyList(), onCustomerFieldsSuccess: (List&lt;CustomerFieldValue>) -> Unit = {}, onCustomerFieldsError: () -> Unit = {} )</ID>
+    <ID>FunctionNaming:CustomerFieldsScreen.kt$@SuppressLint("StateFlowValueCalledInComposition") @Composable internal fun CustomerFieldsScreen( )</ID>
     <ID>FunctionNaming:CvvField.kt$@Composable @Preview(showBackground = true) private fun CvvFieldPreview()</ID>
-    <ID>FunctionNaming:CvvField.kt$@Composable internal fun CvvField( modifier: Modifier, length: Int = 3, onValueEntered: (String) -> Unit, )</ID>
+    <ID>FunctionNaming:CvvField.kt$@Composable internal fun CvvField( modifier: Modifier, length: Int = 3, onValueChanged: (String, Boolean) -> Unit, )</ID>
     <ID>FunctionNaming:DateCustomerField.kt$@Composable fun DateCustomerTextField( value: String? = null, onValueChanged: (CustomerFieldValue) -> Unit = {}, customerField: CustomerField )</ID>
     <ID>FunctionNaming:EmailCustomerField.kt$@Composable fun EmailCustomerTextField( value: String? = null, onValueChanged: (CustomerFieldValue) -> Unit = {}, customerField: CustomerField )</ID>
     <ID>FunctionNaming:ExpandableItem.kt$@Composable @Preview fun ExpandablePaymentMethodItemPreview()</ID>
     <ID>FunctionNaming:ExpandableItem.kt$@Composable internal fun ExpandableItem( index: Int, iconUrl: String? = null, fallbackIcon: Painter, name: String? = null, onExpand: (index: Int) -> Unit, onCollapse: (index: Int) -> Unit, isExpanded: Boolean = false, headerBackgroundColor: Color = SDKTheme.colors.backgroundColor, content: @Composable ColumnScope.() -> Unit, )</ID>
     <ID>FunctionNaming:ExpiryField.kt$@Composable @Preview(showBackground = true) private fun ExpiryFieldPreview()</ID>
     <ID>FunctionNaming:ExpiryField.kt$@Composable @Preview(showBackground = true) private fun ExpiryFieldPreviewDisabled()</ID>
-    <ID>FunctionNaming:ExpiryField.kt$@Composable internal fun ExpiryField( modifier: Modifier, value: String? = null, isDisabled: Boolean = false, onValueEntered: (String) -> Unit, )</ID>
+    <ID>FunctionNaming:ExpiryField.kt$@Composable internal fun ExpiryField( modifier: Modifier, value: String? = null, isDisabled: Boolean = false, onValueChanged: (String, Boolean) -> Unit, )</ID>
     <ID>FunctionNaming:Footer.kt$@Composable @Preview(showBackground = true) internal fun FooterPreview()</ID>
     <ID>FunctionNaming:Footer.kt$@Composable internal fun Footer( @DrawableRes iconLogo: Int, poweredByText: String, privacyPolicy: AnnotatedString? = null )</ID>
-    <ID>FunctionNaming:GooglePayItem.kt$@Composable internal fun GooglePayItem( isExpand: Boolean, method: UIPaymentMethod.UIGooglePayPaymentMethod, onItemSelected: ((method: UIPaymentMethod) -> Unit), onItemUnSelected: ((method: UIPaymentMethod) -> Unit), )</ID>
+    <ID>FunctionNaming:GooglePayItem.kt$@Composable internal fun GooglePayItem( isExpand: Boolean, method: UiPaymentMethod.UIGooglePayPaymentMethod, onItemSelected: ((method: UiPaymentMethod) -> Unit), onItemUnSelected: ((method: UiPaymentMethod) -> Unit), )</ID>
     <ID>FunctionNaming:InitScreen.kt$@Composable @Preview(showBackground = true, showSystemUi = true) fun LoadingPreview()</ID>
     <ID>FunctionNaming:InitScreen.kt$@Composable internal fun InitScreen( navigator: Navigator, delegate: PaymentDelegate )</ID>
     <ID>FunctionNaming:InitScreen.kt$@Composable private fun Content(delegate: PaymentDelegate? = null)</ID>
     <ID>FunctionNaming:InitScreen.kt$@Composable private fun Loading()</ID>
+    <ID>FunctionNaming:LoadingScreen.kt$@Composable internal fun LoadingScreen()</ID>
     <ID>FunctionNaming:MainScreen.kt$@Composable private fun Content(delegate: PaymentDelegate)</ID>
-    <ID>FunctionNaming:MainScreen.kt$@Suppress("UNUSED_PARAMETER") @Composable internal fun MainScreen( navigator: Navigator, delegate: PaymentDelegate, )</ID>
+    <ID>FunctionNaming:MainScreen.kt$@Suppress("UNUSED_PARAMETER") @Composable internal fun MainScreen( navigator: Navigator, delegate: PaymentDelegate )</ID>
     <ID>FunctionNaming:NavigationComponent.kt$@Composable internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate)</ID>
-    <ID>FunctionNaming:NewCardItem.kt$@Composable internal fun NewCardItem( isExpand: Boolean, method: UIPaymentMethod.UICardPayPaymentMethod, onItemSelected: ((method: UIPaymentMethod) -> Unit), onItemUnSelected: ((method: UIPaymentMethod) -> Unit) )</ID>
+    <ID>FunctionNaming:NewCardItem.kt$@Composable internal fun NewCardItem( isExpand: Boolean, method: UiPaymentMethod.UICardPayPaymentMethod, onItemSelected: ((method: UiPaymentMethod) -> Unit), onItemUnSelected: ((method: UiPaymentMethod) -> Unit) )</ID>
     <ID>FunctionNaming:NumberCustomerField.kt$@Composable fun NumberCustomerTextField( value: String? = null, onValueChanged: (CustomerFieldValue) -> Unit = {}, customerField: CustomerField )</ID>
     <ID>FunctionNaming:PaaswordCustomerField.kt$@Composable fun PasswordCustomerTextField( value: String? = null, onValueChanged: (CustomerFieldValue) -> Unit = {}, customerField: CustomerField )</ID>
     <ID>FunctionNaming:PanField.kt$@Composable @Preview(showBackground = true) private fun PanFieldPreview()</ID>
-    <ID>FunctionNaming:PanField.kt$@Composable internal fun PanField( modifier: Modifier = Modifier, cardTypes: List&lt;PaymentMethodCard>, onValueEntered: (String) -> Unit, )</ID>
+    <ID>FunctionNaming:PanField.kt$@Composable internal fun PanField( modifier: Modifier = Modifier, cardTypes: List&lt;PaymentMethodCard>, onValueChanged: (String, Boolean) -> Unit, )</ID>
     <ID>FunctionNaming:PayButton.kt$@Composable @Preview private fun PayButtonDefaultPreview()</ID>
     <ID>FunctionNaming:PayButton.kt$@Composable @Preview private fun PayButtonDisabledPreview()</ID>
     <ID>FunctionNaming:PayButton.kt$@Composable internal fun PayButton( modifier: Modifier = Modifier, payLabel: String, amount: String, currency: String, isEnabled: Boolean, onClick: () -> Unit, )</ID>
     <ID>FunctionNaming:PaymentDetailsContent.kt$@Composable fun PaymentDetailsContent( paymentIdLabel: String, paymentIdValue: String?, paymentDescriptionLabel: String, paymentDescriptionValue: String?, merchantAddressLabel: String, merchantAddressValue: String?, closeButtonCallback: () -> Unit )</ID>
     <ID>FunctionNaming:PaymentDetailsView.kt$@Composable fun ExpandablePaymentDetails( paymentDetailsLabel: String = stringResource(R.string.payment_details_label), isExpanded: Boolean = false, onExpandCallback: () -> Unit, content: @Composable ColumnScope.() -> Unit, )</ID>
     <ID>FunctionNaming:PaymentDetailsView.kt$@Composable fun PaymentDetailsView(paymentInfo: PaymentInfo)</ID>
-    <ID>FunctionNaming:PaymentMethodItem.kt$@Composable internal fun PaymentMethodItem( isExpand: Boolean, method: UIPaymentMethod, onItemSelected: ((method: UIPaymentMethod) -> Unit), onItemUnSelected: ((method: UIPaymentMethod) -> Unit), )</ID>
-    <ID>FunctionNaming:PaymentMethods.kt$@Composable internal fun PaymentMethodList( paymentMethods: List&lt;PaymentMethod>, savedAccounts: List&lt;SavedAccount>, additionalFields: List&lt;com.paymentpage.msdk.ui.AdditionalField>, onItemSelected: ((method: UIPaymentMethod) -> Unit) //callback for show vat info )</ID>
+    <ID>FunctionNaming:PaymentMethodItem.kt$@Composable internal fun PaymentMethodItem( isExpand: Boolean, method: UiPaymentMethod, onItemSelected: ((method: UiPaymentMethod) -> Unit), onItemUnSelected: ((method: UiPaymentMethod) -> Unit), )</ID>
+    <ID>FunctionNaming:PaymentMethods.kt$@Composable internal fun PaymentMethodList( paymentMethods: List&lt;PaymentMethod>, savedAccounts: List&lt;SavedAccount>, additionalFields: List&lt;com.paymentpage.msdk.ui.AdditionalField>, onItemSelected: ((method: UiPaymentMethod) -> Unit) //callback for show vat info )</ID>
     <ID>FunctionNaming:ResultScreen.kt$@Composable internal fun ResultScreen()</ID>
-    <ID>FunctionNaming:SDKCommonProvider.kt$@Composable internal fun SDKCommonProvider( paymentInfo: PaymentInfo, recurrentInfo: RecurrentInfo?, threeDSecureInfo: ThreeDSecureInfo?, recipientInfo: RecipientInfo?, additionalFields: List&lt;com.paymentpage.msdk.ui.AdditionalField>, msdkSession: MSDKCoreSession, content: @Composable () -> Unit )</ID>
+    <ID>FunctionNaming:SDKCommonProvider.kt$@Composable internal fun SDKCommonProvider( paymentInfo: PaymentInfo, recurrentInfo: RecurrentInfo?, threeDSecureInfo: ThreeDSecureInfo?, recipientInfo: RecipientInfo?, additionalFields: List&lt;AdditionalField>, msdkSession: MSDKCoreSession, content: @Composable () -> Unit )</ID>
     <ID>FunctionNaming:SDKScaffold.kt$@Composable internal fun SDKScaffold( title: String = "", notScrollableContent: @Composable () -> Unit = {}, scrollableContent: @Composable () -> Unit = {}, footerContent: @Composable () -> Unit = {}, onClose: () -> Unit = {}, )</ID>
     <ID>FunctionNaming:SDKTheme.kt$@Composable internal fun SDKTheme( isDark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit )</ID>
-    <ID>FunctionNaming:SavedCardItem.kt$@Composable internal fun SavedCardItem( isExpand: Boolean, method: UIPaymentMethod.UISavedCardPayPaymentMethod, onItemSelected: ((method: UIPaymentMethod) -> Unit), onItemUnSelected: ((method: UIPaymentMethod) -> Unit), )</ID>
+    <ID>FunctionNaming:SavedCardItem.kt$@Composable internal fun SavedCardItem( isExpand: Boolean, method: UiPaymentMethod.UISavedCardPayPaymentMethod, onItemSelected: ((method: UiPaymentMethod) -> Unit), onItemUnSelected: ((method: UiPaymentMethod) -> Unit), )</ID>
     <ID>FunctionNaming:ShimmerAnimatedItem.kt$@Composable @Preview(showBackground = true) fun ShimmerAnimationPreview()</ID>
     <ID>FunctionNaming:ShimmerAnimatedItem.kt$@Composable internal fun ShimmerAnimatedItem( itemHeight: Dp, itemWidth: Dp? = null, padding: Dp = 0.dp, borderRadius: Dp = 0.dp )</ID>
     <ID>FunctionNaming:ShimmerItem.kt$@Composable internal fun ShimmerItem( xShimmer: Float, yShimmer: Float, itemHeight: Dp, itemWidth: Dp? = null, gradientWidth: Float, padding: Dp, borderRadius: Dp = 0.dp, )</ID>
     <ID>FunctionNaming:TelCustomerField.kt$@Composable fun TelCustomerTextField( value: String? = null, onValueChanged: (CustomerFieldValue) -> Unit = {}, customerField: CustomerField )</ID>
     <ID>FunctionNaming:TextCustomerField.kt$@Composable fun TextCustomerTextField( value: String? = null, onValueChanged: (CustomerFieldValue) -> Unit = {}, customerField: CustomerField )</ID>
+    <ID>FunctionNaming:ThreeDSecureScreen.kt$@Composable internal fun ThreeDSecureScreen()</ID>
     <ID>FunctionNaming:TopBar.kt$@Composable @Preview internal fun PreviewDarkToolbar()</ID>
     <ID>FunctionNaming:TopBar.kt$@Composable @Preview internal fun PreviewLightToolbar()</ID>
-    <ID>FunctionNaming:TopBar.kt$@OptIn(ExperimentalComposeUiApi::class) @Composable internal fun TopBar( title: String, //arrowIcon: ImageVector? = Icons.Filled.ArrowBack, onClose: () -> Unit = {}, )</ID>
-    <ID>LongMethod:CardView.kt$@Composable internal fun CardView( brandLogoUrl: String? = null, amount: String, currency: String?, vatIncludedTitle: String? = null, )</ID>
-    <ID>LongMethod:CustomTextField.kt$@Composable fun CustomTextField( modifier: Modifier, initialValue: String? = null, onValueChanged: (String) -> Unit = {}, onRequestValidatorMessage: ((String) -> String?)? = null, onFilterValueBefore: ((String) -> String)? = null, visualTransformation: VisualTransformation = VisualTransformation.None, keyboardType: KeyboardType = KeyboardType.Text, nextFocus: FocusRequester? = null, label: String, placeholder: String? = null, isDisabled: Boolean = false, isRequired: Boolean = false, trailingIcon: @Composable (() -> Unit)? = null, maxLength: Int? = null )</ID>
+    <ID>FunctionNaming:TopBar.kt$@Composable internal fun TopBar( title: String, //arrowIcon: ImageVector? = Icons.Filled.ArrowBack, onClose: () -> Unit = {}, )</ID>
+    <ID>LongMethod:CardView.kt$@Composable internal fun CardView( logoImage: Bitmap? = null, amount: String, currency: String?, vatIncludedTitle: String? = null, )</ID>
+    <ID>LongMethod:CustomTextField.kt$@Composable fun CustomTextField( modifier: Modifier, initialValue: String? = null, onValueChanged: (String, Boolean) -> Unit, onRequestValidatorMessage: ((String) -> String?)? = null, onFilterValueBefore: ((String) -> String)? = null, visualTransformation: VisualTransformation = VisualTransformation.None, keyboardType: KeyboardType = KeyboardType.Text, nextFocus: FocusRequester? = null, label: String, placeholder: String? = null, isDisabled: Boolean = false, isRequired: Boolean = false, trailingIcon: @Composable (() -> Unit)? = null, maxLength: Int? = null )</ID>
     <ID>LongMethod:ExpandableItem.kt$@Composable internal fun ExpandableItem( index: Int, iconUrl: String? = null, fallbackIcon: Painter, name: String? = null, onExpand: (index: Int) -> Unit, onCollapse: (index: Int) -> Unit, isExpanded: Boolean = false, headerBackgroundColor: Color = SDKTheme.colors.backgroundColor, content: @Composable ColumnScope.() -> Unit, )</ID>
-    <ID>LongMethod:NewCardItem.kt$@Composable internal fun NewCardItem( isExpand: Boolean, method: UIPaymentMethod.UICardPayPaymentMethod, onItemSelected: ((method: UIPaymentMethod) -> Unit), onItemUnSelected: ((method: UIPaymentMethod) -> Unit) )</ID>
+    <ID>LongMethod:NewCardItem.kt$@Composable internal fun NewCardItem( isExpand: Boolean, method: UiPaymentMethod.UICardPayPaymentMethod, onItemSelected: ((method: UiPaymentMethod) -> Unit), onItemUnSelected: ((method: UiPaymentMethod) -> Unit) )</ID>
     <ID>LongParameterList:BaseCustomerField.kt$( initialValue: String?, onValueChanged: (CustomerFieldValue) -> Unit = {}, customerField: CustomerField, visualTransformation: VisualTransformation = VisualTransformation.None, keyboardType: KeyboardType = KeyboardType.Text, onFilterValueBefore: ((String) -> String)? = null, onTransformValueBeforeValidate: ((String) -> String)? = null, maxLength: Int? = null )</ID>
     <ID>LongParameterList:Colors.kt$Colors$( //Brand color brand: Color, primaryTextColor: Color, secondaryTextColor: Color, disabledTextColor: Color, errorTextColor: Color, backgroundColor: Color, panelBackgroundColor: Color, panelBackgroundErrorColor: Color, borderColor: Color, borderErrorColor: Color, iconColor: Color, footerTextColor: Color, )</ID>
-    <ID>LongParameterList:CustomTextField.kt$( modifier: Modifier, initialValue: String? = null, onValueChanged: (String) -> Unit = {}, onRequestValidatorMessage: ((String) -> String?)? = null, onFilterValueBefore: ((String) -> String)? = null, visualTransformation: VisualTransformation = VisualTransformation.None, keyboardType: KeyboardType = KeyboardType.Text, nextFocus: FocusRequester? = null, label: String, placeholder: String? = null, isDisabled: Boolean = false, isRequired: Boolean = false, trailingIcon: @Composable (() -> Unit)? = null, maxLength: Int? = null )</ID>
+    <ID>LongParameterList:CustomTextField.kt$( modifier: Modifier, initialValue: String? = null, onValueChanged: (String, Boolean) -> Unit, onRequestValidatorMessage: ((String) -> String?)? = null, onFilterValueBefore: ((String) -> String)? = null, visualTransformation: VisualTransformation = VisualTransformation.None, keyboardType: KeyboardType = KeyboardType.Text, nextFocus: FocusRequester? = null, label: String, placeholder: String? = null, isDisabled: Boolean = false, isRequired: Boolean = false, trailingIcon: @Composable (() -> Unit)? = null, maxLength: Int? = null )</ID>
     <ID>LongParameterList:ExpandableItem.kt$( index: Int, iconUrl: String? = null, fallbackIcon: Painter, name: String? = null, onExpand: (index: Int) -> Unit, onCollapse: (index: Int) -> Unit, isExpanded: Boolean = false, headerBackgroundColor: Color = SDKTheme.colors.backgroundColor, content: @Composable ColumnScope.() -> Unit, )</ID>
+    <ID>LongParameterList:MainViewModel.kt$MainViewModel$( method: UiPaymentMethod, cvv: String, pan: String, year: Int, month: Int, cardHolder: String, saveCard: Boolean, customerFields: List&lt;CustomerFieldValue> = emptyList() )</ID>
     <ID>LongParameterList:PayButton.kt$( modifier: Modifier = Modifier, payLabel: String, amount: String, currency: String, isEnabled: Boolean, onClick: () -> Unit, )</ID>
-    <ID>LongParameterList:PaymentActivity.kt$PaymentActivity.Companion$( context: Context, paymentInfo: PaymentInfo, recurrentInfo: RecurrentInfo? = null, threeDSecureInfo: ThreeDSecureInfo? = null, recipientInfo: RecipientInfo? = null, additionalFields: List&lt;com.paymentpage.msdk.ui.AdditionalField> = emptyList() )</ID>
+    <ID>LongParameterList:PaymentActivity.kt$PaymentActivity.Companion$( context: Context, paymentInfo: PaymentInfo, recurrentInfo: RecurrentInfo? = null, threeDSecureInfo: ThreeDSecureInfo? = null, recipientInfo: RecipientInfo? = null, additionalFields: List&lt;AdditionalField> = emptyList(), logoImage: Bitmap? = null )</ID>
     <ID>LongParameterList:PaymentDetailsContent.kt$( paymentIdLabel: String, paymentIdValue: String?, paymentDescriptionLabel: String, paymentDescriptionValue: String?, merchantAddressLabel: String, merchantAddressValue: String?, closeButtonCallback: () -> Unit )</ID>
-    <ID>LongParameterList:SDKCommonProvider.kt$( paymentInfo: PaymentInfo, recurrentInfo: RecurrentInfo?, threeDSecureInfo: ThreeDSecureInfo?, recipientInfo: RecipientInfo?, additionalFields: List&lt;com.paymentpage.msdk.ui.AdditionalField>, msdkSession: MSDKCoreSession, content: @Composable () -> Unit )</ID>
+    <ID>LongParameterList:SDKCommonProvider.kt$( paymentInfo: PaymentInfo, recurrentInfo: RecurrentInfo?, threeDSecureInfo: ThreeDSecureInfo?, recipientInfo: RecipientInfo?, additionalFields: List&lt;AdditionalField>, msdkSession: MSDKCoreSession, content: @Composable () -> Unit )</ID>
     <ID>LongParameterList:ShimmerItem.kt$( xShimmer: Float, yShimmer: Float, itemHeight: Dp, itemWidth: Dp? = null, gradientWidth: Float, padding: Dp, borderRadius: Dp = 0.dp, )</ID>
     <ID>LongParameterList:Typography.kt$Typography$( s12Light: TextStyle, s12Normal: TextStyle, s14Light: TextStyle, s14Normal: TextStyle, s14SemiBold: TextStyle, s14Bold: TextStyle, s16Normal: TextStyle, s16Bold: TextStyle, s18Bold: TextStyle, s22Bold: TextStyle, s24Bold: TextStyle, s28Bold: TextStyle, )</ID>
+    <ID>MagicNumber:CardView.kt$100</ID>
     <ID>MagicNumber:Colors.kt$0xFF000000</ID>
     <ID>MagicNumber:Colors.kt$0xFF00579E</ID>
     <ID>MagicNumber:Colors.kt$0xFF666666</ID>
@@ -108,6 +115,8 @@
     <ID>MagicNumber:Formatters.kt$&lt;no name provided>$8</ID>
     <ID>MagicNumber:Formatters.kt$&lt;no name provided>$9</ID>
     <ID>MagicNumber:InitScreen.kt$5</ID>
+    <ID>MagicNumber:LoadingScreen.kt$0.9f</ID>
+    <ID>MagicNumber:NewCardItem.kt$7</ID>
     <ID>MagicNumber:PaymentDetailsView.kt$0.3f</ID>
     <ID>MagicNumber:SDKScaffold.kt$0.9f</ID>
     <ID>MagicNumber:ShimmerAnimatedItem.kt$250f</ID>
@@ -119,7 +128,6 @@
     <ID>MaxLineLength:PaymentDetailsView.kt$paymentDescriptionLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_information_screen")</ID>
     <ID>MaxLineLength:PaymentDetailsView.kt$style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand.copy(alpha = if (isExpanded) 0.3f else 1f))</ID>
     <ID>MaxLineLength:PaymentMethods.kt$if</ID>
-    <ID>MaxLineLength:SDKCommonProvider.kt$internal val LocalAdditionalFields = staticCompositionLocalOf&lt;List&lt;com.paymentpage.msdk.ui.AdditionalField>> { emptyList() }</ID>
     <ID>NewLineAtEndOfFile:ActionType.kt$com.paymentpage.msdk.ui.base.ActionType.kt</ID>
     <ID>NewLineAtEndOfFile:AdditionalField.kt$com.paymentpage.msdk.ui.AdditionalField.kt</ID>
     <ID>NewLineAtEndOfFile:BaseCustomerField.kt$com.paymentpage.msdk.ui.views.customerFields.type.BaseCustomerField.kt</ID>
@@ -127,6 +135,8 @@
     <ID>NewLineAtEndOfFile:BaseViewModel.kt$com.paymentpage.msdk.ui.base.mvvm.BaseViewModel.kt</ID>
     <ID>NewLineAtEndOfFile:CardHolderField.kt$com.paymentpage.msdk.ui.views.card.CardHolderField.kt</ID>
     <ID>NewLineAtEndOfFile:Colors.kt$com.paymentpage.msdk.ui.theme.Colors.kt</ID>
+    <ID>NewLineAtEndOfFile:Constants.kt$com.paymentpage.msdk.ui.base.Constants.kt</ID>
+    <ID>NewLineAtEndOfFile:CustomButton.kt$com.paymentpage.msdk.ui.views.common.CustomButton.kt</ID>
     <ID>NewLineAtEndOfFile:CustomTextField.kt$com.paymentpage.msdk.ui.views.common.CustomTextField.kt</ID>
     <ID>NewLineAtEndOfFile:CvvField.kt$com.paymentpage.msdk.ui.views.card.CvvField.kt</ID>
     <ID>NewLineAtEndOfFile:DateCustomerField.kt$com.paymentpage.msdk.ui.views.customerFields.type.DateCustomerField.kt</ID>
@@ -156,9 +166,7 @@
     <ID>NewLineAtEndOfFile:PaymentDetailsContent.kt$com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsContent.kt</ID>
     <ID>NewLineAtEndOfFile:PaymentDetailsView.kt$com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView.kt</ID>
     <ID>NewLineAtEndOfFile:PaymentMethodExtensions.kt$com.paymentpage.msdk.ui.utils.extensions.core.PaymentMethodExtensions.kt</ID>
-    <ID>NewLineAtEndOfFile:PaymentOptions.kt$com.paymentpage.msdk.ui.PaymentOptions.kt</ID>
     <ID>NewLineAtEndOfFile:PaymentOptionsDsl.kt$com.paymentpage.msdk.ui.base.PaymentOptionsDsl.kt</ID>
-    <ID>NewLineAtEndOfFile:PaymentSDK.kt$com.paymentpage.msdk.ui.PaymentSDK.kt</ID>
     <ID>NewLineAtEndOfFile:Route.kt$com.paymentpage.msdk.ui.navigation.Route.kt</ID>
     <ID>NewLineAtEndOfFile:SDKCommonProvider.kt$com.paymentpage.msdk.ui.SDKCommonProvider.kt</ID>
     <ID>NewLineAtEndOfFile:SDKScaffold.kt$com.paymentpage.msdk.ui.views.common.SDKScaffold.kt</ID>
@@ -171,30 +179,32 @@
     <ID>NewLineAtEndOfFile:TextCustomerField.kt$com.paymentpage.msdk.ui.views.customerFields.type.TextCustomerField.kt</ID>
     <ID>NewLineAtEndOfFile:TimeMachine.kt$com.paymentpage.msdk.ui.base.mvi.TimeMachine.kt</ID>
     <ID>NewLineAtEndOfFile:Typography.kt$com.paymentpage.msdk.ui.theme.Typography.kt</ID>
-    <ID>NewLineAtEndOfFile:UIPaymentMethod.kt$com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod.kt</ID>
+    <ID>NewLineAtEndOfFile:UiPaymentMethod.kt$com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod.kt</ID>
     <ID>NewLineAtEndOfFile:ViewModels.kt$com.paymentpage.msdk.ui.utils.ViewModels.kt</ID>
     <ID>ReturnCount:Formatters.kt$&lt;no name provided>$override fun originalToTransformed(offset: Int): Int</ID>
     <ID>ReturnCount:Formatters.kt$&lt;no name provided>$override fun transformedToOriginal(offset: Int): Int</ID>
+    <ID>TooManyFunctions:MainViewModel.kt$MainViewModel : BaseViewModelPayDelegate</ID>
+    <ID>UnusedPrivateMember:CustomButton.kt$@Composable @Preview private fun PayButtonDefaultPreview()</ID>
+    <ID>UnusedPrivateMember:CustomButton.kt$@Composable @Preview private fun PayButtonDisabledPreview()</ID>
     <ID>UnusedPrivateMember:CustomTextField.kt$@Composable @Preview(showBackground = true) private fun CustomTextFieldPreview()</ID>
     <ID>UnusedPrivateMember:CvvField.kt$@Composable @Preview(showBackground = true) private fun CvvFieldPreview()</ID>
     <ID>UnusedPrivateMember:ExpiryField.kt$@Composable @Preview(showBackground = true) private fun ExpiryFieldPreview()</ID>
     <ID>UnusedPrivateMember:ExpiryField.kt$@Composable @Preview(showBackground = true) private fun ExpiryFieldPreviewDisabled()</ID>
-    <ID>UnusedPrivateMember:MainViewModel.kt$MainViewModel$private val payInteractor: PayInteractor</ID>
-    <ID>UnusedPrivateMember:MainViewModel.kt$MainViewModel$private val paymentInfo: PaymentInfo</ID>
+    <ID>UnusedPrivateMember:GooglePayItem.kt$val viewModel = LocalMainViewModel.current</ID>
     <ID>UnusedPrivateMember:PanField.kt$@Composable @Preview(showBackground = true) private fun PanFieldPreview()</ID>
     <ID>UnusedPrivateMember:PayButton.kt$@Composable @Preview private fun PayButtonDefaultPreview()</ID>
     <ID>UnusedPrivateMember:PayButton.kt$@Composable @Preview private fun PayButtonDisabledPreview()</ID>
     <ID>WildcardImport:CardView.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:CardView.kt$import androidx.compose.ui.layout.*</ID>
     <ID>WildcardImport:CustomTextField.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:CustomTextField.kt$import androidx.compose.runtime.*</ID>
     <ID>WildcardImport:CustomerFields.kt$import com.paymentpage.msdk.ui.views.customerFields.type.*</ID>
+    <ID>WildcardImport:CustomerFieldsScreen.kt$import com.paymentpage.msdk.ui.*</ID>
     <ID>WildcardImport:ExpandableItem.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:Footer.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:InitScreen.kt$import com.paymentpage.msdk.ui.*</ID>
     <ID>WildcardImport:MainScreen.kt$import androidx.compose.runtime.*</ID>
     <ID>WildcardImport:MainScreen.kt$import com.paymentpage.msdk.ui.*</ID>
     <ID>WildcardImport:NewCardItem.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:NewCardItem.kt$import com.paymentpage.msdk.ui.*</ID>
     <ID>WildcardImport:PanField.kt$import androidx.compose.runtime.*</ID>
     <ID>WildcardImport:PaymentActivity.kt$import androidx.compose.runtime.*</ID>
     <ID>WildcardImport:PaymentDetailsView.kt$import androidx.compose.foundation.layout.*</ID>
@@ -202,8 +212,8 @@
     <ID>WildcardImport:PaymentMethods.kt$import androidx.compose.runtime.*</ID>
     <ID>WildcardImport:SDKScaffold.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:SavedCardItem.kt$import androidx.compose.foundation.layout.*</ID>
+    <ID>WildcardImport:SavedCardItem.kt$import androidx.compose.runtime.*</ID>
     <ID>WildcardImport:ShimmerAnimatedItem.kt$import androidx.compose.animation.core.*</ID>
     <ID>WildcardImport:ShimmerItem.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:TopBar.kt$import androidx.compose.foundation.layout.*</ID>
   </CurrentIssues>
 </SmellBaseline>

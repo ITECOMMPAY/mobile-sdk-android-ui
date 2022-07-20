@@ -3,6 +3,7 @@ package com.paymentpage.msdk.ui.presentation.main
 import androidx.compose.runtime.Immutable
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
+import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.UiEvent
 import com.paymentpage.msdk.ui.base.mvi.UiState
@@ -18,6 +19,10 @@ internal sealed class MainScreenUiEvent : UiEvent {
 
     class ShowClarificationFields(val clarificationFields: List<ClarificationField>) :
         MainScreenUiEvent()
+
+    class ShowAcsPage(val acsPage: AcsPage, val isCascading: Boolean) :
+        MainScreenUiEvent()
+
 }
 
 @Immutable
@@ -26,6 +31,8 @@ internal data class MainScreenState(
     val method: UiPaymentMethod? = null,
     val customerFields: List<CustomerField> = emptyList(),
     val clarificationFields: List<ClarificationField> = emptyList(),
+    val acsPage: AcsPage? = null,
+    val isCascading: Boolean = false,
     val error: ErrorResult? = null
 ) : UiState {
 

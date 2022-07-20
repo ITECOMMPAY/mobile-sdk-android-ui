@@ -20,6 +20,7 @@ import com.paymentpage.msdk.ui.presentation.init.InitScreen
 import com.paymentpage.msdk.ui.presentation.loading.LoadingScreen
 import com.paymentpage.msdk.ui.presentation.main.MainScreen
 import com.paymentpage.msdk.ui.presentation.result.ResultScreen
+import com.paymentpage.msdk.ui.presentation.threeDSecure.ThreeDSecureScreen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -40,6 +41,7 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
                 it.isLoading == true -> navigator.navigateTo(Route.Loading)
                 it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> navigator.navigateTo(Route.ClarificationFields)
+                it.acsPage != null -> navigator.navigateTo(Route.AcsPage)
             }
         }.collect()
     }
@@ -68,6 +70,10 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
         composable(route = Route.ClarificationFields.getPath()) {
             BackHandler(true) { }
             ClarificationFieldsScreen()
+        }
+        composable(route = Route.AcsPage.getPath()) {
+            BackHandler(true) { }
+            ThreeDSecureScreen()
         }
         composable(route = Route.Result.getPath()) {
             BackHandler(true) { }

@@ -11,6 +11,7 @@ sealed class Route(
     object Main : Route(route = "main")
     object CustomerFields : Route(route = "customerFields")
     object ClarificationFields : Route(route = "clarificationFields")
+    object AcsPage : Route(route = "acsPage")
     object Loading : Route(route = "loading")
     object Result : Route(route = "result")
 

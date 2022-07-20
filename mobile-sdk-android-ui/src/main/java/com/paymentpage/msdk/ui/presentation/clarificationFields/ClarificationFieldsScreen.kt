@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentInfo
 import com.paymentpage.msdk.ui.PaymentActivity
@@ -53,6 +54,14 @@ internal fun ClarificationFieldsScreen(
                 isEnabled = true
             ) {
                 //TODO need send data
+
+                val fieldsToSend = clarificationFields.map {
+                    ClarificationFieldValue.fromNameWithValue(
+                        name = it.name,
+                        value = it.name
+                    )
+                }
+                viewModel.sendClarificationFields(fieldsToSend)
 
             }
 

@@ -27,7 +27,6 @@ internal fun CardView(
     currency: String?,
     vatIncludedTitle: String? = null,
 ) {
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,7 +58,6 @@ internal fun CardView(
                         .fillMaxWidth()
                 )
             }
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -90,9 +88,7 @@ internal fun CardView(
                         text = stringResource(R.string.total_price_label),
                         style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
                     )
-                    Text(
-                        text = " "
-                    )
+                    Spacer(modifier = Modifier.width(10.dp))
                     if (!vatIncludedTitle.isNullOrEmpty())
                         Text(
                             text = vatIncludedTitle,
