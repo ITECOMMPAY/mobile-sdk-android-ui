@@ -14,9 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
-import com.paymentpage.msdk.ui.LocalAdditionalFields
-import com.paymentpage.msdk.ui.LocalPaymentInfo
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -36,8 +34,9 @@ internal fun NewCardItem(
     onItemSelected: ((method: UiPaymentMethod) -> Unit),
     onItemUnSelected: ((method: UiPaymentMethod) -> Unit)
 ) {
+    val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
-    val checkedState = remember { mutableStateOf(false) }
+    val savedState = remember { mutableStateOf(false) }
     ExpandableItem(
         index = method.index,
         name = method.title,
@@ -55,7 +54,7 @@ internal fun NewCardItem(
                 cardTypes = method.paymentMethod.cardTypes ?: emptyList(),
                 onValueChanged = { value, isValid ->
 
-                }
+7                }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
             CardHolderField(modifier = Modifier.fillMaxWidth(),
@@ -94,13 +93,13 @@ internal fun NewCardItem(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
                     ) {
-                        checkedState.value = !checkedState.value
+                        savedState.value = !savedState.value
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Checkbox(
-                    checked = checkedState.value,
-                    onCheckedChange = { checkedState.value = it },
+                    checked = savedState.value,
+                    onCheckedChange = { savedState.value = it },
                     colors = CheckboxDefaults.colors(checkedColor = SDKTheme.colors.brand)
                 )
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding12))
@@ -116,7 +115,18 @@ internal fun NewCardItem(
                 amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
                 currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
                 isEnabled = true,
-                onClick = {}
+                onClick = {
+                    viewModel.saleCard(
+                        method = method,
+                        cvv = "",
+                        pan = "",
+                        year = 0,
+                        month = 0,
+                        cardHolder = "",
+                        saveCard = savedState.value,
+                        customerFields = emptyList()
+                    )
+                }
             )
         }
     }

@@ -11,6 +11,7 @@ import com.paymentpage.msdk.core.domain.entities.payment.PaymentStatus
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
 import com.paymentpage.msdk.core.domain.interactors.pay.PayDelegate
 import com.paymentpage.msdk.core.domain.interactors.pay.PayInteractor
+import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
 import com.paymentpage.msdk.ui.base.mvi.Reducer
 import com.paymentpage.msdk.ui.base.mvi.TimeMachine
@@ -43,6 +44,30 @@ internal class MainViewModel(
         payInteractor.execute(request, this)
     }
 
+    fun saleCard(
+        method: UiPaymentMethod,
+        cvv: String,
+        pan: String,
+        year: Int,
+        month: Int,
+        cardHolder: String,
+        saveCard: Boolean,
+        customerFields: List<CustomerFieldValue> = emptyList()
+    ) {
+        sendEvent(MainScreenUiEvent.ShowLoading)
+        sendEvent(MainScreenUiEvent.SetPaymentMethod(method))
+        val request = NewCardSaleRequest(
+            cvv = cvv,
+            pan = pan,
+            year = year,
+            month = month,
+            cardHolder = cardHolder,
+            saveCard = saveCard
+        )
+        request.customerFields = customerFields
+        payInteractor.execute(request, this)
+    }
+
     fun sendCustomerFields(customerFields: List<CustomerFieldValue>) {
         sendEvent(MainScreenUiEvent.ShowLoading)
         payInteractor.sendCustomerFields(customerFields)
@@ -51,6 +76,11 @@ internal class MainViewModel(
     fun sendClarificationFields(clarificationFields: List<ClarificationFieldValue>) {
         sendEvent(MainScreenUiEvent.ShowLoading)
         payInteractor.sendClarificationFields(clarificationFields)
+    }
+
+    fun threeDSecureHandled() {
+        sendEvent(MainScreenUiEvent.ShowLoading)
+        payInteractor.threeDSecureHandled()
     }
 
     override fun onCleared() {
@@ -66,6 +96,8 @@ internal class MainViewModel(
                     oldState.copy(
                         customerFields = emptyList(),
                         clarificationFields = emptyList(),
+                        acsPage = null,
+                        isCascading = false,
                         isLoading = true,
                     )
                 )
@@ -73,6 +105,8 @@ internal class MainViewModel(
                     oldState.copy(
                         customerFields = emptyList(),
                         isLoading = false,
+                        acsPage = null,
+                        isCascading = false,
                         error = event.error,
                     )
                 )
@@ -80,14 +114,27 @@ internal class MainViewModel(
                     oldState.copy(
                         isLoading = false,
                         customerFields = event.customerFields,
-                        clarificationFields = emptyList()
+                        clarificationFields = emptyList(),
+                        acsPage = null,
+                        isCascading = false,
                     )
                 )
                 is MainScreenUiEvent.ShowClarificationFields -> setState(
                     oldState.copy(
                         isLoading = false,
                         customerFields = emptyList(),
-                        clarificationFields = event.clarificationFields
+                        clarificationFields = event.clarificationFields,
+                        acsPage = null,
+                        isCascading = false,
+                    )
+                )
+                is MainScreenUiEvent.ShowAcsPage -> setState(
+                    oldState.copy(
+                        isLoading = false,
+                        customerFields = emptyList(),
+                        clarificationFields = emptyList(),
+                        acsPage = event.acsPage,
+                        isCascading = event.isCascading,
                     )
                 )
                 is MainScreenUiEvent.SetPaymentMethod -> setState(
@@ -133,6 +180,6 @@ internal class MainViewModel(
     }
 
     override fun onThreeDSecure(acsPage: AcsPage, isCascading: Boolean, payment: Payment) {
-
+        sendEvent(MainScreenUiEvent.ShowAcsPage(acsPage = acsPage, isCascading = isCascading))
     }
 }

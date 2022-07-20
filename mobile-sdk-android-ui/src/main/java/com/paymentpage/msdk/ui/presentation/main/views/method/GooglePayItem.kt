@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
@@ -20,6 +19,7 @@ import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.views.common.CustomButton
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 import com.paymentpage.msdk.ui.views.expandable.ExpandableItem
 
@@ -32,8 +32,8 @@ internal fun GooglePayItem(
     onItemUnSelected: ((method: UiPaymentMethod) -> Unit),
 ) {
     val viewModel = LocalMainViewModel.current
-    val customerFields = remember { method.paymentMethod?.customerFields }
-    if (customerFields.isNullOrEmpty()) {
+    val customerFields = remember { method.paymentMethod.customerFields }
+    if (customerFields.isEmpty()) {
         Button(
             onClick = {},
             content = {
@@ -55,7 +55,7 @@ internal fun GooglePayItem(
         ExpandableItem(
             index = method.index,
             name = method.title,
-            iconUrl = method.paymentMethod?.iconUrl,
+            iconUrl = method.paymentMethod.iconUrl,
             headerBackgroundColor = SDKTheme.colors.backgroundColor,
             onExpand = { onItemSelected(method) },
             onCollapse = { onItemUnSelected(method) },
@@ -68,24 +68,19 @@ internal fun GooglePayItem(
                 additionalFields = LocalAdditionalFields.current
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
-            Button(
-                onClick = {
-                    //TODO need validate
-
-                },
+            CustomButton(
+                modifier = Modifier
+                    .height(50.dp)
+                    .fillMaxWidth(),
+                isEnabled = true,
                 content = {
                     Image(
                         painter = painterResource(id = R.drawable.googlepay_button_logo),
                         contentDescription = null
                     )
                 },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Black
-                ),
-                shape = SDKTheme.shapes.radius6,
-                modifier = Modifier
-                    .height(50.dp)
-                    .fillMaxWidth()
+                color = Color.Black,
+                onClick = {}
             )
         }
     }

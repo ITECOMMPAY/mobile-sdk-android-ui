@@ -33,7 +33,7 @@ internal fun ExpiryField(
             //if (expiryDate.month != null && expiryDate.year != null)
             onValueChanged(
                 expiryDate.stringValue,
-                expiryDate.month != null && expiryDate.year != null && isValid
+                expiryDate.isValid() && isValid
             )
         },
         visualTransformation = MaskVisualTransformation("##/##"),
