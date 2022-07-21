@@ -24,16 +24,17 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffold
 @Composable
 internal fun MainScreen(
     navigator: Navigator,
-    delegate: PaymentDelegate
+    delegate: PaymentDelegate,
+    onCancel: () -> Unit
 ) {
-    Content(delegate = delegate)
+    Content(delegate = delegate, onCancel = onCancel)
 }
 
 
 @Composable
-private fun Content(delegate: PaymentDelegate) {
+private fun Content(delegate: PaymentDelegate, onCancel: () -> Unit) {
     var selectedPaymentMethod by remember { mutableStateOf<UiPaymentMethod?>(null) }
-    BackHandler(true) { delegate.onCancel() }
+    BackHandler(true) { onCancel() }
     SDKScaffold(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
         notScrollableContent = {
@@ -67,6 +68,6 @@ private fun Content(delegate: PaymentDelegate) {
                     .annotatedString()
             )
         },
-        onClose = { delegate.onCancel() }
+        onClose = { onCancel() }
     )
 }

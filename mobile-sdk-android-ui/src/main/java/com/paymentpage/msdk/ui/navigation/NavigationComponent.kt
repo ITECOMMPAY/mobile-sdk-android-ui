@@ -28,7 +28,11 @@ import kotlinx.coroutines.flow.onEach
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate) {
+internal fun NavigationComponent(
+    navigator: Navigator,
+    delegate: PaymentDelegate,
+    onCancel: () -> Unit
+) {
     val navController = rememberAnimatedNavController()
 
     LaunchedEffect("navigation") {
@@ -56,23 +60,31 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
         popExitTransition = { ExitTransition.None }
     ) {
         composable(route = Route.Init.getPath()) {
-            BackHandler(true) { }
+            BackHandler(true) { onCancel() }
             InitScreen(navigator = navigator, delegate = delegate)
         }
         composable(route = Route.Main.getPath()) {
             MainScreen(
                 navigator = navigator,
-                delegate = delegate
+                delegate = delegate,
+                onCancel = onCancel
             )
         }
         composable(route = Route.CustomerFields.getPath()) {
-            CustomerFieldsScreen(navigator = navigator, delegate = delegate)
+            CustomerFieldsScreen(
+                navigator = navigator,
+                onCancel = onCancel
+            )
         }
         composable(route = Route.ClarificationFields.getPath()) {
-            ClarificationFieldsScreen(navigator = navigator, delegate = delegate)
+            ClarificationFieldsScreen(
+                onCancel = onCancel
+            )
         }
         composable(route = Route.AcsPage.getPath()) {
-            ThreeDSecureScreen(navigator = navigator, delegate = delegate)
+            ThreeDSecureScreen(
+                onCancel = onCancel
+            )
         }
         composable(route = Route.Result.getPath()) {
             BackHandler(true) { }

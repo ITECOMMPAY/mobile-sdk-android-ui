@@ -8,11 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.ui.*
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentInfo
-import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.navigation.Navigator
-import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
@@ -25,14 +21,13 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
 @Composable
 internal fun ClarificationFieldsScreen(
-    navigator: Navigator,
-    delegate: PaymentDelegate
+    onCancel: () -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
     val clarificationFields = viewModel.lastState.clarificationFields
     val method = viewModel.lastState.method
 
-    BackHandler(true) { delegate.onCancel() }
+    BackHandler(true) { onCancel() }
 
     SDKScaffold(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
@@ -82,6 +77,6 @@ internal fun ClarificationFieldsScreen(
                     .annotatedString()
             )
         },
-        onClose = { delegate.onCancel() },
+        onClose = { onCancel() },
     )
 }
