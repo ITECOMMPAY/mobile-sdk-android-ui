@@ -151,13 +151,14 @@ internal class MainViewModel(
         sendEvent(MainScreenUiEvent.ShowClarificationFields(clarificationFields = clarificationFields))
     }
 
-    override fun onCompleteWithDecline(payment: Payment) {
+    override fun onCompleteWithDecline(resultMessage: String?, payment: Payment) {
 
     }
 
-    override fun onCompleteWithFail(status: String?, payment: Payment) {
+    override fun onCompleteWithFail(isTryAgain: Boolean, resultMessage: String?, payment: Payment) {
 
     }
+
 
     override fun onCompleteWithSuccess(payment: Payment) {
 

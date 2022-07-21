@@ -18,7 +18,8 @@ internal fun SDKScaffold(
     notScrollableContent: @Composable () -> Unit = {},
     scrollableContent: @Composable () -> Unit = {},
     footerContent: @Composable () -> Unit = {},
-    onClose: () -> Unit = {},
+    onClose: (() -> Unit)? = null,
+    onBack: (() -> Unit)? = null
 ) {
     Box(
         modifier = Modifier
@@ -30,9 +31,10 @@ internal fun SDKScaffold(
                 modifier = Modifier.padding(SDKTheme.dimensions.padding20),
                 horizontalAlignment = Alignment.Start
             ) {
-                TopBar(
+                SDKTopBar(
                     title = title,
-                    onClose = onClose
+                    onClose = onClose,
+                    onBack = onBack
                 )
                 notScrollableContent()
                 Column(
