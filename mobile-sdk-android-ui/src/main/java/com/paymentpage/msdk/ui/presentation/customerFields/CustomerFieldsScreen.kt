@@ -4,16 +4,19 @@ import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
+import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.common.CardView
 import com.paymentpage.msdk.ui.views.common.Footer
@@ -28,12 +31,14 @@ internal fun CustomerFieldsScreen(
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = viewModel.lastState.customerFields
+    val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
     val method = viewModel.lastState.method
-
+    var customerFieldValues by remember { mutableStateOf<List<CustomerFieldValue>?>(null) }
+    val additionalFields = LocalAdditionalFields.current
     BackHandler(true) { navigator.navigateTo(Route.Main) }
 
     SDKScaffold(
-        title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
+        title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_additional_data"),
         notScrollableContent = {
             PaymentDetailsView(paymentInfo = LocalPaymentInfo.current)
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
@@ -50,18 +55,22 @@ internal fun CustomerFieldsScreen(
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
             CustomerFields(
-                visibleCustomerFields = customerFields,
-                additionalFields = LocalAdditionalFields.current
+                visibleCustomerFields = visibleCustomerFields,
+                additionalFields = LocalAdditionalFields.current,
+                onCustomerFieldsSuccess = { customerFieldValues = it },
+                onCustomerFieldsError = { customerFieldValues = null }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
             PayButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
                 currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
-                isEnabled = true
+                isEnabled = customerFieldValues != null || visibleCustomerFields.isEmpty()
             ) {
-                //TODO need send data
-                viewModel.sendCustomerFields(emptyList())
+                viewModel.sendCustomerFields(customerFields.merge(
+                    changedFields = customerFieldValues,
+                    additionalFields = additionalFields
+                ))
             }
 
         },
