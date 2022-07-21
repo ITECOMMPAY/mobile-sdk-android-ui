@@ -12,6 +12,7 @@ import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
+import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
@@ -19,7 +20,7 @@ import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
 import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.common.CardView
-import com.paymentpage.msdk.ui.views.common.Footer
+import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
@@ -81,7 +82,7 @@ internal fun CustomerFieldsScreen(
 
         },
         footerContent = {
-            Footer(
+            SDKFooter(
                 iconLogo = SDKTheme.images.sdkLogoResId,
                 poweredByText = stringResource(R.string.powered_by_label),
                 privacyPolicy = PaymentActivity

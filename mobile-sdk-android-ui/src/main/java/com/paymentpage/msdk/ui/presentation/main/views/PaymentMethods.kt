@@ -14,6 +14,8 @@ import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 import com.paymentpage.msdk.ui.AdditionalField
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.reset
+import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
 import com.paymentpage.msdk.ui.presentation.main.views.method.PaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
@@ -33,13 +35,14 @@ internal fun PaymentMethodList(
     if (mergedPaymentMethods.isEmpty()) return
 
     LaunchedEffect(Unit) {
-        val defaultOpenedMethod =
-            if (mergedPaymentMethods.first() is UiPaymentMethod.UIGooglePayPaymentMethod) //if first method is google pay
+        val lastOpenedMethod = mainViewModel.lastState.currentMethod
+        val openedMethod = lastOpenedMethod
+            ?: if (mergedPaymentMethods.first() is UiPaymentMethod.UIGooglePayPaymentMethod) //if first method is google pay
                 mergedPaymentMethods[1.coerceAtMost(mergedPaymentMethods.size - 1)]
             else //first by default
                 mergedPaymentMethods.first()
         mainViewModel.reset()
-        mainViewModel.setCurrentMethod(defaultOpenedMethod)
+        mainViewModel.setCurrentMethod(openedMethod)
     }
 
     Column(modifier = Modifier.fillMaxWidth()) {

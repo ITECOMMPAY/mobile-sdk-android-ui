@@ -12,12 +12,12 @@ import com.paymentpage.msdk.ui.views.common.CustomTextField
 @Composable
 internal fun ExpiryField(
     modifier: Modifier,
-    value: String? = null,
+    initialValue: String? = null,
     isDisabled: Boolean = false,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     CustomTextField(
-        initialValue = value?.replace("/", ""),
+        initialValue = initialValue?.replace("/", ""),
         modifier = modifier,
         onFilterValueBefore = { text -> text.filter { it.isDigit() } },
         onRequestValidatorMessage = {
@@ -50,7 +50,7 @@ internal fun ExpiryField(
 private fun ExpiryFieldPreview() {
     ExpiryField(
         modifier = Modifier,
-        value = "02/30",
+        initialValue = "02/30",
         onValueChanged = { _, _ -> }
     )
 }
@@ -61,7 +61,7 @@ private fun ExpiryFieldPreviewDisabled() {
     ExpiryField(
         isDisabled = true,
         modifier = Modifier,
-        value = "02/30",
+        initialValue = "02/30",
         onValueChanged = { _, _ -> }
     )
 }

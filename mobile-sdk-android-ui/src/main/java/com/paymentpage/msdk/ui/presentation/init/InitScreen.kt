@@ -16,6 +16,7 @@ import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
+import com.paymentpage.msdk.ui.presentation.main.restorePayment
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.shimmer.ShimmerAnimatedItem
