@@ -3,6 +3,7 @@ package com.paymentpage.msdk.ui.presentation.threeDSecure
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -14,22 +15,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.paymentpage.msdk.ui.BuildConfig
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.PaymentDelegate
+import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomButton
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
 @Composable
-internal fun ThreeDSecureScreen() {
+internal fun ThreeDSecureScreen(
+    navigator: Navigator,
+    delegate: PaymentDelegate
+) {
     val viewModel = LocalMainViewModel.current
     val acsPage = viewModel.lastState.acsPage
 
+    BackHandler(true) { delegate.onCancel() }
 
     SDKScaffold(
         title = "3DS",
-        notScrollableContent = {
-
-
-        },
+        notScrollableContent = { },
         scrollableContent = {
             if (BuildConfig.DEBUG)
                 CustomButton(
@@ -66,8 +70,7 @@ internal fun ThreeDSecureScreen() {
 
                 })
         },
-        footerContent = {
-        },
-        onClose = { }
+        footerContent = { },
+        onClose = { delegate.onCancel() }
     )
 }

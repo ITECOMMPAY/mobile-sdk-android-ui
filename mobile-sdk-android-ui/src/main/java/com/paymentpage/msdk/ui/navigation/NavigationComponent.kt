@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate) {
     val navController = rememberAnimatedNavController()
@@ -65,15 +66,13 @@ internal fun NavigationComponent(navigator: Navigator, delegate: PaymentDelegate
             )
         }
         composable(route = Route.CustomerFields.getPath()) {
-            CustomerFieldsScreen()
+            CustomerFieldsScreen(navigator = navigator, delegate = delegate)
         }
         composable(route = Route.ClarificationFields.getPath()) {
-            BackHandler(true) { }
-            ClarificationFieldsScreen()
+            ClarificationFieldsScreen(navigator = navigator, delegate = delegate)
         }
         composable(route = Route.AcsPage.getPath()) {
-            BackHandler(true) { }
-            ThreeDSecureScreen()
+            ThreeDSecureScreen(navigator = navigator, delegate = delegate)
         }
         composable(route = Route.Result.getPath()) {
             BackHandler(true) { }

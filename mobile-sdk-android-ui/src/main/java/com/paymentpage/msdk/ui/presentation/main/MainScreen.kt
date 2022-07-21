@@ -3,9 +3,6 @@ package com.paymentpage.msdk.ui.presentation.main
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -36,10 +33,7 @@ internal fun MainScreen(
 @Composable
 private fun Content(delegate: PaymentDelegate) {
     var selectedPaymentMethod by remember { mutableStateOf<UiPaymentMethod?>(null) }
-    val showDialogDismissDialog = remember { mutableStateOf(false) }
-    BackHandler(true) {
-        showDialogDismissDialog.value = true
-    }
+    BackHandler(true) { delegate.onCancel() }
     SDKScaffold(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
         notScrollableContent = {
@@ -73,19 +67,6 @@ private fun Content(delegate: PaymentDelegate) {
                     .annotatedString()
             )
         },
-        onClose = { showDialogDismissDialog.value = true }
+        onClose = { delegate.onCancel() }
     )
-    if (showDialogDismissDialog.value)
-        AlertDialog(
-            text = { Text(text = stringResource(R.string.payment_dismiss_confirm_message)) },
-            onDismissRequest = { showDialogDismissDialog.value = false },
-            confirmButton = {
-                TextButton(onClick = { delegate.onCancel() })
-                { Text(text = stringResource(R.string.ok_label)) }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDialogDismissDialog.value = false })
-                { Text(text = stringResource(R.string.cancel_label)) }
-            }
-        )
 }

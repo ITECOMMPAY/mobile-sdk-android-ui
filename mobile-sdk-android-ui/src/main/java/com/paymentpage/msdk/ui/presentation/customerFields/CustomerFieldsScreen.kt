@@ -1,12 +1,15 @@
 package com.paymentpage.msdk.ui.presentation.customerFields
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.navigation.Navigator
+import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
@@ -20,11 +23,14 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 internal fun CustomerFieldsScreen(
-
+    navigator: Navigator,
+    delegate: PaymentDelegate
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = viewModel.lastState.customerFields
     val method = viewModel.lastState.method
+
+    BackHandler(true) { navigator.navigateTo(Route.Main) }
 
     SDKScaffold(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
@@ -69,6 +75,7 @@ internal fun CustomerFieldsScreen(
                     .annotatedString()
             )
         },
-        onClose = { }
+        onClose = { delegate.onCancel() },
+        onBack = { navigator.navigateTo(Route.Main) }
     )
 }

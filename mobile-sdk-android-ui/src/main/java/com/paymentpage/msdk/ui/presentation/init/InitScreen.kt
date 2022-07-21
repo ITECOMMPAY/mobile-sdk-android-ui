@@ -5,13 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,7 +30,7 @@ internal fun InitScreen(
     delegate: PaymentDelegate
 ) {
     val viewModel = LocalInitViewModel.current
-
+    BackHandler(true) { delegate.onCancel() }
     LaunchedEffect(Unit) {
         viewModel.state.onEach {
             when {
@@ -44,16 +39,12 @@ internal fun InitScreen(
             }
         }.collect()
     }
-    Content(delegate)
+    Content()
 }
 
 
 @Composable
-private fun Content(delegate: PaymentDelegate? = null) {
-    val showDialogDismissDialog = remember { mutableStateOf(false) }
-    BackHandler(true) {
-        showDialogDismissDialog.value = true
-    }
+private fun Content() {
     SDKScaffold(
         title = stringResource(R.string.payment_methods_label),
         notScrollableContent = { Loading() },
@@ -62,22 +53,8 @@ private fun Content(delegate: PaymentDelegate? = null) {
                 iconLogo = SDKTheme.images.sdkLogoResId,
                 poweredByText = stringResource(R.string.powered_by_label),
             )
-        },
-        onClose = { showDialogDismissDialog.value = true }
+        }
     )
-    if (showDialogDismissDialog.value)
-        AlertDialog(
-            text = { Text(text = stringResource(R.string.payment_dismiss_confirm_message)) },
-            onDismissRequest = { showDialogDismissDialog.value = false },
-            confirmButton = {
-                TextButton(onClick = { delegate?.onCancel() })
-                { Text(text = stringResource(R.string.ok_label)) }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDialogDismissDialog.value = false })
-                { Text(text = stringResource(R.string.cancel_label)) }
-            }
-        )
 }
 
 @Composable
