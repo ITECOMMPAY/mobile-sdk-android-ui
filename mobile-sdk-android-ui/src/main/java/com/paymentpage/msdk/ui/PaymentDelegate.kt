@@ -8,8 +8,6 @@ internal interface PaymentDelegate {
 
     fun onCompleteWithSuccess(payment: Payment)
 
-    fun onCompleteWithFail(status: String?, payment: Payment)
-
     fun onCompleteWithDecline(payment: Payment)
 
     fun onCancel()

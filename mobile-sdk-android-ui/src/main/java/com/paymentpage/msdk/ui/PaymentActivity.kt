@@ -81,20 +81,18 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         finish()
     }
 
-    override fun onCompleteWithFail(status: String?, payment: Payment) {
-        val dataIntent = Intent()
-        dataIntent.putExtra(
-            Constants.EXTRA_PAYMENT_STATUS, payment.serverStatusName
-        )
-        setResult(Constants.RESULT_FAILED, dataIntent)
-        finish()
-    }
-
     override fun onCompleteWithDecline(payment: Payment) {
         val dataIntent = Intent()
+//        dataIntent.putExtra(
+//            Constants.EXTRA_PAYMENT_STATUS, payment.serverStatusName
+//        )
+//        dataIntent.putExtra(
+//            Constants.EXTRA_RESULT_MESSAGE, resultMessage
+//        )
         setResult(Constants.RESULT_DECLINE, dataIntent)
         finish()
     }
+
 
     override fun onCancel() {
         val dataIntent = Intent()
