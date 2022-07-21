@@ -26,7 +26,7 @@ internal sealed class MainScreenUiEvent : UiEvent {
         MainScreenUiEvent()
 
     object ShowSuccessPage : MainScreenUiEvent()
-    class ShowDeclinePage(val resultMessage: String?, val isTryAgain: Boolean) :
+    class ShowDeclinePage(val paymentMessage: String?, val isTryAgain: Boolean) :
         MainScreenUiEvent()
 
 }
@@ -54,6 +54,6 @@ internal class AcsPageState(
 )
 
 internal sealed class FinalPaymentState {
-    class Decline(val resultMessage: String?, val isTryAgain: Boolean) : FinalPaymentState()
+    class Decline(val paymentMessage: String?, val isTryAgain: Boolean) : FinalPaymentState()
     object Success : FinalPaymentState()
 }

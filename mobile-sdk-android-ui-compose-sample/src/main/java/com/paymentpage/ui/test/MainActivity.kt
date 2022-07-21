@@ -64,8 +64,8 @@ class MainActivity : ComponentActivity() {
 
 
         var secretKey: String = "123"
-        var apiHost: String = "pp-sdk.westresscode.net"
-        var wsApiHost: String = "paymentpage.westresscode.net"
+        var apiHost: String = "pp-sdk-3.westresscode.net"
+        var wsApiHost: String = "paymentpage-3.westresscode.net"
 
         var mockModeEnabled = false
     }

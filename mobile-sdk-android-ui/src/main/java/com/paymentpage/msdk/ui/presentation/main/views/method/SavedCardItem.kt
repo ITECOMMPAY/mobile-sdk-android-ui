@@ -12,6 +12,7 @@ import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
+import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
@@ -27,6 +28,13 @@ internal fun SavedCardItem(
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
+    val additionalFields = LocalAdditionalFields.current
+
+    var cvv by remember { mutableStateOf("") }
+    val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
+    var customerFieldValues by remember {
+        mutableStateOf<List<CustomerFieldValue>?>(null)
+    }
     ExpandableItem(
         index = method.index,
         name = method.savedAccount.number,
@@ -38,8 +46,6 @@ internal fun SavedCardItem(
         fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
     ) {
         Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
-        var cvv by remember { mutableStateOf("") }
-        var customerFieldValues by remember { mutableStateOf<List<CustomerFieldValue>?>(null) }
         Column(Modifier.fillMaxWidth()) {
             Row {
                 ExpiryField(
@@ -59,17 +65,13 @@ internal fun SavedCardItem(
                     }
                 )
             }
-            if (customerFields.isNotEmpty()) {
+            if (visibleCustomerFields.isNotEmpty()) {
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                 CustomerFields(
-                    customerFields = customerFields,
-                    additionalFields = LocalAdditionalFields.current,
-                    onCustomerFieldsSuccess = {
-                        customerFieldValues = it
-                    },
-                    onCustomerFieldsError = {
-                        customerFieldValues = null
-                    }
+                    visibleCustomerFields = visibleCustomerFields,
+                    additionalFields = additionalFields,
+                    onCustomerFieldsSuccess = { customerFieldValues = it },
+                    onCustomerFieldsError = { customerFieldValues = null }
                 )
             }
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
@@ -77,12 +79,15 @@ internal fun SavedCardItem(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
                 currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
-                isEnabled = cvv.isNotEmpty() && customerFieldValues != null
+                isEnabled = cvv.isNotEmpty() && (customerFieldValues != null || visibleCustomerFields.isEmpty())
             ) {
                 method.cvv = cvv
                 viewModel.saleSavedCard(
                     method = method,
-                    customerFields = customerFieldValues ?: emptyList()
+                    customerFields = customerFields.merge(
+                        changedFields = customerFieldValues,
+                        additionalFields = additionalFields
+                    )
                 )
             }
         }

@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.ExperimentalMaterialApi
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
 import com.paymentpage.msdk.core.base.ErrorCode
@@ -19,10 +18,10 @@ import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
 import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
+import com.paymentpage.msdk.core.mock.init.MockInitCustomerFieldsConfig
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.navigation.Navigator
 
-@OptIn(ExperimentalMaterialApi::class)
 class PaymentActivity : ComponentActivity(), PaymentDelegate {
     @SuppressLint("ResourceAsColor")
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +35,9 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         if (BuildConfig.DEBUG) {
             isMockModeEnabled = intent.getBooleanExtra(Constants.EXTRA_MOCK_MODE_ENABLED, false)
             config = when {
-                isMockModeEnabled -> MSDKCoreSessionConfig.mockFullSuccessFlow()
+                isMockModeEnabled -> MSDKCoreSessionConfig.mockFullSuccessFlow(
+                    MockInitCustomerFieldsConfig.ALL
+                )
                 else -> MSDKCoreSessionConfig.debug(
                     intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
                     intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()

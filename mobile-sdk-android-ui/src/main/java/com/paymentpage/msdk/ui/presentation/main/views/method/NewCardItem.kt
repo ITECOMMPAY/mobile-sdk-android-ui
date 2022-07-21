@@ -6,19 +6,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
+import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
+import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
 import com.paymentpage.msdk.ui.views.card.CvvField
@@ -36,7 +36,14 @@ internal fun NewCardItem(
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
+    val additionalFields = LocalAdditionalFields.current
+
+    val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
+    var customerFieldValues by remember {
+        mutableStateOf<List<CustomerFieldValue>?>(null)
+    }
     val savedState = remember { mutableStateOf(false) }
+
     ExpandableItem(
         index = method.index,
         name = method.title,
@@ -54,7 +61,6 @@ internal fun NewCardItem(
                 cardTypes = method.paymentMethod.cardTypes ?: emptyList(),
                 onValueChanged = { value, isValid ->
 
-                    7
                 }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
@@ -80,10 +86,13 @@ internal fun NewCardItem(
                     }
                 )
             }
-            if (customerFields.isNotEmpty()) {
+            if (visibleCustomerFields.isNotEmpty()) {
+                Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                 CustomerFields(
-                    customerFields = customerFields,
-                    additionalFields = LocalAdditionalFields.current
+                    visibleCustomerFields = visibleCustomerFields,
+                    additionalFields = additionalFields,
+                    onCustomerFieldsSuccess = { customerFieldValues = it },
+                    onCustomerFieldsError = { customerFieldValues = null }
                 )
             }
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
@@ -115,7 +124,7 @@ internal fun NewCardItem(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
                 currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
-                isEnabled = true,
+                isEnabled = (customerFieldValues != null || visibleCustomerFields.isEmpty()),
                 onClick = {
                     method.cvv = ""
                     method.pan = ""
@@ -125,7 +134,10 @@ internal fun NewCardItem(
                     method.saveCard = savedState.value
                     viewModel.saleCard(
                         method = method,
-                        customerFields = emptyList()
+                        customerFields = customerFields.merge(
+                            changedFields = customerFieldValues,
+                            additionalFields = additionalFields
+                        )
                     )
                 }
             )

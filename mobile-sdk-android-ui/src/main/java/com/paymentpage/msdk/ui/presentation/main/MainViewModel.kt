@@ -14,6 +14,7 @@ import com.paymentpage.msdk.core.domain.interactors.pay.PayInteractor
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
+import com.paymentpage.msdk.ui.AdditionalField
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.Reducer
 import com.paymentpage.msdk.ui.base.mvi.TimeMachine
@@ -155,7 +156,7 @@ internal class MainViewModel(
                         clarificationFields = emptyList(),
                         acsPageState = null,
                         finalPaymentState = FinalPaymentState.Decline(
-                            resultMessage = event.resultMessage,
+                            paymentMessage = event.paymentMessage,
                             isTryAgain = event.isTryAgain
                         ),
                     )
@@ -177,21 +178,21 @@ internal class MainViewModel(
         sendEvent(MainScreenUiEvent.ShowClarificationFields(clarificationFields = clarificationFields))
     }
 
-    override fun onCompleteWithDecline(resultMessage: String?, payment: Payment) {
+    override fun onCompleteWithDecline(paymentMessage: String?, payment: Payment) {
         sendEvent(MainScreenUiEvent.SetPayment(payment))
         sendEvent(
             MainScreenUiEvent.ShowDeclinePage(
-                resultMessage = resultMessage,
+                paymentMessage = paymentMessage,
                 isTryAgain = false
             )
         )
     }
 
-    override fun onCompleteWithFail(isTryAgain: Boolean, resultMessage: String?, payment: Payment) {
+    override fun onCompleteWithFail(isTryAgain: Boolean, paymentMessage: String?, payment: Payment) {
         sendEvent(MainScreenUiEvent.SetPayment(payment))
         sendEvent(
             MainScreenUiEvent.ShowDeclinePage(
-                resultMessage = resultMessage,
+                paymentMessage = paymentMessage,
                 isTryAgain = isTryAgain
             )
         )

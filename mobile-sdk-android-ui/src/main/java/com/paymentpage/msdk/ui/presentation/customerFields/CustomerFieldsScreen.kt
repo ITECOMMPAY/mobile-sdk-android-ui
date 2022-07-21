@@ -50,7 +50,7 @@ internal fun CustomerFieldsScreen(
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
             CustomerFields(
-                customerFields = customerFields,
+                visibleCustomerFields = customerFields,
                 additionalFields = LocalAdditionalFields.current
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))

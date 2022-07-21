@@ -6,7 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
@@ -17,18 +18,34 @@ import com.paymentpage.msdk.ui.views.customerFields.type.*
 
 @Composable
 internal fun CustomerFields(
-    customerFields: List<CustomerField>,
+    visibleCustomerFields: List<CustomerField>,
     additionalFields: List<AdditionalField> = emptyList(),
     onCustomerFieldsSuccess: (List<CustomerFieldValue>?) -> Unit = {},
     onCustomerFieldsError: () -> Unit = {},
 ) {
-    val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
+
     val visibleRequiredCustomerFields = remember { visibleCustomerFields.filter { it.isRequired } }
-    val changedRequiredCustomerFieldsMap = remember { mutableMapOf<String, CustomerFieldValue>() }
-    val changedNonRequiredCustomerFieldsMap = remember { mutableMapOf<String, CustomerFieldValue>() }
+    val changedFieldsMap = remember { mutableMapOf<String, CustomerFieldValue>() }
+    val changedNonRequiredFieldsMap = remember { mutableMapOf<String, CustomerFieldValue>() }
+
+    val validate: (CustomerField, String, Boolean) -> Unit = { customerField, value, isValid ->
+        validateFields(
+            customerField = customerField,
+            customerFields = visibleCustomerFields,
+            additionalFields = additionalFields,
+            value = value,
+            isValid = isValid,
+            changedFieldsMap = changedFieldsMap,
+            changedNonRequiredFieldsMap = changedNonRequiredFieldsMap,
+            visibleRequiredFields = visibleRequiredCustomerFields,
+            onCustomerFieldsSuccess = onCustomerFieldsSuccess,
+            onCustomerFieldsError = onCustomerFieldsError
+        )
+    }
+
     Column(modifier = Modifier.fillMaxWidth()) {
         visibleCustomerFields.forEachIndexed { index, field ->
-            if (index < customerFields.size - 1)
+            if (index < visibleCustomerFields.size)
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
             val foundAdditionalField =
                 additionalFields.firstOrNull { it.type == field.type }
@@ -37,17 +54,10 @@ internal fun CustomerFields(
                     TelCustomerTextField(
                         value = foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
-                            validateFields(
-                                customerField = customerField,
-                                customerFields = customerFields,
-                                additionalFields = additionalFields,
-                                value = value,
-                                isValid = isValid,
-                                changedRequiredCustomerFieldsMap = changedRequiredCustomerFieldsMap,
-                                changedNonRequiredCustomerFieldsMap = changedNonRequiredCustomerFieldsMap,
-                                visibleRequiredCustomerFields = visibleRequiredCustomerFields,
-                                onCustomerFieldsSuccess = onCustomerFieldsSuccess,
-                                onCustomerFieldsError = onCustomerFieldsError
+                            validate(
+                                customerField,
+                                value,
+                                isValid
                             )
                         },
                         customerField = field
@@ -57,17 +67,10 @@ internal fun CustomerFields(
                     DateCustomerTextField(
                         value = foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
-                            validateFields(
-                                customerField = customerField,
-                                customerFields = customerFields,
-                                additionalFields = additionalFields,
-                                value = value,
-                                isValid = isValid,
-                                changedRequiredCustomerFieldsMap = changedRequiredCustomerFieldsMap,
-                                changedNonRequiredCustomerFieldsMap = changedNonRequiredCustomerFieldsMap,
-                                visibleRequiredCustomerFields = visibleRequiredCustomerFields,
-                                onCustomerFieldsSuccess = onCustomerFieldsSuccess,
-                                onCustomerFieldsError = onCustomerFieldsError
+                            validate(
+                                customerField,
+                                value,
+                                isValid
                             )
                         },
                         customerField = field
@@ -77,17 +80,10 @@ internal fun CustomerFields(
                     NumberCustomerTextField(
                         value = foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
-                            validateFields(
-                                customerField = customerField,
-                                customerFields = customerFields,
-                                additionalFields = additionalFields,
-                                value = value,
-                                isValid = isValid,
-                                changedRequiredCustomerFieldsMap = changedRequiredCustomerFieldsMap,
-                                changedNonRequiredCustomerFieldsMap = changedNonRequiredCustomerFieldsMap,
-                                visibleRequiredCustomerFields = visibleRequiredCustomerFields,
-                                onCustomerFieldsSuccess = onCustomerFieldsSuccess,
-                                onCustomerFieldsError = onCustomerFieldsError
+                            validate(
+                                customerField,
+                                value,
+                                isValid
                             )
                         },
                         customerField = field
@@ -97,17 +93,10 @@ internal fun CustomerFields(
                     PasswordCustomerTextField(
                         value = foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
-                            validateFields(
-                                customerField = customerField,
-                                customerFields = customerFields,
-                                additionalFields = additionalFields,
-                                value = value,
-                                isValid = isValid,
-                                changedRequiredCustomerFieldsMap = changedRequiredCustomerFieldsMap,
-                                changedNonRequiredCustomerFieldsMap = changedNonRequiredCustomerFieldsMap,
-                                visibleRequiredCustomerFields = visibleRequiredCustomerFields,
-                                onCustomerFieldsSuccess = onCustomerFieldsSuccess,
-                                onCustomerFieldsError = onCustomerFieldsError
+                            validate(
+                                customerField,
+                                value,
+                                isValid
                             )
                         },
                         customerField = field
@@ -117,17 +106,10 @@ internal fun CustomerFields(
                     EmailCustomerTextField(
                         value = foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
-                            validateFields(
-                                customerField = customerField,
-                                customerFields = customerFields,
-                                additionalFields = additionalFields,
-                                value = value,
-                                isValid = isValid,
-                                changedRequiredCustomerFieldsMap = changedRequiredCustomerFieldsMap,
-                                changedNonRequiredCustomerFieldsMap = changedNonRequiredCustomerFieldsMap,
-                                visibleRequiredCustomerFields = visibleRequiredCustomerFields,
-                                onCustomerFieldsSuccess = onCustomerFieldsSuccess,
-                                onCustomerFieldsError = onCustomerFieldsError
+                            validate(
+                                customerField,
+                                value,
+                                isValid
                             )
                         },
                         customerField = field
@@ -137,17 +119,10 @@ internal fun CustomerFields(
                     TextCustomerTextField(
                         value = foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
-                            validateFields(
-                                customerField = customerField,
-                                customerFields = customerFields,
-                                additionalFields = additionalFields,
-                                value = value,
-                                isValid = isValid,
-                                changedRequiredCustomerFieldsMap = changedRequiredCustomerFieldsMap,
-                                changedNonRequiredCustomerFieldsMap = changedNonRequiredCustomerFieldsMap,
-                                visibleRequiredCustomerFields = visibleRequiredCustomerFields,
-                                onCustomerFieldsSuccess = onCustomerFieldsSuccess,
-                                onCustomerFieldsError = onCustomerFieldsError
+                            validate(
+                                customerField,
+                                value,
+                                isValid
                             )
                         },
                         customerField = field
@@ -165,49 +140,39 @@ private fun validateFields(
     additionalFields: List<AdditionalField>,
     value: String,
     isValid: Boolean,
-    changedRequiredCustomerFieldsMap: MutableMap<String, CustomerFieldValue>,
-    changedNonRequiredCustomerFieldsMap: MutableMap<String, CustomerFieldValue>,
-    visibleRequiredCustomerFields: List<CustomerField>,
+    changedFieldsMap: MutableMap<String, CustomerFieldValue>,
+    changedNonRequiredFieldsMap: MutableMap<String, CustomerFieldValue>,
+    visibleRequiredFields: List<CustomerField>,
     onCustomerFieldsSuccess: (List<CustomerFieldValue>) -> Unit,
     onCustomerFieldsError: () -> Unit,
 ) {
     //добавляем в мапу поля, которые были изменены пользователем
     //проверка на валидность и обязательность
     if (isValid && customerField.isRequired) {
-        changedRequiredCustomerFieldsMap[customerField.name] =
+        changedFieldsMap[customerField.name] =
             CustomerFieldValue.fromNameWithValue(customerField.name, value)
     } else if (!customerField.isRequired) {
         //добавляем в мапу измененные необязательное поля
-        changedNonRequiredCustomerFieldsMap[customerField.name] =
+        changedNonRequiredFieldsMap[customerField.name] =
             CustomerFieldValue.fromNameWithValue(customerField.name, value)
     } else if (customerField.isRequired) {
-        changedRequiredCustomerFieldsMap.remove(customerField.name)
+        changedNonRequiredFieldsMap.remove(customerField.name)
     }
+
     //список всех обязательных полей (по имени)
-    val allRequiredFields = visibleRequiredCustomerFields.map { it.name }.sorted().toTypedArray()
+    val allRequiredFields = visibleRequiredFields.map { it.name }.toTypedArray()
     //список всех измененных обязательных полей (по имени)
-    val changedRequiredCustomerFieldsList = changedRequiredCustomerFieldsMap.keys.sorted().toTypedArray()
+    val changedRequiredCustomerFieldsList = changedFieldsMap.keys.toTypedArray()
     //проверка, что список всех обязательных полей соответствует списку измененных и прошедших проверку обязательных полей
     if (allRequiredFields contentEquals changedRequiredCustomerFieldsList) {
         //сливаем все видимые поля (обязательные и не обязательные) в одну мапу
-        val allVisibleCustomerFieldsMap = changedRequiredCustomerFieldsMap + changedNonRequiredCustomerFieldsMap
-        //мапим объекты CustomerField в объекты CustomerFieldValue
-        //1. Находим соответствующее additionalFieldValue
-        //2. Если поле скрытое, то значение этому полю присваеваем из additionalFieldValue, если такое нашлось;
-        //3. Если поле видимое, то находим его значение из allVisibleCustomerFieldsMap по ключу, если такое не нашлось
-        // например, поле было предзаполнено, но пользователь с ним не взаимодействовал,
-        // то значение этому полю присваеваем из additionalFieldValue, если такое нашлось;
-        //4. Если fieldValue равно null, то value в CustomerFieldValue будет равно пустой строке
-        val allCustomerFieldValues = customerFields.map { field ->
-            val foundAdditionalFieldValue = additionalFields.find { field.type == it.type }?.value
-            val fieldValue =
-                if (field.isHidden)
-                    foundAdditionalFieldValue
-                else
-                    allVisibleCustomerFieldsMap[field.name]?.value ?: foundAdditionalFieldValue
-            CustomerFieldValue.fromNameWithValue(field.name, fieldValue ?: "")
-        }
-        onCustomerFieldsSuccess(allCustomerFieldValues)
+        val allCustomerFieldsMap = changedFieldsMap + changedNonRequiredFieldsMap
+        onCustomerFieldsSuccess(allCustomerFieldsMap.values.map {
+            CustomerFieldValue.fromNameWithValue(
+                it.name,
+                it.value
+            )
+        })
     } else {
         onCustomerFieldsError()
     }

@@ -64,7 +64,7 @@ internal fun GooglePayItem(
         ) {
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
             CustomerFields(
-                customerFields = customerFields,
+                visibleCustomerFields = customerFields,
                 additionalFields = LocalAdditionalFields.current
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
