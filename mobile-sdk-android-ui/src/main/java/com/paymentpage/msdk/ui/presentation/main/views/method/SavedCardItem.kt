@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.ui.LocalAdditionalFields
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentInfo
@@ -38,21 +39,22 @@ internal fun SavedCardItem(
     ) {
         Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
         var cvv by remember { mutableStateOf("") }
+        var customerFieldValues by remember { mutableStateOf<List<CustomerFieldValue>?>(null) }
         Column(Modifier.fillMaxWidth()) {
             Row {
                 ExpiryField(
                     modifier = Modifier.weight(1f),
                     value = method.savedAccount.cardExpiry?.stringValue ?: "",
                     isDisabled = true,
-                    onValueChanged = { value, isValid ->
-
+                    onValueChanged = { _, _ ->
+                        //we can't change value and isValid always equals true
                     }
                 )
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                 CvvField(
                     modifier = Modifier.weight(1f),
                     onValueChanged = { value, isValid ->
-                        cvv = value
+                        cvv = if (isValid) value else ""
                     }
                 )
             }
@@ -60,7 +62,13 @@ internal fun SavedCardItem(
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                 CustomerFields(
                     customerFields = customerFields,
-                    additionalFields = LocalAdditionalFields.current
+                    additionalFields = LocalAdditionalFields.current,
+                    onCustomerFieldsSuccess = {
+                        customerFieldValues = it
+                    },
+                    onCustomerFieldsError = {
+                        customerFieldValues = null
+                    }
                 )
             }
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
@@ -68,14 +76,14 @@ internal fun SavedCardItem(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
                 currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
-                isEnabled = true
+                isEnabled = cvv.isNotEmpty() && customerFieldValues != null
             ) {
                 //TODO need validate
                 viewModel.saleSavedCard(
                     method = method,
                     accountId = method.savedAccount.id,
                     cvv = cvv,
-                    customerFields = emptyList()
+                    customerFields = customerFieldValues
                 )
             }
         }

@@ -4,13 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.input.KeyboardType
 import com.paymentpage.msdk.core.domain.entities.SdkDate
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
-import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.ui.utils.MaskVisualTransformation
 
 @Composable
 fun DateCustomerTextField(
     value: String? = null,
-    onValueChanged: (CustomerFieldValue) -> Unit = {},
+    onValueChanged: (CustomerField, String, Boolean) -> Unit,
     customerField: CustomerField
 ) {
     BaseCustomerTextField(

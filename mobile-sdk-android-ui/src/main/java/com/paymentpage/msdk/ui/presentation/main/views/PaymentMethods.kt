@@ -42,10 +42,10 @@ internal fun PaymentMethodList(
     }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        mergedPaymentMethods.forEach {
+        mergedPaymentMethods.forEach { uiPaymentMethod ->
             PaymentMethodItem(
-                isExpand = selectedPaymentMethod?.index == it.index,
-                method = it,
+                isExpand = selectedPaymentMethod?.index == uiPaymentMethod.index,
+                method = uiPaymentMethod,
                 onItemSelected = {
                     selectedPaymentMethod = it
                     onItemSelected(it)
