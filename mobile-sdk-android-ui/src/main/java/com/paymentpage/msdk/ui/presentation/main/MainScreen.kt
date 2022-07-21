@@ -3,13 +3,12 @@ package com.paymentpage.msdk.ui.presentation.main
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.paymentpage.msdk.ui.*
-import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.navigation.Navigator
-import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.views.PaymentMethodList
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -33,7 +32,6 @@ internal fun MainScreen(
 
 @Composable
 private fun Content(onCancel: () -> Unit) {
-    var selectedPaymentMethod by remember { mutableStateOf<UiPaymentMethod?>(null) }
     BackHandler(true) { onCancel() }
     SDKScaffold(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
@@ -42,21 +40,13 @@ private fun Content(onCancel: () -> Unit) {
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
         },
         scrollableContent = {
-            CardView(
-                logoImage = PaymentActivity.logoImage,
-                amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
-                currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
-                vatIncludedTitle = when (selectedPaymentMethod?.paymentMethod?.isVatInfo) {
-                    true -> PaymentActivity.stringResourceManager.getStringByKey("vat_included")
-                    else -> null
-                }
-            )
+            CardView()
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
             PaymentMethodList(
                 paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList(),
                 savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList(),
                 additionalFields = LocalAdditionalFields.current,
-            ) { selectedPaymentMethod = it }
+            )
         },
         footerContent = {
             Footer(
@@ -69,5 +59,20 @@ private fun Content(onCancel: () -> Unit) {
             )
         },
         onClose = { onCancel() }
+    )
+}
+
+@Composable
+private fun CardView() {
+    val mainViewModel = LocalMainViewModel.current
+    val currentMethod = mainViewModel.state.collectAsState().value.currentMethod
+    CardView(
+        logoImage = PaymentActivity.logoImage,
+        amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
+        currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
+        vatIncludedTitle = when (currentMethod?.paymentMethod?.isVatInfo) {
+            true -> PaymentActivity.stringResourceManager.getStringByKey("vat_included")
+            else -> null
+        }
     )
 }

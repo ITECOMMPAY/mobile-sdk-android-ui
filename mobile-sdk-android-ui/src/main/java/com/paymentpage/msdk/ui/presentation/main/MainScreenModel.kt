@@ -12,8 +12,9 @@ import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 
 @Immutable
 internal sealed class MainScreenUiEvent : UiEvent {
-    class SetPaymentMethod(val method: UiPaymentMethod) : MainScreenUiEvent()
+    class SetCurrentMethod(val method: UiPaymentMethod?) : MainScreenUiEvent()
     class SetPayment(val payment: Payment) : MainScreenUiEvent()
+    object Reset : MainScreenUiEvent()
     object ShowLoading : MainScreenUiEvent()
     class ShowError(val error: ErrorResult) : MainScreenUiEvent()
     class ShowCustomerFields(val customerFields: List<CustomerField>) :
@@ -34,7 +35,7 @@ internal sealed class MainScreenUiEvent : UiEvent {
 @Immutable
 internal data class MainScreenState(
     val isLoading: Boolean? = null,
-    val method: UiPaymentMethod? = null,
+    val currentMethod: UiPaymentMethod? = null,
     val payment: Payment? = null,
     val customerFields: List<CustomerField> = emptyList(),
     val clarificationFields: List<ClarificationField> = emptyList(),

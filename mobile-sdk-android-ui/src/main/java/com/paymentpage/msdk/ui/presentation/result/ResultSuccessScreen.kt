@@ -24,7 +24,7 @@ internal fun ResultSuccessScreen(
     onClose: (Payment) -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
-    val method = viewModel.lastState.method
+    val method = viewModel.lastState.currentMethod
     val payment =
         viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
 

@@ -18,20 +18,17 @@ import com.paymentpage.msdk.ui.LocalAdditionalFields
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomButton
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
-import com.paymentpage.msdk.ui.views.expandable.ExpandableItem
 
 
 @Composable
 internal fun GooglePayItem(
-    isExpand: Boolean,
     method: UiPaymentMethod.UIGooglePayPaymentMethod,
-    onItemSelected: ((method: UiPaymentMethod) -> Unit),
-    onItemUnSelected: ((method: UiPaymentMethod) -> Unit),
 ) {
-    val viewModel = LocalMainViewModel.current
+    //val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
     if (customerFields.isEmpty()) {
         Button(
@@ -52,20 +49,18 @@ internal fun GooglePayItem(
                 .fillMaxWidth()
         )
     } else {
-        ExpandableItem(
-            index = method.index,
-            name = method.title,
-            iconUrl = method.paymentMethod.iconUrl,
+        ExpandablePaymentMethodItem(
+            method = method,
             headerBackgroundColor = SDKTheme.colors.backgroundColor,
-            onExpand = { onItemSelected(method) },
-            onCollapse = { onItemUnSelected(method) },
-            isExpanded = isExpand,
             fallbackIcon = painterResource(id = SDKTheme.images.googlePayMethodResId),
         ) {
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
             CustomerFields(
                 visibleCustomerFields = customerFields,
-                additionalFields = LocalAdditionalFields.current
+                additionalFields = LocalAdditionalFields.current,
+                onCustomerFieldsChanged = { fields, isValid ->
+
+                }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
             CustomButton(

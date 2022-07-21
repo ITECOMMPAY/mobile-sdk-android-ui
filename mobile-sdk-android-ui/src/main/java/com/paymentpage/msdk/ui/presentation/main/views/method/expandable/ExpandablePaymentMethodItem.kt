@@ -1,5 +1,6 @@
-package com.paymentpage.msdk.ui.views.expandable
+package com.paymentpage.msdk.ui.presentation.main.views.method.expandable
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -14,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -31,25 +33,24 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
-internal fun ExpandableItem(
-    index: Int,
-    iconUrl: String? = null,
+internal fun ExpandablePaymentMethodItem(
+    method: UiPaymentMethod,
     fallbackIcon: Painter,
-    name: String? = null,
-    onExpand: (index: Int) -> Unit,
-    onCollapse: (index: Int) -> Unit,
-    isExpanded: Boolean = false,
     headerBackgroundColor: Color = SDKTheme.colors.backgroundColor,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val rotationState by animateFloatAsState(if (isExpanded) 180f else 0f)
+    val mainViewModel = LocalMainViewModel.current
+    val currentMethod = mainViewModel.state.collectAsState().value.currentMethod
+    val rotationState by animateFloatAsState(if (currentMethod?.index == method.index) 180f else 0f)
     Box(
         modifier = Modifier
             .background(
-                color = if (isExpanded) SDKTheme.colors.backgroundColor else headerBackgroundColor,
+                color = if (currentMethod?.index == method.index) SDKTheme.colors.backgroundColor else headerBackgroundColor,
                 shape = SDKTheme.shapes.radius6
             )
             .border(
@@ -75,15 +76,15 @@ internal fun ExpandableItem(
                     indication = null, //отключаем анимацию при клике
                     interactionSource = remember { MutableInteractionSource() },
                     onClick = {
-                        if (!isExpanded)
-                            onExpand(index)
+                        if (currentMethod?.index != method.index)
+                            mainViewModel.setCurrentMethod(method)
                         else
-                            onCollapse(index)
+                            mainViewModel.setCurrentMethod(null)
                     }
                 ), verticalAlignment = Alignment.CenterVertically) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(iconUrl)
+                        .data(method.logoUrl)
                         .crossfade(true)
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .build(),
@@ -99,12 +100,12 @@ internal fun ExpandableItem(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if (!name.isNullOrEmpty())
-                        Text(
-                            text = name,
-                            textAlign = TextAlign.Center,
-                            style = SDKTheme.typography.s14Normal
-                        )
+
+                    Text(
+                        text = method.title,
+                        textAlign = TextAlign.Center,
+                        style = SDKTheme.typography.s14Normal
+                    )
                     Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                     Image(
                         modifier = Modifier
@@ -115,26 +116,12 @@ internal fun ExpandableItem(
                     )
                 }
             }
-            if (isExpanded) {
+            AnimatedVisibility(visible = currentMethod?.index == method.index) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     content = content
                 )
             }
         }
-    }
-}
-
-@Composable
-@Preview
-fun ExpandablePaymentMethodItemPreview() {
-    ExpandableItem(
-        index = 0,
-        name = "Bank card",
-        fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
-        onExpand = {},
-        onCollapse = {}
-    ) {
-        Text(text = "sdfsdfsdf") // testing content (delete later)
     }
 }

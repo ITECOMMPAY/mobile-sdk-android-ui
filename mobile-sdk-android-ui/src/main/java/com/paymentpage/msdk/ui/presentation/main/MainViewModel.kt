@@ -14,7 +14,6 @@ import com.paymentpage.msdk.core.domain.interactors.pay.PayInteractor
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
-import com.paymentpage.msdk.ui.AdditionalField
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.Reducer
 import com.paymentpage.msdk.ui.base.mvi.TimeMachine
@@ -39,7 +38,7 @@ internal class MainViewModel(
         customerFields: List<CustomerFieldValue> = emptyList()
     ) {
         sendEvent(MainScreenUiEvent.ShowLoading)
-        sendEvent(MainScreenUiEvent.SetPaymentMethod(method))
+        sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
         val request = SavedCardSaleRequest(cvv = method.cvv, accountId = method.accountId)
         request.customerFields = customerFields
         payInteractor.execute(request, this)
@@ -50,7 +49,7 @@ internal class MainViewModel(
         customerFields: List<CustomerFieldValue> = emptyList()
     ) {
         sendEvent(MainScreenUiEvent.ShowLoading)
-        sendEvent(MainScreenUiEvent.SetPaymentMethod(method))
+        sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
         val request = NewCardSaleRequest(
             cvv = method.cvv,
             pan = method.pan,
@@ -81,6 +80,14 @@ internal class MainViewModel(
     fun restorePayment() {
         sendEvent(MainScreenUiEvent.ShowLoading)
         payInteractor.execute(PaymentRestoreRequest(), this)
+    }
+
+    fun setCurrentMethod(method: UiPaymentMethod?) {
+        sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
+    }
+
+    fun reset() {
+        sendEvent(MainScreenUiEvent.Reset)
     }
 
     override fun onCleared() {
@@ -161,11 +168,14 @@ internal class MainViewModel(
                         ),
                     )
                 )
-                is MainScreenUiEvent.SetPaymentMethod -> setState(
-                    oldState.copy(method = event.method)
+                is MainScreenUiEvent.SetCurrentMethod -> setState(
+                    oldState.copy(currentMethod = event.method)
                 )
                 is MainScreenUiEvent.SetPayment -> setState(
                     oldState.copy(payment = event.payment)
+                )
+                is MainScreenUiEvent.Reset -> setState(
+                    MainScreenState.initial()
                 )
             }
         }
@@ -188,7 +198,11 @@ internal class MainViewModel(
         )
     }
 
-    override fun onCompleteWithFail(isTryAgain: Boolean, paymentMessage: String?, payment: Payment) {
+    override fun onCompleteWithFail(
+        isTryAgain: Boolean,
+        paymentMessage: String?,
+        payment: Payment
+    ) {
         sendEvent(MainScreenUiEvent.SetPayment(payment))
         sendEvent(
             MainScreenUiEvent.ShowDeclinePage(

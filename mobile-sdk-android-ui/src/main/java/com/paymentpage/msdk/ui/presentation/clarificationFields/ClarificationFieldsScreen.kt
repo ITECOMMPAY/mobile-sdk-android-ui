@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.ui.*
-import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
@@ -25,7 +24,7 @@ internal fun ClarificationFieldsScreen(
 ) {
     val viewModel = LocalMainViewModel.current
     val clarificationFields = viewModel.lastState.clarificationFields
-    val method = viewModel.lastState.method
+    val method = viewModel.lastState.currentMethod
 
     BackHandler(true) { onCancel() }
 

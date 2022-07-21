@@ -16,6 +16,7 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.merge
@@ -25,14 +26,10 @@ import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
 import com.paymentpage.msdk.ui.views.card.PanField
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
-import com.paymentpage.msdk.ui.views.expandable.ExpandableItem
 
 @Composable
 internal fun NewCardItem(
-    isExpand: Boolean,
     method: UiPaymentMethod.UICardPayPaymentMethod,
-    onItemSelected: ((method: UiPaymentMethod) -> Unit),
-    onItemUnSelected: ((method: UiPaymentMethod) -> Unit)
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
@@ -43,15 +40,11 @@ internal fun NewCardItem(
         mutableStateOf<List<CustomerFieldValue>?>(null)
     }
     val savedState = remember { mutableStateOf(false) }
+    var isCustomerFieldsValid by remember { mutableStateOf(false) }
 
-    ExpandableItem(
-        index = method.index,
-        name = method.title,
-        iconUrl = method.paymentMethod.iconUrl,
+    ExpandablePaymentMethodItem(
+        method = method,
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
-        onExpand = { onItemSelected(method) },
-        onCollapse = { onItemUnSelected(method) },
-        isExpanded = isExpand,
         fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
     ) {
         Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
@@ -91,8 +84,10 @@ internal fun NewCardItem(
                 CustomerFields(
                     visibleCustomerFields = visibleCustomerFields,
                     additionalFields = additionalFields,
-                    onCustomerFieldsSuccess = { customerFieldValues = it },
-                    onCustomerFieldsError = { customerFieldValues = null }
+                    onCustomerFieldsChanged = { fields, isValid ->
+                        customerFieldValues = fields
+                        isCustomerFieldsValid = isValid
+                    }
                 )
             }
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
@@ -124,7 +119,7 @@ internal fun NewCardItem(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
                 currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
-                isEnabled = (customerFieldValues != null || visibleCustomerFields.isEmpty()),
+                isEnabled = (isCustomerFieldsValid || visibleCustomerFields.isEmpty()),
                 onClick = {
                     method.cvv = ""
                     method.pan = ""

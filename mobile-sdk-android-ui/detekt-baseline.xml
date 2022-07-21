@@ -145,7 +145,7 @@
     <ID>NewLineAtEndOfFile:EmailCustomerField.kt$com.paymentpage.msdk.ui.views.customerFields.type.EmailCustomerField.kt</ID>
     <ID>NewLineAtEndOfFile:ErrorResult.kt$com.paymentpage.msdk.ui.base.ErrorResult.kt</ID>
     <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.paymentpage.msdk.ui.ExampleUnitTest.kt</ID>
-    <ID>NewLineAtEndOfFile:ExpandableItem.kt$com.paymentpage.msdk.ui.views.expandable.ExpandableItem.kt</ID>
+    <ID>NewLineAtEndOfFile:ExpandableItem.kt$com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandableItem.kt</ID>
     <ID>NewLineAtEndOfFile:ExpiryField.kt$com.paymentpage.msdk.ui.views.card.ExpiryField.kt</ID>
     <ID>NewLineAtEndOfFile:Footer.kt$com.paymentpage.msdk.ui.views.common.Footer.kt</ID>
     <ID>NewLineAtEndOfFile:GooglePayItem.kt$com.paymentpage.msdk.ui.presentation.main.views.method.GooglePayItem.kt</ID>
