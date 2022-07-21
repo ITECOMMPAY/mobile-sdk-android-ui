@@ -27,12 +27,12 @@ internal fun MainScreen(
     delegate: PaymentDelegate,
     onCancel: () -> Unit
 ) {
-    Content(delegate = delegate, onCancel = onCancel)
+    Content(onCancel = onCancel)
 }
 
 
 @Composable
-private fun Content(delegate: PaymentDelegate, onCancel: () -> Unit) {
+private fun Content(onCancel: () -> Unit) {
     var selectedPaymentMethod by remember { mutableStateOf<UiPaymentMethod?>(null) }
     BackHandler(true) { onCancel() }
     SDKScaffold(
@@ -55,7 +55,7 @@ private fun Content(delegate: PaymentDelegate, onCancel: () -> Unit) {
             PaymentMethodList(
                 paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList(),
                 savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList(),
-                additionalFields = LocalAdditionalFields.current
+                additionalFields = LocalAdditionalFields.current,
             ) { selectedPaymentMethod = it }
         },
         footerContent = {

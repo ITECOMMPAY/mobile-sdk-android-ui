@@ -32,14 +32,12 @@ internal class MainViewModel(
         get() = reducer.timeMachine
 
     fun saleSavedCard(
-        method: UiPaymentMethod,
-        accountId: Long,
-        cvv: String,
-        customerFields: List<CustomerFieldValue>? = emptyList()
+        method: UiPaymentMethod.UISavedCardPayPaymentMethod,
+        customerFields: List<CustomerFieldValue> = emptyList()
     ) {
         sendEvent(MainScreenUiEvent.ShowLoading)
         sendEvent(MainScreenUiEvent.SetPaymentMethod(method))
-        val request = SavedCardSaleRequest(cvv = cvv, accountId = accountId)
+        val request = SavedCardSaleRequest(cvv = method.cvv, accountId = method.accountId)
         request.customerFields = customerFields
         payInteractor.execute(request, this)
     }
@@ -151,13 +149,14 @@ internal class MainViewModel(
         sendEvent(MainScreenUiEvent.ShowClarificationFields(clarificationFields = clarificationFields))
     }
 
-    override fun onCompleteWithDecline(payment: Payment) {
+    override fun onCompleteWithDecline(resultMessage: String?, payment: Payment) {
 
     }
 
-    override fun onCompleteWithFail(status: String?, payment: Payment) {
+    override fun onCompleteWithFail(isTryAgain: Boolean, resultMessage: String?, payment: Payment) {
 
     }
+
 
     override fun onCompleteWithSuccess(payment: Payment) {
 

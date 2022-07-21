@@ -10,14 +10,16 @@ import com.paymentpage.msdk.ui.views.common.CustomTextField
 
 @Composable
 internal fun CvvField(
+    initialValue: String? = null,
     modifier: Modifier,
     length: Int = 3,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     CustomTextField(
+        initialValue = initialValue,
         modifier = modifier,
         keyboardType = KeyboardType.Number,
-        onFilterValueBefore = { value -> value.filter { it.isDigit() } },
+        onFilterValueBefore = { text -> text.filter { it.isDigit() } },
         onRequestValidatorMessage = {
             if (it.length != length)
                 PaymentActivity.stringResourceManager.getStringByKey("message_invalid_cvv")

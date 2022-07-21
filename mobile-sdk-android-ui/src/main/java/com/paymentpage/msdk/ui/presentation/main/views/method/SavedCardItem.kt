@@ -52,6 +52,7 @@ internal fun SavedCardItem(
                 )
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
                 CvvField(
+                    initialValue = method.cvv,
                     modifier = Modifier.weight(1f),
                     onValueChanged = { value, isValid ->
                         cvv = if (isValid) value else ""
@@ -78,12 +79,10 @@ internal fun SavedCardItem(
                 currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
                 isEnabled = cvv.isNotEmpty() && customerFieldValues != null
             ) {
-                //TODO need validate
+                method.cvv = cvv
                 viewModel.saleSavedCard(
                     method = method,
-                    accountId = method.savedAccount.id,
-                    cvv = cvv,
-                    customerFields = customerFieldValues
+                    customerFields = customerFieldValues ?: emptyList()
                 )
             }
         }
