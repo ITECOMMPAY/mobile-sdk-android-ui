@@ -1,6 +1,5 @@
 package com.paymentpage.msdk.ui.presentation.init
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,7 +29,6 @@ internal fun InitScreen(
     delegate: PaymentDelegate
 ) {
     val viewModel = LocalInitViewModel.current
-    BackHandler(true) { delegate.onCancel() }
     LaunchedEffect(Unit) {
         viewModel.state.onEach {
             when {

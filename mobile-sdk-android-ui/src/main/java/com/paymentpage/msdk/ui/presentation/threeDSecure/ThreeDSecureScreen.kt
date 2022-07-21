@@ -23,13 +23,12 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
 @Composable
 internal fun ThreeDSecureScreen(
-    navigator: Navigator,
-    delegate: PaymentDelegate
+    onCancel: () -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
     val acsPage = viewModel.lastState.acsPage
 
-    BackHandler(true) { delegate.onCancel() }
+    BackHandler(true) { onCancel() }
 
     SDKScaffold(
         title = "3DS",
@@ -71,6 +70,6 @@ internal fun ThreeDSecureScreen(
                 })
         },
         footerContent = { },
-        onClose = { delegate.onCancel() }
+        onClose = { onCancel() }
     )
 }

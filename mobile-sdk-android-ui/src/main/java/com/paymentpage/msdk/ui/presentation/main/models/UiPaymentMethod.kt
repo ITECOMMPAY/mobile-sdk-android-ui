@@ -21,7 +21,10 @@ internal sealed class UiPaymentMethod(
         title: String,
         val savedAccount: SavedAccount,
         paymentMethod: PaymentMethod,
-    ) : UiPaymentMethod(index, title, paymentMethod)
+    ) : UiPaymentMethod(index, title, paymentMethod) {
+        var cvv: String = ""
+        val accountId: Long = savedAccount.id
+    }
 
     class UICardPayPaymentMethod(
         index: Int,

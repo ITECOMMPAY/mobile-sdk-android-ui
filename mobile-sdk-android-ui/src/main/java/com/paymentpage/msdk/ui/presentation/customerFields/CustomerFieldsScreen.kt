@@ -24,7 +24,7 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 @Composable
 internal fun CustomerFieldsScreen(
     navigator: Navigator,
-    delegate: PaymentDelegate
+    onCancel: () -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = viewModel.lastState.customerFields
@@ -75,7 +75,7 @@ internal fun CustomerFieldsScreen(
                     .annotatedString()
             )
         },
-        onClose = { delegate.onCancel() },
+        onClose = { onCancel },
         onBack = { navigator.navigateTo(Route.Main) }
     )
 }

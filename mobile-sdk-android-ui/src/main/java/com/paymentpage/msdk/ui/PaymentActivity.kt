@@ -9,20 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomDrawer
-import androidx.compose.material.BottomDrawerState
-import androidx.compose.material.BottomDrawerValue
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
 import com.paymentpage.msdk.core.base.ErrorCode
@@ -33,14 +20,10 @@ import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
 import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
 import com.paymentpage.msdk.ui.base.Constants
-import com.paymentpage.msdk.ui.navigation.NavigationComponent
 import com.paymentpage.msdk.ui.navigation.Navigator
-import com.paymentpage.msdk.ui.presentation.main.MainViewModel
-import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.utils.viewModelFactory
 
+@OptIn(ExperimentalMaterialApi::class)
 class PaymentActivity : ComponentActivity(), PaymentDelegate {
-    @OptIn(ExperimentalMaterialApi::class)
     @SuppressLint("ResourceAsColor")
     public override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -63,41 +46,15 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         msdkSession = MSDKCoreSession(config)
 
         setContent {
-            var drawerState by remember { mutableStateOf(BottomDrawerState(initialValue = BottomDrawerValue.Closed)) }
-            LaunchedEffect(Unit) {
-                drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded)
-            }
-
-            BottomDrawer(
-                modifier = Modifier.wrapContentSize(),
-                drawerContent = {
-                    SDKTheme() {
-                        SDKCommonProvider(
-                            paymentInfo = paymentInfo,
-                            recurrentInfo = recurrentInfo,
-                            threeDSecureInfo = threeDSecureInfo,
-                            recipientInfo = recipientInfo,
-                            additionalFields = additionalFields,
-                            msdkSession = msdkSession,
-                        ) {
-                            NavigationComponent(
-                                navigator = navigator,
-                                delegate = this@PaymentActivity
-                            )
-                        }
-                    }
-                },
-                drawerState = drawerState,
-                drawerBackgroundColor = Color.Transparent,
-                gesturesEnabled = false,
-                drawerShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.2f)),
-                )
-            }
+            MainContent(
+                activity = this@PaymentActivity,
+                paymentInfo = paymentInfo,
+                recurrentInfo = recurrentInfo,
+                threeDSecureInfo = threeDSecureInfo,
+                recipientInfo = recipientInfo,
+                additionalFields = additionalFields,
+                msdkSession = msdkSession
+            )
         }
     }
 
@@ -151,13 +108,14 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
     }
 
     companion object {
-        private val navigator = Navigator()
+        val navigator = Navigator()
+
         private lateinit var paymentInfo: PaymentInfo
         private var recurrentInfo: RecurrentInfo? = null
         private var threeDSecureInfo: ThreeDSecureInfo? = null
         private var recipientInfo: RecipientInfo? = null
         private var additionalFields: List<AdditionalField> = emptyList()
-        var logoImage: Bitmap? = null
+        internal var logoImage: Bitmap? = null
 
         private lateinit var msdkSession: MSDKCoreSession
         val stringResourceManager: StringResourceManager
