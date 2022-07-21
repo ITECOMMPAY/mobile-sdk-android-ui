@@ -31,8 +31,6 @@ internal fun CustomerFields(
     val validate: (CustomerField, String, Boolean) -> Unit = { customerField, value, isValid ->
         validateFields(
             customerField = customerField,
-            customerFields = visibleCustomerFields,
-            additionalFields = additionalFields,
             value = value,
             isValid = isValid,
             changedFieldsMap = changedFieldsMap,
@@ -136,8 +134,6 @@ internal fun CustomerFields(
 
 private fun validateFields(
     customerField: CustomerField,
-    customerFields: List<CustomerField>,
-    additionalFields: List<AdditionalField>,
     value: String,
     isValid: Boolean,
     changedFieldsMap: MutableMap<String, CustomerFieldValue>,
@@ -156,13 +152,12 @@ private fun validateFields(
         changedNonRequiredFieldsMap[customerField.name] =
             CustomerFieldValue.fromNameWithValue(customerField.name, value)
     } else if (customerField.isRequired) {
-        changedNonRequiredFieldsMap.remove(customerField.name)
+        changedFieldsMap.remove(customerField.name)
     }
-
     //список всех обязательных полей (по имени)
-    val allRequiredFields = visibleRequiredFields.map { it.name }.toTypedArray()
+    val allRequiredFields = visibleRequiredFields.map { it.name }.sorted().toTypedArray()
     //список всех измененных обязательных полей (по имени)
-    val changedRequiredCustomerFieldsList = changedFieldsMap.keys.toTypedArray()
+    val changedRequiredCustomerFieldsList = changedFieldsMap.keys.sorted().toTypedArray()
     //проверка, что список всех обязательных полей соответствует списку измененных и прошедших проверку обязательных полей
     if (allRequiredFields contentEquals changedRequiredCustomerFieldsList) {
         //сливаем все видимые поля (обязательные и не обязательные) в одну мапу

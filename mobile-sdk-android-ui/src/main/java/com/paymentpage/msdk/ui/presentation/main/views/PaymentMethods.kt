@@ -17,6 +17,7 @@ import com.paymentpage.msdk.ui.presentation.main.views.method.PaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 
+internal const val COUNT_OF_VISIBLE_CUSTOMER_FIELDS = 3
 
 @Composable
 internal fun PaymentMethodList(
