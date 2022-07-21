@@ -9,14 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.paymentpage.msdk.ui.BuildConfig
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.PaymentDelegate
-import com.paymentpage.msdk.ui.navigation.Navigator
+import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomButton
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -34,7 +33,7 @@ internal fun ThreeDSecureScreen(
         title = "3DS",
         notScrollableContent = { },
         scrollableContent = {
-            if (BuildConfig.DEBUG)
+            if (PaymentActivity.isMockModeEnabled)
                 CustomButton(
                     modifier = Modifier.height(45.dp),
                     isEnabled = true,
@@ -59,8 +58,15 @@ internal fun ThreeDSecureScreen(
                             ViewGroup.LayoutParams.MATCH_PARENT
                         )
                         webViewClient = WebViewClient()
-                        acsPage?.content?.let { html ->
-                            loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
+                        settings.javaScriptEnabled = true
+                        acsPage?.let { page ->
+                            loadDataWithBaseURL(
+                                page.acs?.acsUrl ?: "",
+                                page.content ?: "",
+                                "text/html",
+                                "UTF-8",
+                                null
+                            )
                         }
 
 

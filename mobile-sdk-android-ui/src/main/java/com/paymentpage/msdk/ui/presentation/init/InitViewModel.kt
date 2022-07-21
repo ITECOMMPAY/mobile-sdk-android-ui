@@ -54,6 +54,7 @@ internal class InitViewModel(
 
                 //Restore payment
                 override fun onPaymentRestored(payment: Payment) {
+                    sendEvent(InitScreenUiEvent.PaymentReceived(payment))
                 }
             }
         )
@@ -78,6 +79,13 @@ internal class InitViewModel(
                     oldState.copy(
                         isInitLoaded = false,
                         error = event.error
+                    )
+                )
+                is InitScreenUiEvent.PaymentReceived -> setState(
+                    oldState.copy(
+                        isInitLoaded = false,
+                        error = null,
+                        payment = event.payment
                     )
                 )
             }

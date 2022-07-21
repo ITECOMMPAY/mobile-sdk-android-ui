@@ -54,7 +54,8 @@ internal fun NewCardItem(
                 cardTypes = method.paymentMethod.cardTypes ?: emptyList(),
                 onValueChanged = { value, isValid ->
 
-7                }
+                    7
+                }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
             CardHolderField(modifier = Modifier.fillMaxWidth(),
@@ -116,14 +117,14 @@ internal fun NewCardItem(
                 currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
                 isEnabled = true,
                 onClick = {
+                    method.cvv = ""
+                    method.pan = ""
+                    method.year = 0
+                    method.month = 0
+                    method.cardHolder = ""
+                    method.saveCard = savedState.value
                     viewModel.saleCard(
                         method = method,
-                        cvv = "",
-                        pan = "",
-                        year = 0,
-                        month = 0,
-                        cardHolder = "",
-                        saveCard = savedState.value,
                         customerFields = emptyList()
                     )
                 }

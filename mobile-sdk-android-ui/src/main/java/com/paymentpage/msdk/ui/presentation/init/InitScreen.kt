@@ -11,12 +11,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalInitViewModel
+import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.views.common.Footer
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.shimmer.ShimmerAnimatedItem
 import kotlinx.coroutines.flow.collect
@@ -28,12 +28,16 @@ internal fun InitScreen(
     navigator: Navigator,
     delegate: PaymentDelegate
 ) {
-    val viewModel = LocalInitViewModel.current
+    val initViewModel = LocalInitViewModel.current
+    val mainViewModel = LocalMainViewModel.current
     LaunchedEffect(Unit) {
-        viewModel.state.onEach {
+        initViewModel.state.onEach {
             when {
                 it.error != null -> delegate.onError(it.error.code, it.error.message)
                 it.isInitLoaded -> navigator.navigateTo(Route.Main)
+                it.payment != null -> {
+                    mainViewModel.restorePayment()
+                }
             }
         }.collect()
     }
@@ -46,12 +50,7 @@ private fun Content() {
     SDKScaffold(
         title = stringResource(R.string.payment_methods_label),
         notScrollableContent = { Loading() },
-        footerContent = {
-            Footer(
-                iconLogo = SDKTheme.images.sdkLogoResId,
-                poweredByText = stringResource(R.string.powered_by_label),
-            )
-        }
+        footerContent = { }
     )
 }
 

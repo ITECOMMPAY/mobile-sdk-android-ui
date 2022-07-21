@@ -30,5 +30,12 @@ internal sealed class UiPaymentMethod(
         index: Int,
         title: String,
         paymentMethod: PaymentMethod
-    ) : UiPaymentMethod(index, title, paymentMethod)
+    ) : UiPaymentMethod(index, title, paymentMethod) {
+        var cvv: String = ""
+        var pan: String = ""
+        var year: Int = 0
+        var month: Int = 0
+        var cardHolder: String = ""
+        var saveCard: Boolean = false
+    }
 }

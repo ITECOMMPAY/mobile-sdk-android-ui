@@ -13,6 +13,7 @@ import com.paymentpage.msdk.core.domain.interactors.pay.PayDelegate
 import com.paymentpage.msdk.core.domain.interactors.pay.PayInteractor
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
+import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.Reducer
 import com.paymentpage.msdk.ui.base.mvi.TimeMachine
@@ -44,24 +45,18 @@ internal class MainViewModel(
     }
 
     fun saleCard(
-        method: UiPaymentMethod,
-        cvv: String,
-        pan: String,
-        year: Int,
-        month: Int,
-        cardHolder: String,
-        saveCard: Boolean,
+        method: UiPaymentMethod.UICardPayPaymentMethod,
         customerFields: List<CustomerFieldValue> = emptyList()
     ) {
         sendEvent(MainScreenUiEvent.ShowLoading)
         sendEvent(MainScreenUiEvent.SetPaymentMethod(method))
         val request = NewCardSaleRequest(
-            cvv = cvv,
-            pan = pan,
-            year = year,
-            month = month,
-            cardHolder = cardHolder,
-            saveCard = saveCard
+            cvv = method.cvv,
+            pan = method.pan,
+            year = method.year,
+            month = method.month,
+            cardHolder = method.cardHolder,
+            saveCard = method.saveCard
         )
         request.customerFields = customerFields
         payInteractor.execute(request, this)
@@ -80,6 +75,11 @@ internal class MainViewModel(
     fun threeDSecureHandled() {
         sendEvent(MainScreenUiEvent.ShowLoading)
         payInteractor.threeDSecureHandled()
+    }
+
+    fun restorePayment() {
+        sendEvent(MainScreenUiEvent.ShowLoading)
+        payInteractor.execute(PaymentRestoreRequest(), this)
     }
 
     override fun onCleared() {

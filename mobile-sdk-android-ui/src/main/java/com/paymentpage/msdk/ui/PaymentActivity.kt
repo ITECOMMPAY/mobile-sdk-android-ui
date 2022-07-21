@@ -34,7 +34,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         var config = MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
         if (BuildConfig.DEBUG) {
-            val isMockModeEnabled = intent.getBooleanExtra(Constants.EXTRA_MOCK_MODE_ENABLED, false)
+            isMockModeEnabled = intent.getBooleanExtra(Constants.EXTRA_MOCK_MODE_ENABLED, false)
             config = when {
                 isMockModeEnabled -> MSDKCoreSessionConfig.mockFullSuccessFlow()
                 else -> MSDKCoreSessionConfig.debug(
@@ -114,6 +114,8 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         private var recipientInfo: RecipientInfo? = null
         private var additionalFields: List<AdditionalField> = emptyList()
         internal var logoImage: Bitmap? = null
+
+        var isMockModeEnabled = false
 
         private lateinit var msdkSession: MSDKCoreSession
         val stringResourceManager: StringResourceManager
