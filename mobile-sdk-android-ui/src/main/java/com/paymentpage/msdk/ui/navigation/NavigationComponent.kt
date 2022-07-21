@@ -18,8 +18,11 @@ import com.paymentpage.msdk.ui.presentation.clarificationFields.ClarificationFie
 import com.paymentpage.msdk.ui.presentation.customerFields.CustomerFieldsScreen
 import com.paymentpage.msdk.ui.presentation.init.InitScreen
 import com.paymentpage.msdk.ui.presentation.loading.LoadingScreen
+import com.paymentpage.msdk.ui.presentation.main.FinalPaymentState
 import com.paymentpage.msdk.ui.presentation.main.MainScreen
-import com.paymentpage.msdk.ui.presentation.result.ResultScreen
+import com.paymentpage.msdk.ui.presentation.result.ResultDeclineScreen
+import com.paymentpage.msdk.ui.presentation.result.ResultSuccessScreen
+
 import com.paymentpage.msdk.ui.presentation.threeDSecure.ThreeDSecureScreen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
@@ -46,7 +49,13 @@ internal fun NavigationComponent(
                 it.isLoading == true -> navigator.navigateTo(Route.Loading)
                 it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> navigator.navigateTo(Route.ClarificationFields)
-                it.acsPage != null -> navigator.navigateTo(Route.AcsPage)
+                it.acsPageState != null -> navigator.navigateTo(Route.AcsPage)
+                it.finalPaymentState != null -> {
+                    when (it.finalPaymentState) {
+                        is FinalPaymentState.Success -> navigator.navigateTo(Route.SuccessResult)
+                        is FinalPaymentState.Decline -> navigator.navigateTo(Route.DeclineResult)
+                    }
+                }
             }
         }.collect()
     }
@@ -86,10 +95,14 @@ internal fun NavigationComponent(
                 onCancel = onCancel
             )
         }
-        composable(route = Route.Result.getPath()) {
-            BackHandler(true) { }
-            ResultScreen()
+        composable(route = Route.SuccessResult.getPath()) {
+            ResultSuccessScreen(onClose = { delegate.onCompleteWithSuccess(it) })
         }
+
+        composable(route = Route.DeclineResult.getPath()) {
+            ResultDeclineScreen(onClose = { delegate.onCompleteWithDecline(it) })
+        }
+
         composable(route = Route.Loading.getPath()) {
             BackHandler(true) { }
             LoadingScreen()

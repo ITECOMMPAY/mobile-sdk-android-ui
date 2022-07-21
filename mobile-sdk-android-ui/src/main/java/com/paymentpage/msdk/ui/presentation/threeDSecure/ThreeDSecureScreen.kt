@@ -26,7 +26,7 @@ internal fun ThreeDSecureScreen(
     onCancel: () -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
-    val acsPage = viewModel.lastState.acsPage
+    val acsPage = viewModel.lastState.acsPageState?.acsPage
 
     BackHandler(true) { onCancel() }
 

@@ -107,7 +107,6 @@ class MainActivity : ComponentActivity() {
             PaymentSDK.RESULT_SUCCESS -> {}
             PaymentSDK.RESULT_CANCELLED -> {}
             PaymentSDK.RESULT_DECLINE -> {}
-            PaymentSDK.RESULT_FAILED -> {}
             PaymentSDK.RESULT_ERROR -> {
                 val errorCode = data?.getStringExtra(PaymentSDK.EXTRA_ERROR_CODE)
                 val message = data?.getStringExtra(PaymentSDK.EXTRA_ERROR_MESSAGE)

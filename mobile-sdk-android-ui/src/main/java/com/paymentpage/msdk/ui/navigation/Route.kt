@@ -13,7 +13,8 @@ sealed class Route(
     object ClarificationFields : Route(route = "clarificationFields")
     object AcsPage : Route(route = "acsPage")
     object Loading : Route(route = "loading")
-    object Result : Route(route = "result")
+    object SuccessResult : Route(route = "successResult")
+    object DeclineResult : Route(route = "declineResult")
 
     override fun toString(): String {
         return when {

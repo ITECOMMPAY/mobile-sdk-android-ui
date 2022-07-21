@@ -1,39 +1,37 @@
-package com.paymentpage.msdk.ui.presentation.customerFields
+package com.paymentpage.msdk.ui.presentation.result
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.paymentpage.msdk.ui.*
-import com.paymentpage.msdk.ui.navigation.Navigator
-import com.paymentpage.msdk.ui.navigation.Route
+import com.paymentpage.msdk.core.domain.entities.payment.Payment
+import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentInfo
+import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
-import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.common.CardView
 import com.paymentpage.msdk.ui.views.common.Footer
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
-import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-internal fun CustomerFieldsScreen(
-    navigator: Navigator,
-    onCancel: () -> Unit
+internal fun ResultDeclineScreen(
+    onClose: (Payment) -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
-    val customerFields = viewModel.lastState.customerFields
     val method = viewModel.lastState.method
+    val payment =
+        viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
 
-    BackHandler(true) { navigator.navigateTo(Route.Main) }
+    BackHandler(true) { onClose(payment) }
 
     SDKScaffold(
-        title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
+        title = PaymentActivity.stringResourceManager.getStringByKey("title_result_succes_payment"),
         notScrollableContent = {
             PaymentDetailsView(paymentInfo = LocalPaymentInfo.current)
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
@@ -48,21 +46,6 @@ internal fun CustomerFieldsScreen(
                     else -> null
                 }
             )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
-            CustomerFields(
-                customerFields = customerFields,
-                additionalFields = LocalAdditionalFields.current
-            )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
-            PayButton(
-                payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
-                amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
-                currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
-                isEnabled = true
-            ) {
-                //TODO need send data
-                viewModel.sendCustomerFields(emptyList())
-            }
 
         },
         footerContent = {
@@ -75,7 +58,7 @@ internal fun CustomerFieldsScreen(
                     .annotatedString()
             )
         },
-        onClose = { onCancel() },
-        onBack = { navigator.navigateTo(Route.Main) }
+        onClose = { onClose(payment) }
     )
 }
+
