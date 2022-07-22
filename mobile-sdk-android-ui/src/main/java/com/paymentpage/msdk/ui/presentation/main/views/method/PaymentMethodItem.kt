@@ -5,35 +5,17 @@ import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 
 @Composable
 internal fun PaymentMethodItem(
-    isExpand: Boolean,
-    method: UiPaymentMethod,
-    onItemSelected: ((method: UiPaymentMethod) -> Unit),
-    onItemUnSelected: ((method: UiPaymentMethod) -> Unit),
+    method: UiPaymentMethod
 ) {
     when (method) {
         is UiPaymentMethod.UISavedCardPayPaymentMethod -> {
-            SavedCardItem(
-                isExpand = isExpand,
-                method = method,
-                onItemSelected = onItemSelected,
-                onItemUnSelected = onItemUnSelected
-            )
+            SavedCardItem(method = method)
         }
         is UiPaymentMethod.UICardPayPaymentMethod -> {
-            NewCardItem(
-                isExpand = isExpand,
-                method = method,
-                onItemSelected = onItemSelected,
-                onItemUnSelected = onItemUnSelected
-            )
+            NewCardItem(method = method)
         }
         is UiPaymentMethod.UIGooglePayPaymentMethod -> {
-            GooglePayItem(
-                isExpand = isExpand,
-                method = method,
-                onItemSelected = onItemSelected,
-                onItemUnSelected = onItemUnSelected
-            )
+            GooglePayItem(method = method)
         }
     }
 }

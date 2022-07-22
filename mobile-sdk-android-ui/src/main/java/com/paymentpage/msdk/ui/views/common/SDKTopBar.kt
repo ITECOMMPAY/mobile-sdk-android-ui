@@ -14,9 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.theme.SDKTheme
+
 
 @Composable
 internal fun SDKTopBar(
@@ -35,10 +37,12 @@ internal fun SDKTopBar(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
+                maxLines = 1,
                 style = SDKTheme.typography.s22Bold,
-                text = title
+                text = title,
+                overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.weight(1f))
+
             if (onBack != null) {
                 Image(
                     modifier = Modifier
@@ -78,9 +82,12 @@ internal fun PreviewLightToolbar() {
 
 @Composable
 @Preview
-internal fun PreviewDarkToolbar() {
+internal fun PreviewToolbarWithLongTitle() {
     SDKTheme() {
-        SDKTopBar(title = "Payment Methods", onClose = {})
+        SDKTopBar(
+            title = "Very ver very Very ver very Very ver very Very ver very long title",
+            onClose = {},
+            onBack = {})
     }
 }
 

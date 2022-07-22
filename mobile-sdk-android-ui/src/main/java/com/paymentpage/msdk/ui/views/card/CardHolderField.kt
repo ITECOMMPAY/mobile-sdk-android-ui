@@ -10,10 +10,12 @@ import com.paymentpage.msdk.ui.views.common.CustomTextField
 @Composable
 internal fun CardHolderField(
     modifier: Modifier,
+    initialValue: String? = null,
     isDisabled: Boolean = false,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     CustomTextField(
+        initialValue = initialValue,
         modifier = modifier,
         onFilterValueBefore = { value -> value.filter { it.isLetter() || it == ' ' }.uppercase() },
         onValueChanged = { value, isValid ->

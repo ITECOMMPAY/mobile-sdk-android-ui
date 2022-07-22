@@ -7,15 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
-import com.paymentpage.msdk.ui.*
-import com.paymentpage.msdk.ui.navigation.Navigator
+import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentInfo
+import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.presentation.main.sendClarificationFields
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.common.CardView
-import com.paymentpage.msdk.ui.views.common.Footer
+import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
 
@@ -25,7 +28,7 @@ internal fun ClarificationFieldsScreen(
 ) {
     val viewModel = LocalMainViewModel.current
     val clarificationFields = viewModel.lastState.clarificationFields
-    val method = viewModel.lastState.method
+    val method = viewModel.lastState.currentMethod
 
     BackHandler(true) { onCancel() }
 
@@ -68,7 +71,7 @@ internal fun ClarificationFieldsScreen(
 
         },
         footerContent = {
-            Footer(
+            SDKFooter(
                 iconLogo = SDKTheme.images.sdkLogoResId,
                 poweredByText = stringResource(R.string.powered_by_label),
                 privacyPolicy = PaymentActivity

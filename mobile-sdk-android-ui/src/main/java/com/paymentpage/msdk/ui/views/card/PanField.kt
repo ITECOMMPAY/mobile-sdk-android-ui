@@ -24,6 +24,7 @@ import com.paymentpage.msdk.ui.views.common.CustomTextField
 @Composable
 internal fun PanField(
     modifier: Modifier = Modifier,
+    initialValue: String? = null,
     cardTypes: List<PaymentMethodCard>,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
@@ -31,6 +32,7 @@ internal fun PanField(
     val cardTypesManager = CardTypesManager(cardTypes)
 
     CustomTextField(
+        initialValue = initialValue,
         isRequired = true,
         modifier = modifier,
         keyboardType = KeyboardType.Number,

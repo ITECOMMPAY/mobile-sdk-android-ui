@@ -20,8 +20,8 @@ import com.paymentpage.msdk.ui.views.customerFields.type.*
 internal fun CustomerFields(
     visibleCustomerFields: List<CustomerField>,
     additionalFields: List<AdditionalField> = emptyList(),
-    onCustomerFieldsSuccess: (List<CustomerFieldValue>?) -> Unit = {},
-    onCustomerFieldsError: () -> Unit = {},
+    customerFieldValues: List<CustomerFieldValue> = emptyList(),
+    onCustomerFieldsChanged: (List<CustomerFieldValue>, Boolean) -> Unit,
 ) {
 
     val visibleRequiredCustomerFields = remember { visibleCustomerFields.filter { it.isRequired } }
@@ -36,8 +36,7 @@ internal fun CustomerFields(
             changedFieldsMap = changedFieldsMap,
             changedNonRequiredFieldsMap = changedNonRequiredFieldsMap,
             visibleRequiredFields = visibleRequiredCustomerFields,
-            onCustomerFieldsSuccess = onCustomerFieldsSuccess,
-            onCustomerFieldsError = onCustomerFieldsError
+            onCustomerFieldsChanged = onCustomerFieldsChanged
         )
     }
 
@@ -47,10 +46,12 @@ internal fun CustomerFields(
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
             val foundAdditionalField =
                 additionalFields.firstOrNull { it.type == field.type }
+            val foundCustomerFieldValue =
+                customerFieldValues.firstOrNull { it.name == field.name }
             when (field.serverType) {
                 FieldServerType.TEL -> {
                     TelCustomerTextField(
-                        value = foundAdditionalField?.value,
+                        value = foundCustomerFieldValue?.value ?: foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
                             validate(
                                 customerField,
@@ -63,7 +64,7 @@ internal fun CustomerFields(
                 }
                 FieldServerType.DATE -> {
                     DateCustomerTextField(
-                        value = foundAdditionalField?.value,
+                        value = foundCustomerFieldValue?.value ?: foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
                             validate(
                                 customerField,
@@ -76,7 +77,7 @@ internal fun CustomerFields(
                 }
                 FieldServerType.NUMBER -> {
                     NumberCustomerTextField(
-                        value = foundAdditionalField?.value,
+                        value = foundCustomerFieldValue?.value ?: foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
                             validate(
                                 customerField,
@@ -89,7 +90,7 @@ internal fun CustomerFields(
                 }
                 FieldServerType.PASSWORD -> {
                     PasswordCustomerTextField(
-                        value = foundAdditionalField?.value,
+                        value = foundCustomerFieldValue?.value ?: foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
                             validate(
                                 customerField,
@@ -102,7 +103,7 @@ internal fun CustomerFields(
                 }
                 FieldServerType.EMAIL -> {
                     EmailCustomerTextField(
-                        value = foundAdditionalField?.value,
+                        value = foundCustomerFieldValue?.value ?: foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
                             validate(
                                 customerField,
@@ -115,7 +116,7 @@ internal fun CustomerFields(
                 }
                 else -> {
                     TextCustomerTextField(
-                        value = foundAdditionalField?.value,
+                        value = foundCustomerFieldValue?.value ?: foundAdditionalField?.value,
                         onValueChanged = { customerField, value, isValid ->
                             validate(
                                 customerField,
@@ -139,8 +140,7 @@ private fun validateFields(
     changedFieldsMap: MutableMap<String, CustomerFieldValue>,
     changedNonRequiredFieldsMap: MutableMap<String, CustomerFieldValue>,
     visibleRequiredFields: List<CustomerField>,
-    onCustomerFieldsSuccess: (List<CustomerFieldValue>) -> Unit,
-    onCustomerFieldsError: () -> Unit,
+    onCustomerFieldsChanged: (List<CustomerFieldValue>, Boolean) -> Unit
 ) {
     //добавляем в мапу поля, которые были изменены пользователем
     //проверка на валидность и обязательность
@@ -158,17 +158,14 @@ private fun validateFields(
     val allRequiredFields = visibleRequiredFields.map { it.name }.sorted().toTypedArray()
     //список всех измененных обязательных полей (по имени)
     val changedRequiredCustomerFieldsList = changedFieldsMap.keys.sorted().toTypedArray()
-    //проверка, что список всех обязательных полей соответствует списку измененных и прошедших проверку обязательных полей
-    if (allRequiredFields contentEquals changedRequiredCustomerFieldsList) {
-        //сливаем все видимые поля (обязательные и не обязательные) в одну мапу
-        val allCustomerFieldsMap = changedFieldsMap + changedNonRequiredFieldsMap
-        onCustomerFieldsSuccess(allCustomerFieldsMap.values.map {
-            CustomerFieldValue.fromNameWithValue(
-                it.name,
-                it.value
-            )
-        })
-    } else {
-        onCustomerFieldsError()
+    val allCustomerFields = (changedFieldsMap + changedNonRequiredFieldsMap).values.map {
+        CustomerFieldValue.fromNameWithValue(
+            it.name,
+            it.value
+        )
     }
+    onCustomerFieldsChanged(
+        allCustomerFields,
+        allRequiredFields contentEquals changedRequiredCustomerFieldsList  //проверка, что список всех обязательных полей соответствует списку измененных и прошедших проверку обязательных полей
+    )
 }

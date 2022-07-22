@@ -12,6 +12,7 @@ import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
+import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
@@ -19,7 +20,7 @@ import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
 import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.common.CardView
-import com.paymentpage.msdk.ui.views.common.Footer
+import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
@@ -32,9 +33,11 @@ internal fun CustomerFieldsScreen(
     val viewModel = LocalMainViewModel.current
     val customerFields = viewModel.lastState.customerFields
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
-    val method = viewModel.lastState.method
+    val method = viewModel.lastState.currentMethod
     var customerFieldValues by remember { mutableStateOf<List<CustomerFieldValue>?>(null) }
     val additionalFields = LocalAdditionalFields.current
+    var isCustomerFieldsValid by remember { mutableStateOf(false) }
+
     BackHandler(true) { navigator.navigateTo(Route.Main) }
 
     SDKScaffold(
@@ -57,25 +60,29 @@ internal fun CustomerFieldsScreen(
             CustomerFields(
                 visibleCustomerFields = visibleCustomerFields,
                 additionalFields = LocalAdditionalFields.current,
-                onCustomerFieldsSuccess = { customerFieldValues = it },
-                onCustomerFieldsError = { customerFieldValues = null }
+                onCustomerFieldsChanged = { fields, isValid ->
+                    customerFieldValues = fields
+                    isCustomerFieldsValid = isValid
+                }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
             PayButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
                 currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
-                isEnabled = customerFieldValues != null || visibleCustomerFields.isEmpty()
+                isEnabled = isCustomerFieldsValid || visibleCustomerFields.isEmpty()
             ) {
-                viewModel.sendCustomerFields(customerFields.merge(
-                    changedFields = customerFieldValues,
-                    additionalFields = additionalFields
-                ))
+                viewModel.sendCustomerFields(
+                    customerFields.merge(
+                        changedFields = customerFieldValues,
+                        additionalFields = additionalFields
+                    )
+                )
             }
 
         },
         footerContent = {
-            Footer(
+            SDKFooter(
                 iconLogo = SDKTheme.images.sdkLogoResId,
                 poweredByText = stringResource(R.string.powered_by_label),
                 privacyPolicy = PaymentActivity

@@ -35,7 +35,7 @@ internal fun CustomButton(
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = color,
-                disabledBackgroundColor = color.copy(alpha = 0.3f)
+                disabledBackgroundColor = color.copy(alpha = 0.4f)
             ),
             shape = SDKTheme.shapes.radius6,
             modifier = modifier

@@ -18,7 +18,7 @@ import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
-internal fun Footer(
+internal fun SDKFooter(
     @DrawableRes iconLogo: Int,
     poweredByText: String,
     privacyPolicy: AnnotatedString? = null
@@ -64,7 +64,7 @@ internal fun Footer(
 @Preview(showBackground = true)
 internal fun FooterPreview() {
     SDKTheme {
-        Footer(
+        SDKFooter(
             iconLogo = SDKTheme.images.sdkLogoResId,
             poweredByText = stringResource(id = R.string.powered_by_label)
         )

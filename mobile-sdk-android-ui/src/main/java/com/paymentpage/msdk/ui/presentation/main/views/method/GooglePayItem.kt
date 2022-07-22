@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -18,24 +15,28 @@ import com.paymentpage.msdk.ui.LocalAdditionalFields
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomButton
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
-import com.paymentpage.msdk.ui.views.expandable.ExpandableItem
 
 
 @Composable
 internal fun GooglePayItem(
-    isExpand: Boolean,
     method: UiPaymentMethod.UIGooglePayPaymentMethod,
-    onItemSelected: ((method: UiPaymentMethod) -> Unit),
-    onItemUnSelected: ((method: UiPaymentMethod) -> Unit),
 ) {
-    val viewModel = LocalMainViewModel.current
+    val mainViewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
-    if (customerFields.isEmpty()) {
-        Button(
-            onClick = {},
+    val additionalFields = LocalAdditionalFields.current
+    val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
+
+    var isCustomerFieldsValid by remember { mutableStateOf(false) }
+
+    if (visibleCustomerFields.isEmpty()) {
+        CustomButton(
+            modifier = Modifier.height(50.dp),
+            isEnabled = true,
+            color = Color.Black,
             content = {
                 Image(
                     painter = painterResource(id = R.drawable.googlepay_button_logo),
@@ -43,36 +44,32 @@ internal fun GooglePayItem(
                     contentScale = ContentScale.Fit
                 )
             },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Black
-            ),
-            shape = SDKTheme.shapes.radius6,
-            modifier = Modifier
-                .height(50.dp)
-                .fillMaxWidth()
+            onClick = {
+
+            }
         )
     } else {
-        ExpandableItem(
-            index = method.index,
-            name = method.title,
-            iconUrl = method.paymentMethod.iconUrl,
+        ExpandablePaymentMethodItem(
+            method = method,
             headerBackgroundColor = SDKTheme.colors.backgroundColor,
-            onExpand = { onItemSelected(method) },
-            onCollapse = { onItemUnSelected(method) },
-            isExpanded = isExpand,
             fallbackIcon = painterResource(id = SDKTheme.images.googlePayMethodResId),
         ) {
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
             CustomerFields(
-                visibleCustomerFields = customerFields,
-                additionalFields = LocalAdditionalFields.current
+                visibleCustomerFields = visibleCustomerFields,
+                additionalFields = additionalFields,
+                customerFieldValues = method.customerFieldValues,
+                onCustomerFieldsChanged = { fields, isValid ->
+                    method.customerFieldValues = fields
+                    isCustomerFieldsValid = isValid
+                }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
             CustomButton(
                 modifier = Modifier
                     .height(50.dp)
                     .fillMaxWidth(),
-                isEnabled = true,
+                isEnabled = isCustomerFieldsValid,
                 content = {
                     Image(
                         painter = painterResource(id = R.drawable.googlepay_button_logo),
@@ -84,5 +81,4 @@ internal fun GooglePayItem(
             )
         }
     }
-
 }
