@@ -7,6 +7,7 @@ import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleReq
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
 
 
 //sale with saved card
@@ -32,7 +33,7 @@ internal fun MainViewModel.saleCard(
     val request = NewCardSaleRequest(
         cvv = method.cvv,
         pan = method.pan,
-        year = expiry.year ?: 0,
+        year = twoDigitYearToFourDigitYear(expiry.year) ?: 0,
         month = expiry.month ?: 0,
         cardHolder = method.cardHolder,
         saveCard = method.saveCard
