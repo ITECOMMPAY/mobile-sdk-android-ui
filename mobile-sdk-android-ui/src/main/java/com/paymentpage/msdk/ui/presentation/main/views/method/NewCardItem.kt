@@ -45,11 +45,12 @@ internal fun NewCardItem(
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
 
     val savedState = remember { mutableStateOf(false) }
-    var isCustomerFieldsValid by remember { mutableStateOf(false) }
-    var isCvvValid by remember { mutableStateOf(false) }
-    var isPanValid by remember { mutableStateOf(false) }
-    var isCardHolderValid by remember { mutableStateOf(false) }
-    var isExpiryValid by remember { mutableStateOf(false) }
+
+    var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
+    var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
+    var isPanValid by remember { mutableStateOf(method.isValidPan) }
+    var isCardHolderValid by remember { mutableStateOf(method.isValidCardHolder) }
+    var isExpiryValid by remember { mutableStateOf(method.isValidExpiry) }
 
     ExpandablePaymentMethodItem(
         method = method,
@@ -65,6 +66,7 @@ internal fun NewCardItem(
                 onValueChanged = { value, isValid ->
                     isPanValid = isValid
                     method.pan = value
+                    method.isValidPan = isValid
                 }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
@@ -74,6 +76,7 @@ internal fun NewCardItem(
                 onValueChanged = { value, isValid ->
                     isCardHolderValid = isValid
                     method.cardHolder = value
+                    method.isValidCardHolder = isValid
                 }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
@@ -84,6 +87,7 @@ internal fun NewCardItem(
                     onValueChanged = { value, isValid ->
                         isExpiryValid = isValid
                         method.expiry = value
+                        method.isValidExpiry = isValid
                     }
                 )
                 Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
@@ -93,6 +97,7 @@ internal fun NewCardItem(
                     onValueChanged = { value, isValid ->
                         isCvvValid = isValid
                         method.cvv = value
+                        method.isValidCvv = isValid
                     }
                 )
             }
@@ -105,6 +110,7 @@ internal fun NewCardItem(
                     onCustomerFieldsChanged = { fields, isValid ->
                         method.customerFieldValues = fields
                         isCustomerFieldsValid = isValid
+                        method.isCustomerFieldsValid = isCustomerFieldsValid
                     }
                 )
             }

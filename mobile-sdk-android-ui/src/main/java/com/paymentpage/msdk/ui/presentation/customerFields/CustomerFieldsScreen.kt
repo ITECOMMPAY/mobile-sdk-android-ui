@@ -10,13 +10,10 @@ import androidx.compose.ui.res.stringResource
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.navigation.Navigator
-import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
-import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
 import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.common.CardView
@@ -27,8 +24,8 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 internal fun CustomerFieldsScreen(
-    navigator: Navigator,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    onBack: () -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = viewModel.lastState.customerFields
@@ -38,7 +35,7 @@ internal fun CustomerFieldsScreen(
     val additionalFields = LocalAdditionalFields.current
     var isCustomerFieldsValid by remember { mutableStateOf(false) }
 
-    BackHandler(true) { navigator.navigateTo(Route.Main) }
+    BackHandler(true) { onBack() }
 
     SDKScaffold(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_additional_data"),
@@ -88,6 +85,6 @@ internal fun CustomerFieldsScreen(
             )
         },
         onClose = { onCancel() },
-        onBack = { navigator.navigateTo(Route.Main) }
+        onBack = { onBack() }
     )
 }

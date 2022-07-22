@@ -30,7 +30,7 @@ internal fun GooglePayItem(
     val additionalFields = LocalAdditionalFields.current
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
 
-    var isCustomerFieldsValid by remember { mutableStateOf(false) }
+    var isCustomerFieldsValid by remember { mutableStateOf( method.isCustomerFieldsValid) }
 
     if (visibleCustomerFields.isEmpty()) {
         CustomButton(
@@ -62,6 +62,7 @@ internal fun GooglePayItem(
                 onCustomerFieldsChanged = { fields, isValid ->
                     method.customerFieldValues = fields
                     isCustomerFieldsValid = isValid
+                    method.isCustomerFieldsValid = isCustomerFieldsValid
                 }
             )
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))

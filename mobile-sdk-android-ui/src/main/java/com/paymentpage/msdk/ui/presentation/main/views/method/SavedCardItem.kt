@@ -31,8 +31,8 @@ internal fun SavedCardItem(
 
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
 
-    var isCustomerFieldsValid by remember { mutableStateOf(false) }
-    var isCvvValid by remember { mutableStateOf(false) }
+    var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
+    var isCvvValid by remember { mutableStateOf( method.isValidCvv) }
 
     ExpandablePaymentMethodItem(
         method = method,
@@ -57,6 +57,7 @@ internal fun SavedCardItem(
                     onValueChanged = { value, isValid ->
                         isCvvValid = isValid
                         method.cvv = value
+                        method.isValidCvv = isValid
                     }
                 )
             }
@@ -67,6 +68,7 @@ internal fun SavedCardItem(
                     customerFieldValues = method.customerFieldValues,
                     onCustomerFieldsChanged = { fields, isValid ->
                         method.customerFieldValues = fields
+                        method.isCustomerFieldsValid = isValid
                         isCustomerFieldsValid = isValid
                     }
                 )
