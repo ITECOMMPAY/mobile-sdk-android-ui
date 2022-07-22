@@ -3,13 +3,16 @@ package com.paymentpage.msdk.ui.presentation.main.views.method
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paymentpage.msdk.ui.LocalAdditionalFields
 import com.paymentpage.msdk.ui.LocalMainViewModel
@@ -21,6 +24,7 @@ import com.paymentpage.msdk.ui.presentation.main.views.COUNT_OF_VISIBLE_CUSTOMER
 import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
+import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
 import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.views.button.ConfirmAndContinueButton
 import com.paymentpage.msdk.ui.views.button.PayButton
@@ -114,9 +118,10 @@ internal fun NewCardItem(
                     ) {
                         savedState.value = !savedState.value
                     },
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Top
             ) {
                 Checkbox(
+                    modifier = Modifier.size(25.dp),
                     checked = savedState.value,
                     onCheckedChange = {
                         savedState.value = it
@@ -124,11 +129,31 @@ internal fun NewCardItem(
                     },
                     colors = CheckboxDefaults.colors(checkedColor = SDKTheme.colors.brand)
                 )
-                Text(
-                    PaymentActivity.stringResourceManager.getStringByKey("title_saved_cards"),
-                    color = SDKTheme.colors.primaryTextColor,
-                    fontSize = 16.sp,
-                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Column() {
+                    Text(
+                        PaymentActivity.stringResourceManager.getStringByKey("title_saved_cards"),
+                        color = SDKTheme.colors.primaryTextColor,
+                        fontSize = 16.sp,
+                    )
+                    val uriHandler = LocalUriHandler.current
+                    val linkedString = PaymentActivity
+                        .stringResourceManager
+                        .getLinkMessageByKey("cof_agreements")
+                        .annotatedString()
+                    ClickableText(
+                        style = SDKTheme.typography.s12Light,
+                        text = linkedString,
+                        onClick = {
+                            linkedString
+                                .getStringAnnotations("URL", it, it)
+                                .firstOrNull()?.let { stringAnnotation ->
+                                    uriHandler.openUri(stringAnnotation.item)
+                                }
+                        }
+                    )
+
+                }
             }
             Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
             if (visibleCustomerFields.isNotEmpty() && visibleCustomerFields.size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {

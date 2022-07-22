@@ -11,53 +11,86 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
 
 @Composable
 internal fun SDKFooter(
     @DrawableRes iconLogo: Int,
     poweredByText: String,
-    privacyPolicy: AnnotatedString? = null
 ) {
+    val privacyPolicy = PaymentActivity
+        .stringResourceManager
+        .getLinkMessageByKey("privacy_policy")
+        .annotatedString()
+
+    val cookiePolicy = PaymentActivity
+        .stringResourceManager
+        .getLinkMessageByKey("cookie_policy")
+        .annotatedString()
+
     val uriHandler = LocalUriHandler.current
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        privacyPolicy?.let { linkedString ->
-            ClickableText(
-                style = SDKTheme.typography.s12Light,
-                text = linkedString,
-                onClick = {
-                    linkedString
-                        .getStringAnnotations("URL", it, it)
-                        .firstOrNull()?.let { stringAnnotation ->
-                            uriHandler.openUri(stringAnnotation.item)
-                        }
-                }
-            )
-        }
-        Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding20))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = poweredByText,
-                style = SDKTheme.typography.s12Light
-                    .copy(
-                        color = SDKTheme.colors.footerTextColor,
-                        fontStyle = FontStyle.Italic
-                    )
-            )
-            Text(text = " ")
-            Image(
-                painter = painterResource(id = iconLogo),
-                contentDescription = ""
-            )
-        }
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        ClickableText(
+            modifier = Modifier.weight(1f),
+            style = SDKTheme.typography.s12Light.copy(textAlign = TextAlign.End),
+            text = privacyPolicy,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            onClick = {
+                privacyPolicy
+                    .getStringAnnotations("URL", it, it)
+                    .firstOrNull()?.let { stringAnnotation ->
+                        uriHandler.openUri(stringAnnotation.item)
+                    }
+            }
+        )
+        Spacer(modifier = Modifier.size(15.dp))
+        ClickableText(
+            modifier = Modifier.weight(1f),
+            style = SDKTheme.typography.s12Light.copy(textAlign = TextAlign.Start),
+            text = cookiePolicy,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            onClick = {
+                cookiePolicy
+                    .getStringAnnotations("URL", it, it)
+                    .firstOrNull()?.let { stringAnnotation ->
+                        uriHandler.openUri(stringAnnotation.item)
+                    }
+            }
+        )
     }
+    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding20))
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = poweredByText,
+            style = SDKTheme.typography.s12Light
+                .copy(
+                    color = SDKTheme.colors.footerTextColor,
+                    fontStyle = FontStyle.Italic
+                )
+        )
+        Text(text = " ")
+        Image(
+            painter = painterResource(id = iconLogo),
+            contentDescription = ""
+        )
+    }
+
 }
 
 @Composable

@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -26,50 +25,55 @@ internal fun SDKTopBar(
     onClose: (() -> Unit)? = null,
     onBack: (() -> Unit)? = null
 ) {
-    Surface(
-        color = SDKTheme.colors.backgroundColor,
-        contentColor = SDKTheme.colors.iconColor
-    ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(45.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                maxLines = 1,
-                style = SDKTheme.typography.s22Bold,
-                text = title,
-                overflow = TextOverflow.Ellipsis
-            )
 
-            if (onBack != null) {
-                Image(
-                    modifier = Modifier
-                        .clickable(
-                            indication = null, //отключаем анимацию при клике
-                            interactionSource = remember { MutableInteractionSource() },
-                            onClick = { onBack() }
-                        )
-                        .padding(end = 35.dp),
-                    imageVector = Icons.Default.ArrowBack,
-                    colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
-                    contentDescription = "",
-                )
-            }
-            if (onClose != null)
-                Image(
-                    modifier = Modifier.clickable(
+    Row(
+        Modifier
+            .fillMaxWidth()
+            //.background(SDKTheme.colors.backgroundColor)
+            .height(45.dp),
+        verticalAlignment = Alignment.CenterVertically,
+
+        ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            maxLines = 1,
+            style = SDKTheme.typography.s22Bold,
+            text = title,
+            overflow = TextOverflow.Ellipsis
+        )
+
+        Spacer(modifier = Modifier.width(5.dp))
+        if (onBack != null) {
+            Image(
+                modifier = Modifier
+                    .size(25.dp)
+                    .clickable(
+                        indication = null, //отключаем анимацию при клике
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = { onBack() }
+                    ),
+                imageVector = Icons.Default.ArrowBack,
+                colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
+                contentDescription = "",
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+        }
+
+        if (onClose != null)
+            Image(
+                modifier = Modifier
+                    .size(25.dp)
+                    .clickable(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() },
                         onClick = { onClose() }
                     ),
-                    imageVector = Icons.Default.Close,
-                    colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
-                    contentDescription = "",
-                )
-        }
+                imageVector = Icons.Default.Close,
+                colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
+                contentDescription = "",
+            )
     }
+
 }
 
 @Composable
@@ -87,7 +91,8 @@ internal fun PreviewToolbarWithLongTitle() {
         SDKTopBar(
             title = "Very ver very Very ver very Very ver very Very ver very long title",
             onClose = {},
-            onBack = {})
+            onBack = {}
+        )
     }
 }
 

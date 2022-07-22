@@ -125,7 +125,7 @@ fun App(activity: MainActivity) {
         startDestination = "main",
     ) {
         composable("main") {
-            MainScreen(navController = navController, activity = activity)
+            MainScreen( activity = activity)
         }
     }
 }
