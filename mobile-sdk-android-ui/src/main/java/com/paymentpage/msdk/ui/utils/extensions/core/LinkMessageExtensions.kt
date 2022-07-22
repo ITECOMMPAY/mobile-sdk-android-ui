@@ -18,7 +18,7 @@ internal fun LinkMessage.annotatedString(): AnnotatedString = buildAnnotatedStri
         val linkMessage = link.message
         val linkUrl = link.url
         if (!linkMessage.isNullOrEmpty() && !linkUrl.isNullOrEmpty()) {
-            val startIndex = linkMessage.indexOf(linkMessage)
+            val startIndex = resultMessage.indexOf(linkMessage)
             val endIndex = startIndex + linkMessage.length
 
             addStyle(
