@@ -39,7 +39,7 @@ internal fun SDKFooter(
     val uriHandler = LocalUriHandler.current
     Row(
         horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().padding(5.dp)
     ) {
         ClickableText(
             modifier = Modifier.weight(1f),

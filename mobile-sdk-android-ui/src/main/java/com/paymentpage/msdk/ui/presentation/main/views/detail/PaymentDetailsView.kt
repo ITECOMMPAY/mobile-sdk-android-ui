@@ -10,11 +10,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
@@ -27,7 +25,7 @@ fun PaymentDetailsView(paymentInfo: PaymentInfo) {
         PaymentDetailsContent(
             paymentIdLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_id"),
             paymentIdValue = paymentInfo.paymentId,
-            paymentDescriptionLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_information_screen"),
+            paymentDescriptionLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_information_description"),
             paymentDescriptionValue = paymentInfo.paymentDescription,
             merchantAddressLabel = "",
             merchantAddressValue = null
@@ -39,7 +37,6 @@ fun PaymentDetailsView(paymentInfo: PaymentInfo) {
 
 @Composable
 fun ExpandablePaymentDetails(
-    paymentDetailsLabel: String = stringResource(R.string.payment_details_label),
     isExpanded: Boolean = false,
     onExpandCallback: () -> Unit,
     content: @Composable ColumnScope.() -> Unit,
@@ -49,7 +46,7 @@ fun ExpandablePaymentDetails(
     ) {
         Text(
             modifier = if (!isExpanded) Modifier.clickable { onExpandCallback() } else Modifier,
-            text = paymentDetailsLabel,
+            text = PaymentActivity.stringResourceManager.getStringByKey("title_payment_information_screen"),
             style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand.copy(alpha = if (isExpanded) 0.3f else 1f)),
         )
         if (isExpanded)

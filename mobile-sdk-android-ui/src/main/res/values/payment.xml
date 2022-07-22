@@ -1,5 +1,4 @@
 <resources>
     <string name="payment_methods_label">Payment Methods</string>
-    <string name="payment_details_label">Payment Details</string>
     <string name="payment_dismiss_confirm_message">Your payment is being processed, are you sure you want to close the payment page?</string>
 </resources>

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
@@ -85,7 +86,7 @@ internal fun CardView(
                 //Spacer(modifier = Modifier.height(SDKTheme.dimensions.padding10))
                 Row {
                     Text(
-                        text = stringResource(R.string.total_price_label),
+                        text = PaymentActivity.stringResourceManager.getStringByKey("title_total_price"),
                         style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
                     )
                     Spacer(modifier = Modifier.width(10.dp))

@@ -38,6 +38,7 @@ internal fun ExpiryField(
         },
         visualTransformation = MaskVisualTransformation("##/##"),
         label = PaymentActivity.stringResourceManager.getStringByKey("title_expiry"),
+        placeholder = PaymentActivity.stringResourceManager.getStringByKey("title_expiration_placeholder"),
         isDisabled = isDisabled,
         keyboardType = KeyboardType.Number,
         maxLength = 4,
