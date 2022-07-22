@@ -74,10 +74,6 @@ internal fun ClarificationFieldsScreen(
             SDKFooter(
                 iconLogo = SDKTheme.images.sdkLogoResId,
                 poweredByText = stringResource(R.string.powered_by_label),
-                privacyPolicy = PaymentActivity
-                    .stringResourceManager
-                    .getLinkMessageByKey("footer_privacy_policy")
-                    .annotatedString()
             )
         },
         onClose = { onCancel() },

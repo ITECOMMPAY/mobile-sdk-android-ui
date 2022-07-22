@@ -24,7 +24,6 @@ import com.paymentpage.ui.test.MainActivity
 
 @Composable
 fun MainScreen(
-    navController: NavController,
     activity: MainActivity
 ) {
     Column(
