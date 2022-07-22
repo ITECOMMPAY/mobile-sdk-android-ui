@@ -33,7 +33,7 @@ internal fun MainViewModel.saleCard(
     val request = NewCardSaleRequest(
         cvv = method.cvv,
         pan = method.pan,
-        year = twoDigitYearToFourDigitYear(expiry.year) ?: 0,
+        year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0,
         month = expiry.month ?: 0,
         cardHolder = method.cardHolder,
         saveCard = method.saveCard
