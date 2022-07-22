@@ -17,7 +17,9 @@ internal sealed class UiPaymentMethod(
         index: Int,
         title: String,
         paymentMethod: PaymentMethod,
-    ) : UiPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod)
+    ) : UiPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
+        var isCustomerFieldsValid: Boolean = false
+    }
 
     class UISavedCardPayPaymentMethod(
         index: Int,
@@ -26,6 +28,8 @@ internal sealed class UiPaymentMethod(
         paymentMethod: PaymentMethod,
     ) : UiPaymentMethod(index, title, savedAccount.cardUrlLogo, paymentMethod) {
         var cvv: String = ""
+        var isValidCvv: Boolean = false
+        var isCustomerFieldsValid: Boolean = false
         val accountId: Long = savedAccount.id
     }
 
@@ -39,5 +43,11 @@ internal sealed class UiPaymentMethod(
         var expiry: String = ""
         var cardHolder: String = ""
         var saveCard: Boolean = false
+
+        var isValidCvv: Boolean = false
+        var isValidPan: Boolean = false
+        var isValidExpiry: Boolean = false
+        var isValidCardHolder: Boolean = false
+        var isCustomerFieldsValid: Boolean = false
     }
 }

@@ -39,7 +39,10 @@ internal fun NavigationComponent(
     val navController = rememberAnimatedNavController()
 
     LaunchedEffect("navigation") {
-        navigator.sharedFlow.onEach { navController.navigate(it.getPath()) }.launchIn(this)
+        navigator.sharedFlow.onEach {
+            navController.navigateUp()
+            navController.navigate(it.getPath())
+        }.launchIn(this)
     }
 
     val viewModel = LocalMainViewModel.current
@@ -81,7 +84,9 @@ internal fun NavigationComponent(
         }
         composable(route = Route.CustomerFields.getPath()) {
             CustomerFieldsScreen(
-                navigator = navigator,
+                onBack = {
+                    navController.navigateUp()
+                },
                 onCancel = onCancel
             )
         }

@@ -30,7 +30,6 @@ internal fun ExpiryField(
         },
         onValueChanged = { value, isValid ->
             val expiryDate = SdkExpiry(value)
-            //if (expiryDate.month != null && expiryDate.year != null)
             onValueChanged(
                 expiryDate.stringValue,
                 expiryDate.isValid() && isValid
