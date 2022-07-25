@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentInfo
@@ -34,7 +35,7 @@ internal fun ResultDeclineScreen(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_result_succes_payment"),
         notScrollableContent = {
             PaymentDetailsView(paymentInfo = LocalPaymentInfo.current)
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
+            Spacer(modifier = Modifier.size(15.dp))
         },
         scrollableContent = {
             CardView(

@@ -25,7 +25,7 @@ internal fun LoadingScreen() {
             .background(SDKTheme.colors.backgroundColor)
             .height(LocalConfiguration.current.screenHeightDp.dp * 0.9f) //Height of bottom sheet
             .fillMaxWidth()
-            .padding(SDKTheme.dimensions.padding25),
+            .padding(25.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -44,7 +44,7 @@ internal fun LoadingScreen() {
                 style = SDKTheme.typography.s24Bold,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
+            Spacer(modifier = Modifier.size(15.dp))
             Text(
                 text = PaymentActivity.stringResourceManager.getStringByKey("sub_title_loading_screen"),
                 style = SDKTheme.typography.s14Normal,

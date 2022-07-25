@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.ui.*
@@ -37,7 +38,7 @@ internal fun ClarificationFieldsScreen(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
         notScrollableContent = {
             PaymentDetailsView(paymentInfo = LocalPaymentInfo.current)
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
+            Spacer(modifier = Modifier.size(15.dp))
         },
         scrollableContent = {
             CardView(
@@ -49,7 +50,7 @@ internal fun ClarificationFieldsScreen(
                     else -> null
                 }
             )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
+            Spacer(modifier = Modifier.size(15.dp))
             CustomerFields(
                 visibleCustomerFields = clarificationFields.map {
                     CustomerField(
@@ -74,7 +75,7 @@ internal fun ClarificationFieldsScreen(
                     isClarificationFieldsValid = isValid
                 }
             )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
+            Spacer(modifier = Modifier.size(22.dp))
             PayButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),

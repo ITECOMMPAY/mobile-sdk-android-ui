@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalAdditionalFields
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentInfo
@@ -39,7 +40,7 @@ internal fun SavedCardItem(
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
         fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
     ) {
-        Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+        Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {
             Row {
                 ExpiryField(
@@ -50,7 +51,7 @@ internal fun SavedCardItem(
                         //we can't change value and isValid always equals true
                     }
                 )
-                Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+                Spacer(modifier = Modifier.size(10.dp))
                 CvvField(
                     initialValue = method.cvv,
                     modifier = Modifier.weight(1f),
@@ -73,7 +74,7 @@ internal fun SavedCardItem(
                     }
                 )
             }
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
+            Spacer(modifier = Modifier.size(22.dp))
             if (visibleCustomerFields.isNotEmpty() && visibleCustomerFields.size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
                 PayButton(
                     payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),

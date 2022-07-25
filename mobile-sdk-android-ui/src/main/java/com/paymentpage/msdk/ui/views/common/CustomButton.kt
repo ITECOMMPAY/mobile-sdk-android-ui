@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.theme.LocalDimensions
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.button.PayButton
 
@@ -39,7 +40,7 @@ internal fun CustomButton(
             ),
             shape = SDKTheme.shapes.radius6,
             modifier = modifier
-                .height(45.dp)
+                .height(LocalDimensions.current.buttonHeight)
                 .fillMaxWidth(),
             enabled = isEnabled,
         )

@@ -68,7 +68,7 @@ internal fun ExpandablePaymentMethodItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(SDKTheme.dimensions.padding15)
+                .padding(15.dp)
         ) {
             Row(modifier = Modifier
                 .clickable(
@@ -105,7 +105,7 @@ internal fun ExpandablePaymentMethodItem(
                         textAlign = TextAlign.Center,
                         style = SDKTheme.typography.s14Normal
                     )
-                    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+                    Spacer(modifier = Modifier.size(10.dp))
                     Image(
                         modifier = Modifier
                             .rotate(rotationState),

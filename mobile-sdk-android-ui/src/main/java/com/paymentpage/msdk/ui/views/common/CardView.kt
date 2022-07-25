@@ -46,7 +46,7 @@ internal fun CardView(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(SDKTheme.dimensions.padding20),
+                .padding(20.dp),
         ) {
             logoImage?.let {
                 Image(
@@ -73,7 +73,7 @@ internal fun CardView(
                     if (currency != null) {
                         Spacer(
                             modifier = Modifier
-                                .width(SDKTheme.dimensions.padding8)
+                                .width(8.dp)
                                 .alignByBaseline()
                         )
                         Text(
@@ -83,7 +83,7 @@ internal fun CardView(
                         )
                     }
                 }
-                //Spacer(modifier = Modifier.height(SDKTheme.dimensions.padding10))
+                //Spacer(modifier = Modifier.height(10.dp))
                 Row {
                     Text(
                         text = PaymentActivity.stringResourceManager.getStringByKey("title_total_price"),

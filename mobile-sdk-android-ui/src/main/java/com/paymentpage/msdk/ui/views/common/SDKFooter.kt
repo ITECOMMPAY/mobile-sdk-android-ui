@@ -71,7 +71,7 @@ internal fun SDKFooter(
             }
         )
     }
-    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding20))
+    Spacer(modifier = Modifier.size(20.dp))
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center

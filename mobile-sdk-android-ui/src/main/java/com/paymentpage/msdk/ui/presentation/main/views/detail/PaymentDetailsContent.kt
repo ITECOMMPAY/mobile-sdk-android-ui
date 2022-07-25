@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
@@ -49,7 +50,7 @@ fun PaymentDetailsContent(
             )
         }
         if (paymentIdValue != null) {
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding5))
+            Spacer(modifier = Modifier.size(5.dp))
             Text(
                 text = paymentIdValue,
                 style = SDKTheme.typography.s14Bold
@@ -57,12 +58,12 @@ fun PaymentDetailsContent(
         }
         //Description
         if (paymentDescriptionValue != null) {
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding25))
+            Spacer(modifier = Modifier.size(25.dp))
             Text(
                 text = paymentDescriptionLabel,
                 style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.secondaryTextColor)
             )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding5))
+            Spacer(modifier = Modifier.size(5.dp))
             Text(
                 text = paymentDescriptionValue,
                 style = SDKTheme.typography.s14Normal
@@ -70,12 +71,12 @@ fun PaymentDetailsContent(
         }
         //Address
         if (merchantAddressValue != null) {
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding25))
+            Spacer(modifier = Modifier.size(25.dp))
             Text(
                 text = merchantAddressLabel,
                 style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.secondaryTextColor)
             )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding5))
+            Spacer(modifier = Modifier.size(5.dp))
             Text(
                 text = merchantAddressValue,
                 style = SDKTheme.typography.s14Normal

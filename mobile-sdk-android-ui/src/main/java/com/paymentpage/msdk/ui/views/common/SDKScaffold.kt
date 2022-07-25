@@ -28,7 +28,7 @@ internal fun SDKScaffold(
             .fillMaxWidth(),
         content = {
             Column(
-                modifier = Modifier.padding(SDKTheme.dimensions.padding20),
+                modifier = Modifier.padding(20.dp),
                 horizontalAlignment = Alignment.Start
             ) {
                 SDKTopBar(
@@ -42,7 +42,7 @@ internal fun SDKScaffold(
                         .verticalScroll(rememberScrollState())
                 ) {
                     scrollableContent()
-                    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
+                    Spacer(modifier = Modifier.size(15.dp))
                     footerContent()
                 }
             }

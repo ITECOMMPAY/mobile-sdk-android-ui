@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.presentation.main.views.PaymentMethodList
@@ -37,11 +38,11 @@ private fun Content(onCancel: () -> Unit) {
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
         notScrollableContent = {
             PaymentDetailsView(paymentInfo = LocalPaymentInfo.current)
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
+            Spacer(modifier = Modifier.size(15.dp))
         },
         scrollableContent = {
             CardView()
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding15))
+            Spacer(modifier = Modifier.size(15.dp))
             PaymentMethodList(
                 paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList(),
                 savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList(),

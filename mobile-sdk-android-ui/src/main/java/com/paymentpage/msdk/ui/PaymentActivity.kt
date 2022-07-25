@@ -76,12 +76,9 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     override fun onCompleteWithDecline(payment: Payment) {
         val dataIntent = Intent()
-//        dataIntent.putExtra(
-//            Constants.EXTRA_PAYMENT_STATUS, payment.serverStatusName
-//        )
-//        dataIntent.putExtra(
-//            Constants.EXTRA_RESULT_MESSAGE, resultMessage
-//        )
+        dataIntent.putExtra(
+            Constants.EXTRA_PAYMENT, payment.json
+        )
         setResult(Constants.RESULT_DECLINE, dataIntent)
         finish()
     }

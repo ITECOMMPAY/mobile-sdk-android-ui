@@ -62,12 +62,12 @@ private fun Loading() {
         itemWidth = 125.dp,
         borderRadius = 4.dp
     )
-    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+    Spacer(modifier = Modifier.size(10.dp))
     ShimmerAnimatedItem(
         itemHeight = 150.dp,
         borderRadius = 12.dp
     )
-    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+    Spacer(modifier = Modifier.size(10.dp))
     Row {
         Column(
             modifier = Modifier.weight(1f)
@@ -77,7 +77,7 @@ private fun Loading() {
                 borderRadius = 6.dp,
             )
         }
-        Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+        Spacer(modifier = Modifier.size(10.dp))
         Column(
             modifier = Modifier.weight(1f)
         ) {
@@ -87,13 +87,13 @@ private fun Loading() {
             )
         }
     }
-    Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+    Spacer(modifier = Modifier.size(10.dp))
     (1..5).forEach { _ ->
         ShimmerAnimatedItem(
             itemHeight = 50.dp,
             borderRadius = 6.dp
         )
-        Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+        Spacer(modifier = Modifier.size(10.dp))
     }
 }
 

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 import com.paymentpage.msdk.ui.AdditionalField
@@ -48,7 +49,7 @@ internal fun PaymentMethodList(
     Column(modifier = Modifier.fillMaxWidth()) {
         mergedPaymentMethods.forEach { uiPaymentMethod ->
             PaymentMethodItem(method = if (lastSelectedMethod?.index == uiPaymentMethod.index) lastSelectedMethod else uiPaymentMethod)
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+            Spacer(modifier = Modifier.size(10.dp))
         }
     }
 

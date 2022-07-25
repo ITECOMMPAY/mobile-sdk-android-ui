@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.FieldServerType
@@ -43,7 +44,7 @@ internal fun CustomerFields(
     Column(modifier = Modifier.fillMaxWidth()) {
         visibleCustomerFields.forEachIndexed { index, field ->
             if (index < visibleCustomerFields.size)
-                Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+                Spacer(modifier = Modifier.size(10.dp))
             val foundAdditionalField =
                 additionalFields.firstOrNull { it.type == field.type }
             val foundCustomerFieldValue =

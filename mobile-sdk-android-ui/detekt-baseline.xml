@@ -6,7 +6,7 @@
     <ID>EmptyFunctionBlock:InitViewModel.kt$InitViewModel.&lt;no name provided>${ }</ID>
     <ID>EmptyFunctionBlock:MainViewModel.kt$MainViewModel${ }</ID>
     <ID>EmptyFunctionBlock:ResultScreen.kt${ }</ID>
-    <ID>ForEachOnRange:InitScreen.kt$forEach { _ -> ShimmerAnimatedItem( itemHeight = 50.dp, borderRadius = 6.dp ) Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10)) }</ID>
+    <ID>ForEachOnRange:InitScreen.kt$forEach { _ -> ShimmerAnimatedItem( itemHeight = 50.dp, borderRadius = 6.dp ) Spacer(modifier = Modifier.size(10.dp)) }</ID>
     <ID>FunctionNaming:BaseCustomerField.kt$@Composable fun BaseCustomerTextField( initialValue: String?, onValueChanged: (CustomerFieldValue) -> Unit = {}, customerField: CustomerField, visualTransformation: VisualTransformation = VisualTransformation.None, keyboardType: KeyboardType = KeyboardType.Text, onFilterValueBefore: ((String) -> String)? = null, onTransformValueBeforeValidate: ((String) -> String)? = null, maxLength: Int? = null )</ID>
     <ID>FunctionNaming:CardHolderField.kt$@Composable internal fun CardHolderField( modifier: Modifier, isDisabled: Boolean = false, onValueChanged: (String, Boolean) -> Unit, )</ID>
     <ID>FunctionNaming:CardView.kt$@Composable @Preview fun CardViewPreview()</ID>

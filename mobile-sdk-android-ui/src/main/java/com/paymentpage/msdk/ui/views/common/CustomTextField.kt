@@ -139,7 +139,7 @@ fun CustomTextField(
         )
 
         if (errorMessage != null) {
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding4))
+            Spacer(modifier = Modifier.size(4.dp))
             Text(
                 text = errorMessage ?: "",
                 color = SDKTheme.colors.errorTextColor,

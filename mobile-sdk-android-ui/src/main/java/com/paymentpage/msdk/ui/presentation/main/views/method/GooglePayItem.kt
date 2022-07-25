@@ -17,6 +17,7 @@ import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.views.button.GooglePayButton
 import com.paymentpage.msdk.ui.views.common.CustomButton
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
@@ -54,7 +55,7 @@ internal fun GooglePayItem(
             headerBackgroundColor = SDKTheme.colors.backgroundColor,
             fallbackIcon = painterResource(id = SDKTheme.images.googlePayMethodResId),
         ) {
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding10))
+            Spacer(modifier = Modifier.size(10.dp))
             CustomerFields(
                 visibleCustomerFields = visibleCustomerFields,
                 additionalFields = additionalFields,
@@ -65,21 +66,8 @@ internal fun GooglePayItem(
                     method.isCustomerFieldsValid = isCustomerFieldsValid
                 }
             )
-            Spacer(modifier = Modifier.size(SDKTheme.dimensions.padding22))
-            CustomButton(
-                modifier = Modifier
-                    .height(50.dp)
-                    .fillMaxWidth(),
-                isEnabled = isCustomerFieldsValid,
-                content = {
-                    Image(
-                        painter = painterResource(id = R.drawable.googlepay_button_logo),
-                        contentDescription = null
-                    )
-                },
-                color = Color.Black,
-                onClick = {}
-            )
+            Spacer(modifier = Modifier.size(22.dp))
+            GooglePayButton( isEnabled = isCustomerFieldsValid)
         }
     }
 }
