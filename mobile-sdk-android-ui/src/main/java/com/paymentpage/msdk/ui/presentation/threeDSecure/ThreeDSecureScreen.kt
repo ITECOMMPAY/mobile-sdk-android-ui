@@ -1,16 +1,22 @@
 package com.paymentpage.msdk.ui.presentation.threeDSecure
 
+import android.graphics.Bitmap
+import android.net.http.SslError
+import android.util.Log
 import android.view.ViewGroup
+import android.webkit.SslErrorHandler
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.paymentpage.msdk.ui.LocalMainViewModel
@@ -22,17 +28,28 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
 @Composable
 internal fun ThreeDSecureScreen(
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
 ) {
     val viewModel = LocalMainViewModel.current
     val acsPage = viewModel.lastState.acsPageState?.acsPage
-
+    var isLoading by remember { mutableStateOf(false) }
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
         title = "3DS",
-        notScrollableContent = { },
+        notScrollableContent = {},
         scrollableContent = {
+            if (isLoading)
+                Box(modifier = Modifier
+                    .height(LocalConfiguration.current.screenHeightDp.dp * 0.9f) //Height of bottom sheet
+                    .fillMaxWidth()
+                    .background(SDKTheme.colors.backgroundColor),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        color = SDKTheme.colors.brand
+                    )
+                }
             if (PaymentActivity.isMockModeEnabled)
                 CustomButton(
                     modifier = Modifier.height(45.dp),
@@ -57,7 +74,33 @@ internal fun ThreeDSecureScreen(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT
                         )
-                        webViewClient = WebViewClient()
+                        webViewClient = object : WebViewClient() {
+                            override fun onPageStarted(
+                                view: WebView?,
+                                url: String?,
+                                favicon: Bitmap?,
+                            ) {
+                                super.onPageStarted(view, url, favicon)
+                                isLoading = true
+                                if (url.equals(acsPage?.acs?.termUrl)) {
+                                    viewModel.threeDSecureHandled()
+                                }
+                            }
+
+                            override fun onPageFinished(view: WebView?, url: String?) {
+                                super.onPageFinished(view, url)
+                                isLoading = false
+                            }
+
+                            override fun onReceivedSslError(
+                                view: WebView?,
+                                handler: SslErrorHandler?,
+                                error: SslError?,
+                            ) {
+                                super.onReceivedSslError(view, handler, error)
+
+                            }
+                        }
                         settings.javaScriptEnabled = true
                         acsPage?.let { page ->
                             loadDataWithBaseURL(
@@ -68,8 +111,6 @@ internal fun ThreeDSecureScreen(
                                 null
                             )
                         }
-
-
                     }
                 }, update = {
 
