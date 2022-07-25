@@ -9,13 +9,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentInfo
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
-import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
 import com.paymentpage.msdk.ui.views.common.CardView
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -34,20 +31,11 @@ internal fun ResultDeclineScreen(
     SDKScaffold(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_result_succes_payment"),
         notScrollableContent = {
-            PaymentDetailsView(paymentInfo = LocalPaymentInfo.current)
+            PaymentDetailsView()
             Spacer(modifier = Modifier.size(15.dp))
         },
         scrollableContent = {
-            CardView(
-                logoImage = PaymentActivity.logoImage,
-                amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
-                currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
-                vatIncludedTitle = when (method?.paymentMethod?.isVatInfo) {
-                    true -> PaymentActivity.stringResourceManager.getStringByKey("vat_included")
-                    else -> null
-                }
-            )
-
+            CardView()
         },
         footerContent = {
             SDKFooter(

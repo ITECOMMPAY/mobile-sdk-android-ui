@@ -9,7 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
-import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
@@ -33,7 +35,7 @@ internal fun CustomerFieldsScreen(
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
     val method = viewModel.lastState.currentMethod
     var customerFieldValues by remember { mutableStateOf<List<CustomerFieldValue>?>(null) }
-    val additionalFields = LocalAdditionalFields.current
+    val additionalFields = LocalPaymentOptions.current.additionalFields
     var isCustomerFieldsValid by remember { mutableStateOf(false) }
 
     BackHandler(true) { onBack() }
@@ -41,23 +43,15 @@ internal fun CustomerFieldsScreen(
     SDKScaffold(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_additional_data"),
         notScrollableContent = {
-            PaymentDetailsView(paymentInfo = LocalPaymentInfo.current)
+            PaymentDetailsView()
             Spacer(modifier = Modifier.size(15.dp))
         },
         scrollableContent = {
-            CardView(
-                logoImage = PaymentActivity.logoImage,
-                amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
-                currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
-                vatIncludedTitle = when (method?.paymentMethod?.isVatInfo) {
-                    true -> PaymentActivity.stringResourceManager.getStringByKey("vat_included")
-                    else -> null
-                }
-            )
+            CardView()
             Spacer(modifier = Modifier.size(15.dp))
             CustomerFields(
                 visibleCustomerFields = visibleCustomerFields,
-                additionalFields = LocalAdditionalFields.current,
+                additionalFields = LocalPaymentOptions.current.additionalFields,
                 onCustomerFieldsChanged = { fields, isValid ->
                     customerFieldValues = fields
                     isCustomerFieldsValid = isValid
@@ -66,8 +60,8 @@ internal fun CustomerFieldsScreen(
             Spacer(modifier = Modifier.size(22.dp))
             PayButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
-                amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
-                currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
+                amount = LocalPaymentOptions.current.paymentInfo!!.paymentAmount.amountToCoins(),
+                currency = LocalPaymentOptions.current.paymentInfo!!.paymentCurrency.uppercase(),
                 isEnabled = isCustomerFieldsValid || visibleCustomerFields.isEmpty()
             ) {
                 viewModel.sendCustomerFields(

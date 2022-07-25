@@ -14,6 +14,8 @@ import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 import com.paymentpage.msdk.ui.AdditionalField
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalMsdkSession
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.reset
 import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
@@ -25,12 +27,13 @@ internal const val COUNT_OF_VISIBLE_CUSTOMER_FIELDS = 3
 
 @Composable
 internal fun PaymentMethodList(
-    paymentMethods: List<PaymentMethod>,
-    savedAccounts: List<SavedAccount>,
-    additionalFields: List<AdditionalField>,
 ) {
     val mainViewModel = LocalMainViewModel.current
     val lastSelectedMethod = mainViewModel.lastState.currentMethod
+
+    val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
+    val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
+    val additionalFields = LocalPaymentOptions.current.additionalFields
 
     val mergedPaymentMethods = paymentMethods.mergeUIPaymentMethods(savedAccounts = savedAccounts)
     if (mergedPaymentMethods.isEmpty()) return

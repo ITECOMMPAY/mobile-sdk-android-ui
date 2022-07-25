@@ -99,7 +99,6 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         val navigator = Navigator()
 
         private lateinit var paymentOptions: PaymentOptions
-        internal var logoImage: Bitmap? = null
 
         var isMockModeEnabled = false
 
@@ -110,10 +109,8 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         fun buildPaymentIntent(
             context: Context,
             paymentOptions: PaymentOptions,
-            logoImage: Bitmap? = null
         ): Intent {
             this.paymentOptions = paymentOptions
-            this.logoImage = logoImage
 
             val intent = Intent(context, PaymentActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)

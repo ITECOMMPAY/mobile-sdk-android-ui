@@ -5,9 +5,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.LocalAdditionalFields
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentInfo
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
@@ -28,7 +27,7 @@ internal fun SavedCardItem(
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
-    val additionalFields = LocalAdditionalFields.current
+    val additionalFields =  LocalPaymentOptions.current.additionalFields
 
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
 
@@ -78,8 +77,8 @@ internal fun SavedCardItem(
             if (visibleCustomerFields.isNotEmpty() && visibleCustomerFields.size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
                 PayButton(
                     payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
-                    amount = LocalPaymentInfo.current.paymentAmount.amountToCoins(),
-                    currency = LocalPaymentInfo.current.paymentCurrency.uppercase(),
+                    amount =  LocalPaymentOptions.current.paymentInfo!!.paymentAmount.amountToCoins(),
+                    currency =  LocalPaymentOptions.current.paymentInfo!!.paymentCurrency.uppercase(),
                     isEnabled = isCvvValid && (isCustomerFieldsValid || visibleCustomerFields.isEmpty())
                 ) {
                     viewModel.saleSavedCard(

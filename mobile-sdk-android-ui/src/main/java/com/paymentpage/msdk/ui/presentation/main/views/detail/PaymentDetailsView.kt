@@ -11,12 +11,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.core.domain.entities.PaymentInfo
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
-fun PaymentDetailsView(paymentInfo: PaymentInfo) {
+fun PaymentDetailsView() {
     var expandPaymentDetailsState by remember { mutableStateOf(false) }
     ExpandablePaymentDetails(
         onExpandCallback = { expandPaymentDetailsState = true },
@@ -24,9 +24,9 @@ fun PaymentDetailsView(paymentInfo: PaymentInfo) {
     ) {
         PaymentDetailsContent(
             paymentIdLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_id"),
-            paymentIdValue = paymentInfo.paymentId,
+            paymentIdValue = LocalPaymentOptions.current.paymentInfo!!.paymentId,
             paymentDescriptionLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_information_description"),
-            paymentDescriptionValue = paymentInfo.paymentDescription,
+            paymentDescriptionValue = LocalPaymentOptions.current.paymentInfo?.paymentDescription,
             merchantAddressLabel = "",
             merchantAddressValue = null
         ) {

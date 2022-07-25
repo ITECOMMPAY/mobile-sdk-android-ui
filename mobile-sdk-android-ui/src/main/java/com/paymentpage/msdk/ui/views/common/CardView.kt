@@ -1,10 +1,10 @@
 package com.paymentpage.msdk.ui.views.common
 
-import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -14,24 +14,22 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 
 @Composable
-internal fun CardView(
-    logoImage: Bitmap? = null,
-    amount: String,
-    currency: String?,
-    vatIncludedTitle: String? = null,
-) {
+internal fun CardView() {
+    val mainViewModel = LocalMainViewModel.current
+    val currentMethod = mainViewModel.state.collectAsState().value.currentMethod
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(if (logoImage != null) 150.dp else 95.dp)
+            .height(if (LocalPaymentOptions.current.logoImage != null) 150.dp else 95.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.card_lines_bg),
@@ -48,7 +46,7 @@ internal fun CardView(
                 .fillMaxSize()
                 .padding(20.dp),
         ) {
-            logoImage?.let {
+            LocalPaymentOptions.current.logoImage?.let {
                 Image(
                     alignment = Alignment.TopStart,
                     bitmap = it.asImageBitmap(),
@@ -67,10 +65,11 @@ internal fun CardView(
                 Row {
                     Text(
                         modifier = Modifier.alignByBaseline(),
-                        text = amount,
+                        text = LocalPaymentOptions.current.paymentInfo?.paymentAmount.amountToCoins()
+                            ?: "--",
                         style = SDKTheme.typography.s28Bold.copy(color = Color.White)
                     )
-                    if (currency != null) {
+                    if (LocalPaymentOptions.current.paymentInfo?.paymentCurrency != null) {
                         Spacer(
                             modifier = Modifier
                                 .width(8.dp)
@@ -78,7 +77,7 @@ internal fun CardView(
                         )
                         Text(
                             modifier = Modifier.alignByBaseline(),
-                            text = currency,
+                            text = LocalPaymentOptions.current.paymentInfo!!.paymentCurrency,
                             style = SDKTheme.typography.s16Normal.copy(color = Color.White)
                         )
                     }
@@ -90,25 +89,13 @@ internal fun CardView(
                         style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
                     )
                     Spacer(modifier = Modifier.width(10.dp))
-                    if (!vatIncludedTitle.isNullOrEmpty())
+                    if (currentMethod?.paymentMethod?.isVatInfo == true)
                         Text(
-                            text = vatIncludedTitle,
+                            text = PaymentActivity.stringResourceManager.getStringByKey("vat_included"),
                             style = SDKTheme.typography.s14Light.copy(color = Color.White)
                         )
                 }
             }
         }
     }
-}
-
-
-@Composable
-@Preview
-fun CardViewPreview() {
-    CardView(
-        logoImage = Bitmap.createBitmap(100, 100, Bitmap.Config.ALPHA_8),
-        amount = "238.00",
-        currency = "EUR",
-        vatIncludedTitle = ""
-    )
 }

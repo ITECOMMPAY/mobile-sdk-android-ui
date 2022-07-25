@@ -5,19 +5,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paymentpage.msdk.core.MSDKCoreSession
-import com.paymentpage.msdk.core.domain.entities.PaymentInfo
-import com.paymentpage.msdk.core.domain.entities.RecipientInfo
-import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
 import com.paymentpage.msdk.ui.presentation.init.InitViewModel
 import com.paymentpage.msdk.ui.presentation.main.MainViewModel
 import com.paymentpage.msdk.ui.utils.viewModelFactory
 
-internal val LocalPaymentInfo = compositionLocalOf<PaymentInfo> { error("No PaymentInfo found!") }
-internal val LocalRecurrentInfo = compositionLocalOf<RecurrentInfo?> { null }
-internal val LocalThreeDSecureInfo = compositionLocalOf<ThreeDSecureInfo?> { null }
-internal val LocalRecipientInfo = compositionLocalOf<RecipientInfo?> { null }
-internal val LocalAdditionalFields = compositionLocalOf<List<AdditionalField>> { emptyList() }
+internal val LocalPaymentOptions =
+    compositionLocalOf<PaymentOptions> { error("No PaymentOptions found!") }
 internal val LocalMsdkSession =
     compositionLocalOf<MSDKCoreSession> { error("No MSDKCoreSession found!") }
 
@@ -35,11 +28,7 @@ internal fun SDKCommonProvider(
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
-        LocalPaymentInfo provides paymentOptions.paymentInfo!!,
-        LocalRecurrentInfo provides paymentOptions.recurrentInfo,
-        LocalThreeDSecureInfo provides paymentOptions.threeDSecureInfo,
-        LocalRecipientInfo provides paymentOptions.recipientInfo,
-        LocalAdditionalFields provides paymentOptions.additionalFields,
+        LocalPaymentOptions provides paymentOptions,
         LocalMsdkSession provides msdkSession,
         LocalMainViewModel provides viewModel(
             factory = viewModelFactory {

@@ -14,8 +14,7 @@ class PaymentSDK(context: Context, paymentOptions: PaymentOptions) {
     val intent =
         PaymentActivity.buildPaymentIntent(
             context = context,
-            paymentOptions = paymentOptions,
-            logoImage = paymentOptions.logoImage
+            paymentOptions = paymentOptions
         )
 
     fun openPaymentScreen(activity: Activity, requestCode: Int) {
