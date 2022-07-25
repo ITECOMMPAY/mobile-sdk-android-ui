@@ -12,11 +12,7 @@ import androidx.activity.compose.setContent
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
 import com.paymentpage.msdk.core.base.ErrorCode
-import com.paymentpage.msdk.core.domain.entities.PaymentInfo
-import com.paymentpage.msdk.core.domain.entities.RecipientInfo
-import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
 import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
 import com.paymentpage.msdk.core.mock.init.MockInitCustomerFieldsConfig
 import com.paymentpage.msdk.ui.base.Constants
@@ -49,11 +45,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         setContent {
             MainContent(
                 activity = this@PaymentActivity,
-                paymentInfo = paymentInfo,
-                recurrentInfo = recurrentInfo,
-                threeDSecureInfo = threeDSecureInfo,
-                recipientInfo = recipientInfo,
-                additionalFields = additionalFields,
+                paymentOptions = paymentOptions,
                 msdkSession = msdkSession
             )
         }
@@ -109,11 +101,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
     companion object {
         val navigator = Navigator()
 
-        private lateinit var paymentInfo: PaymentInfo
-        private var recurrentInfo: RecurrentInfo? = null
-        private var threeDSecureInfo: ThreeDSecureInfo? = null
-        private var recipientInfo: RecipientInfo? = null
-        private var additionalFields: List<AdditionalField> = emptyList()
+        private lateinit var paymentOptions: PaymentOptions
         internal var logoImage: Bitmap? = null
 
         var isMockModeEnabled = false
@@ -124,18 +112,10 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         fun buildPaymentIntent(
             context: Context,
-            paymentInfo: PaymentInfo,
-            recurrentInfo: RecurrentInfo? = null,
-            threeDSecureInfo: ThreeDSecureInfo? = null,
-            recipientInfo: RecipientInfo? = null,
-            additionalFields: List<AdditionalField> = emptyList(),
+            paymentOptions: PaymentOptions,
             logoImage: Bitmap? = null
         ): Intent {
-            this.paymentInfo = paymentInfo
-            this.recurrentInfo = recurrentInfo
-            this.threeDSecureInfo = threeDSecureInfo
-            this.recipientInfo = recipientInfo
-            this.additionalFields = additionalFields
+            this.paymentOptions = paymentOptions
             this.logoImage = logoImage
 
             val intent = Intent(context, PaymentActivity::class.java)

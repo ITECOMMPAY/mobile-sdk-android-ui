@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.Fragment
 import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.PaymentOptions
 import com.paymentpage.msdk.ui.base.Constants
 
 
@@ -13,12 +14,7 @@ class PaymentSDK(context: Context, paymentOptions: PaymentOptions) {
     val intent =
         PaymentActivity.buildPaymentIntent(
             context = context,
-            paymentInfo = paymentOptions.paymentInfo
-                ?: throw IllegalAccessException("Payment Info can not be null"),
-            recurrentInfo = paymentOptions.recurrentInfo,
-            threeDSecureInfo = paymentOptions.threeDSecureInfo,
-            recipientInfo = paymentOptions.recipientInfo,
-            additionalFields = paymentOptions.additionalFields,
+            paymentOptions = paymentOptions,
             logoImage = paymentOptions.logoImage
         )
 

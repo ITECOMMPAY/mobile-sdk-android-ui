@@ -9,8 +9,6 @@ import androidx.compose.ui.res.stringResource
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.ui.*
-import com.paymentpage.msdk.ui.LocalAdditionalFields
-import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentInfo
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.sendClarificationFields

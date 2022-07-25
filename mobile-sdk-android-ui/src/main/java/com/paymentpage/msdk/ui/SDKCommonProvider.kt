@@ -18,7 +18,6 @@ internal val LocalRecurrentInfo = compositionLocalOf<RecurrentInfo?> { null }
 internal val LocalThreeDSecureInfo = compositionLocalOf<ThreeDSecureInfo?> { null }
 internal val LocalRecipientInfo = compositionLocalOf<RecipientInfo?> { null }
 internal val LocalAdditionalFields = compositionLocalOf<List<AdditionalField>> { emptyList() }
-
 internal val LocalMsdkSession =
     compositionLocalOf<MSDKCoreSession> { error("No MSDKCoreSession found!") }
 
@@ -31,26 +30,22 @@ internal val LocalInitViewModel =
 
 @Composable
 internal fun SDKCommonProvider(
-    paymentInfo: PaymentInfo,
-    recurrentInfo: RecurrentInfo?,
-    threeDSecureInfo: ThreeDSecureInfo?,
-    recipientInfo: RecipientInfo?,
-    additionalFields: List<AdditionalField>,
+    paymentOptions: PaymentOptions,
     msdkSession: MSDKCoreSession,
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
-        LocalPaymentInfo provides paymentInfo,
-        LocalRecurrentInfo provides recurrentInfo,
-        LocalThreeDSecureInfo provides threeDSecureInfo,
-        LocalRecipientInfo provides recipientInfo,
-        LocalAdditionalFields provides additionalFields,
+        LocalPaymentInfo provides paymentOptions.paymentInfo!!,
+        LocalRecurrentInfo provides paymentOptions.recurrentInfo,
+        LocalThreeDSecureInfo provides paymentOptions.threeDSecureInfo,
+        LocalRecipientInfo provides paymentOptions.recipientInfo,
+        LocalAdditionalFields provides paymentOptions.additionalFields,
         LocalMsdkSession provides msdkSession,
         LocalMainViewModel provides viewModel(
             factory = viewModelFactory {
                 MainViewModel(
                     payInteractor = msdkSession.getPayInteractor(),
-                    paymentInfo = paymentInfo
+                    paymentOptions = paymentOptions,
                 )
             }
         ),
@@ -58,9 +53,7 @@ internal fun SDKCommonProvider(
             factory = viewModelFactory {
                 InitViewModel(
                     initInteractor = msdkSession.getInitInteractor(),
-                    paymentInfo = paymentInfo,
-                    recurrentInfo = recurrentInfo,
-                    threeDSecureInfo = threeDSecureInfo
+                    paymentOptions = paymentOptions,
                 )
             }
         )

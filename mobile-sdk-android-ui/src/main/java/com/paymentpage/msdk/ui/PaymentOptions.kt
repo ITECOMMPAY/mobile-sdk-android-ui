@@ -1,6 +1,6 @@
 @file:Suppress("PrivatePropertyName", "unused", "MemberVisibilityCanBePrivate")
 
-package com.ecommpay.msdk.ui
+package com.paymentpage.msdk.ui
 
 import android.graphics.Bitmap
 import com.paymentpage.msdk.core.domain.entities.PaymentInfo

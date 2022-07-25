@@ -20,9 +20,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ecommpay.msdk.ui.PaymentSDK
-import com.ecommpay.msdk.ui.paymentOptions
 import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.ui.base.Constants
+import com.paymentpage.msdk.ui.paymentOptions
 import com.paymentpage.ui.test.ui.MainScreen
 import com.paymentpage.ui.test.utils.SignatureGenerator
 import java.util.*

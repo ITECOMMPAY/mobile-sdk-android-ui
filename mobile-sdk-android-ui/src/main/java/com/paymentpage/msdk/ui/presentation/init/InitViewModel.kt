@@ -2,15 +2,13 @@ package com.paymentpage.msdk.ui.presentation.init
 
 
 import com.paymentpage.msdk.core.base.ErrorCode
-import com.paymentpage.msdk.core.domain.entities.PaymentInfo
-import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
 import com.paymentpage.msdk.core.domain.interactors.init.InitDelegate
 import com.paymentpage.msdk.core.domain.interactors.init.InitInteractor
 import com.paymentpage.msdk.core.domain.interactors.init.InitRequest
+import com.paymentpage.msdk.ui.PaymentOptions
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.Reducer
 import com.paymentpage.msdk.ui.base.mvi.TimeMachine
@@ -19,9 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 internal class InitViewModel(
     private val initInteractor: InitInteractor,
-    private val paymentInfo: PaymentInfo,
-    private val recurrentInfo: RecurrentInfo?,
-    private val threeDSecureInfo: ThreeDSecureInfo?
+    private val paymentOptions: PaymentOptions
 ) :
     BaseViewModel<InitScreenState, InitScreenUiEvent>() {
     override val reducer = InitReducer(InitScreenState.initial())
@@ -39,9 +35,10 @@ internal class InitViewModel(
     private fun loadInit() {
         initInteractor.execute(
             request = InitRequest(
-                paymentInfo = paymentInfo,
-                recurrentInfo = recurrentInfo,
-                threeDSecureInfo = threeDSecureInfo
+                paymentInfo = paymentOptions.paymentInfo
+                    ?: throw IllegalArgumentException("PaymentInfo not found"),
+                recurrentInfo = paymentOptions.recurrentInfo,
+                threeDSecureInfo = paymentOptions.threeDSecureInfo
             ),
             callback = object : InitDelegate {
                 override fun onInitReceived(

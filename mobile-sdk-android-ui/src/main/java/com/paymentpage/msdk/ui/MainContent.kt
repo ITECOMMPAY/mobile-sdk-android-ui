@@ -12,10 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.MSDKCoreSession
-import com.paymentpage.msdk.core.domain.entities.PaymentInfo
-import com.paymentpage.msdk.core.domain.entities.RecipientInfo
-import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
 import com.paymentpage.msdk.ui.navigation.NavigationComponent
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
@@ -23,11 +19,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 @OptIn(ExperimentalMaterialApi::class)
 internal fun MainContent(
     activity: PaymentActivity,
-    paymentInfo: PaymentInfo,
-    recurrentInfo: RecurrentInfo?,
-    threeDSecureInfo: ThreeDSecureInfo?,
-    recipientInfo: RecipientInfo?,
-    additionalFields: List<AdditionalField>,
+    paymentOptions: PaymentOptions,
     msdkSession: MSDKCoreSession,
 ) {
     val showDialogDismissDialog = remember { mutableStateOf(false) }
@@ -41,11 +33,7 @@ internal fun MainContent(
         drawerContent = {
             SDKTheme() {
                 SDKCommonProvider(
-                    paymentInfo = paymentInfo,
-                    recurrentInfo = recurrentInfo,
-                    threeDSecureInfo = threeDSecureInfo,
-                    recipientInfo = recipientInfo,
-                    additionalFields = additionalFields,
+                    paymentOptions = paymentOptions,
                     msdkSession = msdkSession,
                 ) {
                     NavigationComponent(
