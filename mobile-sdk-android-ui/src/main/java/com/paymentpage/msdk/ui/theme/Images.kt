@@ -11,7 +11,9 @@ internal class Images(
     sdkLogoResId: Int,
     cardLogoResId: Int,
     googlePayMethodResId: Int,
-    loadingLogo: Int
+    loadingLogo: Int,
+    successLogo: Int,
+    errorLogo: Int
 ) {
     var sdkLogoResId by mutableStateOf(sdkLogoResId)
         private set
@@ -21,13 +23,19 @@ internal class Images(
         private set
     var loadingLogo by mutableStateOf(loadingLogo)
         private set
+    var successLogo by mutableStateOf(successLogo)
+        private set
+    var errorLogo by mutableStateOf(errorLogo)
+        private set
 }
 
 internal fun lightImages(): Images = Images(
     sdkLogoResId = R.drawable.sdk_logo,
     cardLogoResId = R.drawable.card_logo,
     googlePayMethodResId = R.drawable.payment_method_google_pay,
-    loadingLogo = R.drawable.loading_logo
+    loadingLogo = R.drawable.loading_logo,
+    successLogo = R.drawable.success_logo,
+    errorLogo = R.drawable.error_logo
 )
 
 
