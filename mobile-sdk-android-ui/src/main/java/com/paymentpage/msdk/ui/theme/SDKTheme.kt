@@ -6,6 +6,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.graphics.Color
 
 internal object SDKTheme {
     val colors: Colors
@@ -37,13 +38,14 @@ internal object SDKTheme {
 @Composable
 internal fun SDKTheme(
     isDark: Boolean = isSystemInDarkTheme(),
+    brandColor: Color? = null,
     content: @Composable () -> Unit
 ) {
 //    val colors = if (isDark) DarkColorPalette else LightColorPalette
 //    val typography = if (isDark) darkTypography() else  lightTypography()
 //    val images = if (isDark) darkImages() else lightImages()
     CompositionLocalProvider(
-        LocalColors provides lightColors(),
+        LocalColors provides lightColors(brandColor = brandColor),
         LocalDimensions provides SDKTheme.dimensions,
         LocalTypography provides lightTypography(),
         LocalShapes provides SDKTheme.shapes,

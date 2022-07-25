@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.saleCard
 import com.paymentpage.msdk.ui.presentation.main.views.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
@@ -35,7 +35,7 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 @Composable
 internal fun NewCardItem(
-    method: UiPaymentMethod.UICardPayPaymentMethod,
+    method: UIPaymentMethod.UICardPayPaymentMethod,
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }

@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.ui.navigation.NavigationComponent
+import com.paymentpage.msdk.ui.theme.HexToJetpackColor
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
@@ -31,7 +32,7 @@ internal fun MainContent(
     BottomDrawer(
         modifier = Modifier.wrapContentSize(),
         drawerContent = {
-            SDKTheme() {
+            SDKTheme(brandColor = HexToJetpackColor.getColor(paymentOptions.brandColor)) {
                 SDKCommonProvider(
                     paymentOptions = paymentOptions,
                     msdkSession = msdkSession,

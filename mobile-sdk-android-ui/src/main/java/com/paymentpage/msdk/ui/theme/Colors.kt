@@ -66,8 +66,8 @@ private val lightThemeRedColor = Color(0xFFC03230)
 private val lightThemeLightRedColor = Color(0xFFF8EAEA)
 
 
-internal fun lightColors(brand: Color = lightThemeBrandColor): Colors = Colors(
-    brand = brand,
+internal fun lightColors(brandColor: Color? = lightThemeBrandColor): Colors = Colors(
+    brand = brandColor ?: lightThemeBrandColor,
     primaryTextColor = colorBlack,
     secondaryTextColor = lightThemeDarkGrayColor,
     disabledTextColor = lightThemeMediumGrayColor,
@@ -83,3 +83,16 @@ internal fun lightColors(brand: Color = lightThemeBrandColor): Colors = Colors(
 
 
 internal val LocalColors = staticCompositionLocalOf { lightColors() }
+
+object HexToJetpackColor {
+    fun getColor(colorString: String?): Color? {
+        if (colorString.isNullOrEmpty())
+            return null
+        return try {
+            Color(android.graphics.Color.parseColor(colorString))
+        } catch (e: Exception) {
+            null
+        }
+
+    }
+}

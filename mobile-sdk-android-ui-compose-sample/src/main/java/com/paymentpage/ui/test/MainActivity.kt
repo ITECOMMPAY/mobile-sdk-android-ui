@@ -85,6 +85,7 @@ class MainActivity : ComponentActivity() {
             )
         val paymentOptions = paymentOptions {
             paymentInfo = payment
+            //brandColor = "#fcba03"
         }
         val sdk = PaymentSDK(context = this.applicationContext, paymentOptions = paymentOptions)
 

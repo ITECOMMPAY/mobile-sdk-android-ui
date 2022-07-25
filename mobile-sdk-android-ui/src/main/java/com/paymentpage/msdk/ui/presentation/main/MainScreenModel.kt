@@ -8,11 +8,11 @@ import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.UiEvent
 import com.paymentpage.msdk.ui.base.mvi.UiState
-import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 
 @Immutable
 internal sealed class MainScreenUiEvent : UiEvent {
-    class SetCurrentMethod(val method: UiPaymentMethod?) : MainScreenUiEvent()
+    class SetCurrentMethod(val method: UIPaymentMethod?) : MainScreenUiEvent()
     class SetPayment(val payment: Payment) : MainScreenUiEvent()
     object Reset : MainScreenUiEvent()
     object ShowLoading : MainScreenUiEvent()
@@ -35,7 +35,7 @@ internal sealed class MainScreenUiEvent : UiEvent {
 @Immutable
 internal data class MainScreenState(
     val isLoading: Boolean? = null,
-    val currentMethod: UiPaymentMethod? = null,
+    val currentMethod: UIPaymentMethod? = null,
     val payment: Payment? = null,
     val customerFields: List<CustomerField> = emptyList(),
     val clarificationFields: List<ClarificationField> = emptyList(),

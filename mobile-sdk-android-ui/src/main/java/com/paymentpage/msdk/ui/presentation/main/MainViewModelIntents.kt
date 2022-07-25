@@ -6,13 +6,20 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
-import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
 
+//sale with saved card
+internal fun MainViewModel.saleGooglePay(
+    method: UIPaymentMethod.UIGooglePayPaymentMethod,
+    customerFields: List<CustomerFieldValue> = emptyList()
+) {
+
+}
 
 //sale with saved card
 internal fun MainViewModel.saleSavedCard(
-    method: UiPaymentMethod.UISavedCardPayPaymentMethod,
+    method: UIPaymentMethod.UISavedCardPayPaymentMethod,
     customerFields: List<CustomerFieldValue> = emptyList()
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
@@ -24,7 +31,7 @@ internal fun MainViewModel.saleSavedCard(
 
 //sale with new card
 internal fun MainViewModel.saleCard(
-    method: UiPaymentMethod.UICardPayPaymentMethod,
+    method: UIPaymentMethod.UICardPayPaymentMethod,
     customerFields: List<CustomerFieldValue> = emptyList()
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
@@ -67,7 +74,7 @@ internal fun MainViewModel.restorePayment() {
 }
 
 //set current method
-internal fun MainViewModel.setCurrentMethod(method: UiPaymentMethod?) {
+internal fun MainViewModel.setCurrentMethod(method: UIPaymentMethod?) {
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
 }
 

@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.button.GooglePayButton
@@ -23,7 +23,7 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 @Composable
 internal fun GooglePayItem(
-    method: UiPaymentMethod.UIGooglePayPaymentMethod,
+    method: UIPaymentMethod.UIGooglePayPaymentMethod,
 ) {
     val mainViewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }

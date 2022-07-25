@@ -1,20 +1,20 @@
 package com.paymentpage.msdk.ui.presentation.main.views.method
 
 import androidx.compose.runtime.Composable
-import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 
 @Composable
 internal fun PaymentMethodItem(
-    method: UiPaymentMethod
+    method: UIPaymentMethod
 ) {
     when (method) {
-        is UiPaymentMethod.UISavedCardPayPaymentMethod -> {
+        is UIPaymentMethod.UISavedCardPayPaymentMethod -> {
             SavedCardItem(method = method)
         }
-        is UiPaymentMethod.UICardPayPaymentMethod -> {
+        is UIPaymentMethod.UICardPayPaymentMethod -> {
             NewCardItem(method = method)
         }
-        is UiPaymentMethod.UIGooglePayPaymentMethod -> {
+        is UIPaymentMethod.UIGooglePayPaymentMethod -> {
             GooglePayItem(method = method)
         }
     }

@@ -10,17 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
-import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
-import com.paymentpage.msdk.ui.AdditionalField
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalMsdkSession
 import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.reset
 import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
 import com.paymentpage.msdk.ui.presentation.main.views.method.PaymentMethodItem
-import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 
 internal const val COUNT_OF_VISIBLE_CUSTOMER_FIELDS = 3
@@ -41,7 +37,7 @@ internal fun PaymentMethodList(
     LaunchedEffect(Unit) {
         val lastOpenedMethod = mainViewModel.lastState.currentMethod
         val openedMethod = lastOpenedMethod
-            ?: if (mergedPaymentMethods.first() is UiPaymentMethod.UIGooglePayPaymentMethod) //if first method is google pay
+            ?: if (mergedPaymentMethods.first() is UIPaymentMethod.UIGooglePayPaymentMethod) //if first method is google pay
                 mergedPaymentMethods[1.coerceAtMost(mergedPaymentMethods.size - 1)]
             else //first by default
                 mergedPaymentMethods.first()

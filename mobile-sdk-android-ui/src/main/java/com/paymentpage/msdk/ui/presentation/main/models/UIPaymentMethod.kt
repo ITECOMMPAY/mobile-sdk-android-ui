@@ -6,7 +6,7 @@ import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 
 
-internal sealed class UiPaymentMethod(
+internal sealed class UIPaymentMethod(
     val index: Int,
     val title: String,
     val logoUrl: String?,
@@ -17,7 +17,7 @@ internal sealed class UiPaymentMethod(
         index: Int,
         title: String,
         paymentMethod: PaymentMethod,
-    ) : UiPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
+    ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
         var isCustomerFieldsValid: Boolean = false
     }
 
@@ -26,7 +26,7 @@ internal sealed class UiPaymentMethod(
         title: String,
         val savedAccount: SavedAccount,
         paymentMethod: PaymentMethod,
-    ) : UiPaymentMethod(index, title, savedAccount.cardUrlLogo, paymentMethod) {
+    ) : UIPaymentMethod(index, title, savedAccount.cardUrlLogo, paymentMethod) {
         var cvv: String = ""
         var isValidCvv: Boolean = false
         var isCustomerFieldsValid: Boolean = false
@@ -37,7 +37,7 @@ internal sealed class UiPaymentMethod(
         index: Int,
         title: String,
         paymentMethod: PaymentMethod
-    ) : UiPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
+    ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
         var cvv: String = ""
         var pan: String = ""
         var expiry: String = ""

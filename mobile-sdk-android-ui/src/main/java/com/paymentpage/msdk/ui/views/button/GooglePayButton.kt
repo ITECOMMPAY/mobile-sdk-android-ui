@@ -25,7 +25,9 @@ internal fun GooglePayButton(isEnabled: Boolean) {
             )
         },
         color = Color.Black,
-        onClick = {}
+        onClick = {
+
+        }
     )
 
 }

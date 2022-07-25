@@ -32,13 +32,13 @@ import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
 internal fun ExpandablePaymentMethodItem(
-    method: UiPaymentMethod,
+    method: UIPaymentMethod,
     fallbackIcon: Painter,
     headerBackgroundColor: Color = SDKTheme.colors.backgroundColor,
     content: @Composable ColumnScope.() -> Unit,
