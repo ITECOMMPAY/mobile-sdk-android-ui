@@ -24,9 +24,9 @@ fun PaymentDetailsView() {
     ) {
         PaymentDetailsContent(
             paymentIdLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_id"),
-            paymentIdValue = LocalPaymentOptions.current.paymentInfo!!.paymentId,
+            paymentIdValue = LocalPaymentOptions.current.paymentInfo.paymentId,
             paymentDescriptionLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_information_description"),
-            paymentDescriptionValue = LocalPaymentOptions.current.paymentInfo?.paymentDescription,
+            paymentDescriptionValue = LocalPaymentOptions.current.paymentInfo.paymentDescription,
             merchantAddressLabel = "",
             merchantAddressValue = null
         ) {

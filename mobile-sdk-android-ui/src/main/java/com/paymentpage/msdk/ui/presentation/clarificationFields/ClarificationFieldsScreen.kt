@@ -9,7 +9,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
-import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.sendClarificationFields
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
@@ -69,8 +71,8 @@ internal fun ClarificationFieldsScreen(
             Spacer(modifier = Modifier.size(22.dp))
             PayButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
-                amount = LocalPaymentOptions.current.paymentInfo!!.paymentAmount.amountToCoins(),
-                currency = LocalPaymentOptions.current.paymentInfo!!.paymentCurrency.uppercase(),
+                amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
+                currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = isClarificationFieldsValid
             ) {
                 viewModel.sendClarificationFields(clarificationFieldValues!!)

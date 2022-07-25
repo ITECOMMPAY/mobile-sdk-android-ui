@@ -1,23 +1,16 @@
 package com.paymentpage.msdk.ui.presentation.main.views.method
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.button.GooglePayButton
-import com.paymentpage.msdk.ui.views.common.CustomButton
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 
@@ -25,7 +18,6 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 internal fun GooglePayItem(
     method: UIPaymentMethod.UIGooglePayPaymentMethod,
 ) {
-    val mainViewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
     val additionalFields = LocalPaymentOptions.current.additionalFields
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
@@ -33,21 +25,7 @@ internal fun GooglePayItem(
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
 
     if (visibleCustomerFields.isEmpty()) {
-        CustomButton(
-            modifier = Modifier.height(50.dp),
-            isEnabled = true,
-            color = Color.Black,
-            content = {
-                Image(
-                    painter = painterResource(id = R.drawable.googlepay_button_logo),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit
-                )
-            },
-            onClick = {
-
-            }
-        )
+        GooglePayButton(isEnabled = true, onComplete = {})
     } else {
         ExpandablePaymentMethodItem(
             method = method,
@@ -66,7 +44,10 @@ internal fun GooglePayItem(
                 }
             )
             Spacer(modifier = Modifier.size(22.dp))
-            GooglePayButton(isEnabled = isCustomerFieldsValid)
+            GooglePayButton(
+                isEnabled = isCustomerFieldsValid,
+                onComplete = {}
+            )
         }
     }
 }

@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalMsdkSession
-import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.reset
 import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
@@ -29,7 +28,6 @@ internal fun PaymentMethodList(
 
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
-    val additionalFields = LocalPaymentOptions.current.additionalFields
 
     val mergedPaymentMethods = paymentMethods.mergeUIPaymentMethods(savedAccounts = savedAccounts)
     if (mergedPaymentMethods.isEmpty()) return

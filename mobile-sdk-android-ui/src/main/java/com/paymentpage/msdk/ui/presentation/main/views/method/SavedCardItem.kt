@@ -27,12 +27,12 @@ internal fun SavedCardItem(
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
-    val additionalFields =  LocalPaymentOptions.current.additionalFields
+    val additionalFields = LocalPaymentOptions.current.additionalFields
 
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
 
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
-    var isCvvValid by remember { mutableStateOf( method.isValidCvv) }
+    var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
 
     ExpandablePaymentMethodItem(
         method = method,
@@ -77,8 +77,8 @@ internal fun SavedCardItem(
             if (visibleCustomerFields.isNotEmpty() && visibleCustomerFields.size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
                 PayButton(
                     payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
-                    amount =  LocalPaymentOptions.current.paymentInfo!!.paymentAmount.amountToCoins(),
-                    currency =  LocalPaymentOptions.current.paymentInfo!!.paymentCurrency.uppercase(),
+                    amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
+                    currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                     isEnabled = isCvvValid && (isCustomerFieldsValid || visibleCustomerFields.isEmpty())
                 ) {
                     viewModel.saleSavedCard(

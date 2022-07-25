@@ -67,6 +67,9 @@ class MainActivity : ComponentActivity() {
         var apiHost: String = "pp-sdk-3.westresscode.net"
         var wsApiHost: String = "paymentpage-3.westresscode.net"
 
+        var merchantId: String = "BCR2DN6TZ75OBLTH"
+        var merchantName: String = "Example Merchant"
+
         var mockModeEnabled = false
     }
 
@@ -85,6 +88,8 @@ class MainActivity : ComponentActivity() {
             )
         val paymentOptions = paymentOptions {
             paymentInfo = payment
+            merchantId = MainActivity.merchantId
+            merchantName = MainActivity.merchantName
             //brandColor = "#fcba03"
         }
         val sdk = PaymentSDK(context = this.applicationContext, paymentOptions = paymentOptions)
@@ -126,88 +131,7 @@ fun App(activity: MainActivity) {
         startDestination = "main",
     ) {
         composable("main") {
-            MainScreen( activity = activity)
+            MainScreen(activity = activity)
         }
     }
 }
-
-
-//@Composable
-//@Preview(showSystemUi = true)
-//fun SampleMainScreen() {
-//    val payment = PaymentInfo(
-//        projectId = 111781,
-//        paymentId = UUID.randomUUID().toString(),
-//        paymentAmount = 123,
-//        paymentCurrency = "RUB",
-//        customerId = "12",
-//        paymentDescription = "Test payment"
-//    )
-//    payment.signature =
-//        SignatureGenerator.generateSignature(payment.getParamsForSignature(), "123")
-//
-//    val context = LocalContext.current
-//
-//    val paymentOptions = paymentOptions {
-//        paymentInfo = payment
-//        actionType = ActionType.Sale
-//        logoImage =
-//            BitmapFactory.decodeResource(context.resources, R.drawable.test_logo)
-//        additionalFields {
-//            field {
-//                type = FieldType.CUSTOMER_EMAIL
-//                value = "mail@mail.ru"
-//            }
-//        }
-//    }
-//    val sdk = PaymentSDK(context = LocalContext.current, paymentOptions = paymentOptions)
-//
-//    val launcher =
-//        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            when (result.resultCode) {
-//                PaymentSDK.RESULT_SUCCESS -> {}
-//                PaymentSDK.RESULT_CANCELLED -> {}
-//                PaymentSDK.RESULT_DECLINE -> {}
-//                PaymentSDK.RESULT_FAILED -> {}
-//                PaymentSDK.RESULT_ERROR -> {
-//                    val errorCode = result.data?.getStringExtra(PaymentSDK.EXTRA_ERROR_CODE)
-//                    val message = result.data?.getStringExtra(PaymentSDK.EXTRA_ERROR_MESSAGE)
-//                }
-//            }
-//
-//        }
-//
-//
-//    Scaffold(
-//        content = {
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .background(Color.White)
-//                    .padding(it),
-//                horizontalAlignment = Alignment.CenterHorizontally,
-//                verticalArrangement = Arrangement.Center
-//            ) {
-//                Box(
-//                    modifier = Modifier.padding(15.dp)
-//                ) {
-//                    Button(modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(60.dp),
-//                        onClick = {
-//                            val intent = sdk.intent
-//                            intent.putExtra(Constants.EXTRA_API_HOST, "pp-sdk.westresscode.net")
-//                            intent.putExtra(
-//                                Constants.EXTRA_WS_API_HOST,
-//                                "paymentpage.westresscode.net"
-//                            )
-//                            launcher.launch(intent)
-//                        }) {
-//                        Text(text = "Sale", color = Color.White, fontSize = 22.sp)
-//                    }
-//                }
-//
-//            }
-//        }
-//    )
-//}

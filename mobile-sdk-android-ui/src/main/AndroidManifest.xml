@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SDKTheme"
         android:usesCleartextTraffic="true">
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
         <activity
             android:name=".PaymentActivity"
             android:exported="true"
