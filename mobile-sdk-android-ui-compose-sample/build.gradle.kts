@@ -26,6 +26,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -49,6 +52,7 @@ android {
     flavorDimensions("brand")
     productFlavors {
         create("ecommpay") {
+            applicationId = "com.ecommpay.test"
             dimension = "brand"
             buildConfigField(
                 "String",
@@ -79,8 +83,10 @@ dependencies {
 
     //Google
     implementation(Dependencies.Google.material)
+    implementation(Dependencies.Google.wallet)
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.test.ext:junit:1.1.3")
     testImplementation("androidx.test.espresso:espresso-core:3.4.0")
+
 }

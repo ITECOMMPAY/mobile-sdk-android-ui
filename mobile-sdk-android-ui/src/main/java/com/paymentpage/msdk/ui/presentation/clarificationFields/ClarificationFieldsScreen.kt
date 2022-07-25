@@ -30,7 +30,6 @@ internal fun ClarificationFieldsScreen(
 ) {
     val viewModel = LocalMainViewModel.current
     val clarificationFields = viewModel.lastState.clarificationFields
-    val method = viewModel.lastState.currentMethod
     var clarificationFieldValues by remember { mutableStateOf<List<ClarificationFieldValue>?>(null) }
     var isClarificationFieldsValid by remember { mutableStateOf(false) }
     BackHandler(true) { onCancel() }

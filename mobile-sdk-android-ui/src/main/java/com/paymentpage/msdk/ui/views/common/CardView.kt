@@ -65,7 +65,7 @@ internal fun CardView() {
                 Row {
                     Text(
                         modifier = Modifier.alignByBaseline(),
-                        text = LocalPaymentOptions.current.paymentInfo?.paymentAmount.amountToCoins()
+                        text = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins()
                             ?: "--",
                         style = SDKTheme.typography.s28Bold.copy(color = Color.White)
                     )
@@ -77,7 +77,7 @@ internal fun CardView() {
                         )
                         Text(
                             modifier = Modifier.alignByBaseline(),
-                            text = LocalPaymentOptions.current.paymentInfo!!.paymentCurrency,
+                            text = LocalPaymentOptions.current.paymentInfo.paymentCurrency,
                             style = SDKTheme.typography.s16Normal.copy(color = Color.White)
                         )
                     }

@@ -1,5 +1,6 @@
 package com.paymentpage.msdk.ui.views.button
 
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -8,28 +9,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import com.google.android.gms.wallet.*
+import com.google.android.gms.wallet.IsReadyToPayRequest
+import com.google.android.gms.wallet.Wallet
+import com.google.android.gms.wallet.WalletConstants
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.core.googlePay.GooglePayHelper
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.base.Constants
+import com.paymentpage.msdk.ui.googlePay.GooglePayActivityContract
 import com.paymentpage.msdk.ui.theme.LocalDimensions
 import com.paymentpage.msdk.ui.views.common.CustomButton
-import java.math.BigDecimal
 
 @Composable
 internal fun GooglePayButton(isEnabled: Boolean, onComplete: () -> Unit) {
 
     val paymentOptions = LocalPaymentOptions.current
-    val paymentInfo = paymentOptions.paymentInfo
+    val merchantId = LocalPaymentOptions.current.merchantId!!
+    val merchantName = LocalPaymentOptions.current.merchantName!!
 
     var isGooglePayAvailable by remember { mutableStateOf(false) }
-    val googlePayHelper = GooglePayHelper(
-        LocalPaymentOptions.current.merchantId!!,
-        LocalPaymentOptions.current.merchantName!!
-    )
+    val googlePayHelper = GooglePayHelper(merchantId, merchantName)
 
     val activity = LocalContext.current as PaymentActivity
     val googlePayClient = remember {
@@ -37,7 +37,7 @@ internal fun GooglePayButton(isEnabled: Boolean, onComplete: () -> Unit) {
             activity,
             Wallet.WalletOptions.Builder()
                 .setEnvironment(if (paymentOptions.merchantEnvironment == GooglePayEnvironment.TEST) WalletConstants.ENVIRONMENT_TEST else WalletConstants.ENVIRONMENT_PRODUCTION)//test
-                .setTheme(WalletConstants.THEME_LIGHT)
+                //.setTheme(WalletConstants.THEME_LIGHT)
                 .build()
         )
     }
@@ -50,16 +50,10 @@ internal fun GooglePayButton(isEnabled: Boolean, onComplete: () -> Unit) {
         }
     }
 
-//    val launcher =
-//        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            result.data?.let {
-//                val paymentData = PaymentData.getFromIntent(it)
-//                val paymentInformation = paymentData?.toJson() ?: return@let
-//                val paymentMethodData: JSONObject =
-//                    JSONObject(paymentInformation).getJSONObject("paymentMethodData")
-//                val token = paymentMethodData.getJSONObject("tokenizationData").getString("token")
-//            }
-//        }
+    val launcher =
+        rememberLauncherForActivityResult(GooglePayActivityContract()) { token ->
+
+        }
 
     CustomButton(
         modifier = Modifier
@@ -74,18 +68,15 @@ internal fun GooglePayButton(isEnabled: Boolean, onComplete: () -> Unit) {
         },
         color = Color.Black,
         onClick = {
-            val googleJson =
-                googlePayHelper.createPaymentDataRequest(
-                    BigDecimal.valueOf(
-                        paymentInfo.paymentAmount / 100
-                    ), paymentInfo.paymentCurrency
-                ).toString()
-            val gpayRequest = PaymentDataRequest.fromJson(googleJson)
 
-            AutoResolveHelper.resolveTask(
-                googlePayClient.loadPaymentData(gpayRequest),
-                activity,
-                Constants.GOOGLE_PAY_ACTIVITY_REQUEST_CODE
+            launcher.launch(
+                GooglePayActivityContract.Config(
+                    merchantId = merchantId,
+                    merchantName = merchantName,
+                    merchantEnvironment = paymentOptions.merchantEnvironment,
+                    amount = paymentOptions.paymentInfo.paymentAmount,
+                    currency = paymentOptions.paymentInfo.paymentCurrency
+                )
             )
         }
     )
