@@ -14,6 +14,7 @@ internal class Colors(
     primaryTextColor: Color,
     secondaryTextColor: Color,
     disabledTextColor: Color,
+    successTextColor: Color,
     errorTextColor: Color,
     backgroundColor: Color,
     panelBackgroundColor: Color,
@@ -30,6 +31,8 @@ internal class Colors(
     var secondaryTextColor by mutableStateOf(secondaryTextColor)
         private set
     var disabledTextColor by mutableStateOf(disabledTextColor)
+        private set
+    var successTextColor by mutableStateOf(successTextColor)
         private set
     var errorTextColor by mutableStateOf(errorTextColor)
         private set
@@ -62,6 +65,7 @@ private val lightThemeMediumGrayColor = Color(0xFFBCBDBE)
 private val lightThemeDarkGrayColor = Color(0xFF666666)
 private val lightThemeGrayColor = Color(0xFFEBEBEE)
 
+private val lightThemeGreenColor = Color(0xFF00CC24)
 private val lightThemeRedColor = Color(0xFFC03230)
 private val lightThemeLightRedColor = Color(0xFFF8EAEA)
 
@@ -71,6 +75,7 @@ internal fun lightColors(brandColor: Color? = lightThemeBrandColor): Colors = Co
     primaryTextColor = colorBlack,
     secondaryTextColor = lightThemeDarkGrayColor,
     disabledTextColor = lightThemeMediumGrayColor,
+    successTextColor = lightThemeGreenColor,
     errorTextColor = lightThemeRedColor,
     backgroundColor = colorWhite,
     iconColor = colorBlack,
