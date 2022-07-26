@@ -20,6 +20,7 @@ import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.saleCard
+import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
 import com.paymentpage.msdk.ui.presentation.main.views.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -171,10 +172,8 @@ internal fun NewCardItem(
                 ) {
                     viewModel.saleCard(
                         method = method,
-                        customerFields = customerFields.merge(
-                            changedFields = method.customerFieldValues,
-                            additionalFields = additionalFields
-                        )
+                        allCustomerFields = customerFields,
+                        additionalFields = additionalFields
                     )
                 }
             } else {
@@ -182,7 +181,11 @@ internal fun NewCardItem(
                     payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_confirmation"),
                     isEnabled = isCvvValid
                 ) {
-                    viewModel.saleCard(method = method)
+                    viewModel.saleCard(
+                        method = method,
+                        allCustomerFields = customerFields,
+                        additionalFields = additionalFields
+                    )
                 }
             }
         }

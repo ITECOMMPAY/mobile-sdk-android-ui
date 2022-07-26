@@ -15,6 +15,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.PaymentDelegate
+import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.clarificationFields.ClarificationFieldsScreen
 import com.paymentpage.msdk.ui.presentation.customerFields.CustomerFieldsScreen
 import com.paymentpage.msdk.ui.presentation.init.InitScreen
@@ -23,7 +24,6 @@ import com.paymentpage.msdk.ui.presentation.main.FinalPaymentState
 import com.paymentpage.msdk.ui.presentation.main.MainScreen
 import com.paymentpage.msdk.ui.presentation.result.ResultDeclineScreen
 import com.paymentpage.msdk.ui.presentation.result.ResultSuccessScreen
-
 import com.paymentpage.msdk.ui.presentation.threeDSecure.ThreeDSecureScreen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
@@ -35,7 +35,8 @@ import kotlinx.coroutines.flow.onEach
 internal fun NavigationComponent(
     navigator: Navigator,
     delegate: PaymentDelegate,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    onError: (ErrorResult, Boolean) -> Unit
 ) {
     val navController = rememberAnimatedNavController()
     val focusManager = LocalFocusManager.current
@@ -52,7 +53,8 @@ internal fun NavigationComponent(
     LaunchedEffect(Unit) {
         viewModel.state.onEach {
             when {
-                it.isLoading == true -> navigator.navigateTo(Route.Loading)
+                it.isLoading == true && navigator.lastRoute != Route.Loading ->
+                    navigator.navigateTo(Route.Loading)
                 it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> navigator.navigateTo(Route.ClarificationFields)
                 it.acsPageState != null -> navigator.navigateTo(Route.AcsPage)
@@ -62,6 +64,7 @@ internal fun NavigationComponent(
                         is FinalPaymentState.Decline -> navigator.navigateTo(Route.DeclineResult)
                     }
                 }
+                it.error != null -> onError(it.error, true)
             }
         }.collect()
     }
@@ -82,7 +85,8 @@ internal fun NavigationComponent(
             MainScreen(
                 navigator = navigator,
                 delegate = delegate,
-                onCancel = onCancel
+                onCancel = onCancel,
+                onError = onError
             )
         }
         composable(route = Route.CustomerFields.getPath()) {

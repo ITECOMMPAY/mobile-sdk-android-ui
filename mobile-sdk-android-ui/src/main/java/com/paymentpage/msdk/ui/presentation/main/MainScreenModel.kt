@@ -14,7 +14,6 @@ import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 internal sealed class MainScreenUiEvent : UiEvent {
     class SetCurrentMethod(val method: UIPaymentMethod?) : MainScreenUiEvent()
     class SetPayment(val payment: Payment) : MainScreenUiEvent()
-    object Reset : MainScreenUiEvent()
     object ShowLoading : MainScreenUiEvent()
     class ShowError(val error: ErrorResult) : MainScreenUiEvent()
     class ShowCustomerFields(val customerFields: List<CustomerField>) :

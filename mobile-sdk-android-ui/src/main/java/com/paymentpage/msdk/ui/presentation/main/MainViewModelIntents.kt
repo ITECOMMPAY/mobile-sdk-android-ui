@@ -2,22 +2,26 @@ package com.paymentpage.msdk.ui.presentation.main
 
 import com.paymentpage.msdk.core.domain.entities.SdkExpiry
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
+import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePaySaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
+import com.paymentpage.msdk.ui.AdditionalField
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
 
-//sale with saved card
+//sale with google pay
 internal fun MainViewModel.saleGooglePay(
     method: UIPaymentMethod.UIGooglePayPaymentMethod,
     merchantId: String,
     token: String,
     environment: GooglePayEnvironment,
-    customerFields: List<CustomerFieldValue> = emptyList()
+    allCustomerFields: List<CustomerField>,
+    additionalFields: List<AdditionalField>
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
@@ -26,26 +30,34 @@ internal fun MainViewModel.saleGooglePay(
         token = token,
         environment = environment
     )
-    request.customerFields = customerFields
+    request.customerFields = allCustomerFields.merge(
+        changedFields = method.customerFieldValues,
+        additionalFields = additionalFields
+    )
     this.payInteractor.execute(request, this)
 }
 
 //sale with saved card
 internal fun MainViewModel.saleSavedCard(
     method: UIPaymentMethod.UISavedCardPayPaymentMethod,
-    customerFields: List<CustomerFieldValue> = emptyList()
+    allCustomerFields: List<CustomerField>,
+    additionalFields: List<AdditionalField>
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
     val request = SavedCardSaleRequest(cvv = method.cvv, accountId = method.accountId)
-    request.customerFields = customerFields
+    request.customerFields = allCustomerFields.merge(
+        changedFields = method.customerFieldValues,
+        additionalFields = additionalFields
+    )
     this.payInteractor.execute(request, this)
 }
 
 //sale with new card
 internal fun MainViewModel.saleCard(
     method: UIPaymentMethod.UICardPayPaymentMethod,
-    customerFields: List<CustomerFieldValue> = emptyList()
+    allCustomerFields: List<CustomerField>,
+    additionalFields: List<AdditionalField>
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
@@ -58,7 +70,10 @@ internal fun MainViewModel.saleCard(
         cardHolder = method.cardHolder,
         saveCard = method.saveCard
     )
-    request.customerFields = customerFields
+    request.customerFields = allCustomerFields.merge(
+        changedFields = method.customerFieldValues,
+        additionalFields = additionalFields
+    )
     payInteractor.execute(request, this)
 }
 
@@ -90,12 +105,6 @@ internal fun MainViewModel.restorePayment() {
 internal fun MainViewModel.setCurrentMethod(method: UIPaymentMethod?) {
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
 }
-
-//reset state by default
-internal fun MainViewModel.reset() {
-    sendEvent(MainScreenUiEvent.Reset)
-}
-
 
 
 

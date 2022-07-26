@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.presentation.main.views.PaymentMethodList
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
@@ -24,14 +25,15 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffold
 internal fun MainScreen(
     navigator: Navigator,
     delegate: PaymentDelegate,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    onError: (ErrorResult, Boolean) -> Unit
 ) {
-    Content(onCancel = onCancel)
+    Content(onCancel = onCancel, onError = onError)
 }
 
 
 @Composable
-private fun Content(onCancel: () -> Unit) {
+private fun Content(onCancel: () -> Unit, onError: (ErrorResult, Boolean) -> Unit) {
     BackHandler(true) { onCancel() }
     SDKScaffold(
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
@@ -42,7 +44,7 @@ private fun Content(onCancel: () -> Unit) {
         scrollableContent = {
             CardView()
             Spacer(modifier = Modifier.size(15.dp))
-            PaymentMethodList()
+            PaymentMethodList(onError = onError)
         },
         footerContent = {
             SDKFooter(

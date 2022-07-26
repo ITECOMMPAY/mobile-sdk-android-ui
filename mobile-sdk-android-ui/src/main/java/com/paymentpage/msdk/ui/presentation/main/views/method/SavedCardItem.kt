@@ -14,7 +14,6 @@ import com.paymentpage.msdk.ui.presentation.main.views.COUNT_OF_VISIBLE_CUSTOMER
 import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
-import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.views.button.ConfirmAndContinueButton
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.card.CvvField
@@ -83,10 +82,8 @@ internal fun SavedCardItem(
                 ) {
                     viewModel.saleSavedCard(
                         method = method,
-                        customerFields = customerFields.merge(
-                            changedFields = method.customerFieldValues,
-                            additionalFields = additionalFields
-                        )
+                        allCustomerFields = customerFields,
+                        additionalFields = additionalFields
                     )
                 }
             } else {
@@ -94,7 +91,11 @@ internal fun SavedCardItem(
                     payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_confirmation"),
                     isEnabled = isCvvValid
                 ) {
-                    viewModel.saleSavedCard(method = method)
+                    viewModel.saleSavedCard(
+                        method = method,
+                        allCustomerFields = customerFields,
+                        additionalFields = additionalFields
+                    )
                 }
             }
         }

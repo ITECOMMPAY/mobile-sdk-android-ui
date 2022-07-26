@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.MSDKCoreSession
+import com.paymentpage.msdk.core.base.ErrorCode
+import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.NavigationComponent
 import com.paymentpage.msdk.ui.theme.HexToJetpackColor
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -23,7 +25,9 @@ internal fun MainContent(
     paymentOptions: PaymentOptions,
     msdkSession: MSDKCoreSession,
 ) {
-    val showDialogDismissDialog = remember { mutableStateOf(false) }
+    val showDismissDialog = remember { mutableStateOf(false) }
+    val needCloseWhenError = remember { mutableStateOf(false) }
+    val errorResultState = remember { mutableStateOf<ErrorResult?>(null) }
     var drawerState by remember { mutableStateOf(BottomDrawerState(initialValue = BottomDrawerValue.Closed)) }
     LaunchedEffect(Unit) {
         drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded)
@@ -40,7 +44,15 @@ internal fun MainContent(
                     NavigationComponent(
                         navigator = PaymentActivity.navigator,
                         delegate = activity,
-                        onCancel = { showDialogDismissDialog.value = true }
+                        onCancel = { showDismissDialog.value = true },
+                        onError = { errorResult, needClose ->
+                            if (needClose) {
+                                activity.onError(errorResult.code, errorResult.message)
+                            } else {
+                                errorResultState.value = errorResult
+                            }
+                            needCloseWhenError.value = needClose
+                        }
                     )
                 }
             }
@@ -55,19 +67,62 @@ internal fun MainContent(
                 .fillMaxSize()
                 .background(Color.Black.copy(alpha = 0.2f)),
         ) {
-            if (showDialogDismissDialog.value)
-                AlertDialog(
-                    text = { Text(text = stringResource(R.string.payment_dismiss_confirm_message)) },
-                    onDismissRequest = { showDialogDismissDialog.value = false },
-                    confirmButton = {
-                        TextButton(onClick = { activity.onCancel() })
-                        { Text(text = stringResource(R.string.ok_label), color = SDKTheme.colors.brand) }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { showDialogDismissDialog.value = false })
-                        { Text(text = stringResource(R.string.cancel_label), color = SDKTheme.colors.brand) }
-                    }
-                )
+            when {
+                showDismissDialog.value -> {
+                    AlertDialog(
+                        text = { Text(text = stringResource(R.string.payment_dismiss_confirm_message)) },
+                        onDismissRequest = { showDismissDialog.value = false },
+                        confirmButton = {
+                            TextButton(onClick = { activity.onCancel() })
+                            {
+                                Text(
+                                    text = stringResource(R.string.ok_label),
+                                    color = SDKTheme.colors.brand
+                                )
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showDismissDialog.value = false })
+                            {
+                                Text(
+                                    text = stringResource(R.string.cancel_label),
+                                    color = SDKTheme.colors.brand
+                                )
+                            }
+                        }
+                    )
+                }
+                errorResultState.value != null -> {
+                    AlertDialog(
+                        title = { Text(text = stringResource(R.string.error_label)) },
+                        text = { Text(text = errorResultState.value?.message ?: "") },
+                        onDismissRequest = {
+                            if (needCloseWhenError.value)
+                                activity.onError(
+                                    errorResultState.value?.code ?: ErrorCode.UNKNOWN,
+                                    errorResultState.value?.message
+                                )
+                            errorResultState.value = null
+                        },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                if (needCloseWhenError.value)
+                                    activity.onError(
+                                        errorResultState.value?.code ?: ErrorCode.UNKNOWN,
+                                        errorResultState.value?.message
+                                    )
+                                errorResultState.value = null
+                            })
+                            {
+                                Text(
+                                    text = stringResource(R.string.ok_label),
+                                    color = SDKTheme.colors.errorTextColor
+                                )
+                            }
+                        }
+                    )
+                }
+            }
         }
     }
 }

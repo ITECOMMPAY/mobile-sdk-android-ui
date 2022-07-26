@@ -81,11 +81,10 @@ internal class MainViewModel(
     }
 
     override fun onPaymentCreated() {
-        sendEvent(MainScreenUiEvent.ShowLoading)
+
     }
 
     override fun onStatusChanged(status: PaymentStatus, payment: Payment) {
-        sendEvent(MainScreenUiEvent.ShowLoading)
         sendEvent(MainScreenUiEvent.SetPayment(payment))
     }
 
