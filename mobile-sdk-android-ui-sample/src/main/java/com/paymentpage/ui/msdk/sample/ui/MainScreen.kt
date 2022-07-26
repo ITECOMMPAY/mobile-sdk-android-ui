@@ -1,4 +1,4 @@
-package com.paymentpage.ui.test.ui
+package com.paymentpage.ui.msdk.sample.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,9 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.paymentpage.ui.test.BuildConfig
-import com.paymentpage.ui.test.MainActivity
+import com.paymentpage.ui.msdk.sample.MainActivity
+import com.paymentpage.ui.sample.BuildConfig
 
 @Composable
 fun MainScreen(
@@ -52,6 +51,11 @@ fun MainScreen(
             remember { mutableStateOf(MainActivity.paymentDescription) }
         val customerId =
             remember { mutableStateOf(MainActivity.customerId) }
+
+        val merchantId =
+            remember { mutableStateOf(MainActivity.merchantId) }
+        val merchantName =
+            remember { mutableStateOf(MainActivity.merchantName) }
 
         val mockModeState = remember { mutableStateOf(MainActivity.mockModeEnabled) }
 
@@ -131,6 +135,22 @@ fun MainScreen(
         )
 
         Spacer(modifier = Modifier.height(20.dp))
+        OutlinedTextField(
+            value = merchantId.value,
+            onValueChange = { merchantId.value = it },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(text = "Merchant Id") }
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        OutlinedTextField(
+            value = merchantName.value,
+            onValueChange = { merchantName.value = it },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(text = "Merchant Name") }
+        )
+
+
+        Spacer(modifier = Modifier.height(20.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -164,6 +184,9 @@ fun MainScreen(
                 MainActivity.paymentCurrency = paymentCurrency.value
                 MainActivity.paymentDescription = paymentDescription.value
                 MainActivity.customerId = customerId.value
+
+                MainActivity.merchantId = merchantId.value
+                MainActivity.merchantName = merchantName.value
 
                 MainActivity.mockModeEnabled = mockModeState.value
 

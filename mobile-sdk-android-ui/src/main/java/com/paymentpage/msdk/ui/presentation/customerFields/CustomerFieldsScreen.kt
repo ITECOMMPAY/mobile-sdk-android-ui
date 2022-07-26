@@ -33,7 +33,6 @@ internal fun CustomerFieldsScreen(
     val viewModel = LocalMainViewModel.current
     val customerFields = viewModel.lastState.customerFields
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
-    val method = viewModel.lastState.currentMethod
     var customerFieldValues by remember { mutableStateOf<List<CustomerFieldValue>?>(null) }
     val additionalFields = LocalPaymentOptions.current.additionalFields
     var isCustomerFieldsValid by remember { mutableStateOf(false) }
@@ -60,8 +59,8 @@ internal fun CustomerFieldsScreen(
             Spacer(modifier = Modifier.size(22.dp))
             PayButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
-                amount = LocalPaymentOptions.current.paymentInfo!!.paymentAmount.amountToCoins(),
-                currency = LocalPaymentOptions.current.paymentInfo!!.paymentCurrency.uppercase(),
+                amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
+                currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = isCustomerFieldsValid || visibleCustomerFields.isEmpty()
             ) {
                 viewModel.sendCustomerFields(

@@ -3,19 +3,17 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-
 android {
     compileSdk = 32
 
     defaultConfig {
+        applicationId = "com.paymentpage.ui.sample"
         minSdk = 21
         targetSdk = 32
-        applicationId = "com.paymentpage.ui.test"
+        versionCode = 1
+        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
@@ -49,6 +47,7 @@ android {
     flavorDimensions("brand")
     productFlavors {
         create("ecommpay") {
+            applicationId = "com.ecommpay.msdk.test"
             dimension = "brand"
             buildConfigField(
                 "String",
@@ -59,8 +58,8 @@ android {
     }
 }
 
-
 dependencies {
+
     //Projects
     implementation(project(":mobile-sdk-android-ui"))
 
@@ -71,9 +70,6 @@ dependencies {
     //Compose
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.toolingPreview)
-    testImplementation(Dependencies.Compose.junit4)
-    debugImplementation(Dependencies.Compose.uiTooling)
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.navigation)
 

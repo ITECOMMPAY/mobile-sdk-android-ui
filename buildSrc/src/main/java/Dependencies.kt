@@ -6,8 +6,8 @@ object Ecommpay {
 
 object Versions {
     const val gradlePlugin = "7.1.3"
-    const val kotlin = "1.6.21"
-    const val compose = "1.2.0-beta03"
+    const val kotlin = "1.6.10"
+    const val compose = "1.1.1"
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
     const val dagger = "2.38.1"
@@ -47,15 +47,9 @@ object Dependencies {
         const val compose = "io.coil-kt:coil-compose:2.0.0-rc03"
     }
 
-    object Serialization {
-        const val json =
-            "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serialization}"
-    }
-
     object Google {
         const val wallet = "com.google.android.gms:play-services-wallet:19.1.0"
         const val material = "com.google.android.material:material:1.6.1"
-        const val gson = "com.google.code.gson:gson:2.9.0"
     }
 
     object Msdk {

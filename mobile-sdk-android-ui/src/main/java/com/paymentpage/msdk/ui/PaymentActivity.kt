@@ -3,7 +3,6 @@ package com.paymentpage.msdk.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -32,7 +31,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             isMockModeEnabled = intent.getBooleanExtra(Constants.EXTRA_MOCK_MODE_ENABLED, false)
             config = when {
                 isMockModeEnabled -> MSDKCoreSessionConfig.mockFullSuccessFlow(
-                    MockInitCustomerFieldsConfig.ALL
+                    MockInitCustomerFieldsConfig.CARD
                 )
                 else -> MSDKCoreSessionConfig.debug(
                     intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
@@ -110,6 +109,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             context: Context,
             paymentOptions: PaymentOptions,
         ): Intent {
+            paymentOptions.check()
             this.paymentOptions = paymentOptions
 
             val intent = Intent(context, PaymentActivity::class.java)
@@ -117,5 +117,4 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             return intent
         }
     }
-
 }

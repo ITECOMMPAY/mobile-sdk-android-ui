@@ -21,7 +21,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
             UIPaymentMethod.UIGooglePayPaymentMethod(
                 index = position,
                 title = PaymentActivity.stringResourceManager.getStringByKey("google_pay_host_title"),
-                paymentMethod = it
+                paymentMethod = it,
             )
         )
         position += 1

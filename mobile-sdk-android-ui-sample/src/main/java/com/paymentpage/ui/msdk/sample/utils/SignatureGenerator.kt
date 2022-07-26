@@ -1,4 +1,4 @@
-package com.paymentpage.ui.test.utils
+package com.paymentpage.ui.msdk.sample.utils
 
 import android.util.Base64
 import java.lang.Exception

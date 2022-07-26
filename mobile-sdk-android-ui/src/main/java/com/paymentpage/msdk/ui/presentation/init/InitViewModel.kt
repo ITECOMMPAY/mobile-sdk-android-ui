@@ -35,8 +35,7 @@ internal class InitViewModel(
     private fun loadInit() {
         initInteractor.execute(
             request = InitRequest(
-                paymentInfo = paymentOptions.paymentInfo
-                    ?: throw IllegalArgumentException("PaymentInfo not found"),
+                paymentInfo = paymentOptions.paymentInfo,
                 recurrentInfo = paymentOptions.recurrentInfo,
                 threeDSecureInfo = paymentOptions.threeDSecureInfo
             ),

@@ -15,4 +15,7 @@ object Constants {
     const val EXTRA_WS_API_HOST = "ws_api_host"
     const val EXTRA_MOCK_MODE_ENABLED = "mock_mode_enabled"
 
+
+    internal const val GOOGLE_PAY_ACTIVITY_REQUEST_CODE = 991
+
 }
