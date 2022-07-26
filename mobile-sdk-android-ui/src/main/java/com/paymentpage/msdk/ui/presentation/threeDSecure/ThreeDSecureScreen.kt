@@ -2,7 +2,6 @@ package com.paymentpage.msdk.ui.presentation.threeDSecure
 
 import android.graphics.Bitmap
 import android.net.http.SslError
-import android.util.Log
 import android.view.ViewGroup
 import android.webkit.SslErrorHandler
 import android.webkit.WebView
@@ -36,9 +35,7 @@ internal fun ThreeDSecureScreen(
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
-        title = "3DS",
-        notScrollableContent = {},
-        scrollableContent = {
+        notScrollableContent = {
             if (isLoading)
                 Box(modifier = Modifier
                     .height(LocalConfiguration.current.screenHeightDp.dp * 0.9f) //Height of bottom sheet
@@ -65,57 +62,62 @@ internal fun ThreeDSecureScreen(
                         viewModel.threeDSecureHandled()
                     }
                 )
-            AndroidView(modifier = Modifier
-                .fillMaxSize()
-                .background(SDKTheme.colors.backgroundColor),
-                factory = {
-                    WebView(it).apply {
-                        layoutParams = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                        )
-                        webViewClient = object : WebViewClient() {
-                            override fun onPageStarted(
-                                view: WebView?,
-                                url: String?,
-                                favicon: Bitmap?,
-                            ) {
-                                super.onPageStarted(view, url, favicon)
-                                isLoading = true
-                                if (url.equals(acsPage?.acs?.termUrl)) {
-                                    viewModel.threeDSecureHandled()
+            Column(modifier = Modifier.fillMaxSize()) {
+                AndroidView(modifier = Modifier
+                    .weight(1f)
+                    .background(SDKTheme.colors.backgroundColor),
+                    factory = {
+                        WebView(it).apply {
+                            layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                            )
+                            webViewClient = object : WebViewClient() {
+                                override fun onPageStarted(
+                                    view: WebView?,
+                                    url: String?,
+                                    favicon: Bitmap?,
+                                ) {
+                                    super.onPageStarted(view, url, favicon)
+                                    isLoading = true
+                                    if (url.equals(acsPage?.acs?.termUrl)) {
+                                        viewModel.threeDSecureHandled()
+                                    }
+                                }
+
+                                override fun onPageFinished(view: WebView?, url: String?) {
+                                    super.onPageFinished(view, url)
+                                    if (!url.equals(acsPage?.acs?.acsUrl)) {
+                                        isLoading = false
+                                    }
+                                }
+
+                                override fun onReceivedSslError(
+                                    view: WebView?,
+                                    handler: SslErrorHandler?,
+                                    error: SslError?,
+                                ) {
+                                    super.onReceivedSslError(view, handler, error)
+
                                 }
                             }
-
-                            override fun onPageFinished(view: WebView?, url: String?) {
-                                super.onPageFinished(view, url)
-                                isLoading = false
-                            }
-
-                            override fun onReceivedSslError(
-                                view: WebView?,
-                                handler: SslErrorHandler?,
-                                error: SslError?,
-                            ) {
-                                super.onReceivedSslError(view, handler, error)
-
+                            settings.javaScriptEnabled = true
+                            acsPage?.let { page ->
+                                loadDataWithBaseURL(
+                                    page.acs?.acsUrl ?: "",
+                                    page.content ?: "",
+                                    "text/html",
+                                    "UTF-8",
+                                    null
+                                )
                             }
                         }
-                        settings.javaScriptEnabled = true
-                        acsPage?.let { page ->
-                            loadDataWithBaseURL(
-                                page.acs?.acsUrl ?: "",
-                                page.content ?: "",
-                                "text/html",
-                                "UTF-8",
-                                null
-                            )
-                        }
-                    }
-                }, update = {
+                    }, update = {
 
-                })
+                    })
+            }
         },
+        scrollableContent = {},
         footerContent = { },
         onClose = { onCancel() }
     )
