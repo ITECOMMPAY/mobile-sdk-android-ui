@@ -16,7 +16,6 @@ import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.paymentDateToPatternDate
-import com.paymentpage.msdk.ui.views.button.ResultButton
 import com.paymentpage.msdk.ui.views.common.CardView
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -70,11 +69,7 @@ internal fun ResultSuccessScreen(
                             payment.completeFields?.find { it.name == "complete_field_payment_vat_operation_currency" }?.value,
                 )
             )
-            //TODO need override
             Spacer(modifier = Modifier.size(15.dp))
-            ResultButton(resultLabel = "Return to app") {
-                onClose.invoke(payment)
-            }
         },
         footerContent = {
             SDKFooter(
