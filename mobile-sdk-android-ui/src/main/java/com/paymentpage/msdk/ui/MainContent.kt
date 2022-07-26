@@ -61,11 +61,11 @@ internal fun MainContent(
                     onDismissRequest = { showDialogDismissDialog.value = false },
                     confirmButton = {
                         TextButton(onClick = { activity.onCancel() })
-                        { Text(text = stringResource(R.string.ok_label)) }
+                        { Text(text = stringResource(R.string.ok_label), color = SDKTheme.colors.brand) }
                     },
                     dismissButton = {
                         TextButton(onClick = { showDialogDismissDialog.value = false })
-                        { Text(text = stringResource(R.string.cancel_label)) }
+                        { Text(text = stringResource(R.string.cancel_label), color = SDKTheme.colors.brand) }
                     }
                 )
         }

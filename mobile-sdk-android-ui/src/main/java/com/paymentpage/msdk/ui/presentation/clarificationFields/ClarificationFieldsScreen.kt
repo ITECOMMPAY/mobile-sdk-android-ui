@@ -35,7 +35,7 @@ internal fun ClarificationFieldsScreen(
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
-        title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
+        title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_additional_data"),
         notScrollableContent = {
             PaymentDetailsView()
             Spacer(modifier = Modifier.size(15.dp))

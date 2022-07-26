@@ -56,7 +56,7 @@ internal fun ResultSuccessScreen(
             ResultTableInfo(
                 titleKeyWithValueMap = mapOf(
                     "title_card_wallet" to
-                            "${payment.account?.type?.uppercase()} ${payment.account?.number?.takeLast(8)}",
+                            "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number ?: ""}",
                     "title_payment_id" to
                             "${payment.id}",
                     "title_payment_date" to
