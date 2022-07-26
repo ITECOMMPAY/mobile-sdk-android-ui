@@ -10,6 +10,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCard
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.core.manager.card.CardTypesManager
@@ -25,11 +26,10 @@ import com.paymentpage.msdk.ui.views.common.CustomTextField
 internal fun PanField(
     modifier: Modifier = Modifier,
     initialValue: String? = null,
-    cardTypes: List<PaymentMethodCard>,
+    paymentMethod: PaymentMethod,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     var cardType by remember { mutableStateOf<PaymentMethodCard?>(null) }
-    val cardTypesManager = CardTypesManager(cardTypes)
 
     CustomTextField(
         initialValue = initialValue,
@@ -46,7 +46,7 @@ internal fun PanField(
         },
         visualTransformation = { number ->
             val trimmedCardNumber = number.text.replace(" ", "")
-            cardType = cardTypesManager.search(trimmedCardNumber)
+            cardType = paymentMethod.cardTypesManager.search(trimmedCardNumber)
             when (cardType?.type) {
                 PaymentMethodCardType.AMEX -> formatAmex(number)
                 PaymentMethodCardType.DINERS_CLUB -> formatDinnersClub(number)
@@ -71,16 +71,6 @@ internal fun PanField(
                 contentScale = ContentScale.Fit
             )
         }
-    )
-}
-
-@Composable
-@Preview(showBackground = true)
-private fun PanFieldPreview() {
-    PanField(
-        modifier = Modifier,
-        cardTypes = emptyList(),
-        onValueChanged = { _, _ -> }
     )
 }
 
