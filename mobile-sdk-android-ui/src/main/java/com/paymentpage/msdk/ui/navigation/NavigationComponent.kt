@@ -9,6 +9,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalFocusManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -37,9 +38,11 @@ internal fun NavigationComponent(
     onCancel: () -> Unit
 ) {
     val navController = rememberAnimatedNavController()
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect("navigation") {
         navigator.sharedFlow.onEach {
+            focusManager.clearFocus()
             navController.navigateUp()
             navController.navigate(it.getPath())
         }.launchIn(this)
