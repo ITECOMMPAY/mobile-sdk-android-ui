@@ -17,6 +17,7 @@ import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKFooter
+import com.paymentpage.msdk.ui.views.lodaing.DotsPulsing
 
 @Composable
 internal fun LoadingScreen() {
@@ -38,6 +39,8 @@ internal fun LoadingScreen() {
                 painter = painterResource(id = SDKTheme.images.loadingLogo),
                 contentDescription = ""
             )
+            Spacer(modifier = Modifier.size(20.dp))
+            DotsPulsing()
             Spacer(modifier = Modifier.size(35.dp))
             Text(
                 text = PaymentActivity.stringResourceManager.getStringByKey("title_loading_screen"),

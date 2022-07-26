@@ -24,7 +24,6 @@ import com.paymentpage.msdk.ui.presentation.main.FinalPaymentState
 import com.paymentpage.msdk.ui.presentation.main.MainScreen
 import com.paymentpage.msdk.ui.presentation.result.ResultDeclineScreen
 import com.paymentpage.msdk.ui.presentation.result.ResultSuccessScreen
-
 import com.paymentpage.msdk.ui.presentation.threeDSecure.ThreeDSecureScreen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
@@ -54,7 +53,8 @@ internal fun NavigationComponent(
     LaunchedEffect(Unit) {
         viewModel.state.onEach {
             when {
-                it.isLoading == true -> navigator.navigateTo(Route.Loading)
+                it.isLoading == true && navigator.lastRoute != Route.Loading ->
+                    navigator.navigateTo(Route.Loading)
                 it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> navigator.navigateTo(Route.ClarificationFields)
                 it.acsPageState != null -> navigator.navigateTo(Route.AcsPage)

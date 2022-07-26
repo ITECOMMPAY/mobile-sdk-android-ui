@@ -26,7 +26,7 @@ internal class MainReducer(initial: MainScreenState) :
             )
             is MainScreenUiEvent.ShowCustomerFields -> setState(
                 oldState.copy(
-                    isLoading = false,
+                    isLoading = event.customerFields.none { !it.isHidden },
                     customerFields = event.customerFields,
                     clarificationFields = emptyList(),
                     acsPageState = null,
@@ -80,9 +80,6 @@ internal class MainReducer(initial: MainScreenState) :
             )
             is MainScreenUiEvent.SetPayment -> setState(
                 oldState.copy(payment = event.payment)
-            )
-            is MainScreenUiEvent.Reset -> setState(
-                MainScreenState.initial()
             )
         }
     }

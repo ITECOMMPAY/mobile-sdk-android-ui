@@ -14,7 +14,7 @@ import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
 
-//sale with saved card
+//sale with google pay
 internal fun MainViewModel.saleGooglePay(
     method: UIPaymentMethod.UIGooglePayPaymentMethod,
     merchantId: String,
@@ -105,12 +105,6 @@ internal fun MainViewModel.restorePayment() {
 internal fun MainViewModel.setCurrentMethod(method: UIPaymentMethod?) {
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
 }
-
-//reset state by default
-internal fun MainViewModel.reset() {
-    sendEvent(MainScreenUiEvent.Reset)
-}
-
 
 
 

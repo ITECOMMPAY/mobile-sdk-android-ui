@@ -14,7 +14,6 @@ import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalMsdkSession
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.presentation.main.reset
 import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
 import com.paymentpage.msdk.ui.presentation.main.views.method.PaymentMethodItem
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
@@ -39,7 +38,6 @@ internal fun PaymentMethodList(onError: (ErrorResult, Boolean) -> Unit) {
                 mergedPaymentMethods[1.coerceAtMost(mergedPaymentMethods.size - 1)]
             else //first by default
                 mergedPaymentMethods.first()
-        mainViewModel.reset()
         mainViewModel.setCurrentMethod(openedMethod)
     }
 
