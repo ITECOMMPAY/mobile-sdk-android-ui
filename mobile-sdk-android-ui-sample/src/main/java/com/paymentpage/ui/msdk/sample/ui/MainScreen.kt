@@ -1,4 +1,4 @@
-package com.paymentpage.ui.test.ui
+package com.paymentpage.ui.msdk.sample.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,8 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.paymentpage.ui.test.BuildConfig
-import com.paymentpage.ui.test.MainActivity
+import com.paymentpage.ui.msdk.sample.MainActivity
+import com.paymentpage.ui.sample.BuildConfig
 
 @Composable
 fun MainScreen(

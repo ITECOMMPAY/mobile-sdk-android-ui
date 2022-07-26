@@ -4,41 +4,40 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
-import com.google.android.gms.wallet.PaymentData
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
-import org.json.JSONObject
 
- class GooglePayActivityContract :
-    ActivityResultContract<GooglePayActivityContract.Config, String?>() {
+internal class GooglePayActivityContract :
+    ActivityResultContract<GooglePayActivityContract.Config, GooglePayActivityContract.Result>() {
 
     override fun createIntent(context: Context, input: Config): Intent {
         return Intent(context, GooglePayActivity::class.java).apply {
-            putExtra(AMOUNT_EXTRA, input.amount)
-            putExtra(CURRENCY_EXTRA, input.currency)
+            putExtra(EXTRA_AMOUNT, input.amount)
+            putExtra(EXTRA_CURRENCY, input.currency)
 
-            putExtra(ENV_EXTRA, input.merchantEnvironment.name)
-            putExtra(MERCHANT_ID_EXTRA, input.merchantId)
-            putExtra(MERCHANT_NAME_EXTRA, input.merchantName)
+            putExtra(EXTRA_ENVIRONMENT, input.merchantEnvironment.name)
+            putExtra(EXTRA_MERCHANT_ID, input.merchantId)
+            putExtra(EXTRA_MERCHANT_NAME, input.merchantName)
         }
     }
 
-    override fun parseResult(resultCode: Int, intent: Intent?): String? {
-        if (intent == null) return null
-        return if (resultCode == Activity.RESULT_OK) {
-            val paymentData = PaymentData.getFromIntent(intent)
-            val paymentInformation = paymentData?.toJson() ?: return null
-            val paymentMethodData: JSONObject =
-                JSONObject(paymentInformation).getJSONObject("paymentMethodData")
-            paymentMethodData.getJSONObject("tokenizationData").getString("token")
-        } else null
+    override fun parseResult(resultCode: Int, intent: Intent?): Result {
+        return if (resultCode == Activity.RESULT_OK && intent != null) {
+            val token = intent.getStringExtra(EXTRA_TOKEN)
+            Result(token = token)
+        } else {
+            val errorMessage = intent?.getStringExtra(EXTRA_ERROR_MESSAGE)
+            Result(errorMessage = errorMessage)
+        }
     }
 
     companion object {
-        const val AMOUNT_EXTRA = "amount"
-        const val CURRENCY_EXTRA = "currency"
-        const val ENV_EXTRA = "env"
-        const val MERCHANT_ID_EXTRA = "merchant_id"
-        const val MERCHANT_NAME_EXTRA = "merchant_name"
+        const val EXTRA_AMOUNT = "amount"
+        const val EXTRA_CURRENCY = "currency"
+        const val EXTRA_ENVIRONMENT = "environment"
+        const val EXTRA_MERCHANT_ID = "merchant_id"
+        const val EXTRA_MERCHANT_NAME = "merchant_name"
+        const val EXTRA_TOKEN = "token"
+        const val EXTRA_ERROR_MESSAGE = "error_message"
     }
 
     class Config(
@@ -48,4 +47,10 @@ import org.json.JSONObject
         val amount: Long,
         val currency: String,
     )
+
+    class Result(
+        val token: String? = null,
+        val errorMessage: String? = null
+    )
+
 }

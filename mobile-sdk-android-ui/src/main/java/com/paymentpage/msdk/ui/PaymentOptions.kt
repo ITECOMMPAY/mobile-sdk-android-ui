@@ -30,8 +30,8 @@ class PaymentOptions {
     var logoImage: Bitmap? = null
     var brandColor: String? = null
 
-    var merchantId: String? = null
-    var merchantName: String? = null
+    var merchantId: String = ""
+    var merchantName: String = ""
     var merchantEnvironment: GooglePayEnvironment = GooglePayEnvironment.TEST
 
     var additionalFields = mutableListOf<AdditionalField>()

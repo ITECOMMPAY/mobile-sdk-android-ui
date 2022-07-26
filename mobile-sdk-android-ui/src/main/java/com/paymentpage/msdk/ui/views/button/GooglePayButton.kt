@@ -22,11 +22,14 @@ import com.paymentpage.msdk.ui.theme.LocalDimensions
 import com.paymentpage.msdk.ui.views.common.CustomButton
 
 @Composable
-internal fun GooglePayButton(isEnabled: Boolean, onComplete: () -> Unit) {
+internal fun GooglePayButton(
+    isEnabled: Boolean,
+    onComplete: (GooglePayActivityContract.Result) -> Unit
+) {
 
     val paymentOptions = LocalPaymentOptions.current
-    val merchantId = LocalPaymentOptions.current.merchantId!!
-    val merchantName = LocalPaymentOptions.current.merchantName!!
+    val merchantId = LocalPaymentOptions.current.merchantId
+    val merchantName = LocalPaymentOptions.current.merchantName
 
     var isGooglePayAvailable by remember { mutableStateOf(false) }
     val googlePayHelper = GooglePayHelper(merchantId, merchantName)
@@ -51,8 +54,8 @@ internal fun GooglePayButton(isEnabled: Boolean, onComplete: () -> Unit) {
     }
 
     val launcher =
-        rememberLauncherForActivityResult(GooglePayActivityContract()) { token ->
-
+        rememberLauncherForActivityResult(GooglePayActivityContract()) { result ->
+            onComplete(result)
         }
 
     CustomButton(

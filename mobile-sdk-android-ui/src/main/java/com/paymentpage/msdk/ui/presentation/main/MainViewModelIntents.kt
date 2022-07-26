@@ -5,6 +5,8 @@ import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFiel
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
+import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
+import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePaySaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
@@ -12,9 +14,20 @@ import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
 //sale with saved card
 internal fun MainViewModel.saleGooglePay(
     method: UIPaymentMethod.UIGooglePayPaymentMethod,
+    merchantId: String,
+    token: String,
+    environment: GooglePayEnvironment,
     customerFields: List<CustomerFieldValue> = emptyList()
 ) {
-
+    sendEvent(MainScreenUiEvent.ShowLoading)
+    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
+    val request = GooglePaySaleRequest(
+        merchantId = merchantId,
+        token = token,
+        environment = environment
+    )
+    request.customerFields = customerFields
+    this.payInteractor.execute(request, this)
 }
 
 //sale with saved card

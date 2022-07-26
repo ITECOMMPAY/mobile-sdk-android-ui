@@ -1,7 +1,6 @@
 package com.paymentpage.msdk.ui.presentation.main
 
 import com.paymentpage.msdk.core.base.ErrorCode
-import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
@@ -72,7 +71,9 @@ internal class MainViewModel(
     }
 
     override fun onCustomerFields(customerFields: List<CustomerField>) {
-        sendEvent(MainScreenUiEvent.ShowCustomerFields(customerFields = customerFields))
+        val visibleFields = customerFields.filter { !it.isHidden }
+        if (visibleFields.isNotEmpty())
+            sendEvent(MainScreenUiEvent.ShowCustomerFields(customerFields = visibleFields))
     }
 
     override fun onError(code: ErrorCode, message: String) {
@@ -80,10 +81,11 @@ internal class MainViewModel(
     }
 
     override fun onPaymentCreated() {
-
+        sendEvent(MainScreenUiEvent.ShowLoading)
     }
 
     override fun onStatusChanged(status: PaymentStatus, payment: Payment) {
+        sendEvent(MainScreenUiEvent.ShowLoading)
         sendEvent(MainScreenUiEvent.SetPayment(payment))
     }
 

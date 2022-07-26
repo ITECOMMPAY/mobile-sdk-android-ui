@@ -16,7 +16,7 @@ import com.paymentpage.msdk.ui.base.Constants
 import org.json.JSONObject
 import java.math.BigDecimal
 
- class GooglePayActivity : AppCompatActivity() {
+internal class GooglePayActivity : AppCompatActivity() {
 
     private lateinit var googlePayHelper: GooglePayHelper
     private lateinit var googlePayClient: PaymentsClient
@@ -31,11 +31,11 @@ import java.math.BigDecimal
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_pay)
 
-        val amount = intent.extras?.getLong(GooglePayActivityContract.AMOUNT_EXTRA)
-        val currency = intent.extras?.getString(GooglePayActivityContract.CURRENCY_EXTRA)
-        val merchantName = intent.extras?.getString(GooglePayActivityContract.MERCHANT_NAME_EXTRA)
-        val merchantId = intent.extras?.getString(GooglePayActivityContract.MERCHANT_ID_EXTRA)
-        val envName = intent.extras?.getString(GooglePayActivityContract.ENV_EXTRA)
+        val amount = intent.extras?.getLong(GooglePayActivityContract.EXTRA_AMOUNT)
+        val currency = intent.extras?.getString(GooglePayActivityContract.EXTRA_CURRENCY)
+        val merchantName = intent.extras?.getString(GooglePayActivityContract.EXTRA_MERCHANT_NAME)
+        val merchantId = intent.extras?.getString(GooglePayActivityContract.EXTRA_MERCHANT_ID)
+        val envName = intent.extras?.getString(GooglePayActivityContract.EXTRA_ENVIRONMENT)
 
         if (amount != null && !currency.isNullOrEmpty() && !merchantName.isNullOrEmpty() && !merchantId.isNullOrEmpty() && !envName.isNullOrEmpty()) {
 
@@ -95,6 +95,11 @@ import java.math.BigDecimal
                         JSONObject(paymentInformation).getJSONObject("paymentMethodData")
                     val token =
                         paymentMethodData.getJSONObject("tokenizationData").getString("token")
+                    val dataIntent = Intent().also {
+                        it.putExtra(GooglePayActivityContract.EXTRA_TOKEN, token)
+                    }
+                    setResult(Activity.RESULT_OK, dataIntent)
+                    finish()
                 }
 
             RESULT_CANCELED -> {
@@ -104,8 +109,12 @@ import java.math.BigDecimal
 
             AutoResolveHelper.RESULT_ERROR -> {
                 val status = AutoResolveHelper.getStatusFromIntent(data)
+                val dataIntent = Intent()
+                status?.statusMessage?.let {
+                    dataIntent.putExtra(GooglePayActivityContract.EXTRA_ERROR_MESSAGE, it)
+                }
 
-                setResult(Activity.RESULT_CANCELED)
+                setResult(Activity.RESULT_CANCELED, dataIntent)
                 finish()
             }
         }

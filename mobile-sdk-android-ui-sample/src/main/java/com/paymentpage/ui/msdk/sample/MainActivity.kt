@@ -1,4 +1,4 @@
-package com.paymentpage.ui.test
+package com.paymentpage.ui.msdk.sample
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,18 +13,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.ecommpay.msdk.ui.PaymentSDK
 import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.paymentOptions
-import com.paymentpage.ui.test.ui.MainScreen
-import com.paymentpage.ui.test.utils.SignatureGenerator
+import com.paymentpage.ui.msdk.sample.ui.App
+import com.paymentpage.ui.msdk.sample.utils.SignatureGenerator
 import java.util.*
 
 class MainActivity : ComponentActivity() {
@@ -47,7 +43,6 @@ class MainActivity : ComponentActivity() {
                             App(activity = this@MainActivity)
                         }
                     }
-
                 }
             }
         }
@@ -117,21 +112,6 @@ class MainActivity : ComponentActivity() {
                 val errorCode = data?.getStringExtra(PaymentSDK.EXTRA_ERROR_CODE)
                 val message = data?.getStringExtra(PaymentSDK.EXTRA_ERROR_MESSAGE)
             }
-        }
-    }
-}
-
-
-@Composable
-fun App(activity: MainActivity) {
-    val navController = rememberNavController()
-
-    NavHost(
-        navController = navController,
-        startDestination = "main",
-    ) {
-        composable("main") {
-            MainScreen(activity = activity)
         }
     }
 }
