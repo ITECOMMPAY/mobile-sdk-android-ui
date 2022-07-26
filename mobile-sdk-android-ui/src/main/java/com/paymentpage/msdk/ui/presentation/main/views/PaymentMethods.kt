@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalMsdkSession
+import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.reset
 import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
@@ -21,8 +22,7 @@ import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 internal const val COUNT_OF_VISIBLE_CUSTOMER_FIELDS = 3
 
 @Composable
-internal fun PaymentMethodList(
-) {
+internal fun PaymentMethodList(onError: (ErrorResult, Boolean) -> Unit) {
     val mainViewModel = LocalMainViewModel.current
     val lastSelectedMethod = mainViewModel.lastState.currentMethod
 
@@ -45,7 +45,10 @@ internal fun PaymentMethodList(
 
     Column(modifier = Modifier.fillMaxWidth()) {
         mergedPaymentMethods.forEach { uiPaymentMethod ->
-            PaymentMethodItem(method = if (lastSelectedMethod?.index == uiPaymentMethod.index) lastSelectedMethod else uiPaymentMethod)
+            PaymentMethodItem(
+                method = if (lastSelectedMethod?.index == uiPaymentMethod.index) lastSelectedMethod else uiPaymentMethod,
+                onError = onError
+            )
             Spacer(modifier = Modifier.size(10.dp))
         }
     }
