@@ -40,3 +40,15 @@ internal fun List<CustomerField>.merge(
 
     return result.toList()
 }
+
+internal fun List<CustomerField>.visibleCustomerFields(): List<CustomerField> {
+    return this.filter { !it.isHidden }
+}
+
+internal fun List<CustomerField>.isAllCustomerFieldsHidden(): Boolean {
+    return !this.any { !it.isHidden }
+}
+
+internal fun List<CustomerField>.hasVisibleCustomerFields(): Boolean {
+    return this.any { !it.isHidden }
+}
