@@ -31,7 +31,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             isMockModeEnabled = intent.getBooleanExtra(Constants.EXTRA_MOCK_MODE_ENABLED, false)
             config = when {
                 isMockModeEnabled -> MSDKCoreSessionConfig.mockFullSuccessFlow(
-                    MockInitCustomerFieldsConfig.CARD
+                    MockInitCustomerFieldsConfig.ALL
                 )
                 else -> MSDKCoreSessionConfig.debug(
                     intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
