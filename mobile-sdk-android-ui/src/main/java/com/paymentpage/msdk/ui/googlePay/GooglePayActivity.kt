@@ -3,7 +3,6 @@ package com.paymentpage.msdk.ui.googlePay
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.Window
@@ -23,10 +22,6 @@ internal class GooglePayActivity : AppCompatActivity() {
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            setTranslucent(true)
-            window.setBackgroundDrawable(ColorDrawable(android.R.color.transparent))
-        }
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_pay)

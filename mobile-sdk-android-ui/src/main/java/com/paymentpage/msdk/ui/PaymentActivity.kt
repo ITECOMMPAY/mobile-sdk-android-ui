@@ -18,12 +18,7 @@ import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.navigation.Navigator
 
 class PaymentActivity : ComponentActivity(), PaymentDelegate {
-    @SuppressLint("ResourceAsColor")
     public override fun onCreate(savedInstanceState: Bundle?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            setTranslucent(true)
-            window.setBackgroundDrawable(ColorDrawable(android.R.color.transparent))
-        }
         super.onCreate(savedInstanceState)
 
         var config = MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)

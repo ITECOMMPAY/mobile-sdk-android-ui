@@ -93,7 +93,6 @@ dependencies {
     implementation(Dependencies.Coil.compose)
     //Google
     implementation(Dependencies.Google.wallet)
-    implementation(Dependencies.Google.material)
     //Compose
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)
