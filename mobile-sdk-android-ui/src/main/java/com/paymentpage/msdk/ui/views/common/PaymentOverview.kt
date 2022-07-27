@@ -8,7 +8,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
@@ -21,24 +20,25 @@ import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
+import com.paymentpage.msdk.ui.utils.extensions.getColorMatrix
 
 @Composable
 internal fun PaymentOverview() {
     val mainViewModel = LocalMainViewModel.current
     val currentMethod = mainViewModel.state.collectAsState().value.currentMethod
+
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(if (LocalPaymentOptions.current.logoImage != null) 150.dp else 95.dp)
     ) {
+
         Image(
             painter = painterResource(id = R.drawable.card_lines_bg),
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
-            colorFilter = ColorFilter.tint(
-                color = SDKTheme.colors.brand,
-                blendMode = BlendMode.Multiply
-            ),
+            colorFilter = ColorFilter.colorMatrix(SDKTheme.colors.brand.getColorMatrix(1f)),
             modifier = Modifier.clip(SDKTheme.shapes.radius12)
         )
         Box(
