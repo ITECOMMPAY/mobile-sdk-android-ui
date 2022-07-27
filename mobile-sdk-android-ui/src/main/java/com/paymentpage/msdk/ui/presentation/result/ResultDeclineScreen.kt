@@ -19,7 +19,7 @@ import com.paymentpage.msdk.ui.utils.extensions.paymentDateToPatternDate
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
-import com.paymentpage.msdk.ui.views.result.ResultTableInfo
+import com.paymentpage.msdk.ui.presentation.result.views.ResultTableInfo
 
 @Composable
 internal fun ResultDeclineScreen(

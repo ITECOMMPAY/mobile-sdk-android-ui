@@ -1,4 +1,4 @@
-package com.paymentpage.msdk.ui.views.result
+package com.paymentpage.msdk.ui.presentation.result.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
