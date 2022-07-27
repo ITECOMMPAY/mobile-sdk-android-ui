@@ -7,15 +7,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
 import com.paymentpage.msdk.ui.presentation.main.views.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
-import com.paymentpage.msdk.ui.views.button.ConfirmAndContinueButton
-import com.paymentpage.msdk.ui.views.button.PayButton
+import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
+import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
+import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
@@ -27,9 +26,6 @@ internal fun SavedCardItem(
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
     val additionalFields = LocalPaymentOptions.current.additionalFields
-
-    val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
-
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
 
@@ -60,44 +56,32 @@ internal fun SavedCardItem(
                     }
                 )
             }
-            if (visibleCustomerFields.isNotEmpty() && visibleCustomerFields.size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
+            if (customerFields.hasVisibleCustomerFields() && customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
                 CustomerFields(
-                    visibleCustomerFields = visibleCustomerFields,
+                    visibleCustomerFields = customerFields.visibleCustomerFields(),
                     additionalFields = additionalFields,
                     customerFieldValues = method.customerFieldValues,
                     onCustomerFieldsChanged = { fields, isValid ->
+                        isCustomerFieldsValid = isValid
                         method.customerFieldValues = fields
                         method.isCustomerFieldsValid = isValid
-                        isCustomerFieldsValid = isValid
                     }
                 )
             }
             Spacer(modifier = Modifier.size(22.dp))
-            if (visibleCustomerFields.isNotEmpty() && visibleCustomerFields.size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
-                PayButton(
-                    payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
-                    amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
-                    currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
-                    isEnabled = isCvvValid && (isCustomerFieldsValid || visibleCustomerFields.isEmpty())
-                ) {
+            PayOrConfirmButton(
+                method = method,
+                customerFields = customerFields,
+                isValidCvv = isCvvValid,
+                isValidCustomerFields = isCustomerFieldsValid,
+                onClickButton = {
                     viewModel.saleSavedCard(
                         method = method,
                         allCustomerFields = customerFields,
                         additionalFields = additionalFields
                     )
                 }
-            } else {
-                ConfirmAndContinueButton(
-                    payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_confirmation"),
-                    isEnabled = isCvvValid
-                ) {
-                    viewModel.saleSavedCard(
-                        method = method,
-                        allCustomerFields = customerFields,
-                        additionalFields = additionalFields
-                    )
-                }
-            }
+            )
         }
     }
 }

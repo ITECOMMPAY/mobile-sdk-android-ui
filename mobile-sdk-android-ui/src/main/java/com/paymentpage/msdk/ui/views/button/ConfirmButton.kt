@@ -9,7 +9,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomButton
 
 @Composable
-internal fun ConfirmAndContinueButton(
+internal fun ConfirmButton(
     modifier: Modifier = Modifier,
     payLabel: String,
     isEnabled: Boolean,
@@ -30,9 +30,9 @@ internal fun ConfirmAndContinueButton(
 
 @Composable
 @Preview
-private fun ConfirmAndContinueButtonDefaultPreview() {
+private fun ConfirmButtonDefaultPreview() {
     SDKTheme {
-        ConfirmAndContinueButton(
+        ConfirmButton(
             payLabel = "Confirm and continue",
             isEnabled = true
         ) {}
@@ -41,9 +41,9 @@ private fun ConfirmAndContinueButtonDefaultPreview() {
 
 @Composable
 @Preview
-private fun ConfirmAndContinueButtonDisabledPreview() {
+private fun ConfirmAButtonDisabledPreview() {
     SDKTheme {
-        ConfirmAndContinueButton(
+        ConfirmButton(
             payLabel = "Confirm and continue",
             isEnabled = false
         ) {}

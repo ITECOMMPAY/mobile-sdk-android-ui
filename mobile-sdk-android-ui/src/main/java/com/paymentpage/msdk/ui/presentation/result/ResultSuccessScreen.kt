@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.LocalMainViewModel
@@ -26,7 +27,6 @@ internal fun ResultSuccessScreen(
     onClose: (Payment) -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
-    val method = viewModel.lastState.currentMethod
     val payment =
         viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
 
@@ -47,7 +47,8 @@ internal fun ResultSuccessScreen(
                 Spacer(modifier = Modifier.size(15.dp))
                 Text(
                     text = PaymentActivity.stringResourceManager.getStringByKey("title_result_succes_payment"),
-                    style = SDKTheme.typography.s24Bold
+                    style = SDKTheme.typography.s24Bold,
+                    textAlign = TextAlign.Center
                 )
             }
             Spacer(modifier = Modifier.size(15.dp))
