@@ -15,7 +15,7 @@ import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.presentation.main.views.PaymentMethodList
 import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.views.common.CardView
+import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
@@ -42,7 +42,7 @@ private fun Content(onCancel: () -> Unit, onError: (ErrorResult, Boolean) -> Uni
             Spacer(modifier = Modifier.size(15.dp))
         },
         scrollableContent = {
-            CardView()
+            PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
             PaymentMethodList(onError = onError)
         },

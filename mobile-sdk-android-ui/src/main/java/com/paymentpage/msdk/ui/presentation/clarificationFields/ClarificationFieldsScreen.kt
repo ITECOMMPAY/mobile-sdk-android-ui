@@ -18,7 +18,7 @@ import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.views.button.PayButton
-import com.paymentpage.msdk.ui.views.common.CardView
+import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
@@ -41,7 +41,7 @@ internal fun ClarificationFieldsScreen(
             Spacer(modifier = Modifier.size(15.dp))
         },
         scrollableContent = {
-            CardView()
+            PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
             CustomerFields(
                 visibleCustomerFields = clarificationFields.map {

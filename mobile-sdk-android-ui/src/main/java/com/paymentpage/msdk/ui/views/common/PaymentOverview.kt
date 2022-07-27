@@ -23,7 +23,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 
 @Composable
-internal fun CardView() {
+internal fun PaymentOverview() {
     val mainViewModel = LocalMainViewModel.current
     val currentMethod = mainViewModel.state.collectAsState().value.currentMethod
     Box(

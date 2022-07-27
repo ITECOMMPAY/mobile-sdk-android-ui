@@ -16,7 +16,7 @@ import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.paymentDateToPatternDate
-import com.paymentpage.msdk.ui.views.common.CardView
+import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.result.ResultTableInfo
@@ -56,7 +56,7 @@ internal fun ResultDeclineScreen(
                 )
             }
             Spacer(modifier = Modifier.size(15.dp))
-            CardView()
+            PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
             ResultTableInfo(
                 titleKeyWithValueMap = mapOf(

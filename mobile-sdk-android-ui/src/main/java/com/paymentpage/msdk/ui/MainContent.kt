@@ -32,11 +32,11 @@ internal fun MainContent(
     LaunchedEffect(Unit) {
         drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded)
     }
+    SDKTheme(brandColor = HexToJetpackColor.getColor(paymentOptions.brandColor)) {
+        BottomDrawer(
+            modifier = Modifier.wrapContentSize(),
+            drawerContent = {
 
-    BottomDrawer(
-        modifier = Modifier.wrapContentSize(),
-        drawerContent = {
-            SDKTheme(brandColor = HexToJetpackColor.getColor(paymentOptions.brandColor)) {
                 SDKCommonProvider(
                     paymentOptions = paymentOptions,
                     msdkSession = msdkSession,
@@ -55,72 +55,72 @@ internal fun MainContent(
                         }
                     )
                 }
-            }
-        },
-        drawerState = drawerState,
-        drawerBackgroundColor = Color.Transparent,
-        gesturesEnabled = false,
-        drawerShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.2f)),
+            },
+            drawerState = drawerState,
+            drawerBackgroundColor = Color.Transparent,
+            gesturesEnabled = false,
+            drawerShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
         ) {
-            when {
-                showDismissDialog.value -> {
-                    AlertDialog(
-                        text = { Text(text = stringResource(R.string.payment_dismiss_confirm_message)) },
-                        onDismissRequest = { showDismissDialog.value = false },
-                        confirmButton = {
-                            TextButton(onClick = { activity.onCancel() })
-                            {
-                                Text(
-                                    text = stringResource(R.string.ok_label),
-                                    color = SDKTheme.colors.brand
-                                )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.2f)),
+            ) {
+                when {
+                    showDismissDialog.value -> {
+                        AlertDialog(
+                            text = { Text(text = stringResource(R.string.payment_dismiss_confirm_message)) },
+                            onDismissRequest = { showDismissDialog.value = false },
+                            confirmButton = {
+                                TextButton(onClick = { activity.onCancel() })
+                                {
+                                    Text(
+                                        text = stringResource(R.string.ok_label),
+                                        color = SDKTheme.colors.brand
+                                    )
+                                }
+                            },
+                            dismissButton = {
+                                TextButton(onClick = { showDismissDialog.value = false })
+                                {
+                                    Text(
+                                        text = stringResource(R.string.cancel_label),
+                                        color = SDKTheme.colors.brand
+                                    )
+                                }
                             }
-                        },
-                        dismissButton = {
-                            TextButton(onClick = { showDismissDialog.value = false })
-                            {
-                                Text(
-                                    text = stringResource(R.string.cancel_label),
-                                    color = SDKTheme.colors.brand
-                                )
-                            }
-                        }
-                    )
-                }
-                errorResultState.value != null -> {
-                    AlertDialog(
-                        title = { Text(text = stringResource(R.string.error_label)) },
-                        text = { Text(text = errorResultState.value?.message ?: "") },
-                        onDismissRequest = {
-                            if (needCloseWhenError.value)
-                                activity.onError(
-                                    errorResultState.value?.code ?: ErrorCode.UNKNOWN,
-                                    errorResultState.value?.message
-                                )
-                            errorResultState.value = null
-                        },
-                        confirmButton = {
-                            TextButton(onClick = {
+                        )
+                    }
+                    errorResultState.value != null -> {
+                        AlertDialog(
+                            title = { Text(text = stringResource(R.string.error_label)) },
+                            text = { Text(text = errorResultState.value?.message ?: "") },
+                            onDismissRequest = {
                                 if (needCloseWhenError.value)
                                     activity.onError(
                                         errorResultState.value?.code ?: ErrorCode.UNKNOWN,
                                         errorResultState.value?.message
                                     )
                                 errorResultState.value = null
-                            })
-                            {
-                                Text(
-                                    text = stringResource(R.string.ok_label),
-                                    color = SDKTheme.colors.errorTextColor
-                                )
+                            },
+                            confirmButton = {
+                                TextButton(onClick = {
+                                    if (needCloseWhenError.value)
+                                        activity.onError(
+                                            errorResultState.value?.code ?: ErrorCode.UNKNOWN,
+                                            errorResultState.value?.message
+                                        )
+                                    errorResultState.value = null
+                                })
+                                {
+                                    Text(
+                                        text = stringResource(R.string.ok_label),
+                                        color = SDKTheme.colors.errorTextColor
+                                    )
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }
