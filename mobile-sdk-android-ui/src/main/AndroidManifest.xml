@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ecommpay.msdk.ui">
+    package="com.paymentpage.msdk.ui">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,14 +11,23 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SDKThemeAppCompat"
+        android:theme="@style/Theme.SDKTheme"
         android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
         <activity
-            android:name=".main.PaymentActivity"
+            android:name=".googlePay.GooglePayActivity"
+            android:theme="@style/Theme.SDKTheme"
+            android:exported="false" />
+
+        <activity
+            android:name=".PaymentActivity"
             android:exported="true"
-            android:theme="@style/Theme.SDKThemeAppCompat"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:theme="@style/Theme.SDKTheme"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
