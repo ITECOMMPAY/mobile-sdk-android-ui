@@ -116,7 +116,7 @@ internal fun NavigationComponent(
 
         composable(route = Route.Loading.getPath()) {
             BackHandler(true) { }
-            LoadingScreen()
+            LoadingScreen(onCancel = onCancel)
         }
     }
 }

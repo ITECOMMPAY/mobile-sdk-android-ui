@@ -52,6 +52,6 @@ private fun Content(onCancel: () -> Unit, onError: (ErrorResult, Boolean) -> Uni
                 poweredByText = stringResource(R.string.powered_by_label),
             )
         },
-        onClose = { onCancel() }
+        onClose = onCancel
     )
 }
