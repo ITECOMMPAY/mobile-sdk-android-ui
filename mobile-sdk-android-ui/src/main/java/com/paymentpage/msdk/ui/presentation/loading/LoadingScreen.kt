@@ -58,15 +58,14 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                         textAlign = TextAlign.Center
                     )
                 }
+                SDKFooter(
+                    iconLogo = SDKTheme.images.sdkLogoResId,
+                    poweredByText = stringResource(R.string.powered_by_label),
+                )
             }
         },
         onClose = onCancel,
-        footerContent = {
-            SDKFooter(
-                iconLogo = SDKTheme.images.sdkLogoResId,
-                poweredByText = stringResource(R.string.powered_by_label),
-            )
-        }
+        footerContent = { }
     )
 
 }
