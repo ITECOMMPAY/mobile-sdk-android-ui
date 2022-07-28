@@ -12,25 +12,16 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.threeDSecureHandled
-import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.views.common.CustomButton
-import com.paymentpage.msdk.ui.views.common.PaymentOverview
-import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
 @Composable
@@ -39,53 +30,17 @@ internal fun ThreeDSecureScreen(
 ) {
     val viewModel = LocalMainViewModel.current
     val acsPage = viewModel.lastState.acsPageState?.acsPage
-    val isCascading = remember { viewModel.lastState.acsPageState?.isCascading ?: false }
-
-    var isCascadingShowing by remember { mutableStateOf(isCascading) }
 
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
         notScrollableContent = {
-            if (isCascadingShowing) {
-                PaymentDetailsView()
-                Spacer(modifier = Modifier.size(15.dp))
-            } else if (acsPage != null) {
+            if (acsPage != null) {
                 AcsPageView(acsPage = acsPage)
             }
         },
-        scrollableContent = {
-            if (isCascadingShowing) {
-                PaymentOverview()
-                Spacer(modifier = Modifier.size(15.dp))
-                Text(
-                    modifier = Modifier.padding(10.dp),
-                    text = PaymentActivity.stringResourceManager.getStringByKey("cascade_error"),
-                    color = SDKTheme.colors.errorTextColor
-                )
-                Spacer(modifier = Modifier.size(15.dp))
-                CustomButton(
-                    modifier = Modifier,
-                    isEnabled = true,
-                    content = {
-                        Text(
-                            text = PaymentActivity.stringResourceManager.getStringByKey("cascade_payment_button"),
-                            style = SDKTheme.typography.s16Normal.copy(color = Color.White)
-                        )
-                    },
-                    onClick = {
-                        isCascadingShowing = false
-                    }
-                )
-            }
-        },
-        footerContent = {
-            if (isCascadingShowing)
-                SDKFooter(
-                    iconLogo = SDKTheme.images.sdkLogoResId,
-                    poweredByText = stringResource(R.string.powered_by_label),
-                )
-        },
+        scrollableContent = {},
+        footerContent = {},
         onClose = { onCancel() }
     )
 }
