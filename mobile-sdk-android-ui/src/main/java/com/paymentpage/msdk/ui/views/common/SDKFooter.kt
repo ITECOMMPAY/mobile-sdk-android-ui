@@ -42,8 +42,8 @@ internal fun SDKFooter(
         modifier = Modifier.fillMaxWidth().padding(5.dp)
     ) {
         ClickableText(
-            modifier = Modifier.weight(1f),
-            style = SDKTheme.typography.s12Light.copy(textAlign = TextAlign.End),
+            //modifier = Modifier.weight(1f),
+            style = SDKTheme.typography.s12Light/*.copy(textAlign = TextAlign.End)*/,
             text = privacyPolicy,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -55,21 +55,21 @@ internal fun SDKFooter(
                     }
             }
         )
-        Spacer(modifier = Modifier.size(15.dp))
-        ClickableText(
-            modifier = Modifier.weight(1f),
-            style = SDKTheme.typography.s12Light.copy(textAlign = TextAlign.Start),
-            text = cookiePolicy,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            onClick = {
-                cookiePolicy
-                    .getStringAnnotations("URL", it, it)
-                    .firstOrNull()?.let { stringAnnotation ->
-                        uriHandler.openUri(stringAnnotation.item)
-                    }
-            }
-        )
+//        Spacer(modifier = Modifier.size(15.dp))
+//        ClickableText(
+//            modifier = Modifier.weight(1f),
+//            style = SDKTheme.typography.s12Light.copy(textAlign = TextAlign.Start),
+//            text = cookiePolicy,
+//            maxLines = 1,
+//            overflow = TextOverflow.Ellipsis,
+//            onClick = {
+//                cookiePolicy
+//                    .getStringAnnotations("URL", it, it)
+//                    .firstOrNull()?.let { stringAnnotation ->
+//                        uriHandler.openUri(stringAnnotation.item)
+//                    }
+//            }
+//        )
     }
     Spacer(modifier = Modifier.size(20.dp))
     Row(

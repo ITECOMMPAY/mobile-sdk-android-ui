@@ -1,5 +1,6 @@
 package com.paymentpage.msdk.ui.presentation.init
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,12 +13,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalInitViewModel
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.presentation.main.restorePayment
-import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.shimmer.ShimmerAnimatedItem
 import kotlinx.coroutines.flow.collect
@@ -27,14 +27,16 @@ import kotlinx.coroutines.flow.onEach
 @Composable
 internal fun InitScreen(
     navigator: Navigator,
-    delegate: PaymentDelegate
+    onCancel: () -> Unit,
+    onError: (ErrorResult, Boolean) -> Unit
 ) {
+    BackHandler(true) { onCancel() }
     val initViewModel = LocalInitViewModel.current
     val mainViewModel = LocalMainViewModel.current
     LaunchedEffect(Unit) {
         initViewModel.state.onEach {
             when {
-                it.error != null -> delegate.onError(it.error.code, it.error.message)
+                it.error != null -> onError(it.error, true)
                 it.isInitLoaded -> navigator.navigateTo(Route.Main)
                 it.payment != null -> {
                     mainViewModel.restorePayment()
@@ -42,15 +44,16 @@ internal fun InitScreen(
             }
         }.collect()
     }
-    Content()
+    Content(onCancel = onCancel)
 }
 
 
 @Composable
-private fun Content() {
+private fun Content(onCancel: () -> Unit) {
     SDKScaffold(
         title = stringResource(R.string.payment_methods_label),
         notScrollableContent = { Loading() },
+        onClose = onCancel,
         footerContent = { }
     )
 }
@@ -100,5 +103,5 @@ private fun Loading() {
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun LoadingPreview() {
-    Content()
+    Content(onCancel = {})
 }

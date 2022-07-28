@@ -78,8 +78,7 @@ internal fun NavigationComponent(
         popExitTransition = { ExitTransition.None }
     ) {
         composable(route = Route.Init.getPath()) {
-            BackHandler(true) { onCancel() }
-            InitScreen(navigator = navigator, delegate = delegate)
+            InitScreen(navigator = navigator, onCancel = onCancel, onError = onError)
         }
         composable(route = Route.Main.getPath()) {
             MainScreen(

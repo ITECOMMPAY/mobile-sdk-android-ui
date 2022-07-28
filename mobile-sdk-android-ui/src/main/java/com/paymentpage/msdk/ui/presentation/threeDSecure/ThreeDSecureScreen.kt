@@ -11,6 +11,7 @@ import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.magnifier
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -35,6 +36,7 @@ internal fun ThreeDSecureScreen(
 
     SDKScaffold(
         notScrollableContent = {
+            Spacer(modifier = Modifier.fillMaxWidth().height(2.dp).background(SDKTheme.colors.panelBackgroundColor))
             if (acsPage != null) {
                 AcsPageView(acsPage = acsPage)
             }
