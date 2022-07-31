@@ -76,7 +76,19 @@ dependencies {
     //Google
     implementation(Dependencies.Google.material)
 
+    //Color picker
+    implementation(Dependencies.MsdkSample.colorPicker)
+
+    //Testing
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.test.ext:junit:1.1.3")
     testImplementation("androidx.test.espresso:espresso-core:3.4.0")
+
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs +="-Xjvm-default=all"
+    }
 }

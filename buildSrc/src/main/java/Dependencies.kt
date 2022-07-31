@@ -55,4 +55,8 @@ object Dependencies {
     object Msdk {
         const val core = "com.ecommpay:msdk-core-android:+"
     }
+
+    object MsdkSample {
+        const val colorPicker = "io.github.vanpra.compose-material-dialogs:color:0.8.1-rc"
+    }
 }
