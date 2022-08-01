@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewIntents
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewModel
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
@@ -58,6 +60,19 @@ internal fun BrandColorPicker(
                     }
             )
         }
+    }
+    Spacer(modifier = Modifier.size(10.dp))
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
+        onClick = {
+            viewModel.pushIntent(MainViewIntents.ChangeField(
+                paymentData = paymentData.copy(brandColor = PaymentData.defaultPaymentData.brandColor)
+            ))
+        }
+    ) {
+        Text(text = "Reset brand color to default", color = Color.White, fontSize = 18.sp)
     }
     ColorPickerDialog(dialogState = dialogState) {
         viewModel.pushIntent(MainViewIntents.ChangeField(

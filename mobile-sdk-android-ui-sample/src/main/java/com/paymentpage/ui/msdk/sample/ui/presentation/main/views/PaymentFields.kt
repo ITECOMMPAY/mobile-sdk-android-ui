@@ -23,7 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import java.util.*
 
 @Composable
-internal fun PaymentData(
+internal fun PaymentFields(
     viewModel: MainViewModel = viewModel(),
 ) {
     val viewState by viewModel.viewState.collectAsState()
