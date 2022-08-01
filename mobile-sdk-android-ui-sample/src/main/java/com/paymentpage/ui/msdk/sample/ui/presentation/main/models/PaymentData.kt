@@ -1,6 +1,7 @@
 package com.paymentpage.ui.msdk.sample.ui.presentation.main.models
 
 import android.graphics.Bitmap
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import java.util.*
 
 data class PaymentData(
@@ -12,6 +13,7 @@ data class PaymentData(
     val paymentCurrency: String,
     val customerId: String,
     val paymentDescription: String,
+    val forcePaymentMethod: PaymentMethodType?,
     val secretKey: String,
     val apiHost: String,
     val wsApiHost: String,
@@ -29,6 +31,7 @@ data class PaymentData(
             paymentCurrency = "USD",
             customerId = "12",
             paymentDescription = "Test payment",
+            forcePaymentMethod = null,
             secretKey = "123",
             apiHost = "pp-sdk-3.westresscode.net",
             wsApiHost = "paymentpage-3.westresscode.net",

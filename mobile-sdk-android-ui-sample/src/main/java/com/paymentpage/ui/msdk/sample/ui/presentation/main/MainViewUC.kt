@@ -14,8 +14,9 @@ class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
                         isVisibleApiHostFields = false,
                         isVisibleGooglePayFields = false,
                         isVisibleCustomizationFields = false,
-                        isExpandedSelectImagesList = false,
                         selectedResourceImageId = -1,
+                        isVisibleForcePaymentMethodFields = false,
+                        selectedForcePaymentMethodId = -1,
                         localImageUri = null
                     )
                 )
@@ -26,9 +27,16 @@ class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
                     paymentData = viewIntent.paymentData
                 ))
             }
-            is MainViewIntents.ExpandResourceImagesList -> {
+            is MainViewIntents.ChangeForcePaymentMethodCheckbox -> {
                 updateState(viewState.value?.copy(
-                    isExpandedSelectImagesList = !(viewState.value?.isExpandedSelectImagesList ?: false)
+                    isVisibleForcePaymentMethodFields = !(viewState.value?.isVisibleForcePaymentMethodFields ?: false)
+                ))
+            }
+            is MainViewIntents.SelectForcePaymentMethod -> {
+                ProcessRepository.paymentData = viewIntent.paymentData
+                updateState(viewState.value?.copy(
+                    selectedForcePaymentMethodId = viewIntent.id,
+                    paymentData = viewIntent.paymentData
                 ))
             }
             is MainViewIntents.SelectResourceImage -> {

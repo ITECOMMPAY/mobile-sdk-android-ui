@@ -2,6 +2,7 @@ package com.paymentpage.ui.msdk.sample.ui.presentation.main.views.customization
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -47,11 +48,14 @@ internal fun CustomizationCheckbox(
     }
     if (viewState?.isVisibleCustomizationFields == true) {
         Spacer(modifier = Modifier.size(10.dp))
-        BrandColorPicker()
-        Spacer(modifier = Modifier.size(10.dp))
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(width = 1.dp, Color.LightGray)
+                .padding(horizontal = 10.dp),
             content = {
+                Spacer(modifier = Modifier.size(10.dp))
+                BrandColorPicker()
                 Spacer(modifier = Modifier.height(10.dp))
                 SelectImagesList()
                 Spacer(modifier = Modifier.height(10.dp))

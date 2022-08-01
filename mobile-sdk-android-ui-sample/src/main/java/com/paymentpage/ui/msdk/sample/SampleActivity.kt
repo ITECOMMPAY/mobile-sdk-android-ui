@@ -54,6 +54,7 @@ class SampleActivity : ComponentActivity() {
         val paymentData = ProcessRepository.paymentData
         val additionalFieldsToSend = ProcessRepository.additionalFields
         val payment = PaymentInfo(
+            forcePaymentMethod = paymentData.forcePaymentMethod,
             projectId = paymentData.projectId ?: -1,
             paymentId = paymentData.paymentId,
             paymentAmount = paymentData.paymentAmount ?: -1,
