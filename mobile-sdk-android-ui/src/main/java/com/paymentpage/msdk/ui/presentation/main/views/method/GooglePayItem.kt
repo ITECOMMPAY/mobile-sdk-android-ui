@@ -71,7 +71,7 @@ internal fun GooglePayItem(
                 onCustomerFieldsChanged = { fields, isValid ->
                     method.customerFieldValues = fields
                     isCustomerFieldsValid = isValid
-                    method.isCustomerFieldsValid = isCustomerFieldsValid
+                    method.isCustomerFieldsValid = isValid
                 }
             )
             Spacer(modifier = Modifier.size(22.dp))

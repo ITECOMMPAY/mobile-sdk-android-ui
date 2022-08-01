@@ -32,7 +32,7 @@ internal fun GooglePayButton(
     val merchantName = LocalPaymentOptions.current.merchantName
 
     var isGooglePayAvailable by remember { mutableStateOf(false) }
-    var isButtonEnabled by remember { mutableStateOf(isEnabled) }
+    var isGooglePayOpened by remember { mutableStateOf(false) }
     val googlePayHelper = GooglePayHelper(merchantId, merchantName)
 
     val activity = LocalContext.current as PaymentActivity
@@ -56,7 +56,7 @@ internal fun GooglePayButton(
 
     val launcher =
         rememberLauncherForActivityResult(GooglePayActivityContract()) { result ->
-            isButtonEnabled = true
+            isGooglePayOpened = false
             onComplete(result)
         }
 
@@ -64,7 +64,7 @@ internal fun GooglePayButton(
         modifier = Modifier
             .height(LocalDimensions.current.googlePayButtonHeight)
             .fillMaxWidth(),
-        isEnabled = isButtonEnabled && isGooglePayAvailable,
+        isEnabled = isEnabled && isGooglePayAvailable && !isGooglePayOpened,
         content = {
             Image(
                 painter = painterResource(id = R.drawable.googlepay_button_logo),
@@ -73,7 +73,7 @@ internal fun GooglePayButton(
         },
         color = Color.Black,
         onClick = {
-            isButtonEnabled = false
+            isGooglePayOpened = true
             launcher.launch(
                 GooglePayActivityContract.Config(
                     merchantId = merchantId,
