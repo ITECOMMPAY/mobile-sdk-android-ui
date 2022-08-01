@@ -8,6 +8,7 @@ data class MainViewState(
     var paymentData: PaymentData,
     var isVisibleApiHostFields: Boolean,
     var isVisibleGooglePayFields: Boolean,
+    var isVisibleCustomizationFields: Boolean,
     var isExpandedSelectImagesList: Boolean,
     var selectedResourceImageId: Int,
     var localImageUri: Uri?

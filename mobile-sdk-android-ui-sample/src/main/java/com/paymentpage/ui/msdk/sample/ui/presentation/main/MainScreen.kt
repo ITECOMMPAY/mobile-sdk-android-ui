@@ -9,8 +9,9 @@ import androidx.navigation.NavController
 import com.paymentpage.ui.msdk.sample.ui.navigation.NavRouts
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.*
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.colorPicker.BrandColorPicker
-import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.imagesList.ExpandableSelectImagesList
+import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.customization.CustomizationCheckbox
+import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.customization.customBrandColor.BrandColorPicker
+import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.customization.customLogo.ExpandableSelectImagesList
 import com.paymentpage.ui.msdk.sample.utils.collectAsEffect
 
 @Composable
@@ -39,15 +40,13 @@ fun MainScreen(
     ) {
         BrandTitle()
         Spacer(modifier = Modifier.size(padding))
-        BrandColorPicker()
-        Spacer(modifier = Modifier.size(padding))
         ProjectSettings()
         Spacer(modifier = Modifier.size(padding))
         PaymentData()
         Spacer(modifier = Modifier.size(padding))
-        ExpandableSelectImagesList()
-        Spacer(modifier = Modifier.size(padding))
         AdditionalFieldsButton(navController)
+        Spacer(modifier = Modifier.size(padding))
+        CustomizationCheckbox()
         Spacer(modifier = Modifier.size(padding))
         ApiHostCheckbox()
         Spacer(modifier = Modifier.size(padding))

@@ -1,4 +1,4 @@
-package com.paymentpage.ui.msdk.sample.ui.presentation.main.views.colorPicker
+package com.paymentpage.ui.msdk.sample.ui.presentation.main.views.customization.customBrandColor
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color

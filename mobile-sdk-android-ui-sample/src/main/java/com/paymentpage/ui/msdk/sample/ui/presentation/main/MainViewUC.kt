@@ -13,6 +13,7 @@ class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
                         paymentData = PaymentData.defaultPaymentData,
                         isVisibleApiHostFields = false,
                         isVisibleGooglePayFields = false,
+                        isVisibleCustomizationFields = false,
                         isExpandedSelectImagesList = false,
                         selectedResourceImageId = -1,
                         localImageUri = null
@@ -43,6 +44,11 @@ class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
                     localImageUri = viewIntent.uri,
                     paymentData = viewIntent.paymentData,
                     selectedResourceImageId = -1
+                ))
+            }
+            is MainViewIntents.ChangeCustomizationCheckbox -> {
+                updateState(viewState.value?.copy(
+                    isVisibleCustomizationFields = !(viewState.value?.isVisibleCustomizationFields ?: false)
                 ))
             }
             is MainViewIntents.ChangeApiHostCheckBox -> {

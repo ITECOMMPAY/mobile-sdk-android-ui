@@ -1,4 +1,4 @@
-package com.paymentpage.ui.msdk.sample.ui.presentation.main.views.imagesList
+package com.paymentpage.ui.msdk.sample.ui.presentation.main.views.customization.customLogo
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
