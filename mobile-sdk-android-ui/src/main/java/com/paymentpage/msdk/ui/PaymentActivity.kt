@@ -15,6 +15,9 @@ import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.navigation.Navigator
 
 class PaymentActivity : ComponentActivity(), PaymentDelegate {
+
+    private  val navigator = Navigator()
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,7 +40,8 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             MainContent(
                 activity = this@PaymentActivity,
                 paymentOptions = paymentOptions,
-                msdkSession = msdkSession
+                msdkSession = msdkSession,
+                navigator = navigator
             )
         }
     }
@@ -87,7 +91,6 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
     }
 
     companion object {
-        val navigator = Navigator()
 
         private lateinit var paymentOptions: PaymentOptions
 

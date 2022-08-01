@@ -15,6 +15,7 @@ import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.NavigationComponent
+import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.theme.HexToJetpackColor
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
@@ -24,6 +25,7 @@ internal fun MainContent(
     activity: PaymentActivity,
     paymentOptions: PaymentOptions,
     msdkSession: MSDKCoreSession,
+    navigator: Navigator
 ) {
     val showDismissDialog = remember { mutableStateOf(false) }
     val needCloseWhenError = remember { mutableStateOf(false) }
@@ -42,7 +44,8 @@ internal fun MainContent(
                     msdkSession = msdkSession,
                 ) {
                     NavigationComponent(
-                        navigator = PaymentActivity.navigator,
+                        actionType = paymentOptions.actionType,
+                        navigator = navigator,
                         delegate = activity,
                         onCancel = { showDismissDialog.value = true },
                         onError = { errorResult, needClose ->

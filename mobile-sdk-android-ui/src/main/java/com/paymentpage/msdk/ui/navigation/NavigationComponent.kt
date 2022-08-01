@@ -15,6 +15,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.PaymentDelegate
+import com.paymentpage.msdk.ui.base.ActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.clarificationFields.ClarificationFieldsScreen
 import com.paymentpage.msdk.ui.presentation.customerFields.CustomerFieldsScreen
@@ -33,6 +34,7 @@ import kotlinx.coroutines.flow.onEach
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun NavigationComponent(
+    actionType: ActionType,
     navigator: Navigator,
     delegate: PaymentDelegate,
     onCancel: () -> Unit,
