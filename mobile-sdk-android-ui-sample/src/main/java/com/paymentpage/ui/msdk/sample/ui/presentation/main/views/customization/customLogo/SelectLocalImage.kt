@@ -1,4 +1,4 @@
-package com.paymentpage.ui.msdk.sample.ui.presentation.main.views.imagesList
+package com.paymentpage.ui.msdk.sample.ui.presentation.main.views.customization.customLogo
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

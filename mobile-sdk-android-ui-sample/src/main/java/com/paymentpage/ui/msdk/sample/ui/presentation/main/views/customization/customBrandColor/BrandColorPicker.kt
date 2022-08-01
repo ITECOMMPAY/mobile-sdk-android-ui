@@ -1,4 +1,4 @@
-package com.paymentpage.ui.msdk.sample.ui.presentation.main.views.colorPicker
+package com.paymentpage.ui.msdk.sample.ui.presentation.main.views.customization.customBrandColor
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
