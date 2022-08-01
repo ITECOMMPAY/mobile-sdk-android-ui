@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Checkbox
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -56,20 +55,9 @@ internal fun CustomizationCheckbox(
             content = {
                 Spacer(modifier = Modifier.size(10.dp))
                 BrandColorPicker()
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.size(10.dp))
                 SelectImagesList()
-                Spacer(modifier = Modifier.height(10.dp))
-                viewState?.paymentData?.bitmap?.asImageBitmap()?.let {
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Image(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(50.dp)
-                                .background(Color.LightGray),
-                            bitmap = it,
-                            contentDescription = null)
-                    }
-                }
+                Spacer(modifier = Modifier.size(10.dp))
             }
         )
     }

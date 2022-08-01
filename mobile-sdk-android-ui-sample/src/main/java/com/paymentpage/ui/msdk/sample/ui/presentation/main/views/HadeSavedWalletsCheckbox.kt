@@ -1,9 +1,9 @@
-package com.paymentpage.ui.msdk.sample.ui.presentation.main.views.forcePaymentMethod
+package com.paymentpage.ui.msdk.sample.ui.presentation.main.views
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,16 +12,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewIntents
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewModel
+import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
 
 @Composable
-internal fun ForcePaymentMethodCheckbox(
+internal fun HideSavedWalletsCheckbox(
     viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ) {
     val viewState by viewModel.viewState.collectAsState()
+    val paymentData = viewState?.paymentData ?: PaymentData.defaultPaymentData
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -29,26 +29,19 @@ internal fun ForcePaymentMethodCheckbox(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
             ) {
-                viewModel.pushIntent(MainViewIntents.ChangeForcePaymentMethodCheckbox)
+                viewModel.pushIntent(MainViewIntents.ChangeField(
+                    paymentData = paymentData.copy(hideSavedWallets = !paymentData.hideSavedWallets)
+                ))
             },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
-            checked = viewState?.isVisibleForcePaymentMethodFields == true,
-            onCheckedChange = { viewModel.pushIntent(MainViewIntents.ChangeForcePaymentMethodCheckbox) },
+            checked = paymentData.hideSavedWallets,
+            onCheckedChange = {
+                viewModel.pushIntent(MainViewIntents.ChangeField(
+                    paymentData = paymentData.copy(hideSavedWallets = it)))
+            },
         )
-        Text(text = "Custom force payment method")
-    }
-    if (viewState?.isVisibleForcePaymentMethodFields == true) {
-        Spacer(modifier = Modifier.size(10.dp))
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(width = 1.dp, color = Color.LightGray)
-                .padding(horizontal = 10.dp),
-            content = {
-                SelectForcePaymentMethod()
-            }
-        )
+        Text(text = "Hide saved wallets")
     }
 }
