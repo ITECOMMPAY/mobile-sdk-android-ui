@@ -6,10 +6,11 @@ import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
 
 data class MainViewState(
     var paymentData: PaymentData,
+    var isVisibleForcePaymentMethodFields: Boolean,
     var isVisibleApiHostFields: Boolean,
     var isVisibleGooglePayFields: Boolean,
     var isVisibleCustomizationFields: Boolean,
-    var isExpandedSelectImagesList: Boolean,
     var selectedResourceImageId: Int,
+    var selectedForcePaymentMethodId: Int,
     var localImageUri: Uri?
 ) : ViewState
