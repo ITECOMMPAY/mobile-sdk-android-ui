@@ -33,8 +33,10 @@ internal fun List<CustomerField>.merge(
     val result = changedFields?.toMutableList() ?: mutableListOf()
     this.forEach { field ->
         if (result.find { it.name == field.name } == null) {
-            val foundAdditionalFieldValue = additionalFields.find { field.type == it.type }?.value
-            result.add(CustomerFieldValue(field.name, foundAdditionalFieldValue ?: ""))
+            val foundAdditionalFieldValue =
+                additionalFields.find { field.type == it.type && !it.value.isNullOrEmpty() }?.value
+            if (foundAdditionalFieldValue != null)
+                result.add(CustomerFieldValue(field.name, foundAdditionalFieldValue))
         }
     }
 
