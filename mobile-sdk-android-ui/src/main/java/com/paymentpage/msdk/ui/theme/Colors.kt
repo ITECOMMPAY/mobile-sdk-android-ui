@@ -47,7 +47,7 @@ internal class Colors(
     var panelBackgroundErrorColor by mutableStateOf(panelBackgroundErrorColor)
         private set
     var borderErrorColor by mutableStateOf(borderErrorColor)
-
+        private set
     var iconColor by mutableStateOf(iconColor)
         private set
 }
@@ -98,6 +98,5 @@ object HexToJetpackColor {
         } catch (e: Exception) {
             null
         }
-
     }
 }
