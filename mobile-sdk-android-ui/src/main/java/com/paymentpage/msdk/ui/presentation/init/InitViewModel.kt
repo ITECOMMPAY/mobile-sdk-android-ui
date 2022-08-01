@@ -28,11 +28,7 @@ internal class InitViewModel(
     override val timeMachine: TimeMachine<InitScreenState>
         get() = reducer.timeMachine
 
-    init {
-        loadInit()
-    }
-
-    private fun loadInit() {
+    fun loadInit() {
         initInteractor.execute(
             request = InitRequest(
                 paymentInfo = paymentOptions.paymentInfo,

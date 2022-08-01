@@ -34,6 +34,7 @@ internal fun InitScreen(
     val initViewModel = LocalInitViewModel.current
     val mainViewModel = LocalMainViewModel.current
     LaunchedEffect(Unit) {
+        initViewModel.loadInit()
         initViewModel.state.onEach {
             when {
                 it.error != null -> onError(it.error, true)
