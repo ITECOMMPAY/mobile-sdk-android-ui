@@ -61,7 +61,8 @@ class SampleActivity : ComponentActivity() {
             paymentAmount = paymentData.paymentAmount ?: -1,
             paymentCurrency = paymentData.paymentCurrency,
             customerId = paymentData.customerId,
-            paymentDescription = paymentData.paymentDescription
+            paymentDescription = paymentData.paymentDescription,
+            languageCode = paymentData.languageCode
         )
         payment.signature =
             SignatureGenerator.generateSignature(
