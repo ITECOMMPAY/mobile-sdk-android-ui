@@ -3,6 +3,7 @@ package com.paymentpage.ui.msdk.sample.ui.presentation.main.views
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -49,7 +50,7 @@ internal fun PaymentFields(
             }
         }
     )
-    Spacer(modifier = Modifier.height(10.dp))
+    Spacer(modifier = Modifier.size(10.dp))
     OutlinedTextField(
         value = paymentData.paymentAmount?.toString() ?: "",
         onValueChange = {
@@ -63,7 +64,7 @@ internal fun PaymentFields(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         label = { Text(text = "Payment Amount") }
     )
-    Spacer(modifier = Modifier.height(10.dp))
+    Spacer(modifier = Modifier.size(10.dp))
     OutlinedTextField(
         value = paymentData.paymentCurrency,
         onValueChange = {
@@ -73,7 +74,7 @@ internal fun PaymentFields(
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Payment Currency") }
     )
-    Spacer(modifier = Modifier.height(10.dp))
+    Spacer(modifier = Modifier.size(10.dp))
     OutlinedTextField(
         value = paymentData.paymentDescription,
         onValueChange = {
@@ -83,7 +84,7 @@ internal fun PaymentFields(
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Payment Description") }
     )
-    Spacer(modifier = Modifier.height(10.dp))
+    Spacer(modifier = Modifier.size(10.dp))
     OutlinedTextField(
         value = paymentData.customerId,
         onValueChange = {
@@ -92,5 +93,15 @@ internal fun PaymentFields(
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Customer Id") }
+    )
+    Spacer(modifier = Modifier.size(10.dp))
+    OutlinedTextField(
+        value = paymentData.languageCode ?: "",
+        onValueChange = {
+            viewModel.pushIntent(MainViewIntents.ChangeField(
+                paymentData = paymentData.copy(languageCode = it)))
+        },
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Language code") }
     )
 }
