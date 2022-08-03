@@ -65,9 +65,8 @@ internal fun MainViewModel.showAps(
 internal fun MainViewModel.saleAps(
     method: UIPaymentMethod.UIApsPaymentMethod,
 ) {
-    val request = ApsSaleRequest(
-        type = method.type
-    )
+    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
+    val request = ApsSaleRequest(type = method.type)
     payInteractor.execute(request = request, callback = this)
 }
 

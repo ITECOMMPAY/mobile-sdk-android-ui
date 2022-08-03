@@ -23,9 +23,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
 @Composable
-internal fun ApsScreen(
-    onCancel: () -> Unit,
-) {
+internal fun ApsScreen(onCancel: () -> Unit) {
     val viewModel = LocalMainViewModel.current
     val method = viewModel.lastState.currentMethod as UIPaymentMethod.UIApsPaymentMethod
     val apsMethod = viewModel.lastState.apsPageState?.apsMethod
@@ -35,10 +33,12 @@ internal fun ApsScreen(
     SDKScaffold(
         title = method.title,
         notScrollableContent = {
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(2.dp)
-                .background(SDKTheme.colors.panelBackgroundColor))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(2.dp)
+                    .background(SDKTheme.colors.panelBackgroundColor)
+            )
             if (paymentUrl != null) {
                 ApsPageView(
                     method = method,
