@@ -1,8 +1,14 @@
+import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.tasks.bundling.Jar
+import java.util.*
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("io.gitlab.arturbosch.detekt")
+    id("maven-publish")
+    id("signing")
 }
 
 android {
@@ -42,7 +48,7 @@ android {
         productFlavors {
             create("ecommpay") {
                 dimension = "brand"
-                version = System.getenv("SDK_VERSION_NAME") ?: Ecommpay.version
+                version = System.getenv("SDK_VERSION_NAME") ?: Library.version
 
                 buildConfigField(
                     "String",
@@ -115,7 +121,72 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
         freeCompilerArgs +="-Xjvm-default=all"
+    }
+}
 
 
+val javadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+}
+
+fun getExtraString(name: String) = rootProject.ext[name]?.toString()
+afterEvaluate {
+    publishing {
+        // Configure maven central repository
+        repositories {
+            maven {
+                name = "sonatype"
+                setUrl("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = getExtraString("ossrhUsername")
+                    password = getExtraString("ossrhPassword")
+                }
+            }
+        }
+
+        publications.create<MavenPublication>("ecommpayRelease") {
+            from(project.components["ecommpayRelease"])
+            groupId = Library.ecommpayGroup
+            artifactId = Library.artifactId
+            version = Library.version
+
+            // Stub javadoc.jar artifact
+            artifact(javadocJar.get())
+
+            // Provide artifacts information requited by Maven Central
+            pom {
+                name.set("mSDK UI Module")
+                description.set("SDK for Android is a software development kit for fast integration of the ECommPay payment solutions right in your mobile application for Android.")
+                url.set("https://github.com/ITECOMMPAY/")
+
+                licenses {
+                    license {
+                        name.set("MIT")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("ecpit")
+                        name.set("Alexey Khrameev")
+                        email.set("a.khrameev@it.ecommpay.com")
+                    }
+                    developer {
+                        id.set("ecpit")
+                        name.set("Roman Karpilenko")
+                        email.set("r.karpilenko@it.ecommpay.com")
+                    }
+                }
+                scm {
+                    url.set("https://github.com/ITECOMMPAY/paymentpage-sdk-android-core")
+                }
+
+            }
+        }
+    }
+
+    // Signing artifacts. Signing.* extra properties values will be used
+    signing {
+        sign(publishing.publications)
     }
 }

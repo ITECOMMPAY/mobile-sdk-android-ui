@@ -14,6 +14,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+
 rootProject.name = "msdk-android-ui"
 
 include ':mobile-sdk-android-ui'

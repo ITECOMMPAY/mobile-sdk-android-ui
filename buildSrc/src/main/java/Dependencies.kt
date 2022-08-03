@@ -1,6 +1,8 @@
 @file:Suppress("unused")
 
-object Ecommpay {
+object Library {
+    const val artifactId = "msdk-ui"
+    const val ecommpayGroup = "com.ecommpay"
     const val version = "2.0.0"
 }
 
