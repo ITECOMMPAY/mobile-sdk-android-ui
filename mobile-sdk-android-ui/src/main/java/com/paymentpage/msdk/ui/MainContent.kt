@@ -23,7 +23,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 @OptIn(ExperimentalMaterialApi::class)
 internal fun MainContent(
     activity: PaymentActivity,
-    paymentOptions: PaymentOptions,
+    paymentOptions: SDKOptions,
     msdkSession: MSDKCoreSession,
     navigator: Navigator
 ) {

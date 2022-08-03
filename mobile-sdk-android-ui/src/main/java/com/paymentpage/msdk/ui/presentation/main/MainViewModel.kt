@@ -8,7 +8,7 @@ import com.paymentpage.msdk.core.domain.entities.payment.PaymentStatus
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
 import com.paymentpage.msdk.core.domain.interactors.pay.PayDelegate
 import com.paymentpage.msdk.core.domain.interactors.pay.PayInteractor
-import com.paymentpage.msdk.ui.PaymentOptions
+import com.paymentpage.msdk.ui.SDKOptions
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.TimeMachine
 import com.paymentpage.msdk.ui.base.mvvm.BaseViewModel
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 internal class MainViewModel(
     val payInteractor: PayInteractor,
-    private val paymentOptions: PaymentOptions
+    private val paymentOptions: SDKOptions
 ) : BaseViewModel<MainScreenState, MainScreenUiEvent>(), PayDelegate {
     override val reducer = MainReducer(MainScreenState.initial())
 

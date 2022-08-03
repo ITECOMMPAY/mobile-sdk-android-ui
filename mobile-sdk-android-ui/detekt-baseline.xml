@@ -128,7 +128,7 @@
     <ID>MaxLineLength:PaymentDetailsView.kt$paymentDescriptionLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_information_screen")</ID>
     <ID>MaxLineLength:PaymentDetailsView.kt$style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand.copy(alpha = if (isExpanded) 0.3f else 1f))</ID>
     <ID>MaxLineLength:PaymentMethods.kt$if</ID>
-    <ID>NewLineAtEndOfFile:ActionType.kt$com.paymentpage.msdk.ui.base.ActionType.kt</ID>
+    <ID>NewLineAtEndOfFile:ActionType.kt$com.paymentpage.msdk.ui.ActionType.kt</ID>
     <ID>NewLineAtEndOfFile:AdditionalField.kt$com.paymentpage.msdk.ui.AdditionalField.kt</ID>
     <ID>NewLineAtEndOfFile:BaseCustomerField.kt$com.paymentpage.msdk.ui.views.customerFields.type.BaseCustomerField.kt</ID>
     <ID>NewLineAtEndOfFile:BaseMVI.kt$com.paymentpage.msdk.ui.base.mvi.BaseMVI.kt</ID>

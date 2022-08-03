@@ -13,14 +13,13 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.FieldServerType
-import com.paymentpage.msdk.ui.AdditionalField
-import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.SDKAdditionalField
 import com.paymentpage.msdk.ui.views.customerFields.type.*
 
 @Composable
 internal fun CustomerFields(
     visibleCustomerFields: List<CustomerField>,
-    additionalFields: List<AdditionalField> = emptyList(),
+    additionalFields: List<SDKAdditionalField> = emptyList(),
     customerFieldValues: List<CustomerFieldValue> = emptyList(),
     onCustomerFieldsChanged: (List<CustomerFieldValue>, Boolean) -> Unit,
 ) {

@@ -2,7 +2,7 @@ package com.paymentpage.msdk.ui.utils.extensions.core
 
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
-import com.paymentpage.msdk.ui.AdditionalField
+import com.paymentpage.msdk.ui.SDKAdditionalField
 import com.paymentpage.msdk.ui.PaymentActivity
 
 internal fun CustomerField.validate(
@@ -28,7 +28,7 @@ internal fun CustomerField.validate(
 
 internal fun List<CustomerField>.merge(
     changedFields: List<CustomerFieldValue>?,
-    additionalFields: List<AdditionalField>
+    additionalFields: List<SDKAdditionalField>
 ): List<CustomerFieldValue> {
     val result = changedFields?.toMutableList() ?: mutableListOf()
     this.forEach { field ->

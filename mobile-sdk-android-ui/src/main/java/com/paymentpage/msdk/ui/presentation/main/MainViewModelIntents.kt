@@ -9,7 +9,7 @@ import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleR
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePaySaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
-import com.paymentpage.msdk.ui.AdditionalField
+import com.paymentpage.msdk.ui.SDKAdditionalField
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
@@ -21,7 +21,7 @@ internal fun MainViewModel.saleGooglePay(
     token: String,
     environment: GooglePayEnvironment,
     allCustomerFields: List<CustomerField>,
-    additionalFields: List<AdditionalField>
+    additionalFields: List<SDKAdditionalField>
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
@@ -41,7 +41,7 @@ internal fun MainViewModel.saleGooglePay(
 internal fun MainViewModel.saleSavedCard(
     method: UIPaymentMethod.UISavedCardPayPaymentMethod,
     allCustomerFields: List<CustomerField>,
-    additionalFields: List<AdditionalField>
+    additionalFields: List<SDKAdditionalField>
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
@@ -57,7 +57,7 @@ internal fun MainViewModel.saleSavedCard(
 internal fun MainViewModel.saleCard(
     method: UIPaymentMethod.UICardPayPaymentMethod,
     allCustomerFields: List<CustomerField>,
-    additionalFields: List<AdditionalField>
+    additionalFields: List<SDKAdditionalField>
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))

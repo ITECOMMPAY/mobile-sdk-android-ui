@@ -11,9 +11,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.paymentpage.msdk.ui.AdditionalField
+import com.paymentpage.msdk.ui.SDKAdditionalField
 import com.paymentpage.ui.msdk.sample.ui.navigation.NavRouts
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ecommpay.msdk.ui.AdditionalField
 import com.paymentpage.ui.msdk.sample.utils.collectAsEffect
 
 @Composable
@@ -48,7 +49,7 @@ internal fun AdditionalFieldScreen(
                         additionalFields = changed)))
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = additionalField.type.name) }
+                label = { Text(text = additionalField.type?.name ?: "") }
             )
             Spacer(modifier = Modifier.height(10.dp))
         }
