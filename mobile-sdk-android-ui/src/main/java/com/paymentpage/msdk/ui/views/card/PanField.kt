@@ -8,12 +8,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCard
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
-import com.paymentpage.msdk.core.manager.card.CardTypesManager
 import com.paymentpage.msdk.core.validators.custom.PanValidator
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R

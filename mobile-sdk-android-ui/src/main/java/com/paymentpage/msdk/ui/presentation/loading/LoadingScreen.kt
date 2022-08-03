@@ -24,6 +24,7 @@ import com.paymentpage.msdk.ui.views.lodaing.DotsPulsing
 internal fun LoadingScreen(onCancel: () -> Unit) {
 
     SDKScaffold(
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
         notScrollableContent = {
             Column(
                 modifier = Modifier

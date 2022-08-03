@@ -3,6 +3,7 @@ package com.paymentpage.msdk.ui.presentation.main.models
 
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 
 
@@ -49,5 +50,18 @@ internal sealed class UIPaymentMethod(
         var isValidExpiry: Boolean = false
         var isValidCardHolder: Boolean = false
         var isCustomerFieldsValid: Boolean = false
+    }
+
+    class UIApsPaymentMethod(
+        index: Int,
+        title: String,
+        paymentMethod: PaymentMethod
+    ) : UIPaymentMethod(
+        index = index,
+        title = title,
+        logoUrl = null,
+        paymentMethod = paymentMethod,
+    ) {
+        var type: PaymentMethodType = paymentMethod.type
     }
 }

@@ -4,6 +4,7 @@ import com.paymentpage.msdk.core.domain.entities.SdkExpiry
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
+import com.paymentpage.msdk.core.domain.interactors.pay.aps.ApsSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
@@ -51,6 +52,23 @@ internal fun MainViewModel.saleSavedCard(
         additionalFields = additionalFields
     )
     this.payInteractor.execute(request, this)
+}
+
+internal fun MainViewModel.showAps(
+    method: UIPaymentMethod.UIApsPaymentMethod,
+) {
+    sendEvent(MainScreenUiEvent.ShowApsPage(apsMethod = method.paymentMethod))
+    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
+}
+
+//sale with aps
+internal fun MainViewModel.saleAps(
+    method: UIPaymentMethod.UIApsPaymentMethod,
+) {
+    val request = ApsSaleRequest(
+        type = method.type
+    )
+    payInteractor.execute(request = request, callback = this)
 }
 
 //sale with new card

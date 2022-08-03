@@ -14,6 +14,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
 internal fun SDKScaffold(
+    modifier: Modifier = Modifier,
     title: String = "",
     notScrollableContent: @Composable () -> Unit = {},
     scrollableContent: @Composable () -> Unit = {},
@@ -28,22 +29,27 @@ internal fun SDKScaffold(
             .fillMaxWidth(),
         content = {
             Column(
-                modifier = Modifier.padding(20.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                SDKTopBar(
-                    title = title,
-                    onClose = onClose,
-                    onBack = onBack
-                )
-                notScrollableContent()
+                Column(modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp)) {
+                    SDKTopBar(
+                        title = title,
+                        onClose = onClose,
+                        onBack = onBack
+                    )
+                }
                 Column(
-                    modifier = Modifier
-                        .verticalScroll(rememberScrollState())
+                    modifier = modifier
                 ) {
-                    scrollableContent()
-                    Spacer(modifier = Modifier.size(15.dp))
-                    footerContent()
+                    notScrollableContent()
+                    Column(
+                        modifier = Modifier
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        scrollableContent()
+                        Spacer(modifier = Modifier.size(15.dp))
+                        footerContent()
+                    }
                 }
             }
         }

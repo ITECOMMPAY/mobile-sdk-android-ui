@@ -1,10 +1,8 @@
-package com.paymentpage.msdk.ui.presentation.threeDSecure
+package com.paymentpage.msdk.ui.presentation.aps
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import android.net.http.SslError
 import android.view.ViewGroup
-import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -18,26 +16,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.presentation.main.threeDSecureHandled
+import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.saleAps
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
 @Composable
-internal fun ThreeDSecureScreen(
+internal fun ApsScreen(
     onCancel: () -> Unit,
 ) {
     val viewModel = LocalMainViewModel.current
-    val acsPage = viewModel.lastState.acsPageState?.acsPage
-
+    val method = viewModel.lastState.currentMethod as UIPaymentMethod.UIApsPaymentMethod
+    val apsMethod = viewModel.lastState.apsPageState?.apsMethod
+    val paymentUrl = apsMethod?.paymentUrl
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
+        title = method.title,
         notScrollableContent = {
-            Spacer(modifier = Modifier.fillMaxWidth().height(2.dp).background(SDKTheme.colors.panelBackgroundColor))
-            if (acsPage != null) {
-                AcsPageView(acsPage = acsPage)
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(2.dp)
+                .background(SDKTheme.colors.panelBackgroundColor))
+            if (paymentUrl != null) {
+                ApsPageView(
+                    method = method,
+                    paymentUrl = paymentUrl
+                )
             }
         },
         scrollableContent = {},
@@ -48,8 +54,9 @@ internal fun ThreeDSecureScreen(
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-internal fun AcsPageView(
-    acsPage: AcsPage,
+internal fun ApsPageView(
+    method: UIPaymentMethod.UIApsPaymentMethod,
+    paymentUrl: String,
 ) {
     val viewModel = LocalMainViewModel.current
     var isLoading by remember { mutableStateOf(false) }
@@ -88,33 +95,20 @@ internal fun AcsPageView(
                         ) {
                             super.onPageStarted(view, url, favicon)
                             isLoading = true
-                            if (url.equals(acsPage.acs?.termUrl)) {
-                                viewModel.threeDSecureHandled()
-                            }
+                            if (url != paymentUrl)
+                                viewModel.saleAps(method)
                         }
 
                         override fun onPageFinished(view: WebView?, url: String?) {
                             super.onPageFinished(view, url)
                             isLoading = false
                         }
-
-                        override fun onReceivedSslError(
-                            view: WebView?,
-                            handler: SslErrorHandler?,
-                            error: SslError?,
-                        ) {
-                            super.onReceivedSslError(view, handler, error)
-
-                        }
                     }
                     settings.javaScriptEnabled = true
-                    loadDataWithBaseURL(
-                        acsPage.acs?.acsUrl ?: "",
-                        acsPage.content ?: "",
-                        "text/html",
-                        "UTF-8",
-                        null
-                    )
+                    settings.builtInZoomControls = true
+                    settings.domStorageEnabled = true
+
+                    loadUrl(paymentUrl)
                 }
             }, update = {
 

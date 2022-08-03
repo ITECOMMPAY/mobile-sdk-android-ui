@@ -17,6 +17,7 @@ import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.ActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
+import com.paymentpage.msdk.ui.presentation.aps.ApsScreen
 import com.paymentpage.msdk.ui.presentation.clarificationFields.ClarificationFieldsScreen
 import com.paymentpage.msdk.ui.presentation.customerFields.CustomerFieldsScreen
 import com.paymentpage.msdk.ui.presentation.init.InitScreen
@@ -60,6 +61,7 @@ internal fun NavigationComponent(
                 it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> navigator.navigateTo(Route.ClarificationFields)
                 it.acsPageState != null -> navigator.navigateTo(Route.AcsPage)
+                it.apsPageState != null -> navigator.navigateTo(Route.ApsPage)
                 it.finalPaymentState != null -> {
                     when (it.finalPaymentState) {
                         is FinalPaymentState.Success -> navigator.navigateTo(Route.SuccessResult)
@@ -105,6 +107,11 @@ internal fun NavigationComponent(
         }
         composable(route = Route.AcsPage.getPath()) {
             ThreeDSecureScreen(
+                onCancel = onCancel
+            )
+        }
+        composable(route = Route.ApsPage.getPath()) {
+            ApsScreen(
                 onCancel = onCancel
             )
         }
