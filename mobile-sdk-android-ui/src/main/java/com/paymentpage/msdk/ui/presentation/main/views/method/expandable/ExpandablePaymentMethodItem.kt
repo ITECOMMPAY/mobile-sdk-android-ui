@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -40,6 +41,8 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 internal fun ExpandablePaymentMethodItem(
     method: UIPaymentMethod,
     fallbackIcon: Painter,
+    isLocalResourceIcon: Boolean = method.logoUrl.isNullOrEmpty() && method.paymentMethod.iconUrl.isNullOrEmpty(),
+    prefixNameResourceIcon: String? = null,
     headerBackgroundColor: Color = SDKTheme.colors.backgroundColor,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -81,19 +84,36 @@ internal fun ExpandablePaymentMethodItem(
                             mainViewModel.setCurrentMethod(null)
                     }
                 ), verticalAlignment = Alignment.CenterVertically) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(method.logoUrl)
-                        .crossfade(true)
-                        .diskCachePolicy(CachePolicy.ENABLED)
-                        .build(),
-                    fallback = fallbackIcon,
-                    contentDescription = "",
-                    contentScale = ContentScale.Inside,
-                    placeholder = fallbackIcon,
-                    modifier = Modifier.size(height = 20.dp, width = 50.dp),
-                    alignment = Alignment.CenterStart
-                )
+                if (!isLocalResourceIcon) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(method.logoUrl)
+                            .crossfade(true)
+                            .diskCachePolicy(CachePolicy.ENABLED)
+                            .build(),
+                        fallback = fallbackIcon,
+                        contentDescription = "",
+                        contentScale = ContentScale.Inside,
+                        placeholder = fallbackIcon,
+                        modifier = Modifier.size(height = 20.dp, width = 50.dp),
+                        alignment = Alignment.CenterStart
+                    )
+                } else {
+                    val name = "${prefixNameResourceIcon}_${method.paymentMethod.code}_logo"
+                    val context = LocalContext.current
+                    val drawableId = remember(name) {
+                        context.resources.getIdentifier(
+                            name,
+                            "drawable",
+                            context.packageName
+                        )
+                    }
+                    Image(
+                        painter = if (drawableId > 0) painterResource(id = drawableId) else fallbackIcon,
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit
+                    )
+                }
                 Row(
                     modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.End,

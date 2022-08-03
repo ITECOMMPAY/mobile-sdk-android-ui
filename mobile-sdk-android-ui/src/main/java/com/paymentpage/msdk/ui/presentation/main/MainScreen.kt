@@ -2,6 +2,7 @@ package com.paymentpage.msdk.ui.presentation.main
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -36,6 +37,7 @@ internal fun MainScreen(
 private fun Content(onCancel: () -> Unit, onError: (ErrorResult, Boolean) -> Unit) {
     BackHandler(true) { onCancel() }
     SDKScaffold(
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
         notScrollableContent = {
             PaymentDetailsView()

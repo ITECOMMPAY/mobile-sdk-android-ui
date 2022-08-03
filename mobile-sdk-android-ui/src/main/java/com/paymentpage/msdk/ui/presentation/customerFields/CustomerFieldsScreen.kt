@@ -3,6 +3,7 @@ package com.paymentpage.msdk.ui.presentation.customerFields
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -40,6 +41,7 @@ internal fun CustomerFieldsScreen(
     BackHandler(true) { onBack() }
 
     SDKScaffold(
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
         title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_additional_data"),
         notScrollableContent = {
             PaymentDetailsView()

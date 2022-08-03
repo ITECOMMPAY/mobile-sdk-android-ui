@@ -22,5 +22,8 @@ internal fun PaymentMethodItem(
                 onError = onError
             )
         }
+        is UIPaymentMethod.UIApsPaymentMethod -> {
+            ApsPayItem(method = method)
+        }
     }
 }
