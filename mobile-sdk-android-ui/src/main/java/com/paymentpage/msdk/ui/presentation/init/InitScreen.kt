@@ -15,6 +15,8 @@ import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.presentation.main.restorePayment
+import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.shimmer.ShimmerAnimatedItem
 import kotlinx.coroutines.flow.collect
@@ -53,12 +55,21 @@ private fun Content(onCancel: () -> Unit) {
         title = stringResource(R.string.payment_methods_label),
         notScrollableContent = { Loading() },
         onClose = onCancel,
-        footerContent = { }
+        footerContent = {
+            SDKFooter(
+                iconLogo = SDKTheme.images.sdkLogoResId,
+                poweredByText = stringResource(R.string.powered_by_label),
+                isVisiblePrivacyPolicy = false,
+                isVisibleCookiePolicy = false
+            )
+        }
     )
 }
 
 @Composable
-private fun Loading() {
+private fun Loading(
+    range: IntRange = (1..5),
+) {
     ShimmerAnimatedItem(
         itemHeight = 20.dp,
         itemWidth = 125.dp,
@@ -90,12 +101,13 @@ private fun Loading() {
         }
     }
     Spacer(modifier = Modifier.size(10.dp))
-    (1..5).forEach { _ ->
+    range.forEachIndexed { _, index ->
         ShimmerAnimatedItem(
             itemHeight = 50.dp,
             borderRadius = 6.dp
         )
-        Spacer(modifier = Modifier.size(10.dp))
+        if (index != range.last)
+            Spacer(modifier = Modifier.size(10.dp))
     }
 }
 

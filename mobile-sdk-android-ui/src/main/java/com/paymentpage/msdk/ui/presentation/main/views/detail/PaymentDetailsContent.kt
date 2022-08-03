@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -45,7 +46,7 @@ fun PaymentDetailsContent(
                     }
                 ),
                 imageVector = Icons.Default.Close,
-                colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
+                colorFilter = ColorFilter.tint(Color.Black),
                 contentDescription = "",
             )
         }

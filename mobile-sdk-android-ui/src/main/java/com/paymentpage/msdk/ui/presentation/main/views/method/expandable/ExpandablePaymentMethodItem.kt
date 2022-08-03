@@ -36,6 +36,7 @@ import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
 
 @Composable
 internal fun ExpandablePaymentMethodItem(
@@ -102,11 +103,7 @@ internal fun ExpandablePaymentMethodItem(
                     val name = "${prefixNameResourceIcon}_${method.paymentMethod.code}_logo"
                     val context = LocalContext.current
                     val drawableId = remember(name) {
-                        context.resources.getIdentifier(
-                            name,
-                            "drawable",
-                            context.packageName
-                        )
+                        context.drawableResourceIdFromDrawableName(name)
                     }
                     Image(
                         painter = if (drawableId > 0) painterResource(id = drawableId) else fallbackIcon,
@@ -130,7 +127,7 @@ internal fun ExpandablePaymentMethodItem(
                         modifier = Modifier
                             .rotate(rotationState),
                         imageVector = Icons.Default.KeyboardArrowDown,
-                        colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
+                        colorFilter = ColorFilter.tint(SDKTheme.colors.navigationIconColor),
                         contentDescription = "",
                     )
                 }

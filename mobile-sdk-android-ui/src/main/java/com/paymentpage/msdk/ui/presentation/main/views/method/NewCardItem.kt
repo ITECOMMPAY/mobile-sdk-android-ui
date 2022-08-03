@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
@@ -30,7 +31,7 @@ import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
-import com.paymentpage.msdk.ui.views.card.PanField
+import com.paymentpage.msdk.ui.views.card.panField.PanField
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 @Composable
@@ -46,6 +47,7 @@ internal fun NewCardItem(
     var isPanValid by remember { mutableStateOf(method.isValidPan) }
     var isCardHolderValid by remember { mutableStateOf(method.isValidCardHolder) }
     var isExpiryValid by remember { mutableStateOf(method.isValidExpiry) }
+    var cardType by remember { mutableStateOf<PaymentMethodCardType?>(null) }
 
     ExpandablePaymentMethodItem(
         method = method,
@@ -57,11 +59,14 @@ internal fun NewCardItem(
             PanField(
                 initialValue = method.pan,
                 modifier = Modifier.fillMaxWidth(),
-                paymentMethod  = method.paymentMethod,
+                paymentMethod = method.paymentMethod,
                 onValueChanged = { value, isValid ->
                     isPanValid = isValid
                     method.pan = value
                     method.isValidPan = isValid
+                },
+                onPaymentMethodCardTypeChange = {
+                    cardType = it
                 }
             )
             Spacer(modifier = Modifier.size(10.dp))
@@ -89,6 +94,7 @@ internal fun NewCardItem(
                 CvvField(
                     initialValue = method.cvv,
                     modifier = Modifier.weight(1f),
+                    cardType = cardType,
                     onValueChanged = { value, isValid ->
                         isCvvValid = isValid
                         method.cvv = value

@@ -31,6 +31,7 @@ fun CustomTextField(
     onValueChanged: (String, Boolean) -> Unit,
     onRequestValidatorMessage: ((String) -> String?)? = null,
     onFilterValueBefore: ((String) -> String)? = null,
+    onFocusChanged: ((Boolean) -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardType: KeyboardType = KeyboardType.Text,
     nextFocus: FocusRequester? = null,
@@ -39,7 +40,7 @@ fun CustomTextField(
     isDisabled: Boolean = false,
     isRequired: Boolean = false,
     trailingIcon: @Composable (() -> Unit)? = null,
-    maxLength: Int? = null
+    maxLength: Int? = null,
 ) {
 
     var textValue by remember { mutableStateOf(initialValue ?: "") }
@@ -75,6 +76,7 @@ fun CustomTextField(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
+                cursorColor = SDKTheme.colors.brand,
             ),
             enabled = !isDisabled,
             modifier = Modifier
@@ -83,13 +85,14 @@ fun CustomTextField(
                     width = 1.dp,
                     color = when {
                         errorMessage != null -> SDKTheme.colors.borderErrorColor
-                        else -> SDKTheme.colors.borderColor
+                        else -> if (isFocused) SDKTheme.colors.brand else SDKTheme.colors.borderColor
                     },
                     shape = SDKTheme.shapes.radius6
                 )
                 .background(
                     color = when {
                         errorMessage != null -> SDKTheme.colors.panelBackgroundErrorColor
+                        isFocused -> SDKTheme.colors.backgroundTextFieldColor
                         isDisabled -> SDKTheme.colors.backgroundColor
                         else -> SDKTheme.colors.panelBackgroundColor
                     },
@@ -104,14 +107,21 @@ fun CustomTextField(
                                 onRequestValidatorMessage?.invoke(textValue)
                     else if (it.isFocused && !isFocused)
                         errorMessage = null
-
                     isFocused = it.isFocused
+                    if (onFocusChanged != null) {
+                        onFocusChanged(isFocused)
+                    }
                 },
             label = {
                 Row {
                     Text(
-                        label,
-                        color = if (isDisabled) SDKTheme.colors.disabledTextColor else SDKTheme.colors.secondaryTextColor,
+                        text = label,
+                        color = when {
+                            isFocused -> SDKTheme.colors.brand
+                            isDisabled -> SDKTheme.colors.disabledTextColor
+                            !isDisabled -> SDKTheme.colors.secondaryTextColor
+                            else -> SDKTheme.colors.secondaryTextColor
+                        },
                     )
                     if (isRequired) {
                         Text(

@@ -1,20 +1,31 @@
 package com.paymentpage.msdk.ui.views.card
 
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 
 @Composable
 internal fun CvvField(
     initialValue: String? = null,
     modifier: Modifier,
-    length: Int = 3,
+    cardType: PaymentMethodCardType? = null,
+    length: Int = if (cardType == PaymentMethodCardType.AMEX) 4 else 3,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
+    var cvvAlertDialogState by remember { mutableStateOf(false) }
     CustomTextField(
         initialValue = initialValue,
         modifier = modifier,
@@ -32,8 +43,30 @@ internal fun CvvField(
         visualTransformation = PasswordVisualTransformation(),
         label = PaymentActivity.stringResourceManager.getStringByKey("title_cvv"),
         maxLength = length,
-        isRequired = true
+        isRequired = true,
+        trailingIcon = {
+            Image(
+                modifier = Modifier.clickable(onClick = { cvvAlertDialogState = true }),
+                painter = painterResource(id = R.drawable.cvv_info_icon), contentDescription = null
+            )
+        }
     )
+    if (cvvAlertDialogState) {
+        AlertDialog(
+            title = { Text(text = PaymentActivity.stringResourceManager.getStringByKey("title_about_cvv")) },
+            text = { Text(text = PaymentActivity.stringResourceManager.getStringByKey("message_about_cvv")) },
+            onDismissRequest = { cvvAlertDialogState = false },
+            confirmButton = {
+                TextButton(onClick = { cvvAlertDialogState = false })
+                {
+                    Text(
+                        text = PaymentActivity.stringResourceManager.getStringByKey("button_ok"),
+                        color = SDKTheme.colors.brand
+                    )
+                }
+            }
+        )
+    }
 }
 
 @Composable

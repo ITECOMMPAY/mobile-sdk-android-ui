@@ -15,6 +15,7 @@ import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.paymentDateToPatternDate
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
@@ -29,7 +30,17 @@ internal fun ResultSuccessScreen(
     val viewModel = LocalMainViewModel.current
     val payment =
         viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
-
+    val valueTitleCardWallet = when (val method = viewModel.lastState.currentMethod) {
+        is UIPaymentMethod.UICardPayPaymentMethod, is UIPaymentMethod.UISavedCardPayPaymentMethod -> {
+            "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number}"
+        }
+        is UIPaymentMethod.UIApsPaymentMethod, is UIPaymentMethod.UIGooglePayPaymentMethod -> {
+            method.paymentMethod.translations["title"] ?: ""
+        }
+        else -> {
+            payment.account?.type ?: ""
+        }
+    }
     BackHandler(true) { onClose(payment) }
 
     SDKScaffold(
@@ -58,7 +69,7 @@ internal fun ResultSuccessScreen(
             ResultTableInfo(
                 titleKeyWithValueMap = mapOf(
                     "title_card_wallet" to
-                            "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number ?: ""}",
+                            valueTitleCardWallet,
                     "title_payment_id" to
                             "${payment.id}",
                     "title_payment_date" to

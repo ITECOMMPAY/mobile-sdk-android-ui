@@ -11,6 +11,8 @@ import androidx.compose.ui.graphics.Color
 internal class Colors(
     //Brand color
     brand: Color,
+    backgroundTextFieldColor: Color,
+    navigationIconColor: Color,
     primaryTextColor: Color,
     secondaryTextColor: Color,
     disabledTextColor: Color,
@@ -25,6 +27,10 @@ internal class Colors(
     footerTextColor: Color,
 ) {
     var brand by mutableStateOf(brand)
+        private set
+    var backgroundTextFieldColor by mutableStateOf(backgroundTextFieldColor)
+        private set
+    var navigationIconColor by mutableStateOf(navigationIconColor)
         private set
     var primaryTextColor by mutableStateOf(primaryTextColor)
         private set
@@ -59,6 +65,7 @@ private val colorWhite = Color(0xFFFFFFFF)
 
 //Default Light theme
 private val lightThemeBrandColor = Color(0xFF00579E)
+private val lightThemeBackgroundTextFieldColor = lightThemeBrandColor.copy(alpha = 0.05f)
 
 private val lightThemeLightGrayColor = Color(0xFFF6F7F9)
 private val lightThemeMediumGrayColor = Color(0xFFBCBDBE)
@@ -72,13 +79,15 @@ private val lightThemeLightRedColor = Color(0xFFF8EAEA)
 
 internal fun lightColors(brandColor: Color? = lightThemeBrandColor): Colors = Colors(
     brand = brandColor ?: lightThemeBrandColor,
+    backgroundTextFieldColor = brandColor?.copy(alpha = 0.05f) ?: lightThemeBackgroundTextFieldColor,
+    navigationIconColor = colorBlack,
     primaryTextColor = colorBlack,
     secondaryTextColor = lightThemeDarkGrayColor,
     disabledTextColor = lightThemeMediumGrayColor,
     successTextColor = lightThemeGreenColor,
     errorTextColor = lightThemeRedColor,
     backgroundColor = colorWhite,
-    iconColor = colorBlack,
+    iconColor = brandColor ?: lightThemeBrandColor,
     panelBackgroundColor = lightThemeLightGrayColor,
     borderColor = lightThemeGrayColor,
     footerTextColor = lightThemeMediumGrayColor,

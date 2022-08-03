@@ -53,7 +53,8 @@ internal fun SavedCardItem(
                         isCvvValid = isValid
                         method.cvv = value
                         method.isValidCvv = isValid
-                    }
+                    },
+                    cardType = method.savedAccount.cardType
                 )
             }
             if (customerFields.hasVisibleCustomerFields() && customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
