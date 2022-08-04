@@ -15,5 +15,6 @@ enum class EcmpPaymentMethodType(val value: String) {
     WEBMONEY_LIGHT("webmoney-light"),
     WEBMONEY_CLASSIC("webmoney"),
     GOOGLE_PAY("google_pay_host"),
-    APPLE_PAY("apple_pay_core");
+    APPLE_PAY("apple_pay_core"),
+    PAY_PALL(" paypal-wallet");
 }
