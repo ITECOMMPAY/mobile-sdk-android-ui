@@ -56,19 +56,19 @@ internal fun NavigationComponent(
     LaunchedEffect(Unit) {
         viewModel.state.onEach {
             when {
+                it.error != null -> onError(it.error, true)
                 it.isLoading == true && navigator.lastRoute != Route.Loading ->
                     navigator.navigateTo(Route.Loading)
-                it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
-                it.clarificationFields.isNotEmpty() -> navigator.navigateTo(Route.ClarificationFields)
-                it.acsPageState != null -> navigator.navigateTo(Route.AcsPage)
-                it.apsPageState != null -> navigator.navigateTo(Route.ApsPage)
                 it.finalPaymentState != null -> {
                     when (it.finalPaymentState) {
                         is FinalPaymentState.Success -> navigator.navigateTo(Route.SuccessResult)
                         is FinalPaymentState.Decline -> navigator.navigateTo(Route.DeclineResult)
                     }
                 }
-                it.error != null -> onError(it.error, true)
+                it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
+                it.clarificationFields.isNotEmpty() -> navigator.navigateTo(Route.ClarificationFields)
+                it.acsPageState != null -> navigator.navigateTo(Route.AcsPage)
+                it.apsPageState != null -> navigator.navigateTo(Route.ApsPage)
             }
         }.collect()
     }
