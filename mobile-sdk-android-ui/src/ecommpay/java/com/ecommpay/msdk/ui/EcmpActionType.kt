@@ -1,5 +1,5 @@
 package com.ecommpay.msdk.ui
 
-enum class ActionType {
+enum class EcmpActionType {
     Sale, Auth, Tokenize, Verify
 }

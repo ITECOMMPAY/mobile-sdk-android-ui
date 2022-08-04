@@ -1,10 +1,10 @@
 package com.ecommpay.msdk.ui.mappers
 
-import com.ecommpay.msdk.ui.RecurrentData
+import com.ecommpay.msdk.ui.EcmpRecurrentData
 import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
 import com.paymentpage.msdk.core.domain.entities.RecurrentInfoSchedule
 
-internal fun RecurrentData.map(): RecurrentInfo =
+internal fun EcmpRecurrentData.map(): RecurrentInfo =
     RecurrentInfo(
         register = register,
         type = type,

@@ -1,6 +1,6 @@
 package com.ecommpay.msdk.ui
 
-enum class AdditionalFieldType(val value: String) {
+enum class EcmpAdditionalFieldType(val value: String) {
 
     CUSTOMER_EMAIL("email"),
     CUSTOMER_ZIP("zip"),

@@ -9,7 +9,7 @@ import com.paymentpage.msdk.ui.SDKOptions
 
 internal fun PaymentOptions.map(): SDKOptions =
     SDKOptions(
-        paymentInfo = paymentData.map(),
+        paymentInfo = paymentInfo.map(),
         recurrentInfo = recurrentData?.map(),
         actionType = ActionType.valueOf(actionType.name),
 

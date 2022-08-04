@@ -11,10 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.paymentpage.msdk.ui.SDKAdditionalField
 import com.paymentpage.ui.msdk.sample.ui.navigation.NavRouts
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ecommpay.msdk.ui.AdditionalField
+import com.ecommpay.msdk.ui.EcmpAdditionalField
 import com.paymentpage.ui.msdk.sample.utils.collectAsEffect
 
 @Composable
@@ -44,7 +43,7 @@ internal fun AdditionalFieldScreen(
                 value = additionalField.value ?: "",
                 onValueChange = { str ->
                     val changed = viewState?.additionalFields?.toMutableList()
-                    changed?.set(index, AdditionalField(additionalField.type, str))
+                    changed?.set(index, EcmpAdditionalField(additionalField.type, str))
                     viewModel.pushIntent(AdditionalFieldsViewIntents.ChangeField(viewState?.copy(
                         additionalFields = changed)))
                 },

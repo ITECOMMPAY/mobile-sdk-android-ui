@@ -12,22 +12,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ecommpay.msdk.ui.EcmpPaymentMethodType
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewIntents
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewModel
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
-import com.paymentpage.ui.msdk.sample.ui.navigation.NavRouts
 
 @Composable
 internal fun SelectForcePaymentMethod(
     viewModel: MainViewModel = viewModel(),
 ) {
     val viewState by viewModel.viewState.collectAsState()
-    PaymentMethodType.values()
-        .filter { it != PaymentMethodType.UNKNOWN }
-        .filter { it != PaymentMethodType.APPLE_PAY }
-        .forEachIndexed { index, paymentMethodType ->
+    EcmpPaymentMethodType.values()
+        .filter { it != EcmpPaymentMethodType.APPLE_PAY }
+        .forEachIndexed { index, methodType ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -35,15 +33,17 @@ internal fun SelectForcePaymentMethod(
                 RadioButton(
                     selected = index == viewState?.selectedForcePaymentMethodId,
                     onClick = {
-                        viewModel.pushIntent(MainViewIntents.SelectForcePaymentMethod(
-                            id = index,
-                            paymentData = viewState?.paymentData?.copy(forcePaymentMethod = paymentMethodType)
-                                ?: PaymentData.defaultPaymentData
-                        ))
+                        viewModel.pushIntent(
+                            MainViewIntents.SelectForcePaymentMethod(
+                                id = index,
+                                paymentData = viewState?.paymentData?.copy(forcePaymentMethod = methodType)
+                                    ?: PaymentData.defaultPaymentData
+                            )
+                        )
                     }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                Text(text = paymentMethodType.name.replace("_", " "))
+                Text(text = methodType.name.replace("_", " "))
             }
         }
     Spacer(modifier = Modifier.size(10.dp))
@@ -51,11 +51,13 @@ internal fun SelectForcePaymentMethod(
         .fillMaxWidth()
         .height(50.dp),
         onClick = {
-            viewModel.pushIntent(MainViewIntents.SelectForcePaymentMethod(
-                id = -1,
-                paymentData = viewState?.paymentData?.copy(forcePaymentMethod = null)
-                    ?: PaymentData.defaultPaymentData
-            ))
+            viewModel.pushIntent(
+                MainViewIntents.SelectForcePaymentMethod(
+                    id = -1,
+                    paymentData = viewState?.paymentData?.copy(forcePaymentMethod = null)
+                        ?: PaymentData.defaultPaymentData
+                )
+            )
         }) {
         Text(text = "Reset force payment method", color = Color.White, fontSize = 18.sp)
     }

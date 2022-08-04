@@ -1,6 +1,6 @@
 package com.ecommpay.msdk.ui
 
-class RecurrentData(
+class EcmpRecurrentData(
     val register: Boolean = true,
     /**
      * Type of recurrent - R/C/U/I
@@ -41,10 +41,10 @@ class RecurrentData(
     /**
      * Data and amount of COF purchase. By default the debit of funds is strictly fixed in time and amount
      */
-    val schedule: List<RecurrentDataSchedule>? = null
+    val schedule: List<EcmpRecurrentDataSchedule>? = null
 )
 
-class RecurrentDataSchedule(
+class EcmpRecurrentDataSchedule(
     /**
      *  Date of charge in format DD-MM-YYYY
      */

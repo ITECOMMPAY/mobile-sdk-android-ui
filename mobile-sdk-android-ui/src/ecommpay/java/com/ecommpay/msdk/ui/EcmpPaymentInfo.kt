@@ -1,8 +1,7 @@
 package com.ecommpay.msdk.ui
 
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 
-class PaymentData(
+class EcmpPaymentInfo(
     /**
      * project (merchant) ID
      */
@@ -43,8 +42,8 @@ class PaymentData(
     /**
      * the identifier of the payment method which is opened to the customer without an option for the customer to select another payment method. The list of codes is provided in the IDs of payment methods supported on Payment Page section
      */
-    var forcePaymentMethod: PaymentMethodType? = null,
-    //var merchantId: String? = null,
+    var forcePaymentMethod: EcmpPaymentMethodType? = null,
+
     var signature: String? = null
 ) {
 
@@ -71,8 +70,7 @@ class PaymentData(
         if (!regionCode.isNullOrEmpty()) map[REGION_CODE] = regionCode!!
         if (!token.isNullOrEmpty()) map[TOKEN_CODE] = token!!
         if (!languageCode.isNullOrEmpty()) map[LANGUAGE_CODE] = languageCode!!
-        if (forcePaymentMethod != null && forcePaymentMethod != PaymentMethodType.UNKNOWN) map[FORCE_PAYMENT_METHOD_CODE] =
-            forcePaymentMethod!!.value
+        if (forcePaymentMethod != null) map[FORCE_PAYMENT_METHOD_CODE] = forcePaymentMethod!!.value
         map[HIDE_SAVE_WALLETS_CODE] = if (hideSavedWallets) 1 else 0
         return map
     }
@@ -96,7 +94,7 @@ class PaymentData(
             paymentAmount: Long,
             paymentCurrency: String
         ) =
-            PaymentData(
+            EcmpPaymentInfo(
                 projectId = projectId,
                 paymentId = paymentId,
                 paymentAmount = paymentAmount,

@@ -15,7 +15,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.ecommpay.msdk.ui.PaymentData
+import com.ecommpay.msdk.ui.EcmpPaymentInfo
 import com.ecommpay.msdk.ui.PaymentSDK
 import com.ecommpay.msdk.ui.paymentOptions
 import com.paymentpage.msdk.ui.base.Constants
@@ -53,7 +53,7 @@ class SampleActivity : ComponentActivity() {
     private fun startPaymentPage() {
         val repositoryPaymentData = ProcessRepository.paymentData
         val additionalFieldsToSend = ProcessRepository.additionalFields
-        val payment = PaymentData(
+        val payment = EcmpPaymentInfo(
             forcePaymentMethod = repositoryPaymentData.forcePaymentMethod,
             hideSavedWallets = repositoryPaymentData.hideSavedWallets,
             projectId = repositoryPaymentData.projectId ?: -1,
@@ -70,7 +70,7 @@ class SampleActivity : ComponentActivity() {
         val paymentOptions = paymentOptions {
             logoImage = repositoryPaymentData.bitmap
             brandColor = repositoryPaymentData.brandColor
-            paymentData = payment
+            paymentInfo = payment
             merchantId = repositoryPaymentData.merchantId
             merchantName = repositoryPaymentData.merchantName
             additionalFields = additionalFieldsToSend?.toMutableList() ?: mutableListOf()

@@ -1,7 +1,7 @@
 package com.paymentpage.ui.msdk.sample.ui.presentation.main.models
 
 import android.graphics.Bitmap
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
+import com.ecommpay.msdk.ui.EcmpPaymentMethodType
 import java.util.*
 
 data class PaymentData(
@@ -14,7 +14,7 @@ data class PaymentData(
     val customerId: String,
     val paymentDescription: String,
     val languageCode: String?,
-    val forcePaymentMethod: PaymentMethodType?,
+    val forcePaymentMethod: EcmpPaymentMethodType?,
     val hideSavedWallets: Boolean,
     val secretKey: String,
     val apiHost: String,

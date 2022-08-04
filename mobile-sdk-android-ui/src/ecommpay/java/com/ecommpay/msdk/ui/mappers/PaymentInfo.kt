@@ -1,9 +1,10 @@
 package com.ecommpay.msdk.ui.mappers
 
-import com.ecommpay.msdk.ui.PaymentData
+import com.ecommpay.msdk.ui.EcmpPaymentInfo
 import com.paymentpage.msdk.core.domain.entities.PaymentInfo
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 
-internal fun PaymentData.map(): PaymentInfo =
+internal fun EcmpPaymentInfo.map(): PaymentInfo =
     PaymentInfo(
         projectId = projectId,
         paymentId = paymentId,
@@ -16,5 +17,6 @@ internal fun PaymentData.map(): PaymentInfo =
         languageCode = languageCode,
         receiptData = receiptData,
         hideSavedWallets = hideSavedWallets,
+        forcePaymentMethod = forcePaymentMethod?.let { PaymentMethodType.valueOf(it.name) },
         signature = signature
     )

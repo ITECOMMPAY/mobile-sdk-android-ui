@@ -15,12 +15,12 @@ fun paymentOptions(block: PaymentOptions.() -> Unit): PaymentOptions = PaymentOp
  */
 @PaymentOptionsDsl
 class PaymentOptions {
-    lateinit var paymentData: PaymentData
+    lateinit var paymentInfo: EcmpPaymentInfo
 
-    var recurrentData: RecurrentData? = null
+    var recurrentData: EcmpRecurrentData? = null
     var threeDSecureInfo: ThreeDSecureInfo? = null
     var recipientInfo: RecipientInfo? = null
-    var actionType: ActionType = ActionType.Sale
+    var actionType: EcmpActionType = EcmpActionType.Sale
     //var bankId: Int? = null
 
     var logoImage: Bitmap? = null
@@ -30,8 +30,8 @@ class PaymentOptions {
     var merchantName: String = ""
     var isTestEnvironment: Boolean = true
 
-    var additionalFields = mutableListOf<AdditionalField>()
-    fun additionalFields(block: AdditionalFields.() -> Unit) {
-        additionalFields.addAll(AdditionalFields().apply(block))
+    var additionalFields = mutableListOf<EcmpAdditionalField>()
+    fun additionalFields(block: EcmpAdditionalFields.() -> Unit) {
+        additionalFields.addAll(EcmpAdditionalFields().apply(block))
     }
 }

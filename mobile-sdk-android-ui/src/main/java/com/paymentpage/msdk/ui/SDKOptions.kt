@@ -13,7 +13,6 @@ import com.paymentpage.msdk.ui.base.PaymentOptionsDsl
 /**
  * Payment configuration
  */
-@PaymentOptionsDsl
 class SDKOptions(
     val paymentInfo: PaymentInfo,
 

@@ -1,15 +1,15 @@
 package com.paymentpage.ui.msdk.sample.ui.presentation.additionalFields
 
-import com.ecommpay.msdk.ui.AdditionalField
-import com.ecommpay.msdk.ui.AdditionalFieldType
+import com.ecommpay.msdk.ui.EcmpAdditionalField
+import com.ecommpay.msdk.ui.EcmpAdditionalFieldType
 import com.paymentpage.ui.msdk.sample.ui.presentation.base.ViewState
 
 data class AdditionalFieldsViewData(
-    val additionalFields: List<AdditionalField>?,
+    val additionalFields: List<EcmpAdditionalField>?,
 ) : ViewState {
     companion object {
         val defaultViewData = AdditionalFieldsViewData(
-            additionalFields = AdditionalFieldType.values().map { AdditionalField(type = it) }
+            additionalFields = EcmpAdditionalFieldType.values().map { EcmpAdditionalField(type = it) }
         )
     }
 }
