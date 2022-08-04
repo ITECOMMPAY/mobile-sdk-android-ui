@@ -17,6 +17,6 @@ internal fun EcmpPaymentInfo.map(): PaymentInfo =
         languageCode = languageCode,
         receiptData = receiptData,
         hideSavedWallets = hideSavedWallets,
-        forcePaymentMethod = forcePaymentMethod?.let { PaymentMethodType.valueOf(it.name) },
+        forcePaymentMethod = forcePaymentMethod?.value,
         signature = signature
     )

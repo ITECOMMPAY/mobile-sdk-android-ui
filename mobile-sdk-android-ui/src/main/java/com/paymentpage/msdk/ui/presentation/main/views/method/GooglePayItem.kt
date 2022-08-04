@@ -42,7 +42,7 @@ internal fun GooglePayItem(
     val additionalFields = LocalPaymentOptions.current.additionalFields
     val visibleCustomerFields = remember { customerFields.visibleCustomerFields() }
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
-    val isForcePaymentMethod = paymentOptions.paymentInfo.forcePaymentMethod == PaymentMethodType.GOOGLE_PAY
+    val isForcePaymentMethod = paymentOptions.paymentInfo.forcePaymentMethod == PaymentMethodType.GOOGLE_PAY.value
 
     val merchantId = LocalPaymentOptions.current.merchantId
     val merchantName = LocalPaymentOptions.current.merchantName
