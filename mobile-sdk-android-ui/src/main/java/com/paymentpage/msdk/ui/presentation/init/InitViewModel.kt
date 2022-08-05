@@ -8,7 +8,7 @@ import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.interactors.init.InitDelegate
 import com.paymentpage.msdk.core.domain.interactors.init.InitInteractor
 import com.paymentpage.msdk.core.domain.interactors.init.InitRequest
-import com.paymentpage.msdk.ui.SDKOptions
+import com.paymentpage.msdk.ui.SDKPaymentOptions
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.Reducer
 import com.paymentpage.msdk.ui.base.mvi.TimeMachine
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 internal class InitViewModel(
     private val initInteractor: InitInteractor,
-    private val paymentOptions: SDKOptions
+    private val paymentOptions: SDKPaymentOptions
 ) :
     BaseViewModel<InitScreenState, InitScreenUiEvent>() {
     override val reducer = InitReducer(InitScreenState.initial())

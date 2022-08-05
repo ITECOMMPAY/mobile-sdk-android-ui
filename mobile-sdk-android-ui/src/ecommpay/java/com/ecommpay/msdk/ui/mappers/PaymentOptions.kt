@@ -1,14 +1,14 @@
 package com.ecommpay.msdk.ui.mappers
 
-import com.ecommpay.msdk.ui.PaymentOptions
+import com.ecommpay.msdk.ui.EcmpPaymentOptions
 import com.paymentpage.msdk.core.domain.entities.field.FieldType
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.ui.ActionType
 import com.paymentpage.msdk.ui.SDKAdditionalField
-import com.paymentpage.msdk.ui.SDKOptions
+import com.paymentpage.msdk.ui.SDKPaymentOptions
 
-internal fun PaymentOptions.map(): SDKOptions =
-    SDKOptions(
+internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
+    SDKPaymentOptions(
         paymentInfo = paymentInfo.map(),
         recurrentInfo = recurrentData?.map(),
         actionType = ActionType.valueOf(actionType.name),

@@ -92,7 +92,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     companion object {
 
-        private lateinit var paymentOptions: SDKOptions
+        private lateinit var paymentOptions: SDKPaymentOptions
 
         var isMockModeEnabled = false
 
@@ -102,7 +102,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         fun buildPaymentIntent(
             context: Context,
-            paymentOptions: SDKOptions,
+            paymentOptions: SDKPaymentOptions,
         ): Intent {
             this.paymentOptions = paymentOptions
 

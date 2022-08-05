@@ -10,7 +10,7 @@ import com.paymentpage.msdk.ui.presentation.main.MainViewModel
 import com.paymentpage.msdk.ui.utils.viewModelFactory
 
 internal val LocalPaymentOptions =
-    compositionLocalOf<SDKOptions> { error("No PaymentOptions found!") }
+    compositionLocalOf<SDKPaymentOptions> { error("No PaymentOptions found!") }
 internal val LocalMsdkSession =
     compositionLocalOf<MSDKCoreSession> { error("No MSDKCoreSession found!") }
 
@@ -23,7 +23,7 @@ internal val LocalInitViewModel =
 
 @Composable
 internal fun SDKCommonProvider(
-    paymentOptions: SDKOptions,
+    paymentOptions: SDKPaymentOptions,
     msdkSession: MSDKCoreSession,
     content: @Composable () -> Unit
 ) {

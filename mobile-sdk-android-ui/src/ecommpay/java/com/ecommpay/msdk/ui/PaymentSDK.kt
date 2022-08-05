@@ -10,7 +10,7 @@ import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.base.Constants
 
 
-class PaymentSDK(context: Context, paymentOptions: PaymentOptions) {
+class PaymentSDK(context: Context, paymentOptions: EcmpPaymentOptions) {
     val intent =
         PaymentActivity.buildPaymentIntent(
             context = context,

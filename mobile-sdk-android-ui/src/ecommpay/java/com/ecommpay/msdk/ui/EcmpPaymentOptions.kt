@@ -8,13 +8,14 @@ import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
 import com.paymentpage.msdk.ui.base.PaymentOptionsDsl
 
 
-fun paymentOptions(block: PaymentOptions.() -> Unit): PaymentOptions = PaymentOptions().apply(block)
+fun paymentOptions(block: EcmpPaymentOptions.() -> Unit): EcmpPaymentOptions =
+    EcmpPaymentOptions().apply(block)
 
 /**
  * Payment configuration
  */
 @PaymentOptionsDsl
-class PaymentOptions {
+class EcmpPaymentOptions {
     lateinit var paymentInfo: EcmpPaymentInfo
 
     var recurrentData: EcmpRecurrentData? = null
