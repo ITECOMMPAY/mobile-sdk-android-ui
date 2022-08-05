@@ -16,6 +16,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.ecommpay.msdk.ui.EcmpPaymentInfo
+import com.ecommpay.msdk.ui.EcmpPaymentMethodType
 import com.ecommpay.msdk.ui.PaymentSDK
 import com.ecommpay.msdk.ui.paymentOptions
 import com.paymentpage.msdk.ui.base.Constants
@@ -54,7 +55,7 @@ class SampleActivity : ComponentActivity() {
         val repositoryPaymentData = ProcessRepository.paymentData
         val additionalFieldsToSend = ProcessRepository.additionalFields
         val payment = EcmpPaymentInfo(
-            forcePaymentMethod = repositoryPaymentData.forcePaymentMethod,
+            forcePaymentMethod = EcmpPaymentMethodType.values().find { it.value == repositoryPaymentData.forcePaymentMethod },
             hideSavedWallets = repositoryPaymentData.hideSavedWallets,
             projectId = repositoryPaymentData.projectId ?: -1,
             paymentId = repositoryPaymentData.paymentId,

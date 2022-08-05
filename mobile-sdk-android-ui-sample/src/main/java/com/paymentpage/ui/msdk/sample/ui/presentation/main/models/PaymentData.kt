@@ -14,7 +14,7 @@ data class PaymentData(
     val customerId: String,
     val paymentDescription: String,
     val languageCode: String?,
-    val forcePaymentMethod: EcmpPaymentMethodType?,
+    val forcePaymentMethod: String?,
     val hideSavedWallets: Boolean,
     val secretKey: String,
     val apiHost: String,

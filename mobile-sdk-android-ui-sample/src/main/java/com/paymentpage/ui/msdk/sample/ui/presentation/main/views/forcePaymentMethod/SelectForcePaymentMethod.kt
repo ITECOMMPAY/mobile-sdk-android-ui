@@ -36,7 +36,7 @@ internal fun SelectForcePaymentMethod(
                         viewModel.pushIntent(
                             MainViewIntents.SelectForcePaymentMethod(
                                 id = index,
-                                paymentData = viewState?.paymentData?.copy(forcePaymentMethod = methodType)
+                                paymentData = viewState?.paymentData?.copy(forcePaymentMethod = methodType.value)
                                     ?: PaymentData.defaultPaymentData
                             )
                         )
