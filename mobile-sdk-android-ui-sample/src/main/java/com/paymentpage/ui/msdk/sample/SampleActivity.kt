@@ -76,19 +76,15 @@ class SampleActivity : ComponentActivity() {
             merchantName = repositoryPaymentData.merchantName
             additionalFields = additionalFieldsToSend?.toMutableList() ?: mutableListOf()
         }
-        val sdk = PaymentSDK(context = this.applicationContext, paymentOptions = paymentOptions)
+        val sdk = PaymentSDK(
+            context = this.applicationContext,
+            paymentOptions = paymentOptions,
+            isMockModeEnabled = repositoryPaymentData.mockModeEnabled
+        )
 
         val intent = sdk.intent
         intent.putExtra(Constants.EXTRA_API_HOST, repositoryPaymentData.apiHost)
-        intent.putExtra(
-            Constants.EXTRA_WS_API_HOST,
-            repositoryPaymentData.wsApiHost
-        )
-        if (repositoryPaymentData.mockModeEnabled)
-            intent.putExtra(
-                Constants.EXTRA_MOCK_MODE_ENABLED,
-                repositoryPaymentData.mockModeEnabled
-            )
+        intent.putExtra(Constants.EXTRA_WS_API_HOST, repositoryPaymentData.wsApiHost)
 
         startActivityForResult(intent, 2405)
     }

@@ -10,11 +10,12 @@ import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.base.Constants
 
 
-class PaymentSDK(context: Context, paymentOptions: EcmpPaymentOptions) {
-    val intent =
-        PaymentActivity.buildPaymentIntent(
+class PaymentSDK(context: Context, paymentOptions: EcmpPaymentOptions, isMockModeEnabled: Boolean = false) {
+
+    val intent = PaymentActivity.buildPaymentIntent(
             context = context,
-            paymentOptions = paymentOptions.map()
+            paymentOptions = paymentOptions.map(),
+            isMockModeEnabled = isMockModeEnabled
         )
 
     fun openPaymentScreen(activity: Activity, requestCode: Int) {

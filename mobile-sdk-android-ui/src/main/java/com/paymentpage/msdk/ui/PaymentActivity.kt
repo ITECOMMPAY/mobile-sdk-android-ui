@@ -21,18 +21,16 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var config = MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
-        if (BuildConfig.DEBUG) {
-            isMockModeEnabled = intent.getBooleanExtra(Constants.EXTRA_MOCK_MODE_ENABLED, false)
-            config = when {
-                isMockModeEnabled -> MSDKCoreSessionConfig.mockFullSuccessFlow(
-                    MockInitCustomerFieldsConfig.ALL
-                )
-                else -> MSDKCoreSessionConfig.debug(
-                    intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
-                    intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
-                )
-            }
+        isMockModeEnabled = intent.getBooleanExtra(Constants.EXTRA_MOCK_MODE_ENABLED, false)
+        val config = when {
+            isMockModeEnabled -> MSDKCoreSessionConfig.mockFullSuccessFlow(
+                MockInitCustomerFieldsConfig.ALL
+            )
+            BuildConfig.DEBUG -> MSDKCoreSessionConfig.debug(
+                intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
+                intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
+            )
+            else -> MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
         }
         msdkSession = MSDKCoreSession(config)
 
@@ -103,11 +101,13 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         fun buildPaymentIntent(
             context: Context,
             paymentOptions: SDKPaymentOptions,
+            isMockModeEnabled: Boolean,
         ): Intent {
             this.paymentOptions = paymentOptions
 
             val intent = Intent(context, PaymentActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            intent.putExtra(Constants.EXTRA_MOCK_MODE_ENABLED, isMockModeEnabled)
             return intent
         }
     }
