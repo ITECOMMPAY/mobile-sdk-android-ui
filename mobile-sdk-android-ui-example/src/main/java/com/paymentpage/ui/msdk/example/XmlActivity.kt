@@ -55,7 +55,7 @@ class XmlActivity : AppCompatActivity() {
         val sdk = PaymentSDK(
             context = applicationContext,
             paymentOptions = paymentOptions,
-            isMockModeEnabled = true, // for testing
+            //mockModeType = PaymentSDK.MockModeType.SUCCESS, // also you can use PaymentSDK.MockModeType.DECLINE or PaymentSDK.MockModeType.DISABLED
         )
         //5. Open it
         sdk.openPaymentScreen(this, 1234)

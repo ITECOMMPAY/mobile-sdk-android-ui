@@ -14,9 +14,11 @@ class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
                         isVisibleApiHostFields = false,
                         isVisibleGooglePayFields = false,
                         isVisibleCustomizationFields = false,
+                        isVisibleMockModeType = false,
                         selectedResourceImageId = -1,
                         isVisibleForcePaymentMethodFields = false,
                         selectedForcePaymentMethodId = -1,
+                        selectedMockModeTypeId = 0,
                         localImageUri = null
                     )
                 )
@@ -27,6 +29,7 @@ class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
                     paymentData = viewIntent.paymentData
                 ))
             }
+            //Force payment method
             is MainViewIntents.ChangeForcePaymentMethodCheckbox -> {
                 updateState(viewState.value?.copy(
                     isVisibleForcePaymentMethodFields = !(viewState.value?.isVisibleForcePaymentMethodFields ?: false)
@@ -37,6 +40,12 @@ class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
                 updateState(viewState.value?.copy(
                     selectedForcePaymentMethodId = viewIntent.id,
                     paymentData = viewIntent.paymentData
+                ))
+            }
+            //Customization brand color and logo
+            is MainViewIntents.ChangeCustomizationCheckbox -> {
+                updateState(viewState.value?.copy(
+                    isVisibleCustomizationFields = !(viewState.value?.isVisibleCustomizationFields ?: false)
                 ))
             }
             is MainViewIntents.SelectResourceImage -> {
@@ -54,11 +63,20 @@ class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
                     selectedResourceImageId = -1
                 ))
             }
-            is MainViewIntents.ChangeCustomizationCheckbox -> {
+            //Custom mock mode
+            is MainViewIntents.ChangeMockModeCheckbox -> {
                 updateState(viewState.value?.copy(
-                    isVisibleCustomizationFields = !(viewState.value?.isVisibleCustomizationFields ?: false)
+                    isVisibleMockModeType = !(viewState.value?.isVisibleMockModeType ?: false)
                 ))
             }
+            is MainViewIntents.SelectMockMode -> {
+                ProcessRepository.paymentData = viewIntent.paymentData
+                updateState(viewState.value?.copy(
+                    selectedMockModeTypeId = viewIntent.id,
+                    paymentData = viewIntent.paymentData
+                ))
+            }
+            //Other checkboxes
             is MainViewIntents.ChangeApiHostCheckBox -> {
                 updateState(viewState.value?.copy(
                     isVisibleApiHostFields = !(viewState.value?.isVisibleApiHostFields ?: false)
@@ -69,6 +87,7 @@ class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
                     isVisibleGooglePayFields = !(viewState.value?.isVisibleGooglePayFields ?: false)
                 ))
             }
+            //Sale
             is MainViewIntents.Sale -> {
                 launchAction(MainViewActions.Sale)
             }

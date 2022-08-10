@@ -79,7 +79,7 @@ class SampleActivity : ComponentActivity() {
         val sdk = PaymentSDK(
             context = this.applicationContext,
             paymentOptions = paymentOptions,
-            isMockModeEnabled = repositoryPaymentData.mockModeEnabled
+            mockModeType = repositoryPaymentData.mockModeType
         )
 
         val intent = sdk.intent

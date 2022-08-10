@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.ecommpay.msdk.ui.PaymentSDK
+import com.ecommpay.msdk.ui.PaymentSDK.MockModeType.*
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
 import com.paymentpage.msdk.core.base.ErrorCode
@@ -21,11 +23,12 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        isMockModeEnabled = intent.getBooleanExtra(Constants.EXTRA_MOCK_MODE_ENABLED, false)
+        mockModeType = intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as PaymentSDK.MockModeType
         val config = when {
-            isMockModeEnabled -> MSDKCoreSessionConfig.mockFullSuccessFlow(
+            mockModeType == SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow(
                 MockInitCustomerFieldsConfig.ALL
             )
+            mockModeType == DECLINE -> MSDKCoreSessionConfig.mockInitReturnedDecline()
             BuildConfig.DEBUG -> MSDKCoreSessionConfig.debug(
                 intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
                 intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
@@ -92,7 +95,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         private lateinit var paymentOptions: SDKPaymentOptions
 
-        var isMockModeEnabled = false
+        var mockModeType = DISABLED
 
         private lateinit var msdkSession: MSDKCoreSession
         val stringResourceManager: StringResourceManager
@@ -101,13 +104,13 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         fun buildPaymentIntent(
             context: Context,
             paymentOptions: SDKPaymentOptions,
-            isMockModeEnabled: Boolean,
+            mockModeType: PaymentSDK.MockModeType,
         ): Intent {
             this.paymentOptions = paymentOptions
 
             val intent = Intent(context, PaymentActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-            intent.putExtra(Constants.EXTRA_MOCK_MODE_ENABLED, isMockModeEnabled)
+            intent.putExtra(Constants.EXTRA_MOCK_MODE_TYPE, mockModeType)
             return intent
         }
     }

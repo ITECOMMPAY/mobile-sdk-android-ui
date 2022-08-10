@@ -10,12 +10,12 @@ import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.base.Constants
 
 
-class PaymentSDK(context: Context, paymentOptions: EcmpPaymentOptions, isMockModeEnabled: Boolean = false) {
+class PaymentSDK(context: Context, paymentOptions: EcmpPaymentOptions, mockModeType: MockModeType = MockModeType.DISABLED) {
 
     val intent = PaymentActivity.buildPaymentIntent(
             context = context,
             paymentOptions = paymentOptions.map(),
-            isMockModeEnabled = isMockModeEnabled
+            mockModeType = mockModeType
         )
 
     fun openPaymentScreen(activity: Activity, requestCode: Int) {
@@ -36,5 +36,11 @@ class PaymentSDK(context: Context, paymentOptions: EcmpPaymentOptions, isMockMod
         const val RESULT_ERROR = Constants.RESULT_ERROR
         const val EXTRA_ERROR_CODE = Constants.EXTRA_ERROR_CODE
         const val EXTRA_ERROR_MESSAGE = Constants.EXTRA_ERROR_MESSAGE
+    }
+
+    enum class MockModeType {
+        DISABLED,
+        SUCCESS,
+        DECLINE
     }
 }
