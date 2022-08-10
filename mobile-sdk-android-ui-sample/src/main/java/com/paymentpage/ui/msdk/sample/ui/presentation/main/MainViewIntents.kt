@@ -19,6 +19,9 @@ sealed interface MainViewIntents: ViewIntents {
     //Custom force payment method
     object ChangeForcePaymentMethodCheckbox: MainViewIntents
     data class SelectForcePaymentMethod(val id: Int, val paymentData: PaymentData): MainViewIntents
+    //Custom mock mode
+    object ChangeMockModeCheckbox: MainViewIntents
+    data class SelectMockMode(val id: Int, val paymentData: PaymentData): MainViewIntents
     //Sale button
     object Sale: MainViewIntents
 }

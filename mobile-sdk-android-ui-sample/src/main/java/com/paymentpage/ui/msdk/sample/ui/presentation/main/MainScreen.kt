@@ -11,6 +11,7 @@ import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.customization.CustomizationCheckbox
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.forcePaymentMethod.ForcePaymentMethodCheckbox
+import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.mockMode.MockModeCheckbox
 import com.paymentpage.ui.msdk.sample.utils.collectAsEffect
 
 @Composable

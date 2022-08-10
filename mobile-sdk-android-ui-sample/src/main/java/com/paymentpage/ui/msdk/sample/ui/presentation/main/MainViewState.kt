@@ -10,7 +10,9 @@ data class MainViewState(
     var isVisibleApiHostFields: Boolean,
     var isVisibleGooglePayFields: Boolean,
     var isVisibleCustomizationFields: Boolean,
+    var isVisibleMockModeType: Boolean,
     var selectedResourceImageId: Int,
     var selectedForcePaymentMethodId: Int,
+    var selectedMockModeTypeId: Int,
     var localImageUri: Uri?
 ) : ViewState

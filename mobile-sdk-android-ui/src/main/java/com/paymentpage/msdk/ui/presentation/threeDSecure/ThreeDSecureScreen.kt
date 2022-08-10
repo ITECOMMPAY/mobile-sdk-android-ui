@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.ecommpay.msdk.ui.PaymentSDK
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.PaymentActivity
@@ -107,7 +108,7 @@ internal fun AcsPageView(
                         override fun onPageFinished(view: WebView?, url: String?) {
                             super.onPageFinished(view, url)
                             isLoading = false
-                            if (PaymentActivity.isMockModeEnabled) {
+                            if (PaymentActivity.mockModeType != PaymentSDK.MockModeType.DISABLED) {
                                 Toast.makeText(context, R.string.acs_mock_mode_toast_label, Toast.LENGTH_SHORT).show()
                                 coroutineScope.launch {
                                     delay(2000)
