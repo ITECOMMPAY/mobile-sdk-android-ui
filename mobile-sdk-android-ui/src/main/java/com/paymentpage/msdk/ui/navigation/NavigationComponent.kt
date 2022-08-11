@@ -68,7 +68,6 @@ internal fun NavigationComponent(
                 it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> navigator.navigateTo(Route.ClarificationFields)
                 it.acsPageState != null -> navigator.navigateTo(Route.AcsPage)
-                it.apsPageState != null -> navigator.navigateTo(Route.ApsPage)
             }
         }.collect()
     }
