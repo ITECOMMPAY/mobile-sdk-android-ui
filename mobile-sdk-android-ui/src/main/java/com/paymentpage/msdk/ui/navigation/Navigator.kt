@@ -18,7 +18,4 @@ class Navigator {
         _sharedFlow.tryEmit(route)
     }
 
-    fun navigateUp() {
-        _sharedFlow.tryEmit(Route.Up)
-    }
 }

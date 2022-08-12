@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
@@ -22,16 +23,12 @@ internal fun ResultTableInfo(
             .background(color = SDKTheme.colors.panelBackgroundColor)
             .padding(top = 15.dp, start = 15.dp, end = 15.dp)
     ) {
-        titleKeyWithValueMap
-            .filterValues { it.isNullOrEmpty() }
-            .mapValues { it.value as String }
-            .filterKeys { it.isNullOrEmpty() }
-            .mapKeys { it.key as String }
-            .forEach { (key, value) ->
+        titleKeyWithValueMap.forEach {
+            if (it.key != null && it.value != null) {
                 Row {
                     Column {
                         Text(
-                            text = key,
+                            text = PaymentActivity.stringResourceManager.getStringByKey(it.key!!),
                             style = SDKTheme.typography.s14Light.copy(color = SDKTheme.colors.secondaryTextColor),
                             overflow = TextOverflow.Ellipsis,
                             maxLines = 1
@@ -40,7 +37,7 @@ internal fun ResultTableInfo(
                     Text(text = " ")
                     Column(modifier = Modifier.weight(1f), horizontalAlignment = End) {
                         Text(
-                            text = value,
+                            text = it.value!!,
                             style = SDKTheme.typography.s14Normal,
                             overflow = TextOverflow.Ellipsis,
                             maxLines = 1,
@@ -48,6 +45,8 @@ internal fun ResultTableInfo(
                         )
                     }
                 }
+                Spacer(modifier = Modifier.size(15.dp))
             }
+        }
     }
 }

@@ -22,7 +22,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        CrashHandler.init(this)
         mockModeType = intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as PaymentSDK.MockModeType
         val config = when {
             mockModeType == SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow(

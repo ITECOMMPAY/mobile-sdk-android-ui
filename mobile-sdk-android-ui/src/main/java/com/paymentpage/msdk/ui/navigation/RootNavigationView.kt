@@ -1,22 +1,25 @@
-package com.paymentpage.msdk.ui.presentation.main
+package com.paymentpage.msdk.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import com.paymentpage.msdk.ui.ActionType
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.base.ErrorResult
-import com.paymentpage.msdk.ui.navigation.Navigator
-import com.paymentpage.msdk.ui.navigation.Route
+import com.paymentpage.msdk.ui.presentation.main.FinalPaymentState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
 
-@Suppress("UNUSED_PARAMETER")
 @Composable
-internal fun MainScreen(
+internal fun RootNavigationView(
+    actionType: ActionType,
     navigator: Navigator,
-    onError: (ErrorResult, Boolean) -> Unit,
-    content: @Composable () -> Unit
+    delegate: PaymentDelegate,
+    onCancel: () -> Unit,
+    onError: (ErrorResult, Boolean) -> Unit
 ) {
+
     val mainViewModel = LocalMainViewModel.current
 
     LaunchedEffect(Unit) {
@@ -39,5 +42,11 @@ internal fun MainScreen(
         }.collect()
     }
 
-
+    NavigationComponent(
+        actionType = actionType,
+        navigator = navigator,
+        delegate = delegate,
+        onCancel = onCancel,
+        onError = onError
+    )
 }

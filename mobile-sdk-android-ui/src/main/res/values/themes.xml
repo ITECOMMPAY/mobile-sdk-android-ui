@@ -10,4 +10,8 @@
     </style>
 
     <style name="DebugDialogTheme" parent="android:Theme.Material.Dialog" />
+
+    <style name="CrashDialogTheme" parent="Theme.AppCompat.Dialog">
+
+    </style>
 </resources>

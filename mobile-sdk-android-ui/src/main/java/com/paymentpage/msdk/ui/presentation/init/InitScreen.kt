@@ -37,11 +37,9 @@ internal fun InitScreen(
         initViewModel.state.onEach {
             when {
                 it.error != null -> onError(it.error, true)
-                it.isInitLoaded -> navigator.navigateTo(Route.Main)
-                it.payment != null -> {
-                    mainViewModel.restorePayment()
-                    navigator.navigateTo(Route.Main)
-                }
+                it.isInitLoaded -> navigator.navigateTo(Route.PaymentMethods)
+                it.payment != null -> mainViewModel.restorePayment()
+
             }
         }.collect()
     }

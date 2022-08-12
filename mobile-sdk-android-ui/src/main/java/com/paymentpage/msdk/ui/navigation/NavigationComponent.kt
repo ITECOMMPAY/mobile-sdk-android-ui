@@ -16,7 +16,14 @@ import com.paymentpage.msdk.ui.ActionType
 import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.init.InitScreen
-import com.paymentpage.msdk.ui.presentation.main.MainScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.aps.ApsScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.clarificationFields.ClarificationFieldsScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.customerFields.CustomerFieldsScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.loading.LoadingScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.PaymentMethodsScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultDeclineScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultSuccessScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.threeDSecure.ThreeDSecureScreen
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -36,9 +43,8 @@ internal fun NavigationComponent(
     LaunchedEffect("navigation") {
         navigator.sharedFlow.onEach {
             focusManager.clearFocus()
-            navController.navigateUp()
-            if (it.getPath().isNotEmpty())
-                navController.navigate(it.getPath())
+            //navController.navigateUp()
+            navController.navigate(it.getPath())
         }.launchIn(this)
     }
 
@@ -53,46 +59,37 @@ internal fun NavigationComponent(
         composable(route = Route.Init.getPath()) {
             InitScreen(navigator = navigator, onCancel = onCancel, onError = onError)
         }
-        composable(route = Route.Main.getPath()) {
-            MainScreen(
-                navigator = navigator,
-                delegate = delegate,
-                onCancel = onCancel,
-                onError = onError
+        composable(route = Route.CustomerFields.getPath()) {
+            CustomerFieldsScreen(
+                onBack = {
+                    navController.navigateUp()//Loading
+                    navController.navigateUp()//Main
+                },
+                onCancel = onCancel
             )
         }
-//        composable(route = Route.CustomerFields.getPath()) {
-//            CustomerFieldsScreen(
-//                onBack = { navController.navigateUp() },
-//                onCancel = onCancel
-//            )
-//        }
-//        composable(route = Route.ClarificationFields.getPath()) {
-//            ClarificationFieldsScreen(
-//                onCancel = onCancel
-//            )
-//        }
-//        composable(route = Route.AcsPage.getPath()) {
-//            ThreeDSecureScreen(
-//                onCancel = onCancel
-//            )
-//        }
-//        composable(route = Route.ApsPage.getPath()) {
-//            ApsScreen(
-//                onCancel = onCancel
-//            )
-//        }
-//        composable(route = Route.SuccessResult.getPath()) {
-//            ResultSuccessScreen(onClose = { delegate.onCompleteWithSuccess(it) })
-//        }
-//
-//        composable(route = Route.DeclineResult.getPath()) {
-//            ResultDeclineScreen(onClose = { delegate.onCompleteWithDecline(it) })
-//        }
-//
-//        composable(route = Route.Loading.getPath()) {
-//            BackHandler(true) { }
-//            LoadingScreen(onCancel = onCancel)
-//        }
+        composable(route = Route.ClarificationFields.getPath()) {
+            ClarificationFieldsScreen(onCancel = onCancel)
+        }
+        composable(route = Route.AcsPage.getPath()) {
+            ThreeDSecureScreen(onCancel = onCancel)
+        }
+        composable(route = Route.ApsPage.getPath()) {
+            ApsScreen(onCancel = onCancel)
+        }
+        composable(route = Route.SuccessResult.getPath()) {
+            ResultSuccessScreen(onClose = { delegate.onCompleteWithSuccess(it) })
+        }
+
+        composable(route = Route.DeclineResult.getPath()) {
+            ResultDeclineScreen(onClose = { delegate.onCompleteWithDecline(it) })
+        }
+
+        composable(route = Route.Loading.getPath()) {
+            LoadingScreen(onCancel = onCancel)
+        }
+        composable(route = Route.PaymentMethods.getPath()) {
+            PaymentMethodsScreen(onCancel = onCancel, onError = onError)
+        }
     }
 }

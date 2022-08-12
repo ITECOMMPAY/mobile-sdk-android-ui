@@ -3,7 +3,6 @@
 package com.paymentpage.msdk.ui
 
 import com.paymentpage.msdk.core.domain.entities.field.FieldType
-import com.paymentpage.msdk.ui.base.PaymentOptionsDsl
 
 class SDKAdditionalField(
     var type: FieldType = FieldType.UNKNOWN,
