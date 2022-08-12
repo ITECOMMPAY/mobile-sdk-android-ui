@@ -43,6 +43,11 @@ internal fun ResultDeclineScreen(
         }
     }
 
+    val completeFields = payment.completeFields?.associate {
+        val translation = if (it.name != null) PaymentActivity.stringResourceManager.getStringByKey(it.name!!) else it.defaultLabel
+        translation to it.value
+    } ?: emptyMap()
+
     BackHandler(true) { onClose(payment) }
 
     SDKScaffold(
@@ -77,20 +82,14 @@ internal fun ResultDeclineScreen(
             PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
             ResultTableInfo(
-                titleKeyWithValueMap = mapOf(
-                    "title_card_wallet" to
+                titleKeyWithValueMap = mutableMapOf(
+                    PaymentActivity.stringResourceManager.getStringByKey("title_card_wallet") to
                             valueTitleCardWallet,
-                    "title_payment_id" to
+                    PaymentActivity.stringResourceManager.getStringByKey("title_payment_id") to
                             "${payment.id}",
-                    "title_payment_date" to
+                    PaymentActivity.stringResourceManager.getStringByKey("title_payment_date") to
                             payment.date?.paymentDateToPatternDate("dd.MM.yyyy HH:mm"),
-                    "complete_field_payment_vat_operation_rate" to
-                            payment.completeFields?.find { it.name == "complete_field_payment_vat_operation_rate" }?.value,
-                    "complete_field_payment_vat_operation_amount" to
-                            payment.completeFields?.find { it.name == "complete_field_payment_vat_operation_amount" }?.value,
-                    "complete_field_payment_vat_operation_currency" to
-                            payment.completeFields?.find { it.name == "complete_field_payment_vat_operation_currency" }?.value,
-                )
+                ) + completeFields
             )
             Spacer(modifier = Modifier.size(15.dp))
         },
