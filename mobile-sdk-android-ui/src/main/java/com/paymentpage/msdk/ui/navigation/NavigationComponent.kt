@@ -52,26 +52,6 @@ internal fun NavigationComponent(
         }.launchIn(this)
     }
 
-    val viewModel = LocalMainViewModel.current
-    LaunchedEffect(Unit) {
-        viewModel.state.onEach {
-            when {
-                it.error != null -> onError(it.error, true)
-                it.isLoading == true && navigator.lastRoute != Route.Loading ->
-                    navigator.navigateTo(Route.Loading)
-                it.finalPaymentState != null -> {
-                    when (it.finalPaymentState) {
-                        is FinalPaymentState.Success -> navigator.navigateTo(Route.SuccessResult)
-                        is FinalPaymentState.Decline -> navigator.navigateTo(Route.DeclineResult)
-                    }
-                }
-                it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
-                it.clarificationFields.isNotEmpty() -> navigator.navigateTo(Route.ClarificationFields)
-                it.acsPageState != null -> navigator.navigateTo(Route.AcsPage)
-            }
-        }.collect()
-    }
-
     AnimatedNavHost(
         navController = navController,
         startDestination = Route.Init.getPath(),
