@@ -11,6 +11,7 @@ import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvir
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePaySaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
 import com.paymentpage.msdk.ui.SDKAdditionalField
+import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
@@ -121,6 +122,11 @@ internal fun MainViewModel.restorePayment() {
 //set current method
 internal fun MainViewModel.setCurrentMethod(method: UIPaymentMethod?) {
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
+}
+
+//set current method
+internal fun MainViewModel.showError(errorResult: ErrorResult) {
+    sendEvent(MainScreenUiEvent.ShowError(errorResult))
 }
 
 

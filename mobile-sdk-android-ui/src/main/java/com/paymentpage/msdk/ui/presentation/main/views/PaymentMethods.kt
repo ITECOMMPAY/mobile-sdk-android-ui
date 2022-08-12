@@ -21,7 +21,7 @@ import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 internal const val COUNT_OF_VISIBLE_CUSTOMER_FIELDS = 3
 
 @Composable
-internal fun PaymentMethodList(onError: (ErrorResult, Boolean) -> Unit) {
+internal fun PaymentMethodList() {
     val mainViewModel = LocalMainViewModel.current
     val lastSelectedMethod = mainViewModel.lastState.currentMethod
 
@@ -44,8 +44,7 @@ internal fun PaymentMethodList(onError: (ErrorResult, Boolean) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
         mergedPaymentMethods.forEach { uiPaymentMethod ->
             PaymentMethodItem(
-                method = if (lastSelectedMethod?.index == uiPaymentMethod.index) lastSelectedMethod else uiPaymentMethod,
-                onError = onError
+                method = if (lastSelectedMethod?.index == uiPaymentMethod.index) lastSelectedMethod else uiPaymentMethod
             )
             Spacer(modifier = Modifier.size(10.dp))
         }

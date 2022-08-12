@@ -26,15 +26,14 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffold
 internal fun MainScreen(
     navigator: Navigator,
     delegate: PaymentDelegate,
-    onCancel: () -> Unit,
-    onError: (ErrorResult, Boolean) -> Unit
+    onCancel: () -> Unit
 ) {
-    Content(onCancel = onCancel, onError = onError)
+    Content(onCancel = onCancel)
 }
 
 
 @Composable
-private fun Content(onCancel: () -> Unit, onError: (ErrorResult, Boolean) -> Unit) {
+private fun Content(onCancel: () -> Unit) {
     BackHandler(true) { onCancel() }
     SDKScaffold(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
@@ -46,7 +45,7 @@ private fun Content(onCancel: () -> Unit, onError: (ErrorResult, Boolean) -> Uni
         scrollableContent = {
             PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
-            PaymentMethodList(onError = onError)
+            PaymentMethodList()
         },
         footerContent = {
             SDKFooter(

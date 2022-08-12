@@ -67,8 +67,7 @@ internal fun NavigationComponent(
             MainScreen(
                 navigator = navigator,
                 delegate = delegate,
-                onCancel = onCancel,
-                onError = onError
+                onCancel = onCancel
             )
         }
         composable(route = Route.CustomerFields.getPath()) {

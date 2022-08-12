@@ -22,6 +22,7 @@ import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.googlePay.GooglePayActivityContract
 import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.saleGooglePay
+import com.paymentpage.msdk.ui.presentation.main.showError
 import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
@@ -32,17 +33,15 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 
 @Composable
-internal fun GooglePayItem(
-    method: UIPaymentMethod.UIGooglePayPaymentMethod,
-    onError: (ErrorResult, Boolean) -> Unit,
-) {
+internal fun GooglePayItem(method: UIPaymentMethod.UIGooglePayPaymentMethod) {
     val paymentOptions = LocalPaymentOptions.current
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
     val additionalFields = LocalPaymentOptions.current.additionalFields
     val visibleCustomerFields = remember { customerFields.visibleCustomerFields() }
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
-    val isForcePaymentMethod = paymentOptions.paymentInfo.forcePaymentMethod == PaymentMethodType.GOOGLE_PAY.value
+    val isForcePaymentMethod =
+        paymentOptions.paymentInfo.forcePaymentMethod == PaymentMethodType.GOOGLE_PAY.value
 
     val merchantId = LocalPaymentOptions.current.merchantId
     val merchantName = LocalPaymentOptions.current.merchantName
@@ -61,10 +60,7 @@ internal fun GooglePayItem(
     }
     val handle: (GooglePayActivityContract.Result) -> Unit = { result ->
         if (!result.errorMessage.isNullOrEmpty()) {
-            onError(
-                ErrorResult(code = ErrorCode.UNKNOWN, message = result.errorMessage),
-                false
-            )
+            viewModel.showError(ErrorResult(code = ErrorCode.UNKNOWN, message = result.errorMessage))
         } else
             result.token?.let {
                 viewModel.saleGooglePay(
