@@ -9,7 +9,7 @@ import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.UiEvent
 import com.paymentpage.msdk.ui.base.mvi.UiState
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 
 @Immutable
 internal sealed class MainScreenUiEvent : UiEvent {

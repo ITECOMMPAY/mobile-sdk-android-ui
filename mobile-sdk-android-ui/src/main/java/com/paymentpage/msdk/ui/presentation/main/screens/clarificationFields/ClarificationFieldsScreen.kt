@@ -1,4 +1,4 @@
-package com.paymentpage.msdk.ui.presentation.clarificationFields
+package com.paymentpage.msdk.ui.presentation.main.screens.clarificationFields
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +15,7 @@ import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.sendClarificationFields
-import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.views.button.PayButton

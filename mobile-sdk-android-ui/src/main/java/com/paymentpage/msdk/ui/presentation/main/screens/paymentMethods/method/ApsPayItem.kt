@@ -1,4 +1,4 @@
-package com.paymentpage.msdk.ui.presentation.main.views.method
+package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.showAps
-import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.views.button.PayButton

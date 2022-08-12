@@ -1,7 +1,7 @@
-package com.paymentpage.msdk.ui.presentation.main.views.method
+package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method
 
 import androidx.compose.runtime.Composable
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 
 @Composable
 internal fun PaymentMethodItem(

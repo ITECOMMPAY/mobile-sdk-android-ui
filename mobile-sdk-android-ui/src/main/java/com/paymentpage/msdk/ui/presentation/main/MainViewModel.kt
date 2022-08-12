@@ -81,7 +81,6 @@ internal class MainViewModel(
     }
 
     override fun onPaymentCreated() {
-
     }
 
     override fun onStatusChanged(status: PaymentStatus, payment: Payment) {

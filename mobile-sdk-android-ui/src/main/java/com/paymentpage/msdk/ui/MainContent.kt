@@ -11,8 +11,8 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.ui.base.ErrorResult
+import com.paymentpage.msdk.ui.navigation.NavigationComponent
 import com.paymentpage.msdk.ui.navigation.Navigator
-import com.paymentpage.msdk.ui.navigation.RootView
 import com.paymentpage.msdk.ui.theme.HexToJetpackColor
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
@@ -39,7 +39,7 @@ internal fun MainContent(
                     paymentOptions = paymentOptions,
                     msdkSession = msdkSession,
                 ) {
-                    RootView(
+                    NavigationComponent(
                         actionType = paymentOptions.actionType,
                         navigator = navigator,
                         delegate = activity,

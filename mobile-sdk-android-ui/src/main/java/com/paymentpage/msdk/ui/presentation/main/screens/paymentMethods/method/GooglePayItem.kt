@@ -1,4 +1,4 @@
-package com.paymentpage.msdk.ui.presentation.main.views.method
+package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Spacer
@@ -20,10 +20,10 @@ import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.googlePay.GooglePayActivityContract
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.saleGooglePay
 import com.paymentpage.msdk.ui.presentation.main.showError
-import com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandablePaymentMethodItem
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.isAllCustomerFieldsHidden

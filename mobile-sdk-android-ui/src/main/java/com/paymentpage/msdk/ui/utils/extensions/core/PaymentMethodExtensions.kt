@@ -4,7 +4,7 @@ import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 
 internal fun List<PaymentMethod>.mergeUIPaymentMethods(
     savedAccounts: List<SavedAccount>? = null

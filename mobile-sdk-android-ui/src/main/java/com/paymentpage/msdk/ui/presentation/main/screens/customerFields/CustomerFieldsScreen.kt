@@ -1,4 +1,4 @@
-package com.paymentpage.msdk.ui.presentation.customerFields
+package com.paymentpage.msdk.ui.presentation.main.screens.customerFields
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
@@ -15,7 +15,7 @@ import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
-import com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.merge

@@ -145,10 +145,10 @@
     <ID>NewLineAtEndOfFile:EmailCustomerField.kt$com.paymentpage.msdk.ui.views.customerFields.type.EmailCustomerField.kt</ID>
     <ID>NewLineAtEndOfFile:ErrorResult.kt$com.paymentpage.msdk.ui.base.ErrorResult.kt</ID>
     <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.paymentpage.msdk.ui.ExampleUnitTest.kt</ID>
-    <ID>NewLineAtEndOfFile:ExpandableItem.kt$com.paymentpage.msdk.ui.presentation.main.views.method.expandable.ExpandableItem.kt</ID>
+    <ID>NewLineAtEndOfFile:ExpandableItem.kt$com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandableItem.kt</ID>
     <ID>NewLineAtEndOfFile:ExpiryField.kt$com.paymentpage.msdk.ui.views.card.ExpiryField.kt</ID>
     <ID>NewLineAtEndOfFile:Footer.kt$com.paymentpage.msdk.ui.views.common.Footer.kt</ID>
-    <ID>NewLineAtEndOfFile:GooglePayItem.kt$com.paymentpage.msdk.ui.presentation.main.views.method.GooglePayItem.kt</ID>
+    <ID>NewLineAtEndOfFile:GooglePayItem.kt$com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.GooglePayItem.kt</ID>
     <ID>NewLineAtEndOfFile:Images.kt$com.paymentpage.msdk.ui.theme.Images.kt</ID>
     <ID>NewLineAtEndOfFile:InitViewModel.kt$com.paymentpage.msdk.ui.presentation.init.InitViewModel.kt</ID>
     <ID>NewLineAtEndOfFile:LinkMessageExtensions.kt$com.paymentpage.msdk.ui.utils.extensions.core.LinkMessageExtensions.kt</ID>
@@ -157,14 +157,14 @@
     <ID>NewLineAtEndOfFile:MaskVisualTransformation.kt$com.paymentpage.msdk.ui.utils.MaskVisualTransformation.kt</ID>
     <ID>NewLineAtEndOfFile:NavigationComponent.kt$com.paymentpage.msdk.ui.navigation.NavigationComponent.kt</ID>
     <ID>NewLineAtEndOfFile:Navigator.kt$com.paymentpage.msdk.ui.navigation.Navigator.kt</ID>
-    <ID>NewLineAtEndOfFile:NewCardItem.kt$com.paymentpage.msdk.ui.presentation.main.views.method.NewCardItem.kt</ID>
+    <ID>NewLineAtEndOfFile:NewCardItem.kt$com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.NewCardItem.kt</ID>
     <ID>NewLineAtEndOfFile:NumberCustomerField.kt$com.paymentpage.msdk.ui.views.customerFields.type.NumberCustomerField.kt</ID>
     <ID>NewLineAtEndOfFile:PaaswordCustomerField.kt$com.paymentpage.msdk.ui.views.customerFields.type.PaaswordCustomerField.kt</ID>
     <ID>NewLineAtEndOfFile:PayButton.kt$com.paymentpage.msdk.ui.views.button.PayButton.kt</ID>
     <ID>NewLineAtEndOfFile:PaymentActivity.kt$com.paymentpage.msdk.ui.PaymentActivity.kt</ID>
     <ID>NewLineAtEndOfFile:PaymentDelegate.kt$com.paymentpage.msdk.ui.PaymentDelegate.kt</ID>
-    <ID>NewLineAtEndOfFile:PaymentDetailsContent.kt$com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsContent.kt</ID>
-    <ID>NewLineAtEndOfFile:PaymentDetailsView.kt$com.paymentpage.msdk.ui.presentation.main.views.detail.PaymentDetailsView.kt</ID>
+    <ID>NewLineAtEndOfFile:PaymentDetailsContent.kt$com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsContent.kt</ID>
+    <ID>NewLineAtEndOfFile:PaymentDetailsView.kt$com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsView.kt</ID>
     <ID>NewLineAtEndOfFile:PaymentMethodExtensions.kt$com.paymentpage.msdk.ui.utils.extensions.core.PaymentMethodExtensions.kt</ID>
     <ID>NewLineAtEndOfFile:PaymentOptionsDsl.kt$com.paymentpage.msdk.ui.base.PaymentOptionsDsl.kt</ID>
     <ID>NewLineAtEndOfFile:Route.kt$com.paymentpage.msdk.ui.navigation.Route.kt</ID>
@@ -179,7 +179,7 @@
     <ID>NewLineAtEndOfFile:TextCustomerField.kt$com.paymentpage.msdk.ui.views.customerFields.type.TextCustomerField.kt</ID>
     <ID>NewLineAtEndOfFile:TimeMachine.kt$com.paymentpage.msdk.ui.base.mvi.TimeMachine.kt</ID>
     <ID>NewLineAtEndOfFile:Typography.kt$com.paymentpage.msdk.ui.theme.Typography.kt</ID>
-    <ID>NewLineAtEndOfFile:UiPaymentMethod.kt$com.paymentpage.msdk.ui.presentation.main.models.UiPaymentMethod.kt</ID>
+    <ID>NewLineAtEndOfFile:UiPaymentMethod.kt$com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UiPaymentMethod.kt</ID>
     <ID>NewLineAtEndOfFile:ViewModels.kt$com.paymentpage.msdk.ui.utils.ViewModels.kt</ID>
     <ID>ReturnCount:Formatters.kt$&lt;no name provided>$override fun originalToTransformed(offset: Int): Int</ID>
     <ID>ReturnCount:Formatters.kt$&lt;no name provided>$override fun transformedToOriginal(offset: Int): Int</ID>

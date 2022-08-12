@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 
-package com.paymentpage.msdk.ui.presentation.main.views
+package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,10 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalMsdkSession
-import com.paymentpage.msdk.ui.base.ErrorResult
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
-import com.paymentpage.msdk.ui.presentation.main.views.method.PaymentMethodItem
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.PaymentMethodItem
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 
 internal const val COUNT_OF_VISIBLE_CUSTOMER_FIELDS = 3

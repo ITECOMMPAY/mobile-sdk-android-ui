@@ -1,5 +1,6 @@
-package com.paymentpage.msdk.ui.presentation.loading
+package com.paymentpage.msdk.ui.presentation.main.screens.loading
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -22,7 +23,7 @@ import com.paymentpage.msdk.ui.views.lodaing.DotsPulsing
 
 @Composable
 internal fun LoadingScreen(onCancel: () -> Unit) {
-
+    BackHandler(true) { }
     SDKScaffold(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
         notScrollableContent = {

@@ -1,9 +1,8 @@
-package com.paymentpage.msdk.ui.presentation.main.models
+package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models
 
 
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 
 

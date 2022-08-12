@@ -40,6 +40,7 @@ internal fun InitScreen(
                 it.isInitLoaded -> navigator.navigateTo(Route.Main)
                 it.payment != null -> {
                     mainViewModel.restorePayment()
+                    navigator.navigateTo(Route.Main)
                 }
             }
         }.collect()

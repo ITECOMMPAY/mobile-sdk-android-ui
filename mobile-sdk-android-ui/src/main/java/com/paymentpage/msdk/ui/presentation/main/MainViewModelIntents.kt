@@ -12,7 +12,7 @@ import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePaySaleR
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
 import com.paymentpage.msdk.ui.SDKAdditionalField
 import com.paymentpage.msdk.ui.base.ErrorResult
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
 

@@ -3,7 +3,6 @@
 package com.paymentpage.msdk.ui.navigation
 
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -13,21 +12,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.ActionType
+import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.base.ErrorResult
-import com.paymentpage.msdk.ui.presentation.aps.ApsScreen
-import com.paymentpage.msdk.ui.presentation.clarificationFields.ClarificationFieldsScreen
-import com.paymentpage.msdk.ui.presentation.customerFields.CustomerFieldsScreen
 import com.paymentpage.msdk.ui.presentation.init.InitScreen
-import com.paymentpage.msdk.ui.presentation.loading.LoadingScreen
-import com.paymentpage.msdk.ui.presentation.main.FinalPaymentState
 import com.paymentpage.msdk.ui.presentation.main.MainScreen
-import com.paymentpage.msdk.ui.presentation.result.ResultDeclineScreen
-import com.paymentpage.msdk.ui.presentation.result.ResultSuccessScreen
-import com.paymentpage.msdk.ui.presentation.threeDSecure.ThreeDSecureScreen
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -48,7 +37,8 @@ internal fun NavigationComponent(
         navigator.sharedFlow.onEach {
             focusManager.clearFocus()
             navController.navigateUp()
-            navController.navigate(it.getPath())
+            if (it.getPath().isNotEmpty())
+                navController.navigate(it.getPath())
         }.launchIn(this)
     }
 
@@ -67,43 +57,42 @@ internal fun NavigationComponent(
             MainScreen(
                 navigator = navigator,
                 delegate = delegate,
-                onCancel = onCancel
+                onCancel = onCancel,
+                onError = onError
             )
         }
-        composable(route = Route.CustomerFields.getPath()) {
-            CustomerFieldsScreen(
-                onBack = {
-                    navController.navigateUp()
-                },
-                onCancel = onCancel
-            )
-        }
-        composable(route = Route.ClarificationFields.getPath()) {
-            ClarificationFieldsScreen(
-                onCancel = onCancel
-            )
-        }
-        composable(route = Route.AcsPage.getPath()) {
-            ThreeDSecureScreen(
-                onCancel = onCancel
-            )
-        }
-        composable(route = Route.ApsPage.getPath()) {
-            ApsScreen(
-                onCancel = onCancel
-            )
-        }
-        composable(route = Route.SuccessResult.getPath()) {
-            ResultSuccessScreen(onClose = { delegate.onCompleteWithSuccess(it) })
-        }
-
-        composable(route = Route.DeclineResult.getPath()) {
-            ResultDeclineScreen(onClose = { delegate.onCompleteWithDecline(it) })
-        }
-
-        composable(route = Route.Loading.getPath()) {
-            BackHandler(true) { }
-            LoadingScreen(onCancel = onCancel)
-        }
+//        composable(route = Route.CustomerFields.getPath()) {
+//            CustomerFieldsScreen(
+//                onBack = { navController.navigateUp() },
+//                onCancel = onCancel
+//            )
+//        }
+//        composable(route = Route.ClarificationFields.getPath()) {
+//            ClarificationFieldsScreen(
+//                onCancel = onCancel
+//            )
+//        }
+//        composable(route = Route.AcsPage.getPath()) {
+//            ThreeDSecureScreen(
+//                onCancel = onCancel
+//            )
+//        }
+//        composable(route = Route.ApsPage.getPath()) {
+//            ApsScreen(
+//                onCancel = onCancel
+//            )
+//        }
+//        composable(route = Route.SuccessResult.getPath()) {
+//            ResultSuccessScreen(onClose = { delegate.onCompleteWithSuccess(it) })
+//        }
+//
+//        composable(route = Route.DeclineResult.getPath()) {
+//            ResultDeclineScreen(onClose = { delegate.onCompleteWithDecline(it) })
+//        }
+//
+//        composable(route = Route.Loading.getPath()) {
+//            BackHandler(true) { }
+//            LoadingScreen(onCancel = onCancel)
+//        }
     }
 }

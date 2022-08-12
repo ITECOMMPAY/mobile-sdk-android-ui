@@ -1,14 +1,11 @@
-package com.paymentpage.msdk.ui.presentation.threeDSecure
+package com.paymentpage.msdk.ui.presentation.main.screens.aps
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import android.net.http.SslError
 import android.view.ViewGroup
-import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,37 +14,36 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.ecommpay.msdk.ui.PaymentSDK
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.presentation.main.threeDSecureHandled
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.saleAps
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
-internal fun ThreeDSecureScreen(
-    onCancel: () -> Unit,
-) {
+internal fun ApsScreen(onCancel: () -> Unit) {
     val viewModel = LocalMainViewModel.current
-    val acsPage = viewModel.lastState.acsPageState?.acsPage
-
+    val method = viewModel.lastState.currentMethod as UIPaymentMethod.UIApsPaymentMethod
+    val apsMethod = viewModel.lastState.apsPageState?.apsMethod
+    val paymentUrl = apsMethod?.paymentUrl
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
+        title = method.title,
         notScrollableContent = {
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(2.dp)
-                .background(SDKTheme.colors.panelBackgroundColor))
-            if (acsPage != null) {
-                AcsPageView(acsPage = acsPage)
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(2.dp)
+                    .background(SDKTheme.colors.panelBackgroundColor)
+            )
+            if (paymentUrl != null) {
+                ApsPageView(
+                    method = method,
+                    paymentUrl = paymentUrl
+                )
             }
         },
         scrollableContent = {},
@@ -58,13 +54,12 @@ internal fun ThreeDSecureScreen(
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-internal fun AcsPageView(
-    acsPage: AcsPage,
+internal fun ApsPageView(
+    method: UIPaymentMethod.UIApsPaymentMethod,
+    paymentUrl: String,
 ) {
     val viewModel = LocalMainViewModel.current
     var isLoading by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
     if (isLoading)
         Box(
             modifier = Modifier
@@ -100,40 +95,20 @@ internal fun AcsPageView(
                         ) {
                             super.onPageStarted(view, url, favicon)
                             isLoading = true
-                            if (url.equals(acsPage.acs?.termUrl)) {
-                                viewModel.threeDSecureHandled()
-                            }
+                            if (url != paymentUrl)
+                                viewModel.saleAps(method)
                         }
 
                         override fun onPageFinished(view: WebView?, url: String?) {
                             super.onPageFinished(view, url)
                             isLoading = false
-                            if (PaymentActivity.mockModeType != PaymentSDK.MockModeType.DISABLED) {
-                                Toast.makeText(context, R.string.acs_mock_mode_toast_label, Toast.LENGTH_SHORT).show()
-                                coroutineScope.launch {
-                                    delay(2000)
-                                    viewModel.threeDSecureHandled()
-                                }
-                            }
-                        }
-
-                        override fun onReceivedSslError(
-                            view: WebView?,
-                            handler: SslErrorHandler?,
-                            error: SslError?,
-                        ) {
-                            super.onReceivedSslError(view, handler, error)
-
                         }
                     }
                     settings.javaScriptEnabled = true
-                    loadDataWithBaseURL(
-                        acsPage.acs?.acsUrl ?: "",
-                        acsPage.content ?: "",
-                        "text/html",
-                        "UTF-8",
-                        null
-                    )
+                    settings.builtInZoomControls = true
+                    settings.domStorageEnabled = true
+
+                    loadUrl(paymentUrl)
                 }
             }, update = {
 

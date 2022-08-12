@@ -1,4 +1,4 @@
-package com.paymentpage.msdk.ui.presentation.main.views.detail
+package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize

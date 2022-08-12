@@ -1,4 +1,4 @@
-package com.paymentpage.msdk.ui.presentation.result
+package com.paymentpage.msdk.ui.presentation.main.screens.result
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -15,25 +15,24 @@ import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.presentation.main.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.paymentDateToPatternDate
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
-import com.paymentpage.msdk.ui.presentation.result.views.ResultTableInfo
+import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultTableInfo
 
 @Composable
-internal fun ResultDeclineScreen(
+internal fun ResultSuccessScreen(
     onClose: (Payment) -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
     val payment =
         viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
-
     val valueTitleCardWallet = when (val method = viewModel.lastState.currentMethod) {
         is UIPaymentMethod.UICardPayPaymentMethod, is UIPaymentMethod.UISavedCardPayPaymentMethod -> {
-             "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number}"
+            "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number}"
         }
         is UIPaymentMethod.UIApsPaymentMethod, is UIPaymentMethod.UIGooglePayPaymentMethod -> {
             method.paymentMethod.translations["title"] ?: ""
@@ -60,23 +59,15 @@ internal fun ResultDeclineScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = SDKTheme.images.errorLogo),
+                    painter = painterResource(id = SDKTheme.images.successLogo),
                     contentDescription = ""
                 )
                 Spacer(modifier = Modifier.size(15.dp))
                 Text(
-                    text = PaymentActivity.stringResourceManager.getStringByKey("title_result_error_payment"),
+                    text = PaymentActivity.stringResourceManager.getStringByKey("title_result_succes_payment"),
                     style = SDKTheme.typography.s24Bold,
                     textAlign = TextAlign.Center
                 )
-                if (!payment.paymentMassage.isNullOrEmpty()) {
-                    Spacer(modifier = Modifier.size(15.dp))
-                    Text(
-                        text = payment.paymentMassage!!,
-                        style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.errorTextColor),
-                        textAlign = TextAlign.Center
-                    )
-                }
             }
             Spacer(modifier = Modifier.size(15.dp))
             PaymentOverview()
