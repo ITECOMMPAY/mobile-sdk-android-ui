@@ -1,16 +1,28 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.paymentpage.msdk.ui.navigation
 
+
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalFocusManager
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.paymentpage.msdk.ui.ActionType
-import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.base.ErrorResult
-import com.paymentpage.msdk.ui.presentation.main.FinalPaymentState
-import kotlinx.coroutines.flow.collect
+import com.paymentpage.msdk.ui.presentation.init.InitScreen
+import com.paymentpage.msdk.ui.presentation.main.MainScreen
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun RootNavigationView(
     actionType: ActionType,
@@ -19,34 +31,36 @@ internal fun RootNavigationView(
     onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
 ) {
+    val navController = rememberAnimatedNavController()
+    val focusManager = LocalFocusManager.current
+    val mainScreenNavigator = remember { Navigator() }
 
-    val mainViewModel = LocalMainViewModel.current
-
-    LaunchedEffect(Unit) {
-        mainViewModel.state.onEach {
-            when {
-                it.error != null -> onError(it.error, true)
-                it.isLoading == true && navigator.lastRoute != Route.Loading ->
-                    navigator.navigateTo(Route.Loading)
-                it.finalPaymentState != null -> {
-                    when (it.finalPaymentState) {
-                        is FinalPaymentState.Success -> navigator.navigateTo(Route.SuccessResult)
-                        is FinalPaymentState.Decline -> navigator.navigateTo(Route.DeclineResult)
-                    }
-                }
-                it.customerFields.isNotEmpty() -> navigator.navigateTo(Route.CustomerFields)
-                it.clarificationFields.isNotEmpty() -> navigator.navigateTo(Route.ClarificationFields)
-                it.acsPageState != null -> navigator.navigateTo(Route.AcsPage)
-                it.apsPageState != null -> navigator.navigateTo(Route.ApsPage)
-            }
-        }.collect()
+    LaunchedEffect("rootNavigation") {
+        navigator.sharedFlow.onEach {
+            focusManager.clearFocus()
+            navController.navigate(it.getPath())
+        }.launchIn(this)
     }
 
-    NavigationComponent(
-        actionType = actionType,
-        navigator = navigator,
-        delegate = delegate,
-        onCancel = onCancel,
-        onError = onError
-    )
+    AnimatedNavHost(
+        navController = navController,
+        startDestination = Route.Init.getPath(),
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None }
+    ) {
+        composable(route = Route.Init.getPath()) {
+            InitScreen(navigator = navigator, onCancel = onCancel, onError = onError)
+        }
+        composable(route = Route.Main.getPath()) {
+            MainScreen(
+                actionType = actionType,
+                mainScreenNavigator = mainScreenNavigator,
+                delegate = delegate,
+                onCancel = onCancel,
+                onError = onError
+            )
+        }
+    }
 }

@@ -8,6 +8,7 @@ sealed class Route(
     private val key: String = ""
 ) {
     object Init : Route(route = "init")
+    object Main : Route(route = "main")
     object CustomerFields : Route(route = "customerFields")
     object ClarificationFields : Route(route = "clarificationFields")
     object AcsPage : Route(route = "acsPage")

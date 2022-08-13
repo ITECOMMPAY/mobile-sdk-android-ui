@@ -1,4 +1,4 @@
-package com.paymentpage.msdk.ui
+package com.paymentpage.msdk.ui.presentation
 
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,9 +10,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.base.ErrorCode
+import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.SDKCommonProvider
+import com.paymentpage.msdk.ui.SDKPaymentOptions
 import com.paymentpage.msdk.ui.base.ErrorResult
-import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.RootNavigationView
+import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.theme.HexToJetpackColor
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
@@ -22,12 +26,12 @@ internal fun MainContent(
     activity: PaymentActivity,
     paymentOptions: SDKPaymentOptions,
     msdkSession: MSDKCoreSession,
-    navigator: Navigator,
 ) {
     var showDismissDialog by remember { mutableStateOf(false) }
     var needCloseWhenError by remember { mutableStateOf(false) }
     var errorResultState by remember { mutableStateOf<ErrorResult?>(null) }
     var drawerState by remember { mutableStateOf(BottomDrawerState(initialValue = BottomDrawerValue.Closed)) }
+    val navigator = remember { Navigator() }
     LaunchedEffect(Unit) {
         drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded)
     }

@@ -14,11 +14,9 @@ import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
 import com.paymentpage.msdk.core.mock.init.MockInitCustomerFieldsConfig
 import com.paymentpage.msdk.ui.base.Constants
-import com.paymentpage.msdk.ui.navigation.Navigator
+import com.paymentpage.msdk.ui.presentation.MainContent
 
 class PaymentActivity : ComponentActivity(), PaymentDelegate {
-
-    private  val navigator = Navigator()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +40,6 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
                 activity = this@PaymentActivity,
                 paymentOptions = paymentOptions,
                 msdkSession = msdkSession,
-                navigator = navigator
             )
         }
     }
