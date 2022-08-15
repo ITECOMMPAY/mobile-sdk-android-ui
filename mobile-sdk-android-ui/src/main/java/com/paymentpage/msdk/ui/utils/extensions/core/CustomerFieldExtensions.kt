@@ -60,6 +60,10 @@ internal fun List<CustomerField>.isAllCustomerFieldsHidden(): Boolean {
     return !this.any { !it.isHidden }
 }
 
+internal fun List<CustomerField>.isAllCustomerFieldsNonRequired(): Boolean {
+    return !this.any { it.isRequired }
+}
+
 internal fun List<CustomerField>.hasVisibleCustomerFields(): Boolean {
     return this.any { !it.isHidden }
 }
