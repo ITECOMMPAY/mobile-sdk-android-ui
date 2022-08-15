@@ -9,31 +9,32 @@ import android.os.Process
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 import com.paymentpage.msdk.core.base.ErrorCode
+import java.lang.ref.WeakReference
 
 
 object CrashHandler : Thread.UncaughtExceptionHandler {
-    private var mActivity: PaymentActivity? = null
-    private var mDefaultHandler: Thread.UncaughtExceptionHandler? = null
+    private var context: WeakReference<Context>? = null
+    private var defaultHandler: Thread.UncaughtExceptionHandler? = null
     private var infos: HashMap<String, String> = HashMap()
 
-    fun init(paymentActivity: PaymentActivity) {
-        mActivity = paymentActivity
-        mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler()
+    fun init(context: Context) {
+        this.context = WeakReference(context)
+        defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler(this)
     }
 
     override fun uncaughtException(thread: Thread, ex: Throwable) {
-        collectDeviceInfo(mActivity?.applicationContext)
+        collectDeviceInfo(context?.get())
         object : Thread() {
             override fun run() {
                 Looper.prepare()
-                if (mActivity != null) {
+                if (context?.get() != null) {
                     val message = "Stack Trace:\n${ex.stackTraceToString()}\nPayment SDK Information:\n${infos.map { "${it.key}: ${it.value}" }.joinToString(separator = ";\n")}"
-                    val builder = AlertDialog.Builder(mActivity!!, R.style.CrashDialogTheme)
+                    val builder = AlertDialog.Builder(context?.get()!!, R.style.CrashDialogTheme)
                     builder
                         .setMessage("Error code: ${ErrorCode.UNKNOWN}\nMessage: $message")
                         .setPositiveButton(R.string.ok_label) { _: DialogInterface?, _: Int ->
-                            val clipboardManager = mActivity!!.getSystemService(ComponentActivity.CLIPBOARD_SERVICE) as ClipboardManager
+                            val clipboardManager = context?.get()?.getSystemService(ComponentActivity.CLIPBOARD_SERVICE) as ClipboardManager
                             val clipData = ClipData.newPlainText("StackTrace", message)
                             clipboardManager.setPrimaryClip(clipData)
                             Process.killProcess(Process.myPid())
