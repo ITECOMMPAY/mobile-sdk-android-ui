@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.paymentpage.ui.msdk.sample.ui.navigation.NavRouts
+import com.paymentpage.ui.msdk.sample.ui.navigation.NavRoutes
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ecommpay.msdk.ui.EcmpAdditionalField
 import com.paymentpage.ui.msdk.sample.utils.collectAsEffect
@@ -28,7 +28,7 @@ internal fun AdditionalFieldScreen(
 
     viewModel.viewAction.collectAsEffect { viewAction ->
         when (viewAction) {
-            is NavRouts -> navController.navigate(viewAction.route)
+            is NavRoutes -> navController.navigate(viewAction.route)
         }
     }
     Spacer(modifier = Modifier.height(20.dp))

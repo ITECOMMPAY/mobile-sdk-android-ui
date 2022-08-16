@@ -6,7 +6,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.paymentpage.ui.msdk.sample.ui.navigation.NavRouts
+import com.paymentpage.ui.msdk.sample.ui.navigation.NavRoutes
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.views.customization.CustomizationCheckbox
@@ -26,7 +26,7 @@ fun MainScreen(
     }
     viewModel.viewAction.collectAsEffect { viewAction ->
         when (viewAction) {
-            is NavRouts -> navController.navigate(viewAction.route)
+            is NavRoutes -> navController.navigate(viewAction.route)
             is MainViewActions.Sale -> listener()
         }
     }
@@ -45,6 +45,8 @@ fun MainScreen(
         PaymentFields()
         Spacer(modifier = Modifier.size(padding))
         AdditionalFieldsButton(navController)
+        Spacer(modifier = Modifier.size(padding))
+        RecurrentButton(navController)
         Spacer(modifier = Modifier.size(padding))
         HideSavedWalletsCheckbox()
         Spacer(modifier = Modifier.size(padding))

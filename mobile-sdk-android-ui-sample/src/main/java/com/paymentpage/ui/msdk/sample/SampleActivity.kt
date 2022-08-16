@@ -15,10 +15,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.ecommpay.msdk.ui.EcmpPaymentInfo
-import com.ecommpay.msdk.ui.EcmpPaymentMethodType
-import com.ecommpay.msdk.ui.PaymentSDK
-import com.ecommpay.msdk.ui.paymentOptions
+import com.ecommpay.msdk.ui.*
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.ui.msdk.sample.data.ProcessRepository
 import com.paymentpage.ui.msdk.sample.ui.navigation.NavigationComponent
@@ -54,6 +51,8 @@ class SampleActivity : ComponentActivity() {
     private fun startPaymentPage() {
         val repositoryPaymentData = ProcessRepository.paymentData
         val additionalFieldsToSend = ProcessRepository.additionalFields
+        val recurrentDataToSend = ProcessRepository.recurrentData
+        val recurrentDataSchedulesToSend = ProcessRepository.recurrentDataSchedules
         val payment = EcmpPaymentInfo(
             forcePaymentMethod = EcmpPaymentMethodType.values().find { it.value == repositoryPaymentData.forcePaymentMethod },
             hideSavedWallets = repositoryPaymentData.hideSavedWallets,
@@ -75,6 +74,24 @@ class SampleActivity : ComponentActivity() {
             merchantId = repositoryPaymentData.merchantId
             merchantName = repositoryPaymentData.merchantName
             additionalFields = additionalFieldsToSend?.toMutableList() ?: mutableListOf()
+            recurrentData = EcmpRecurrentData(
+                register = recurrentDataToSend?.register ?: true,
+                type = recurrentDataToSend?.type,
+                expiryDay = recurrentDataToSend?.expiryDay,
+                expiryMonth = recurrentDataToSend?.expiryMonth,
+                expiryYear = recurrentDataToSend?.expiryYear,
+                period = recurrentDataToSend?.period,
+                startDate = recurrentDataToSend?.startTime,
+                time = recurrentDataToSend?.time,
+                scheduledPaymentID = recurrentDataToSend?.scheduledPaymentID,
+                amount = recurrentDataToSend?.amount,
+                schedule = recurrentDataSchedulesToSend?.map {
+                    EcmpRecurrentDataSchedule(
+                        date = it.date,
+                        amount = it.amount
+                    )
+                }
+            )
         }
         val sdk = PaymentSDK(
             context = this.applicationContext,

@@ -12,15 +12,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.paymentpage.ui.msdk.sample.ui.navigation.NavRoutes
 
-
 @Composable
-internal fun AdditionalFieldsButton(navController: NavController) {
+internal fun RecurrentButton(navController: NavController) {
     Button(modifier = Modifier
         .fillMaxWidth()
         .height(50.dp),
         onClick = {
-            navController.navigate(NavRoutes.AdditionalFields.route)
+            navController.navigate(NavRoutes.Recurrent.route)
         }) {
-        Text(text = "Additional fields", color = Color.White, fontSize = 18.sp)
+        Text(text = "Recurrent Data", color = Color.White, fontSize = 18.sp)
     }
 }

@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainScreen
 import com.paymentpage.ui.msdk.sample.ui.presentation.additionalFields.AdditionalFieldScreen
+import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.RecurrentScreen
 
 
 @Composable
@@ -15,13 +16,16 @@ fun NavigationComponent(
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = NavRouts.Main.route,
+        startDestination = NavRoutes.Main.route,
     ) {
-        composable(NavRouts.Main.route) {
+        composable(NavRoutes.Main.route) {
             MainScreen(navController = navController, listener = listener)
         }
-        composable(NavRouts.AdditionalFields.route) {
+        composable(NavRoutes.AdditionalFields.route) {
             AdditionalFieldScreen(navController = navController)
+        }
+        composable(NavRoutes.Recurrent.route) {
+            RecurrentScreen(navController = navController)
         }
     }
 }
