@@ -11,7 +11,6 @@ android {
         minSdk = 21
         targetSdk = 32
         versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         signingConfig = signingConfigs.getByName("debug")
@@ -55,6 +54,7 @@ android {
                 "BRAND",
                 "\"ECommPay\""
             )
+            versionName = System.getenv("SDK_VERSION_NAME") ?: Library.version
         }
     }
 }

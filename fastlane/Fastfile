@@ -3,7 +3,7 @@ owner_name = "Ecommpay-1"
 destinations_group = "Collaborators"
 app_names = {"ecmp" => "mSDK-Android-UI"}
 paths = {
-  "ecmp" => "./paymentpage-sdk-android-sample/build/outputs/apk/ecommpay/debug/ecommpay-debug.apk", 
+  "ecmp" => "./mobile-sdk-android-ui-sample/build/outputs/apk/ecommpay/debug/mobile-sdk-android-ui-sample-ecommpay-debug.apk",
 }
 gradle_tasks = {"ecmp" => "assembleEcommpayDebug"}
 lib_env_names = {"ecmp" => "SDK_VERSION_NAME"}
@@ -44,7 +44,7 @@ platform :android do
     ENV[lib_env_names[brand]] = version_name
     
     gradle(
-      task: ":paymentpage-sdk-android-sample:#{gradle_tasks[brand]}",
+      task: ":mobile-sdk-android-ui-sample:#{gradle_tasks[brand]}",
       properties: {
           "android.injected.version.code" => build_version,
           "android.injected.version.name" => version_name
