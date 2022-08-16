@@ -1,9 +1,14 @@
 package com.paymentpage.ui.msdk.sample
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.os.Process
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +21,9 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.ecommpay.msdk.ui.*
+import com.paymentpage.msdk.core.base.ErrorCode
+import com.paymentpage.msdk.ui.CrashHandler
+import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.ui.msdk.sample.data.ProcessRepository
 import com.paymentpage.ui.msdk.sample.ui.navigation.NavigationComponent
@@ -60,7 +68,7 @@ class SampleActivity : ComponentActivity() {
             paymentId = repositoryPaymentData.paymentId,
             paymentAmount = repositoryPaymentData.paymentAmount ?: -1,
             paymentCurrency = repositoryPaymentData.paymentCurrency,
-            customerId = repositoryPaymentData.customerId,
+            customerId = repositoryPaymentData.customerId.ifEmpty { null },
             paymentDescription = repositoryPaymentData.paymentDescription
         )
         payment.signature =
@@ -108,15 +116,32 @@ class SampleActivity : ComponentActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        val builder = AlertDialog.Builder(this)
         when (resultCode) {
-            PaymentSDK.RESULT_SUCCESS -> {}
-            PaymentSDK.RESULT_CANCELLED -> {}
-            PaymentSDK.RESULT_DECLINE -> {}
+            PaymentSDK.RESULT_SUCCESS -> {
+                builder
+                    .setMessage("Your payment is successful")
+                    .setPositiveButton(R.string.ok_label) { _: DialogInterface?, _: Int ->}
+            }
+            PaymentSDK.RESULT_CANCELLED -> {
+                builder
+                    .setMessage("You cancelled the payment")
+                    .setPositiveButton(R.string.ok_label) { _: DialogInterface?, _: Int ->}
+            }
+            PaymentSDK.RESULT_DECLINE -> {
+                builder
+                    .setMessage("Your payment was declined")
+                    .setPositiveButton(R.string.ok_label) { _: DialogInterface?, _: Int ->}
+            }
             PaymentSDK.RESULT_ERROR -> {
                 val errorCode = data?.getStringExtra(PaymentSDK.EXTRA_ERROR_CODE)
                 val message = data?.getStringExtra(PaymentSDK.EXTRA_ERROR_MESSAGE)
+                builder
+                    .setMessage("Error code: $errorCode\nMessage: $message")
+                    .setPositiveButton(R.string.ok_label) { _: DialogInterface?, _: Int ->}
             }
         }
+        val alertDialog = builder.create()
+        alertDialog.show()
     }
 }
