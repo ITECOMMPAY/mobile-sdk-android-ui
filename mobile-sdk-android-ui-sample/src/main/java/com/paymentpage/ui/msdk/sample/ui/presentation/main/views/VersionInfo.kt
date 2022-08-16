@@ -11,10 +11,14 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.ui.sample.BuildConfig
 
 @Composable
-internal fun BrandTitle() {
+internal fun VersionInfo() {
     Row {
-        Text(text = "Brand:")
+        Text(text = "Version:")
         Spacer(modifier = Modifier.width(10.dp))
-        Text(text = BuildConfig.BRAND, fontWeight = FontWeight.Bold)
+        Text(text = BuildConfig.VERSION_NAME, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(text = "Build number:")
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(text = BuildConfig.VERSION_CODE.toString(), fontWeight = FontWeight.Bold)
     }
 }

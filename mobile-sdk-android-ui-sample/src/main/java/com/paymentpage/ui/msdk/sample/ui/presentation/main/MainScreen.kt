@@ -39,6 +39,7 @@ fun MainScreen(
         verticalArrangement = Arrangement.Top
     ) {
         BrandTitle()
+        VersionInfo()
         Spacer(modifier = Modifier.size(padding))
         ProjectSettings()
         Spacer(modifier = Modifier.size(padding))
