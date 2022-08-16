@@ -1,9 +1,10 @@
 package com.paymentpage.ui.msdk.sample.ui.presentation.main.views
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -11,10 +12,12 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewIntents
@@ -29,6 +32,7 @@ internal fun PaymentFields(
 ) {
     val viewState by viewModel.viewState.collectAsState()
     val paymentData = viewState?.paymentData ?: PaymentData.defaultPaymentData
+    val context = LocalContext.current
     OutlinedTextField(
         value = paymentData.paymentId,
         onValueChange = {
@@ -38,15 +42,27 @@ internal fun PaymentFields(
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Payment Id") },
         trailingIcon = {
-            IconButton(
-                onClick = {
-                    viewModel.pushIntent(MainViewIntents.ChangeField(
-                        paymentData = paymentData.copy(paymentId = UUID.randomUUID().toString()
-                            .take(30))
-                    ))
+            Row {
+                IconButton(
+                    onClick = {
+                        val clipboardManager = context.getSystemService(
+                            ComponentActivity.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clipData = ClipData.newPlainText("PaymentId", paymentData.paymentId)
+                        clipboardManager.setPrimaryClip(clipData)
+                        Toast.makeText(context, "PaymentId in clipboard", Toast.LENGTH_SHORT).show()
+                    }
+                ) {
+                    Icon(imageVector = Icons.Rounded.Share, contentDescription = null)
                 }
-            ) {
-                Icon(imageVector = Icons.Rounded.Refresh, contentDescription = null)
+                IconButton(
+                    onClick = {
+                        viewModel.pushIntent(MainViewIntents.ChangeField(
+                            paymentData = paymentData.copy(paymentId = "sdk_sample_ui_${UUID.randomUUID().toString().take(8)}")
+                        ))
+                    }
+                ) {
+                    Icon(imageVector = Icons.Rounded.Refresh, contentDescription = null)
+                }
             }
         }
     )

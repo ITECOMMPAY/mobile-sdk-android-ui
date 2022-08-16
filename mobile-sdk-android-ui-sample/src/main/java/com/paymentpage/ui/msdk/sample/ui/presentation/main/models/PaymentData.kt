@@ -28,7 +28,7 @@ data class PaymentData(
             brandColor = "#00579E",
             bitmap = null,
             projectId = 111781,
-            paymentId = UUID.randomUUID().toString().take(30),
+            paymentId = "sdk_sample_ui_${UUID.randomUUID().toString().take(8)}",
             paymentAmount = 123,
             paymentCurrency = "USD",
             customerId = "12",
