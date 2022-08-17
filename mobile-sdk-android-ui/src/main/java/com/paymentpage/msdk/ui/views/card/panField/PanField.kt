@@ -44,7 +44,16 @@ internal fun PanField(
             currentPanFieldValue = value
         },
         onRequestValidatorMessage = {
-            if (!PanValidator().isValid(it)) PaymentActivity.stringResourceManager.getStringByKey("message_about_card_number") else null
+            if (!PanValidator().isValid(it))
+                PaymentActivity.stringResourceManager.getStringByKey("message_about_card_number")
+            else if (!paymentMethod.availableCardTypes.contains(card?.type)) {
+                val regex = Regex("\\[\\[.+]]")
+                val message = regex.replace(
+                    PaymentActivity.stringResourceManager.getStringByKey("message_wrong_card_type"),
+                    card?.type?.value?.uppercase() ?: ""
+                )
+                message
+            } else null
         },
         visualTransformation = { number ->
             val trimmedCardNumber = number.text.replace(" ", "")
