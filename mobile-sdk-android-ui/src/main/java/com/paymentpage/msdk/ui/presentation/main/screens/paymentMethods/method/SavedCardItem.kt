@@ -81,7 +81,7 @@ internal fun SavedCardItem(
             PayOrConfirmButton(
                 method = method,
                 customerFields = customerFields,
-                isValidCvv = isCvvValid,
+                isValid = isCvvValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
                     viewModel.saleSavedCard(

@@ -158,11 +158,8 @@ internal fun NewCardItem(
             PayOrConfirmButton(
                 method = method,
                 customerFields = customerFields,
-                isValidCvv = isCvvValid,
+                isValid = isCvvValid && isPanValid && isPanValid && isCardHolderValid && isExpiryValid,
                 isValidCustomerFields = isCustomerFieldsValid,
-                isValidPan = isPanValid,
-                isValidCardHolder = isCardHolderValid,
-                isValidExpiry = isExpiryValid,
                 onClickButton = {
                     viewModel.saleCard(
                         method = method,
