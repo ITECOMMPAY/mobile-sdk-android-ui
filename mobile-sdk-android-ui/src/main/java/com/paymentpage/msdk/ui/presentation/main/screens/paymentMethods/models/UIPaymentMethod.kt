@@ -3,6 +3,7 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models
 
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 
 
@@ -26,7 +27,7 @@ internal sealed class UIPaymentMethod(
         title: String,
         val savedAccount: SavedAccount,
         paymentMethod: PaymentMethod,
-    ) : UIPaymentMethod(index, title, savedAccount.cardUrlLogo, paymentMethod) {
+    ) : UIPaymentMethod(index, title, null, paymentMethod) {
         var cvv: String = ""
         var isValidCvv: Boolean = false
         var isCustomerFieldsValid: Boolean = false

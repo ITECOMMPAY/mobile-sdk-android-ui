@@ -3,17 +3,19 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
+import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
 import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
@@ -29,10 +31,16 @@ internal fun SavedCardItem(
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
 
+    val context = LocalContext.current
+    val name = "card_type_${method.savedAccount.cardType.value.lowercase()}"
+    val drawableId = remember(name) {
+        context.drawableResourceIdFromDrawableName(name)
+    }
+
     ExpandablePaymentMethodItem(
         method = method,
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
-        fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
+        fallbackIcon = painterResource(id = if (drawableId > 0) drawableId else SDKTheme.images.cardLogoResId),
     ) {
         Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {

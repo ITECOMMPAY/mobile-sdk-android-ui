@@ -78,8 +78,8 @@ internal fun PanField(
                 )
             } else {
                 ChangingCardTypeItems(
-                    firstCardType = paymentMethod.cardTypes.find { it.type == PaymentMethodCardType.VISA },
-                    secondCardType = paymentMethod.cardTypes.find { it.type == PaymentMethodCardType.MASTER_5 },
+                    firstCardType = paymentMethod.allCardTypes.find { it.type == PaymentMethodCardType.VISA },
+                    secondCardType = paymentMethod.allCardTypes.find { it.type == PaymentMethodCardType.MASTER_5 },
                     startIndex = startIndex, //saving current showing card type
                     onCurrentIndexChanged = { currentIndex ->
                         startIndex = currentIndex
