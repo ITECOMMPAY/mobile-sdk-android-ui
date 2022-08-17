@@ -61,7 +61,5 @@ internal sealed class UIPaymentMethod(
         title = title,
         logoUrl = null,
         paymentMethod = paymentMethod,
-    ) {
-        var code: String = ""
-    }
+    )
 }

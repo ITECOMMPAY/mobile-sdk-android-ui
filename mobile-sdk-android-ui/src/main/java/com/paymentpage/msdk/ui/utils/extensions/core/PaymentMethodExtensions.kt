@@ -60,7 +60,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
             UIPaymentMethod.UIApsPaymentMethod(
                 index = position,
                 title = PaymentActivity.stringResourceManager.getStringByKey(it.translations["title"] ?: ""),
-                paymentMethod = it
+                paymentMethod = it,
             )
         )
         position += 1
