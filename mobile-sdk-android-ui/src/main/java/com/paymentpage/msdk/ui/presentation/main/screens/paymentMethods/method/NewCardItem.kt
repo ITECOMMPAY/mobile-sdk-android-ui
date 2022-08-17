@@ -3,7 +3,6 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
@@ -11,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +31,7 @@ import com.paymentpage.msdk.ui.views.card.CardHolderField
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
 import com.paymentpage.msdk.ui.views.card.panField.PanField
+import com.paymentpage.msdk.ui.views.common.SDKTextWithLink
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 @Composable
@@ -145,23 +144,14 @@ internal fun NewCardItem(
                         color = SDKTheme.colors.primaryTextColor,
                         fontSize = 16.sp,
                     )
-                    val uriHandler = LocalUriHandler.current
                     val linkedString = PaymentActivity
                         .stringResourceManager
                         .getLinkMessageByKey("cof_agreements")
                         .annotatedString()
-                    ClickableText(
-                        style = SDKTheme.typography.s12Light,
-                        text = linkedString,
-                        onClick = {
-                            linkedString
-                                .getStringAnnotations("URL", it, it)
-                                .firstOrNull()?.let { stringAnnotation ->
-                                    uriHandler.openUri(stringAnnotation.item)
-                                }
-                        }
+                    SDKTextWithLink(
+                        linkedString = linkedString,
+                        style = SDKTheme.typography.s12Light
                     )
-
                 }
             }
             Spacer(modifier = Modifier.size(15.dp))
