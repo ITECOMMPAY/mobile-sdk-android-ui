@@ -33,7 +33,7 @@ internal fun List<CustomerField>.merge(
 
 
     if (this.isAllCustomerFieldsHidden()) // if only hidden fields
-        return this.visibleCustomerFields().map { field ->
+        return this.map { field ->
             val foundAdditionalFieldValue =
                 additionalFields.find { field.type == it.type && !it.value.isNullOrEmpty() }?.value
             CustomerFieldValue(field.name, foundAdditionalFieldValue ?: "")
