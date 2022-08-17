@@ -42,6 +42,7 @@ import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableNa
 internal fun ExpandablePaymentMethodItem(
     method: UIPaymentMethod,
     fallbackIcon: Painter,
+    iconColor: ColorFilter? = null,
     isLocalResourceIcon: Boolean = method.logoUrl.isNullOrEmpty() && method.paymentMethod.iconUrl.isNullOrEmpty(),
     prefixNameResourceIcon: String? = null,
     headerBackgroundColor: Color = SDKTheme.colors.backgroundColor,
@@ -97,7 +98,8 @@ internal fun ExpandablePaymentMethodItem(
                         contentScale = ContentScale.Inside,
                         placeholder = fallbackIcon,
                         modifier = Modifier.size(height = 20.dp, width = 50.dp),
-                        alignment = Alignment.CenterStart
+                        alignment = Alignment.CenterStart,
+                        colorFilter = iconColor // if we need to change icon color for icons which loading from backend
                     )
                 } else {
                     val name = "${prefixNameResourceIcon}_${method.paymentMethod.code}_logo"
@@ -108,7 +110,8 @@ internal fun ExpandablePaymentMethodItem(
                     Image(
                         painter = if (drawableId > 0) painterResource(id = drawableId) else fallbackIcon,
                         contentDescription = null,
-                        contentScale = ContentScale.Fit
+                        contentScale = ContentScale.Fit,
+                        colorFilter = iconColor,
                     )
                 }
                 Row(
