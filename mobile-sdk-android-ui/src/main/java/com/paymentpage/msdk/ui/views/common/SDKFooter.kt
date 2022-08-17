@@ -23,7 +23,7 @@ internal fun SDKFooter(
     @DrawableRes iconLogo: Int,
     poweredByText: String,
     isVisiblePrivacyPolicy: Boolean = true,
-    isVisibleCookiePolicy: Boolean = false,
+    isVisibleCookiePolicy: Boolean = true,
 ) {
     Row(
         horizontalArrangement = Arrangement.Center,

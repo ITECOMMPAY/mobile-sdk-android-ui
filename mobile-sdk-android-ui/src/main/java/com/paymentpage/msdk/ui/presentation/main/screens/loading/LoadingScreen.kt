@@ -63,6 +63,8 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                 SDKFooter(
                     iconLogo = SDKTheme.images.sdkLogoResId,
                     poweredByText = stringResource(R.string.powered_by_label),
+                    isVisibleCookiePolicy = false,
+                    isVisiblePrivacyPolicy = false
                 )
             }
         },
