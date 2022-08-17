@@ -1,11 +1,8 @@
 package com.paymentpage.ui.msdk.sample
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.os.Process
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AlertDialog
@@ -21,8 +18,6 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.ecommpay.msdk.ui.*
-import com.paymentpage.msdk.core.base.ErrorCode
-import com.paymentpage.msdk.ui.CrashHandler
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.ui.msdk.sample.data.ProcessRepository
@@ -69,7 +64,8 @@ class SampleActivity : ComponentActivity() {
             paymentAmount = repositoryPaymentData.paymentAmount ?: -1,
             paymentCurrency = repositoryPaymentData.paymentCurrency,
             customerId = repositoryPaymentData.customerId.ifEmpty { null },
-            paymentDescription = repositoryPaymentData.paymentDescription
+            paymentDescription = repositoryPaymentData.paymentDescription,
+            languageCode = repositoryPaymentData.languageCode
         )
         payment.signature =
             SignatureGenerator.generateSignature(
