@@ -37,8 +37,8 @@ data class PaymentData(
             forcePaymentMethod = null,
             hideSavedWallets = false,
             secretKey = "123",
-            apiHost = "pp-sdk-3.westresscode.net",
-            wsApiHost = "paymentpage-3.westresscode.net",
+            apiHost = "pp-sdk.westresscode.net",
+            wsApiHost = "paymentpage.westresscode.net",
             merchantId = "BCR2DN6TZ75OBLTH",
             merchantName = "Example Merchant",
             mockModeType = PaymentSDK.MockModeType.DISABLED
