@@ -74,26 +74,30 @@ internal fun PanField(
         trailingIcon = {
             val context = LocalContext.current
             var startIndex by remember { mutableStateOf(0) }
-            if (isFocused || !currentPanFieldValue.isNullOrEmpty()) {
-                val name = "card_type_${card?.code ?: ""}"
-                val drawableId = remember(name) {
-                    context.drawableResourceIdFromDrawableName(name)
-                }
-                Image(
-                    modifier = Modifier.padding(15.dp),
-                    painter = painterResource(id = if (drawableId > 0) drawableId else R.drawable.card_logo),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit
-                )
-            } else {
-                ChangingCardTypeItems(
-                    firstCardType = paymentMethod.allCardTypes.find { it.type == PaymentMethodCardType.VISA },
-                    secondCardType = paymentMethod.allCardTypes.find { it.type == PaymentMethodCardType.MASTER_5 },
-                    startIndex = startIndex, //saving current showing card type
-                    onCurrentIndexChanged = { currentIndex ->
-                        startIndex = currentIndex
+            when {
+                !currentPanFieldValue.isNullOrEmpty() -> {
+                    val name = "card_type_${card?.code ?: ""}"
+                    val drawableId = remember(name) {
+                        context.drawableResourceIdFromDrawableName(name)
                     }
-                )
+                    Image(
+                        modifier = Modifier.padding(15.dp),
+                        painter = painterResource(id = if (drawableId > 0) drawableId else R.drawable.card_logo),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit
+                    )
+                }
+                isFocused -> { null }
+                else -> {
+                    ChangingCardTypeItems(
+                        firstCardType = paymentMethod.allCardTypes.find { it.type == PaymentMethodCardType.VISA },
+                        secondCardType = paymentMethod.allCardTypes.find { it.type == PaymentMethodCardType.MASTER_5 },
+                        startIndex = startIndex, //saving current showing card type
+                        onCurrentIndexChanged = { currentIndex ->
+                            startIndex = currentIndex
+                        }
+                    )
+                }
             }
         }
     )

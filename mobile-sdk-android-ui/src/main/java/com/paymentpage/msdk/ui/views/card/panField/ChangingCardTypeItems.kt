@@ -84,5 +84,6 @@ internal fun ChangingCardTypeItems(
             contentDescription = null,
             contentScale = ContentScale.Fit
         )
+        Spacer(modifier = Modifier.size(10.dp))
     }
 }
