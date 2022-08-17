@@ -10,7 +10,6 @@ android {
         applicationId = "com.paymentpage.ui.sample"
         minSdk = 21
         targetSdk = 32
-        versionCode = 1
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         signingConfig = signingConfigs.getByName("debug")
@@ -55,6 +54,7 @@ android {
                 "\"ECommPay\""
             )
             versionName = System.getenv("SDK_VERSION_NAME") ?: Library.version
+            versionCode = System.getenv("SDK_VERSION_CODE")?.toInt() ?: 1
         }
     }
 }
@@ -90,6 +90,6 @@ dependencies {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-        freeCompilerArgs +="-Xjvm-default=all"
+        freeCompilerArgs += "-Xjvm-default=all"
     }
 }

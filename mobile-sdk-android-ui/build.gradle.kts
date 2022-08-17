@@ -1,7 +1,3 @@
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.bundling.Jar
-import java.util.*
-
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -17,6 +13,7 @@ android {
     defaultConfig {
         minSdk = 21
         targetSdk = 32
+        version = System.getenv("SDK_VERSION_NAME") ?: Library.version
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -48,7 +45,6 @@ android {
         productFlavors {
             create("ecommpay") {
                 dimension = "brand"
-                version = System.getenv("SDK_VERSION_NAME") ?: Library.version
 
                 buildConfigField(
                     "String",
@@ -120,7 +116,7 @@ dependencies {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-        freeCompilerArgs +="-Xjvm-default=all"
+        freeCompilerArgs += "-Xjvm-default=all"
     }
 }
 
@@ -130,7 +126,9 @@ val javadocJar by tasks.registering(Jar::class) {
 }
 
 fun getExtraString(name: String) = rootProject.ext[name]?.toString()
+
 afterEvaluate {
+
     publishing {
         // Configure maven central repository
         repositories {
