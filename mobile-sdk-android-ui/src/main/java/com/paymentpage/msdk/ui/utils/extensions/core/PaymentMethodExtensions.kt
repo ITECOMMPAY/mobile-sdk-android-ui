@@ -21,7 +21,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
         result.add(
             UIPaymentMethod.UIGooglePayPaymentMethod(
                 index = position,
-                title = PaymentActivity.stringResourceManager.getStringByKey("google_pay_host_title"),
+                title = googlePayMethod.name ?: PaymentActivity.stringResourceManager.getStringByKey("google_pay_host_title"),
                 paymentMethod = it,
             )
         )
@@ -59,7 +59,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
         result.add(
             UIPaymentMethod.UIApsPaymentMethod(
                 index = position,
-                title = PaymentActivity.stringResourceManager.getStringByKey(it.translations["title"] ?: ""),
+                title = it.name ?: PaymentActivity.stringResourceManager.getStringByKey(it.translations["title"] ?: ""),
                 paymentMethod = it,
             )
         )
