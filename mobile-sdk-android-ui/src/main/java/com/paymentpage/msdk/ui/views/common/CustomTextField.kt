@@ -103,8 +103,9 @@ fun CustomTextField(
                         errorMessage =
                             if (isRequired && textValue.isEmpty())
                                 PaymentActivity.stringResourceManager.getStringByKey("message_required_field")
-                            else
+                            else if (textValue.isNotEmpty())
                                 onRequestValidatorMessage?.invoke(textValue)
+                            else null
                     else if (it.isFocused && !isFocused)
                         errorMessage = null
                     isFocused = it.isFocused

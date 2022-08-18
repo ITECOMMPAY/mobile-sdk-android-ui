@@ -164,8 +164,15 @@ private fun validateFields(
             it.value
         )
     }
-    onCustomerFieldsChanged(
-        allCustomerFields,
-        allRequiredFields contentEquals changedRequiredCustomerFieldsList  //проверка, что список всех обязательных полей соответствует списку измененных и прошедших проверку обязательных полей
-    )
+    val validator = customerField.validator
+    if (!customerField.isRequired && value.isNotEmpty() && validator != null && !validator.isValid(value)) {
+        onCustomerFieldsChanged(
+            allCustomerFields,
+            false
+        )
+    } else
+        onCustomerFieldsChanged(
+            allCustomerFields,
+            allRequiredFields contentEquals changedRequiredCustomerFieldsList  //проверка, что список всех обязательных полей соответствует списку измененных и прошедших проверку обязательных полей
+        )
 }
