@@ -47,6 +47,7 @@ internal fun SDKScaffold(
                             .verticalScroll(rememberScrollState())
                     ) {
                         scrollableContent()
+                        Spacer(modifier = Modifier.size(5.dp))
                         footerContent()
                     }
                 }

@@ -2,10 +2,14 @@ package com.paymentpage.msdk.ui.views.common
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -29,7 +33,8 @@ internal fun SDKFooter(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
+            .padding(5.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         if (isVisiblePrivacyPolicy) {
             val privacyPolicy = PaymentActivity
@@ -42,6 +47,19 @@ internal fun SDKFooter(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
+        }
+        if (isVisibleCookiePolicy && isVisiblePrivacyPolicy) {
+            Spacer(modifier = Modifier.size(15.dp))
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(3.dp)
+                        .background(SDKTheme.colors.footerTextColor)
+                )
+            }
         }
         if (isVisibleCookiePolicy) {
             val cookiePolicy = PaymentActivity
