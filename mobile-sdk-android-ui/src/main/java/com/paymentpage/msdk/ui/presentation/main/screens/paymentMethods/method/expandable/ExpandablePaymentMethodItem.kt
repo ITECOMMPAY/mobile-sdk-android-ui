@@ -73,7 +73,6 @@ internal fun ExpandablePaymentMethodItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(15.dp)
         ) {
             Row(modifier = Modifier
                 .clickable(
@@ -85,7 +84,10 @@ internal fun ExpandablePaymentMethodItem(
                         else
                             mainViewModel.setCurrentMethod(null)
                     }
-                ), verticalAlignment = Alignment.CenterVertically) {
+                )
+                .height(50.dp)
+                .padding(15.dp),
+                verticalAlignment = Alignment.CenterVertically) {
                 if (!isLocalResourceIcon) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
@@ -137,7 +139,9 @@ internal fun ExpandablePaymentMethodItem(
             }
             AnimatedVisibility(visible = currentMethod?.index == method.index) {
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 15.dp, end = 15.dp, top = 10.dp, bottom = 20.dp),
                     content = content
                 )
             }
