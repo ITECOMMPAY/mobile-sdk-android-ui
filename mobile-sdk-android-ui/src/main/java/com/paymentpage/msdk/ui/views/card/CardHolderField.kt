@@ -17,7 +17,7 @@ internal fun CardHolderField(
     CustomTextField(
         initialValue = initialValue,
         modifier = modifier,
-        onFilterValueBefore = { value -> value.filter { it.isLetter() || it == ' ' || it == '.' || it == '-' }.uppercase()},
+        onFilterValueBefore = { value -> value.filter { it.isLetter() || it == ' ' || it == '.' || it == '-' || it == '\'' }.uppercase()},
         onValueChanged = { value, isValid ->
             onValueChanged(value, isValid && CardHolderNameValidator().isValid(value))
         },
