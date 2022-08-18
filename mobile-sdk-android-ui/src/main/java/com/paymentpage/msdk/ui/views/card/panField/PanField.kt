@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -15,6 +16,7 @@ import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.core.validators.custom.PanValidator
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.card.formatAmex
 import com.paymentpage.msdk.ui.utils.card.formatDinnersClub
 import com.paymentpage.msdk.ui.utils.card.formatOtherCardNumbers
@@ -84,7 +86,8 @@ internal fun PanField(
                         modifier = Modifier.padding(15.dp),
                         painter = painterResource(id = if (drawableId > 0) drawableId else R.drawable.card_logo),
                         contentDescription = null,
-                        contentScale = ContentScale.Fit
+                        contentScale = ContentScale.Fit,
+                        colorFilter = if (drawableId == 0) ColorFilter.tint(SDKTheme.colors.brand) else null
                     )
                 }
                 isFocused -> { null }
