@@ -53,7 +53,7 @@ internal fun MainScreen(
         mainViewModel.state.onEach {
             when {
                 it.error != null -> onError(it.error, true)
-                it.isLoading == true && mainScreenNavigator.lastRoute != Route.Loading ->
+                it.isLoading == true ->
                     mainScreenNavigator.navigateTo(Route.Loading)
                 it.finalPaymentState != null -> {
                     when (it.finalPaymentState) {
@@ -71,7 +71,7 @@ internal fun MainScreen(
 
     AnimatedNavHost(
         navController = navController,
-        startDestination = Route.PaymentMethods.getPath(),
+        startDestination = if (mainViewModel.lastState.isLoading == true) Route.Loading.getPath() else Route.PaymentMethods.getPath(),
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
