@@ -22,6 +22,7 @@ import com.paymentpage.msdk.ui.utils.card.formatDinnersClub
 import com.paymentpage.msdk.ui.utils.card.formatOtherCardNumbers
 import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
 import com.paymentpage.msdk.ui.views.common.CustomTextField
+import java.util.*
 
 @Composable
 internal fun PanField(
@@ -92,9 +93,14 @@ internal fun PanField(
                 }
                 isFocused -> { null }
                 else -> {
+                    val cardTypesQueue = mutableListOf<PaymentMethodCardType?>()
+                    val firstCardType = paymentMethod.availableCardTypes.find { it == PaymentMethodCardType.VISA }
+                    val secondCardType = paymentMethod.availableCardTypes.find { it == PaymentMethodCardType.MASTER_5 }
+                    cardTypesQueue.add(firstCardType)
+                    cardTypesQueue.add(secondCardType)
+                    cardTypesQueue.addAll(paymentMethod.availableCardTypes.filter { it != firstCardType }.filter { it != secondCardType })
                     ChangingCardTypeItems(
-                        firstCardType = paymentMethod.allCardTypes.find { it.type == PaymentMethodCardType.VISA },
-                        secondCardType = paymentMethod.allCardTypes.find { it.type == PaymentMethodCardType.MASTER_5 },
+                        cardTypes = cardTypesQueue.filterNotNull(),
                         startIndex = startIndex, //saving current showing card type
                         onCurrentIndexChanged = { currentIndex ->
                             startIndex = currentIndex
