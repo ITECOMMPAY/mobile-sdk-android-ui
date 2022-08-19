@@ -15,8 +15,8 @@ import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsView
+import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.isAllCustomerFieldsNonRequired
@@ -70,7 +70,7 @@ internal fun CustomerFieldsScreen(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
-                isEnabled = isCustomerFieldsValid || visibleCustomerFields.isEmpty() || visibleCustomerFields.isAllCustomerFieldsNonRequired()
+                isEnabled = isCustomerFieldsValid && (visibleCustomerFields.isEmpty() || visibleCustomerFields.isAllCustomerFieldsNonRequired())
             ) {
                 viewModel.sendCustomerFields(
                     customerFields.merge(

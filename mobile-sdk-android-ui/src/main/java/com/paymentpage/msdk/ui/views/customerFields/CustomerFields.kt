@@ -34,7 +34,7 @@ internal fun CustomerFields(
             val fieldValue = (foundCustomerFieldValue?.value ?: foundAdditionalField?.value) ?: ""
             customerField.name to UICustomerFieldValue(
                 name = customerField.name,
-                value = fieldValue ?: "",
+                value = fieldValue,
                 isRequired = customerField.isRequired,
                 isValid =  (!customerField.isRequired && fieldValue.isNotEmpty() && customerField.validator != null && customerField.validator?.isValid(fieldValue) == true) //field is not required and not empty and has validator and value is valid
                         || (!customerField.isRequired && fieldValue.isEmpty()) // field is not required and empty
