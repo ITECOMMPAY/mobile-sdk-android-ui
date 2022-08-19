@@ -16,7 +16,7 @@ val delayUnit = 300 // you can change delay to change animation speed
 
 @Composable
 fun DotsLoading() {
-    val maxOffset = 10f
+    val maxOffset = 24f
 
     @Composable
     fun Dot(
