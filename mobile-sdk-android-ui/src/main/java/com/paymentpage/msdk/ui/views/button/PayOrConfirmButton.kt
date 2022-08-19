@@ -32,8 +32,7 @@ internal fun PayOrConfirmButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
-                isEnabled = isValid && (isValidCustomerFields || customerFields.visibleCustomerFields()
-                    .none { it.isRequired })
+                isEnabled = isValid && isValidCustomerFields
             ) {
                 onClickButton()
             }
@@ -43,8 +42,7 @@ internal fun PayOrConfirmButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
-                isEnabled = isValid && (isValidCustomerFields || customerFields.visibleCustomerFields()
-                    .none { it.isRequired }),
+                isEnabled = isValid && isValidCustomerFields,
             ) {
                 onClickButton()
             }
