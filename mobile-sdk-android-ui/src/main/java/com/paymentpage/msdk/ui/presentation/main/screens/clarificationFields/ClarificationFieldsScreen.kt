@@ -52,7 +52,7 @@ internal fun ClarificationFieldsScreen(
             )
             Spacer(modifier = Modifier.size(5.dp))
             CustomerFields(
-                visibleCustomerFields = clarificationFields.map {
+                customerFields = clarificationFields.map {
                     CustomerField(
                         name = it.name,
                         validatorName = it.validatorName,

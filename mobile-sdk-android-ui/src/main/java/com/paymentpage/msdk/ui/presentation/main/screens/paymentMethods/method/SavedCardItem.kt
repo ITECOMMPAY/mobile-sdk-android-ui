@@ -67,7 +67,7 @@ internal fun SavedCardItem(
             }
             if (customerFields.hasVisibleCustomerFields() && customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
                 CustomerFields(
-                    visibleCustomerFields = customerFields.visibleCustomerFields(),
+                    customerFields = customerFields.visibleCustomerFields(),
                     additionalFields = additionalFields,
                     customerFieldValues = method.customerFieldValues,
                     onCustomerFieldsChanged = { fields, isValid ->

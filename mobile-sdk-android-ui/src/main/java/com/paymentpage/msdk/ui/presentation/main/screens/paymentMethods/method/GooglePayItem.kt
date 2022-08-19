@@ -108,7 +108,7 @@ internal fun GooglePayItem(method: UIPaymentMethod.UIGooglePayPaymentMethod) {
             ) {
                 Spacer(modifier = Modifier.size(10.dp))
                 CustomerFields(
-                    visibleCustomerFields = visibleCustomerFields,
+                    customerFields = visibleCustomerFields,
                     additionalFields = additionalFields,
                     customerFieldValues = method.customerFieldValues,
                     onCustomerFieldsChanged = { fields, isValid ->

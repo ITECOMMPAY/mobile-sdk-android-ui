@@ -58,7 +58,7 @@ internal fun CustomerFieldsScreen(
             )
             Spacer(modifier = Modifier.size(5.dp))
             CustomerFields(
-                visibleCustomerFields = visibleCustomerFields,
+                customerFields = visibleCustomerFields,
                 additionalFields = LocalPaymentOptions.current.additionalFields,
                 onCustomerFieldsChanged = { fields, isValid ->
                     customerFieldValues = fields

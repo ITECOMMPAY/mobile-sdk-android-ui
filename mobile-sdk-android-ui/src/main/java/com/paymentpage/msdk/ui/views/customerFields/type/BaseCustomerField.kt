@@ -27,7 +27,10 @@ fun BaseCustomerTextField(
             customerField.validate(it, onTransformValueBeforeValidate)
         },
         onValueChanged = { text, isValid ->
-            onValueChanged(customerField, text, isValid && (customerField.validate(text, onTransformValueBeforeValidate)) == null)
+            var isResultValid = isValid
+            if (text.isNotEmpty()) //if field not empty - need validate text
+                isResultValid = isResultValid && (customerField.validate(text, onTransformValueBeforeValidate) == null)
+            onValueChanged(customerField, text, isResultValid)
         },
         label = customerField.label,
         placeholder = customerField.placeholder ?: customerField.hint,
