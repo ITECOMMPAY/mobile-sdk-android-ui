@@ -53,7 +53,7 @@ internal fun NewCardItem(
         method = method,
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
         fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
-        iconColor = ColorFilter.tint(SDKTheme.colors.brand)
+        iconColor = ColorFilter.tint(SDKTheme.colors.brand),
     ) {
         Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {
