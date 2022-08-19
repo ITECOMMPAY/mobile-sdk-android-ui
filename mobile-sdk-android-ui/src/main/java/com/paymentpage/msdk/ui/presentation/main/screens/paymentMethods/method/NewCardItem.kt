@@ -144,12 +144,8 @@ internal fun NewCardItem(
                         color = SDKTheme.colors.primaryTextColor,
                         fontSize = 16.sp,
                     )
-                    val linkedString = PaymentActivity
-                        .stringResourceManager
-                        .getLinkMessageByKey("cof_agreements")
-                        .annotatedString()
                     SDKTextWithLink(
-                        linkedString = linkedString,
+                        overrideKey = "cof_agreements",
                         style = SDKTheme.typography.s12Light
                     )
                 }

@@ -22,8 +22,8 @@ import com.paymentpage.msdk.ui.views.customerFields.type.*
 internal fun CustomerFields(
     customerFields: List<CustomerField>, //all fields for render
     additionalFields: List<SDKAdditionalField> = emptyList(), //additional fields
-    customerFieldValues: List<CustomerFieldValue> = emptyList(), //remembered customerFields
-    onCustomerFieldsChanged: (List<CustomerFieldValue>, Boolean) -> Unit, //callback
+    customerFieldValues: List<CustomerFieldValue> = emptyList(), //remembered previously fields
+    onCustomerFieldsChanged: (List<CustomerFieldValue>, Boolean) -> Unit, //callback (all fields, is all valid)
 ) {
     val changedFieldsMap = remember {
         customerFields.associate { customerField ->
@@ -31,18 +31,21 @@ internal fun CustomerFields(
                 additionalFields.firstOrNull { customerField.type == it.type } //find field from additional data
             val foundCustomerFieldValue =
                 customerFieldValues.firstOrNull { it.name == customerField.name } //find field from remembered data
-            val fieldValue = foundCustomerFieldValue?.value ?: foundAdditionalField?.value
+            val fieldValue = (foundCustomerFieldValue?.value ?: foundAdditionalField?.value) ?: ""
             customerField.name to UICustomerFieldValue(
                 name = customerField.name,
                 value = fieldValue ?: "",
                 isRequired = customerField.isRequired,
-                isValid = (!customerField.isRequired && fieldValue.isNullOrEmpty()) || (customerField.isRequired && !fieldValue.isNullOrEmpty()) //if field is not required and empty or required but not empty
+                isValid =  (!customerField.isRequired && fieldValue.isNotEmpty() && customerField.validator != null && customerField.validator?.isValid(fieldValue) == true) //field is not required and not empty and has validator and value is valid
+                        || (!customerField.isRequired && fieldValue.isEmpty()) // field is not required and empty
+                        || (customerField.isRequired && fieldValue.isNotEmpty()) //or required but not empty
             )
         }.toMutableMap()
     }
 
     LaunchedEffect(Unit) {
-        val isAllFieldsValid = changedFieldsMap.values.none { !it.isValid }
+        val isAllFieldsValid = changedFieldsMap.values.none { !it.isValid } //if all fields is valid
+        //call once at first time
         onCustomerFieldsChanged(
             changedFieldsMap.values.map { CustomerFieldValue(name = it.name, value = it.value) },
             isAllFieldsValid
@@ -57,10 +60,10 @@ internal fun CustomerFields(
                     name = customerField.name,
                     value = "",
                     isRequired = customerField.isRequired,
-                    isValid = false
+                    isValid = !customerField.isRequired
                 )
 
-        val isAllFieldsValid = changedFieldsMap.values.none { !it.isValid }
+        val isAllFieldsValid = changedFieldsMap.values.none { !it.isValid } //if all fields is valid
         onCustomerFieldsChanged(
             changedFieldsMap.values.map { CustomerFieldValue(name = it.name, value = it.value) },
             isAllFieldsValid

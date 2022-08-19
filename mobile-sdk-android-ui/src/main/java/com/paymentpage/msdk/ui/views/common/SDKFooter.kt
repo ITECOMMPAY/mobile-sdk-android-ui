@@ -37,12 +37,8 @@ internal fun SDKFooter(
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (isVisiblePrivacyPolicy) {
-            val privacyPolicy = PaymentActivity
-                .stringResourceManager
-                .getLinkMessageByKey("privacy_policy")
-                .annotatedString()
             SDKTextWithLink(
-                linkedString = privacyPolicy,
+                overrideKey = "privacy_policy",
                 style = SDKTheme.typography.s12Light.copy(textAlign = TextAlign.End),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -62,13 +58,9 @@ internal fun SDKFooter(
             }
         }
         if (isVisibleCookiePolicy) {
-            val cookiePolicy = PaymentActivity
-                .stringResourceManager
-                .getLinkMessageByKey("cookie_policy")
-                .annotatedString()
             Spacer(modifier = Modifier.size(15.dp))
             SDKTextWithLink(
-                linkedString = cookiePolicy,
+                overrideKey = "cookie_policy",
                 style = SDKTheme.typography.s12Light.copy(textAlign = TextAlign.Start),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
