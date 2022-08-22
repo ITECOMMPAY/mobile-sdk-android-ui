@@ -79,7 +79,9 @@ internal fun ResultDeclineScreen(
                 }
             }
             Spacer(modifier = Modifier.size(15.dp))
-            PaymentOverview()
+            PaymentOverview(
+                alpha = 0.4f
+            )
             Spacer(modifier = Modifier.size(15.dp))
             ResultTableInfo(
                 titleKeyWithValueMap = mutableMapOf(

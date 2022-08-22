@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -23,17 +24,18 @@ import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.getColorMatrix
 
 @Composable
-internal fun PaymentOverview() {
+internal fun PaymentOverview(
+    alpha: Float = 1f
+) {
     val mainViewModel = LocalMainViewModel.current
     val currentMethod = mainViewModel.state.collectAsState().value.currentMethod
-
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(if (LocalPaymentOptions.current.logoImage != null) 150.dp else 95.dp)
+            .alpha(alpha)
     ) {
-
         Image(
             painter = painterResource(id = R.drawable.card_lines_bg),
             contentDescription = null,
@@ -65,22 +67,19 @@ internal fun PaymentOverview() {
                 Row {
                     Text(
                         modifier = Modifier.alignByBaseline(),
-                        text = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins()
-                            ?: "--",
+                        text = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                         style = SDKTheme.typography.s28Bold.copy(color = Color.White)
                     )
-                    if (LocalPaymentOptions.current.paymentInfo?.paymentCurrency != null) {
-                        Spacer(
-                            modifier = Modifier
-                                .width(8.dp)
-                                .alignByBaseline()
-                        )
-                        Text(
-                            modifier = Modifier.alignByBaseline(),
-                            text = LocalPaymentOptions.current.paymentInfo.paymentCurrency,
-                            style = SDKTheme.typography.s16Normal.copy(color = Color.White)
-                        )
-                    }
+                    Spacer(
+                        modifier = Modifier
+                            .width(8.dp)
+                            .alignByBaseline()
+                    )
+                    Text(
+                        modifier = Modifier.alignByBaseline(),
+                        text = LocalPaymentOptions.current.paymentInfo.paymentCurrency,
+                        style = SDKTheme.typography.s16Normal.copy(color = Color.White)
+                    )
                 }
                 //Spacer(modifier = Modifier.height(10.dp))
                 Row {

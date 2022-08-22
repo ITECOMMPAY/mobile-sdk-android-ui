@@ -42,8 +42,6 @@ internal fun ResultTableInfo(
                         Text(
                             text = value,
                             style = SDKTheme.typography.s14Normal,
-                            overflow = TextOverflow.Ellipsis,
-                            maxLines = 1,
                             textAlign = TextAlign.End
                         )
                     }
