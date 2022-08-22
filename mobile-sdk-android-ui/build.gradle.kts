@@ -33,12 +33,22 @@ android {
                 "IS_TIME_TRAVEL",
                 "false"
             )
+            buildConfigField(
+                "String",
+                "SDK_VERSION_NAME",
+                "\"$version\""
+            )
         }
         debug {
             buildConfigField(
                 "Boolean",
                 "IS_TIME_TRAVEL",
                 "true"
+            )
+            buildConfigField(
+                "String",
+                "SDK_VERSION_NAME",
+                "\"$version\""
             )
         }
         flavorDimensions("brand")

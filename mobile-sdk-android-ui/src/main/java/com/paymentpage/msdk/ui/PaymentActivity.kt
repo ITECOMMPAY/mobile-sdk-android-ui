@@ -7,8 +7,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.ecommpay.msdk.ui.PaymentSDK
 import com.ecommpay.msdk.ui.PaymentSDK.MockModeType.*
+import com.paymentpage.msdk.core.ApplicationInfo
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
+import com.paymentpage.msdk.core.UserAgentData
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
@@ -35,6 +37,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             )
             else -> MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
         }
+        config.userAgentData = UserAgentData(applicationInfo = ApplicationInfo(version = BuildConfig.SDK_VERSION_NAME))
         msdkSession = MSDKCoreSession(config)
 
         setContent {
