@@ -70,7 +70,7 @@ internal fun CustomerFieldsScreen(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
-                isEnabled = isCustomerFieldsValid && (visibleCustomerFields.isEmpty() || visibleCustomerFields.isAllCustomerFieldsNonRequired())
+                isEnabled = isCustomerFieldsValid
             ) {
                 viewModel.sendCustomerFields(
                     customerFields.merge(
