@@ -27,22 +27,12 @@ internal fun PayOrConfirmButton(
     val condition =
         customerFields.hasVisibleCustomerFields() && customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS
     when {
-        condition && method is UIPaymentMethod.UISavedCardPayPaymentMethod -> {
+        condition -> {
             PayButton(
                 payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = isValid && isValidCustomerFields
-            ) {
-                onClickButton()
-            }
-        }
-        condition && method is UIPaymentMethod.UICardPayPaymentMethod -> {
-            PayButton(
-                payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
-                amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
-                currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
-                isEnabled = isValid && isValidCustomerFields,
             ) {
                 onClickButton()
             }
