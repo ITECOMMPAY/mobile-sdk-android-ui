@@ -27,10 +27,8 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         mockModeType =
             intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as PaymentSDK.MockModeType
         val config = when {
-            mockModeType == SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow(
-                MockInitCustomerFieldsConfig.ALL
-            )
-            mockModeType == DECLINE -> MSDKCoreSessionConfig.mockInitReturnedDecline()
+            mockModeType == SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow()
+            mockModeType == DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow()
             BuildConfig.DEBUG -> MSDKCoreSessionConfig.debug(
                 intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
                 intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
