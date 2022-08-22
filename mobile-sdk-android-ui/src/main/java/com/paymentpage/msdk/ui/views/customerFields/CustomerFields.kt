@@ -32,13 +32,19 @@ internal fun CustomerFields(
             val foundCustomerFieldValue =
                 customerFieldValues.firstOrNull { it.name == customerField.name } //find field from remembered data
             val fieldValue = (foundCustomerFieldValue?.value ?: foundAdditionalField?.value) ?: ""
+
+            val validator = customerField.validator
             customerField.name to UICustomerFieldValue(
                 name = customerField.name,
                 value = fieldValue,
                 isRequired = customerField.isRequired,
-                isValid =  (!customerField.isRequired && fieldValue.isNotEmpty() && customerField.validator != null && customerField.validator?.isValid(fieldValue) == true) //field is not required and not empty and has validator and value is valid
+                isValid = (
+                        fieldValue.isNotEmpty()
+                                && validator != null
+                                && validator.isValid(fieldValue)
+                        ) //field is not empty and has validator and value is valid
                         || (!customerField.isRequired && fieldValue.isEmpty()) // field is not required and empty
-                        || (customerField.isRequired && fieldValue.isNotEmpty()) //or required but not empty
+                        || (fieldValue.isNotEmpty() && validator == null) //field not empty without validator
             )
         }.toMutableMap()
     }

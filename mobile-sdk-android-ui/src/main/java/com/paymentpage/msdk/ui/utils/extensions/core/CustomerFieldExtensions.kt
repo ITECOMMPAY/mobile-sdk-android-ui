@@ -1,9 +1,7 @@
 package com.paymentpage.msdk.ui.utils.extensions.core
 
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
-import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.SDKAdditionalField
 
 internal fun CustomerField.validate(
     value: String,
@@ -25,32 +23,6 @@ internal fun CustomerField.validate(
     return resultMessage
 }
 
-
-internal fun List<CustomerField>.merge(
-    changedFields: List<CustomerFieldValue>?,
-    additionalFields: List<SDKAdditionalField>
-): List<CustomerFieldValue> {
-
-
-    if (this.isAllCustomerFieldsHidden()) // if only hidden fields
-        return this.map { field ->
-            val foundAdditionalFieldValue =
-                additionalFields.find { field.type == it.type && !it.value.isNullOrEmpty() }?.value
-            CustomerFieldValue(field.name, foundAdditionalFieldValue ?: "")
-        }
-
-    val result = changedFields?.toMutableList() ?: mutableListOf()
-    this.forEach { field ->
-        if (result.find { it.name == field.name } == null) {
-            val foundAdditionalFieldValue =
-                additionalFields.find { field.type == it.type && !it.value.isNullOrEmpty() }?.value
-            if (foundAdditionalFieldValue != null)
-                result.add(CustomerFieldValue(field.name, foundAdditionalFieldValue))
-        }
-    }
-
-    return result.toList()
-}
 
 internal fun List<CustomerField>.visibleCustomerFields(): List<CustomerField> {
     return this.filter { !it.isHidden }

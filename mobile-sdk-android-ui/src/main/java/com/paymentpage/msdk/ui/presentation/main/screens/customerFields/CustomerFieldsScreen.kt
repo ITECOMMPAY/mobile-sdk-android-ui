@@ -19,8 +19,6 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.P
 import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
-import com.paymentpage.msdk.ui.utils.extensions.core.isAllCustomerFieldsNonRequired
-import com.paymentpage.msdk.ui.utils.extensions.core.merge
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
@@ -72,12 +70,7 @@ internal fun CustomerFieldsScreen(
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = isCustomerFieldsValid
             ) {
-                viewModel.sendCustomerFields(
-                    customerFields.merge(
-                        changedFields = customerFieldValues,
-                        additionalFields = additionalFields
-                    )
-                )
+                viewModel.sendCustomerFields(customerFieldValues ?: emptyList())
             }
             Spacer(modifier = Modifier.size(5.dp))
         },

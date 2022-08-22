@@ -68,8 +68,6 @@ internal fun GooglePayItem(method: UIPaymentMethod.UIGooglePayPaymentMethod) {
                     merchantId = merchantId,
                     token = it,
                     environment = paymentOptions.merchantEnvironment,
-                    allCustomerFields = customerFields,
-                    additionalFields = additionalFields
                 )
             }
     }
