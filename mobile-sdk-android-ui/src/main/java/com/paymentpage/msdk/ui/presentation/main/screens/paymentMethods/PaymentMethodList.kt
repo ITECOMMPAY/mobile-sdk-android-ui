@@ -6,8 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
@@ -17,16 +16,13 @@ import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.PaymentMethodItem
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 
-internal const val COUNT_OF_VISIBLE_CUSTOMER_FIELDS = 3
-
 @Composable
 internal fun PaymentMethodList() {
     val mainViewModel = LocalMainViewModel.current
-    val lastSelectedMethod = mainViewModel.lastState.currentMethod
-
+    val state = mainViewModel.state.collectAsState().value //for recomposition
+    val lastSelectedMethod = state.currentMethod
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
-
     val mergedPaymentMethods = paymentMethods.mergeUIPaymentMethods(savedAccounts = savedAccounts)
     if (mergedPaymentMethods.isEmpty()) return
 

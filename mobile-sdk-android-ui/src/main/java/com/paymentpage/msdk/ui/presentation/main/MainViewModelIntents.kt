@@ -3,6 +3,7 @@ package com.paymentpage.msdk.ui.presentation.main
 import com.paymentpage.msdk.core.domain.entities.SdkExpiry
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
+import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.aps.ApsSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
@@ -40,6 +41,14 @@ internal fun MainViewModel.saleSavedCard(
     val request = SavedCardSaleRequest(cvv = method.cvv, accountId = method.accountId)
     request.customerFields = method.customerFieldValues
     this.payInteractor.execute(request, this)
+}
+
+internal fun MainViewModel.deleteSavedCard(
+    method: UIPaymentMethod.UISavedCardPayPaymentMethod,
+) {
+    sendEvent(MainScreenUiEvent.ShowDeleteCardLoading(isLoading = true))
+    val request = CardRemoveRequest(id = method.accountId)
+    this.cardRemoveInteractor.execute(request, this)
 }
 
 internal fun MainViewModel.showAps(

@@ -14,7 +14,6 @@ import com.paymentpage.msdk.core.UserAgentData
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
-import com.paymentpage.msdk.core.mock.init.MockInitCustomerFieldsConfig
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.presentation.MainContent
 

@@ -6,6 +6,8 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.entities.payment.PaymentStatus
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
+import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveDelegate
+import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveInteractor
 import com.paymentpage.msdk.core.domain.interactors.pay.PayDelegate
 import com.paymentpage.msdk.core.domain.interactors.pay.PayInteractor
 import com.paymentpage.msdk.ui.SDKPaymentOptions
@@ -16,8 +18,9 @@ import kotlinx.coroutines.flow.StateFlow
 
 internal class MainViewModel(
     val payInteractor: PayInteractor,
+    val cardRemoveInteractor: CardRemoveInteractor,
     private val paymentOptions: SDKPaymentOptions
-) : BaseViewModel<MainScreenState, MainScreenUiEvent>(), PayDelegate {
+) : BaseViewModel<MainScreenState, MainScreenUiEvent>(), PayDelegate, CardRemoveDelegate {
     override val reducer = MainReducer(MainScreenState.initial())
 
     override val state: StateFlow<MainScreenState>
@@ -30,6 +33,7 @@ internal class MainViewModel(
     override fun onCleared() {
         super.onCleared()
         payInteractor.cancel()
+        cardRemoveInteractor.cancel()
     }
 
 
@@ -78,6 +82,11 @@ internal class MainViewModel(
 
     override fun onError(code: ErrorCode, message: String) {
         sendEvent(MainScreenUiEvent.ShowError(ErrorResult(code = code, message = message)))
+    }
+
+    override fun onSuccess(result: Boolean) {
+        sendEvent(MainScreenUiEvent.ShowDeleteCardLoading(isLoading = false))
+        setCurrentMethod(null)
     }
 
     override fun onPaymentCreated() {
