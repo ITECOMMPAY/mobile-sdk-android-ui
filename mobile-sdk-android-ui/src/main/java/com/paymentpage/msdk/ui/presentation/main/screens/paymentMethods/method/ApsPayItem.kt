@@ -52,14 +52,14 @@ internal fun ApsPayItem(
                     method = method,
                 )
             }
-            Spacer(modifier = Modifier.size(10.dp))
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = PaymentActivity.stringResourceManager.getStringByKey("aps_vat_disclaimer"),
-                color = SDKTheme.colors.primaryTextColor,
-                style = SDKTheme.typography.s12Light,
-                textAlign = TextAlign.Center
-            )
+//            Spacer(modifier = Modifier.size(10.dp))
+//            Text(
+//                modifier = Modifier.fillMaxWidth(),
+//                text = PaymentActivity.stringResourceManager.getStringByKey("aps_vat_disclaimer"),
+//                color = SDKTheme.colors.primaryTextColor,
+//                style = SDKTheme.typography.s12Light,
+//                textAlign = TextAlign.Center
+//            )
         }
     }
 }
