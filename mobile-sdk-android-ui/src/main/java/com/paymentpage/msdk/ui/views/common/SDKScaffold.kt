@@ -31,7 +31,7 @@ internal fun SDKScaffold(
             Column(
                 horizontalAlignment = Alignment.Start
             ) {
-                Column(modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp)) {
+                Column(modifier = Modifier.padding(horizontal = 20.dp)) {
                     SDKTopBar(
                         title = title,
                         onClose = onClose,

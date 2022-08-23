@@ -25,14 +25,12 @@ internal fun SDKTopBar(
     onClose: (() -> Unit)? = null,
     onBack: (() -> Unit)? = null
 ) {
-
     Row(
         Modifier
             .fillMaxWidth()
             //.background(SDKTheme.colors.backgroundColor)
-            .height(45.dp),
+            .height(65.dp),
         verticalAlignment = Alignment.CenterVertically,
-
         ) {
         Text(
             modifier = Modifier.weight(1f),
