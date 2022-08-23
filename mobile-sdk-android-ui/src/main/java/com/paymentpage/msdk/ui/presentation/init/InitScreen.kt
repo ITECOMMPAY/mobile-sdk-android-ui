@@ -39,8 +39,8 @@ internal fun InitScreen(
                 it.error != null -> onError(it.error, true)
                 it.isInitLoaded -> navigator.navigateTo(Route.Main)
                 it.payment != null -> {
+                    navigator.navigateTo(Route.Restore)
                     mainViewModel.restorePayment()
-                    navigator.navigateTo(Route.Main)
                 }
 
             }

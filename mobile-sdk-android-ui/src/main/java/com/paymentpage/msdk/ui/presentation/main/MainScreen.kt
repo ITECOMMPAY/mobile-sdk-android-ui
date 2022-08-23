@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.onEach
 @Suppress("UNUSED_PARAMETER")
 @Composable
 internal fun MainScreen(
+    startRoute: Route = Route.PaymentMethods,
     actionType: ActionType,
     mainScreenNavigator: Navigator,
     delegate: PaymentDelegate,
@@ -68,10 +69,11 @@ internal fun MainScreen(
             }
         }.collect()
     }
+    val lastRoute = mainScreenNavigator.lastRoute
 
     AnimatedNavHost(
         navController = navController,
-        startDestination = if (mainViewModel.lastState.isLoading == true) Route.Loading.getPath() else Route.PaymentMethods.getPath(),
+        startDestination = lastRoute?.getPath() ?: startRoute.getPath(),
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
