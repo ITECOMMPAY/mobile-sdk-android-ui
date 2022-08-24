@@ -112,7 +112,7 @@ internal fun PaymentFields(
     )
     Spacer(modifier = Modifier.size(10.dp))
     OutlinedTextField(
-        value = paymentData.languageCode ?: "",
+        value = paymentData.languageCode,
         onValueChange = {
             viewModel.pushIntent(MainViewIntents.ChangeField(
                 paymentData = paymentData.copy(languageCode = it)))

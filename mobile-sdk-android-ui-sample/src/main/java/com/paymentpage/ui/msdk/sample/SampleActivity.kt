@@ -65,7 +65,7 @@ class SampleActivity : ComponentActivity() {
             paymentCurrency = repositoryPaymentData.paymentCurrency,
             customerId = repositoryPaymentData.customerId.ifEmpty { null },
             paymentDescription = repositoryPaymentData.paymentDescription,
-            languageCode = repositoryPaymentData.languageCode
+            languageCode = repositoryPaymentData.languageCode.ifEmpty { null }
         )
         payment.signature =
             SignatureGenerator.generateSignature(
