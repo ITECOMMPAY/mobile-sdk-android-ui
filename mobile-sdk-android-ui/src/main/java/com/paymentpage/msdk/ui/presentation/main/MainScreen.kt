@@ -98,11 +98,11 @@ internal fun MainScreen(
             ApsScreen(onCancel = onCancel)
         }
         composable(route = Route.SuccessResult.getPath()) {
-            ResultSuccessScreen(onClose = { delegate.onCompleteWithSuccess(it) })
+            ResultSuccessScreen(onClose = { delegate.onCompleteWithSuccess(it) }, onError = onError)
         }
 
         composable(route = Route.DeclineResult.getPath()) {
-            ResultDeclineScreen(onClose = { delegate.onCompleteWithDecline(it) })
+            ResultDeclineScreen(onClose = { delegate.onCompleteWithDecline(it) }, onError = onError)
         }
         composable(route = Route.Loading.getPath()) {
             LoadingScreen(onCancel = onCancel)
