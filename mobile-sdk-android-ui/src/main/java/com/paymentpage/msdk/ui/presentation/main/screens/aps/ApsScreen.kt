@@ -82,11 +82,6 @@ internal fun ApsPageView(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
                     )
-                    webChromeClient = object : WebChromeClient() {
-                        override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                            isLoading = newProgress < 100
-                        }
-                    }
                     webViewClient = object : WebViewClient() {
                         override fun onPageStarted(
                             view: WebView?,
@@ -95,7 +90,7 @@ internal fun ApsPageView(
                         ) {
                             super.onPageStarted(view, url, favicon)
                             isLoading = true
-                            if (url != paymentUrl)
+                            if (url?.startsWith(paymentUrl) == false)
                                 viewModel.saleAps(method)
                         }
 
