@@ -72,5 +72,16 @@ internal fun RootNavigationView(
                 onError = onError
             )
         }
+        composable(route = Route.RestoreAps.getPath()) {
+            //TODO need add data to VM!!!
+            MainScreen(
+                startRoute = Route.ApsPage,
+                actionType = actionType,
+                mainScreenNavigator = mainScreenNavigator,
+                delegate = delegate,
+                onCancel = onCancel,
+                onError = onError
+            )
+        }
     }
 }

@@ -10,6 +10,7 @@ sealed class Route(
     object Init : Route(route = "init")
     object Main : Route(route = "main")
     object Restore : Route(route = "restore")
+    object RestoreAps : Route(route = "restoreAps")
     object CustomerFields : Route(route = "customerFields")
     object ClarificationFields : Route(route = "clarificationFields")
     object AcsPage : Route(route = "acsPage")

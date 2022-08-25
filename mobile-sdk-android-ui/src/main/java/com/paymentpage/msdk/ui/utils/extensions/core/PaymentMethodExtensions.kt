@@ -13,7 +13,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
 
     val googlePayMethod = find { it.type == PaymentMethodType.GOOGLE_PAY }
     val cardPayMethod = find { it.type == PaymentMethodType.CARD }
-    val apsPaymentMethods = filter { it.type.isAps }
+    val apsPaymentMethods = filter { it.isAps }
 
     var position = 0
     //get google pay host

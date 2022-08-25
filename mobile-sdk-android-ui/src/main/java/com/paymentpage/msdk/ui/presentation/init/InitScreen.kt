@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.ui.LocalInitViewModel
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.R
@@ -40,7 +41,9 @@ internal fun InitScreen(
                 it.isInitLoaded -> navigator.navigateTo(Route.Main)
                 it.payment != null -> {
                     navigator.navigateTo(Route.Restore)
-                    mainViewModel.restorePayment()
+                    mainViewModel.restorePayment(
+                        it.payment.method ?: PaymentMethodType.UNKNOWN.value
+                    )
                 }
 
             }

@@ -3,6 +3,7 @@ package com.paymentpage.msdk.ui.presentation.main
 import com.paymentpage.msdk.core.domain.entities.SdkExpiry
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.aps.ApsSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
@@ -63,7 +64,7 @@ internal fun MainViewModel.saleAps(
     method: UIPaymentMethod.UIApsPaymentMethod,
 ) {
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
-    val request = ApsSaleRequest(code = method.paymentMethod.code)
+    val request = ApsSaleRequest(methodCode = method.paymentMethod.code)
     payInteractor.execute(request = request, callback = this)
 }
 
@@ -105,9 +106,9 @@ internal fun MainViewModel.threeDSecureHandled() {
 }
 
 //restore payment if it received via init
-internal fun MainViewModel.restorePayment() {
+internal fun MainViewModel.restorePayment(methodCode: String) {
     sendEvent(MainScreenUiEvent.ShowLoading)
-    payInteractor.execute(PaymentRestoreRequest(), this)
+    payInteractor.execute(PaymentRestoreRequest(methodCode = methodCode), this)
 }
 
 //set current method
