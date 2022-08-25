@@ -11,9 +11,9 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
 ): List<UIPaymentMethod> {
     val result = mutableListOf<UIPaymentMethod>()
 
-    val googlePayMethod = find { it.type == PaymentMethodType.GOOGLE_PAY }
-    val cardPayMethod = find { it.type == PaymentMethodType.CARD }
-    val apsPaymentMethods = filter { it.isAps }
+    val googlePayMethod = find { it.paymentMethodType == PaymentMethodType.GOOGLE_PAY }
+    val cardPayMethod = find { it.paymentMethodType == PaymentMethodType.CARD }
+    val apsPaymentMethods = filter { it.paymentMethodType == PaymentMethodType.APS }
 
     var position = 0
     //get google pay host

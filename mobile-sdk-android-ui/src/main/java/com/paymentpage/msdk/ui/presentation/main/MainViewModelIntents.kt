@@ -3,7 +3,7 @@ package com.paymentpage.msdk.ui.presentation.main
 import com.paymentpage.msdk.core.domain.entities.SdkExpiry
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.aps.ApsSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
@@ -109,6 +109,17 @@ internal fun MainViewModel.threeDSecureHandled() {
 internal fun MainViewModel.restorePayment(methodCode: String) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     payInteractor.execute(PaymentRestoreRequest(methodCode = methodCode), this)
+}
+
+internal fun MainViewModel.restoreAps(apsMethod: PaymentMethod) {
+    sendEvent(MainScreenUiEvent.SetCurrentMethod(
+        UIPaymentMethod.UIApsPaymentMethod(
+            index = 0,
+            title = apsMethod.name ?: apsMethod.code,
+            paymentMethod = apsMethod)
+    ))
+    sendEvent(MainScreenUiEvent.ShowApsPage(apsMethod = apsMethod))
+    payInteractor.execute(PaymentRestoreRequest(methodCode = apsMethod.code), this)
 }
 
 //set current method

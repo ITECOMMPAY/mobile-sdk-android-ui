@@ -73,7 +73,6 @@ internal fun RootNavigationView(
             )
         }
         composable(route = Route.RestoreAps.getPath()) {
-            //TODO need add data to VM!!!
             MainScreen(
                 startRoute = Route.ApsPage,
                 actionType = actionType,

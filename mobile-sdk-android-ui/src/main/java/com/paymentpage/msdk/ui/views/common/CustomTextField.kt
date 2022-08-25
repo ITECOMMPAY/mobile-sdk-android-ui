@@ -123,11 +123,13 @@ fun CustomTextField(
                             !isDisabled -> SDKTheme.colors.secondaryTextColor
                             else -> SDKTheme.colors.secondaryTextColor
                         },
+                        maxLines = 1
                     )
                     if (isRequired) {
                         Text(
-                            " *",
+                            text = "*",
                             color = SDKTheme.colors.errorTextColor,
+                            maxLines = 1
                         )
                     }
                 }

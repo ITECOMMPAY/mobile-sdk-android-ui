@@ -38,7 +38,7 @@ internal fun ResultTableInfo(
                     ?: PaymentActivity.stringResourceManager.getStringByKey("google_pay_host_title")
             }
             else -> {
-                if (payment.methodType == PaymentMethodType.CARD)
+                if (payment.paymentMethodType == PaymentMethodType.CARD)
                     "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number}"
                 else
                     "${payment.methodName}"
