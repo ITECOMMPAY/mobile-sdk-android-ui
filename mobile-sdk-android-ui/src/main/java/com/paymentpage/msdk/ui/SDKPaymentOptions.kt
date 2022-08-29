@@ -16,7 +16,6 @@ class SDKPaymentOptions(
     val paymentInfo: PaymentInfo,
 
     val recurrentInfo: RecurrentInfo? = null,
-    //var threeDSecureInfo: ThreeDSecureInfo? = null
     val recipientInfo: RecipientInfo? = null,
     val actionType: ActionType = ActionType.Sale,
     //val bankId: Int? = null,

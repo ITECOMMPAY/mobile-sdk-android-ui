@@ -10,27 +10,24 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.RecurrentViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.RecurrentViewIntents
-import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.models.RecurrentDataSchedule
+import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.RecurrentViewState
+import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.models.RecurrentData
 
 @Composable
 internal fun RecurrentSchedule(
-    viewModel: RecurrentViewModel = viewModel(),
+    viewState: RecurrentViewState,
+    listener: (RecurrentViewIntents) -> Unit,
     title: String,
     date: String?,
     amount: Long?,
     index: Int,
 ) {
-    val viewState by viewModel.viewState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,10 +46,10 @@ internal fun RecurrentSchedule(
             )
             IconButton(
                 onClick = {
-                    val changed = viewState?.schedules?.toMutableList()
+                    val changed = viewState.recurrentData.schedule?.toMutableList()
                     changed?.removeAt(index)
-                    viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                        viewData = viewState?.copy(schedules = changed)
+                    listener(RecurrentViewIntents.ChangeField(
+                        newViewState = viewState.copy(recurrentData = RecurrentData(schedule = changed))
                     ))
                 }
             ) {
@@ -65,11 +62,11 @@ internal fun RecurrentSchedule(
         OutlinedTextField(
             value = date ?: "",
             onValueChange = {
-                val changed = viewState?.schedules?.toMutableList()
+                val changed = viewState.recurrentData.schedule?.toMutableList()
                 changed?.set(index,
-                    viewState?.schedules?.get(index)?.copy(date = it) ?: RecurrentDataSchedule())
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(schedules = changed)
+                    viewState.recurrentData.schedule[index].copy(date = it))
+                listener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = RecurrentData(schedule = changed))
                 ))
             },
             modifier = Modifier.fillMaxWidth(),
@@ -79,12 +76,11 @@ internal fun RecurrentSchedule(
         OutlinedTextField(
             value = amount?.toString() ?: "",
             onValueChange = {
-                val changed = viewState?.schedules?.toMutableList()
+                val changed = viewState.recurrentData.schedule?.toMutableList()
                 changed?.set(index,
-                    viewState?.schedules?.get(index)?.copy(amount = it.toLongOrNull())
-                        ?: RecurrentDataSchedule())
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(schedules = changed)
+                    viewState.recurrentData.schedule[index].copy(amount = it.toLongOrNull()))
+                listener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = RecurrentData(schedule = changed))
                 ))
             },
             modifier = Modifier.fillMaxWidth(),

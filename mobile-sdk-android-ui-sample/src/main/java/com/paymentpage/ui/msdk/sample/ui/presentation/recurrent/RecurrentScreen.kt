@@ -2,35 +2,52 @@ package com.paymentpage.ui.msdk.sample.ui.presentation.recurrent
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.paymentpage.ui.msdk.sample.ui.presentation.base.ComposeViewState
+import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewActions
 import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.models.RecurrentData
 import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.models.RecurrentDataSchedule
+import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.views.RecurrentCheckbox
 import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.views.RecurrentSchedule
 import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.views.RecurrentTitle
 import java.util.*
 
 @Composable
-internal fun RecurrentScreen(
+internal fun RecurrentState(
     navController: NavController,
     viewModel: RecurrentViewModel = viewModel(),
+    mainViewActionListener: (MainViewActions) -> Unit,
 ) {
-    val viewState by viewModel.viewState.collectAsState()
-    when (viewState) {
-        null -> viewModel.pushIntent(RecurrentViewIntents.Init)
+    ComposeViewState(
+        navController = navController,
+        viewModel = viewModel,
+        mainViewActionListener = mainViewActionListener) { viewState, intentListener ->
+        RecurrentScreen(
+            viewState = viewState,
+            intentListener = intentListener
+        )
     }
-    val recurrentData = viewState?.recurrentData ?: RecurrentData.defaultData
-    val schedules = viewState?.schedules
+}
+
+
+@Composable
+internal fun RecurrentScreen(
+    viewState: RecurrentViewState,
+    intentListener: (RecurrentViewIntents) -> Unit,
+) {
+    val recurrentData = viewState.recurrentData
+    val schedules = viewState.recurrentData.schedule
     Column(
         modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.Start
@@ -39,8 +56,8 @@ internal fun RecurrentScreen(
         OutlinedTextField(
             value = recurrentData.type ?: "",
             onValueChange = {
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(recurrentData = recurrentData.copy(type = it)))
+                intentListener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = recurrentData.copy(type = it)))
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -50,8 +67,8 @@ internal fun RecurrentScreen(
         OutlinedTextField(
             value = recurrentData.expiryDay ?: "",
             onValueChange = {
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(recurrentData = recurrentData.copy(expiryDay = it)))
+                intentListener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = recurrentData.copy(expiryDay = it)))
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -62,8 +79,8 @@ internal fun RecurrentScreen(
         OutlinedTextField(
             value = recurrentData.expiryMonth ?: "",
             onValueChange = {
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(recurrentData = recurrentData.copy(expiryMonth = it)))
+                intentListener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = recurrentData.copy(expiryMonth = it)))
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -74,8 +91,8 @@ internal fun RecurrentScreen(
         OutlinedTextField(
             value = recurrentData.expiryYear ?: "",
             onValueChange = {
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(recurrentData = recurrentData.copy(expiryYear = it)))
+                intentListener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = recurrentData.copy(expiryYear = it)))
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -86,8 +103,8 @@ internal fun RecurrentScreen(
         OutlinedTextField(
             value = recurrentData.period ?: "",
             onValueChange = {
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(recurrentData = recurrentData.copy(period = it)))
+                intentListener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = recurrentData.copy(period = it)))
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -98,8 +115,8 @@ internal fun RecurrentScreen(
         OutlinedTextField(
             value = recurrentData.time ?: "",
             onValueChange = {
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(recurrentData = recurrentData.copy(time = it)))
+                intentListener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = recurrentData.copy(time = it)))
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -108,10 +125,10 @@ internal fun RecurrentScreen(
         Spacer(modifier = Modifier.size(20.dp))
 
         OutlinedTextField(
-            value = recurrentData.startTime ?: "",
+            value = recurrentData.startDate ?: "",
             onValueChange = {
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(recurrentData = recurrentData.copy(startTime = it)))
+                intentListener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = recurrentData.copy(startDate = it)))
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -122,8 +139,9 @@ internal fun RecurrentScreen(
         OutlinedTextField(
             value = recurrentData.scheduledPaymentID ?: "",
             onValueChange = {
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(recurrentData = recurrentData.copy(scheduledPaymentID = it)))
+                intentListener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = recurrentData.copy(
+                        scheduledPaymentID = it)))
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -134,8 +152,8 @@ internal fun RecurrentScreen(
         OutlinedTextField(
             value = recurrentData.amount?.toString() ?: "",
             onValueChange = {
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(recurrentData = recurrentData.copy(amount = it.filter { char -> char.isDigit() }
+                intentListener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = recurrentData.copy(amount = it.filter { char -> char.isDigit() }
                         .toLongOrNull())
                     )))
             },
@@ -147,6 +165,8 @@ internal fun RecurrentScreen(
 
         schedules?.forEachIndexed { index, schedule ->
             RecurrentSchedule(
+                viewState = viewState,
+                listener = intentListener,
                 title = "Schedule №${index + 1}",
                 index = index,
                 date = schedule.date,
@@ -154,14 +174,19 @@ internal fun RecurrentScreen(
             )
             Spacer(modifier = Modifier.size(20.dp))
         }
+        RecurrentCheckbox(
+            isChecked = viewState.isEnabledRecurrent,
+            listener = intentListener
+        )
+        Spacer(modifier = Modifier.size(20.dp))
         Button(modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
             onClick = {
-                val changed = viewState?.schedules?.toMutableList() ?: mutableListOf()
+                val changed = viewState.recurrentData.schedule?.toMutableList() ?: mutableListOf()
                 changed.add(RecurrentDataSchedule())
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(schedules = changed)
+                intentListener(RecurrentViewIntents.ChangeField(
+                    newViewState = viewState.copy(recurrentData = recurrentData.copy(schedule = changed))
                 ))
             }
         ) {
@@ -172,20 +197,20 @@ internal fun RecurrentScreen(
             .fillMaxWidth()
             .height(50.dp),
             onClick = {
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(
-                        recurrentData = RecurrentData(
-                            type = "R",
-                            expiryDay = "06",
-                            expiryMonth = "11",
-                            expiryYear = "2026",
-                            period = "M",
-                            time = "12:00:00",
-                            startTime = "12-10-2022",
-                            scheduledPaymentID = "sdk_recurrent_${UUID.randomUUID().toString().take(8)}",
-                            amount = 1000
-                        ),
-                        schedules = schedules?.map {
+                intentListener(RecurrentViewIntents.FillMockData(
+                    mockData = RecurrentData(
+                        type = "R",
+                        expiryDay = "06",
+                        expiryMonth = "11",
+                        expiryYear = "2026",
+                        period = "M",
+                        time = "12:00:00",
+                        startDate = "12-10-2022",
+                        scheduledPaymentID = "sdk_recurrent_${
+                            UUID.randomUUID().toString().take(8)
+                        }",
+                        amount = 1000,
+                        schedule = schedules?.map {
                             RecurrentDataSchedule(
                                 date = "10-08-202${(0..9).random()}",
                                 amount = (1000..2000).random().toLong()
@@ -193,7 +218,8 @@ internal fun RecurrentScreen(
                         } ?: listOf(RecurrentDataSchedule(
                             date = "10-08-202${(0..9).random()}",
                             amount = (1000..2000).random().toLong())
-                        ))
+                        )
+                    )
                 ))
             }
         ) {
@@ -204,12 +230,7 @@ internal fun RecurrentScreen(
             .fillMaxWidth()
             .height(50.dp),
             onClick = {
-                viewModel.pushIntent(RecurrentViewIntents.ChangeField(
-                    viewData = viewState?.copy(
-                        recurrentData = RecurrentData.defaultData,
-                        schedules = null
-                    )
-                ))
+                intentListener(RecurrentViewIntents.ResetData)
             }
         ) {
             Text(text = "Reset data", color = Color.White, fontSize = 18.sp)
@@ -219,7 +240,7 @@ internal fun RecurrentScreen(
             .fillMaxWidth()
             .height(50.dp),
             onClick = {
-                navController.popBackStack()
+                intentListener(RecurrentViewIntents.Exit)
             }
         ) {
             Text(text = "Back", color = Color.White, fontSize = 18.sp)

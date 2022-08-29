@@ -10,5 +10,5 @@ interface ViewUseCaseContract<VI: ViewIntents, VS: ViewState>{
     val viewAction: SharedFlow<ViewActions?>
 
     fun pushIntent(intent: VI)
-
+    fun pushSideEffect(sideEffect: ViewSideEffects)
 }

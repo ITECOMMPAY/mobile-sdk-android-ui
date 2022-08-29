@@ -16,7 +16,7 @@ import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewIntents
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewModel
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ecommpay.msdk.ui.PaymentSDK.*
+import com.ecommpay.msdk.ui.EcmpPaymentSDK.*
 
 @Composable
 internal fun SelectMockMode(

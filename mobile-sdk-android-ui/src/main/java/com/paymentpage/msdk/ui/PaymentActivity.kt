@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.ecommpay.msdk.ui.PaymentSDK
-import com.ecommpay.msdk.ui.PaymentSDK.MockModeType.*
+import com.ecommpay.msdk.ui.EcmpPaymentSDK
+import com.ecommpay.msdk.ui.EcmpPaymentSDK.MockModeType.*
 import com.paymentpage.msdk.core.ApplicationInfo
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
@@ -24,7 +24,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         if (!BuildConfig.DEBUG)
             CrashHandler.init(this)
         mockModeType =
-            intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as PaymentSDK.MockModeType
+            intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as EcmpPaymentSDK.MockModeType
         val config = when {
             mockModeType == SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow()
             mockModeType == DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow()
@@ -103,7 +103,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         fun buildPaymentIntent(
             context: Context,
             paymentOptions: SDKPaymentOptions,
-            mockModeType: PaymentSDK.MockModeType,
+            mockModeType: EcmpPaymentSDK.MockModeType,
         ): Intent {
             this.paymentOptions = paymentOptions
 

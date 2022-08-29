@@ -8,9 +8,10 @@ data class RecurrentData(
     val expiryYear: String? = null,
     val period: String? = null,
     val time: String? = null,
-    val startTime: String? = null,
+    val startDate: String? = null,
     val scheduledPaymentID: String? = null,
     val amount: Long? = null,
+    val schedule: List<RecurrentDataSchedule>? = null
 ) {
     companion object {
         val defaultData = RecurrentData()

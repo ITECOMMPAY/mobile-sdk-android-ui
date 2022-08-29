@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id ("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -73,6 +74,9 @@ dependencies {
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.navigation)
+
+    //Serialization
+    implementation(Dependencies.KotlinX.serialization)
 
     //Google
     implementation(Dependencies.Google.material)

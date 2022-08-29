@@ -9,8 +9,8 @@ import com.paymentpage.msdk.ui.SDKPaymentOptions
 
 internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
     SDKPaymentOptions(
-        paymentInfo = paymentInfo.map(),
-        recurrentInfo = recurrentData?.map(),
+        paymentInfo = paymentInfo,
+        recurrentInfo = recurrentData,
         actionType = ActionType.valueOf(actionType.name),
 
         logoImage = logoImage,

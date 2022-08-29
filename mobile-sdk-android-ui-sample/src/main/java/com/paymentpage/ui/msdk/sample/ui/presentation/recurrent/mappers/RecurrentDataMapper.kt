@@ -1,11 +1,10 @@
-package com.ecommpay.msdk.ui.mappers
+package com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.mappers
 
 import com.ecommpay.msdk.ui.EcmpRecurrentData
-import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
-import com.paymentpage.msdk.core.domain.entities.RecurrentInfoSchedule
+import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.models.RecurrentData
 
-internal fun EcmpRecurrentData.map(): RecurrentInfo =
-    RecurrentInfo(
+internal fun RecurrentData.map() : EcmpRecurrentData =
+    EcmpRecurrentData(
         register = register,
         type = type,
         expiryDay = expiryDay,
@@ -16,5 +15,5 @@ internal fun EcmpRecurrentData.map(): RecurrentInfo =
         startDate = startDate,
         scheduledPaymentID = scheduledPaymentID,
         amount = amount,
-        schedule = schedule?.map { RecurrentInfoSchedule(it.date, it.amount) }
+        schedule = schedule?.map { it.map() }
     )

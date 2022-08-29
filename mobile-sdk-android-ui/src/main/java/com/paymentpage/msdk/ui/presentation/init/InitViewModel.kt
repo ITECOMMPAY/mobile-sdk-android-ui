@@ -33,7 +33,6 @@ internal class InitViewModel(
             request = InitRequest(
                 paymentInfo = paymentOptions.paymentInfo,
                 recurrentInfo = paymentOptions.recurrentInfo,
-                threeDSecureInfo = null
             ),
             callback = object : InitDelegate {
                 override fun onInitReceived(paymentMethods: List<PaymentMethod>, savedAccounts: List<SavedAccount>) =

@@ -8,8 +8,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,19 +15,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewIntents
-import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewModel
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
 import com.paymentpage.ui.msdk.sample.utils.HexToJetpackColor
 import com.paymentpage.ui.msdk.sample.utils.extensions.toHexCode
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 internal fun BrandColorPicker(
-    viewModel: MainViewModel = viewModel(),
+    paymentData: PaymentData,
+    intentListener: (MainViewIntents) -> Unit,
 ) {
-    val viewState by viewModel.viewState.collectAsState()
-    val paymentData = viewState?.paymentData ?: PaymentData.defaultPaymentData
     val dialogState = rememberMaterialDialogState()
 
     Row(verticalAlignment = Alignment.CenterVertically,
@@ -37,7 +32,7 @@ internal fun BrandColorPicker(
         OutlinedTextField(
             value = paymentData.brandColor?.uppercase() ?: "#",
             onValueChange = {
-                viewModel.pushIntent(MainViewIntents.ChangeField(
+                intentListener(MainViewIntents.ChangeField(
                     paymentData.copy(brandColor = (if (it.length in 0..7) it else it.substring(0,
                         7)).uppercase())
                 ))
@@ -67,7 +62,7 @@ internal fun BrandColorPicker(
             .fillMaxWidth()
             .height(50.dp),
         onClick = {
-            viewModel.pushIntent(MainViewIntents.ChangeField(
+            intentListener(MainViewIntents.ChangeField(
                 paymentData = paymentData.copy(brandColor = PaymentData.defaultPaymentData.brandColor)
             ))
         }
@@ -75,7 +70,7 @@ internal fun BrandColorPicker(
         Text(text = "Reset brand color to default", color = Color.White, fontSize = 18.sp)
     }
     ColorPickerDialog(dialogState = dialogState) {
-        viewModel.pushIntent(MainViewIntents.ChangeField(
+        intentListener(MainViewIntents.ChangeField(
             paymentData = paymentData.copy(brandColor = it.toHexCode())
         ))
     }

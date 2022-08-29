@@ -9,4 +9,6 @@ abstract class NavRoutes(val route: String) : ViewActions {
     object Main : NavRoutes("main")
     object AdditionalFields : NavRoutes("additionalFields")
     object Recurrent : NavRoutes("recurrent")
+    object ThreeDSecure: NavRoutes("threeDSecure")
+    object Back : NavRoutes("back")
 }

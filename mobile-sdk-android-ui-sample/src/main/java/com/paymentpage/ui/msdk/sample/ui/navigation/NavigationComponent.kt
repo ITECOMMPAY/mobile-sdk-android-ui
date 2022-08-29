@@ -4,14 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainScreen
 import com.paymentpage.ui.msdk.sample.ui.presentation.additionalFields.AdditionalFieldScreen
-import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.RecurrentScreen
+import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainState
+import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewActions
+import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.RecurrentState
+import com.paymentpage.ui.msdk.sample.ui.presentation.threeDSecure.ThreeDSecureState
 
 
 @Composable
 fun NavigationComponent(
-    listener: () -> Unit
+    mainViewActionListener: (MainViewActions) -> Unit,
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -19,13 +21,16 @@ fun NavigationComponent(
         startDestination = NavRoutes.Main.route,
     ) {
         composable(NavRoutes.Main.route) {
-            MainScreen(navController = navController, listener = listener)
+            MainState(navController = navController, mainViewActionListener = mainViewActionListener)
         }
         composable(NavRoutes.AdditionalFields.route) {
             AdditionalFieldScreen(navController = navController)
         }
         composable(NavRoutes.Recurrent.route) {
-            RecurrentScreen(navController = navController)
+            RecurrentState(navController = navController, mainViewActionListener = mainViewActionListener)
+        }
+        composable(NavRoutes.ThreeDSecure.route) {
+            ThreeDSecureState(navController = navController, mainViewActionListener = mainViewActionListener)
         }
     }
 }

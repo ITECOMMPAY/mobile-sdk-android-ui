@@ -4,7 +4,10 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -14,29 +17,24 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewIntents
-import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewModel
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
-import androidx.lifecycle.viewmodel.compose.viewModel
 import java.util.*
 
 @Composable
 internal fun PaymentFields(
-    viewModel: MainViewModel = viewModel(),
+    paymentData: PaymentData,
+    intentListener: (MainViewIntents) -> Unit
 ) {
-    val viewState by viewModel.viewState.collectAsState()
-    val paymentData = viewState?.paymentData ?: PaymentData.defaultPaymentData
     val context = LocalContext.current
     OutlinedTextField(
         value = paymentData.paymentId,
         onValueChange = {
-            viewModel.pushIntent(MainViewIntents.ChangeField(
+            intentListener(MainViewIntents.ChangeField(
                 paymentData = paymentData.copy(paymentId = it)))
         },
         modifier = Modifier.fillMaxWidth(),
@@ -56,7 +54,7 @@ internal fun PaymentFields(
                 }
                 IconButton(
                     onClick = {
-                        viewModel.pushIntent(MainViewIntents.ChangeField(
+                        intentListener(MainViewIntents.ChangeField(
                             paymentData = paymentData.copy(paymentId = "sdk_sample_ui_${UUID.randomUUID().toString().take(8)}")
                         ))
                     }
@@ -70,7 +68,7 @@ internal fun PaymentFields(
     OutlinedTextField(
         value = paymentData.paymentAmount?.toString() ?: "",
         onValueChange = {
-            viewModel.pushIntent(MainViewIntents.ChangeField(
+            intentListener(MainViewIntents.ChangeField(
                 paymentData =
                 paymentData.copy(paymentAmount = it.filter { symbol ->
                     symbol.isDigit()
@@ -84,7 +82,7 @@ internal fun PaymentFields(
     OutlinedTextField(
         value = paymentData.paymentCurrency,
         onValueChange = {
-            viewModel.pushIntent(MainViewIntents.ChangeField(
+            intentListener(MainViewIntents.ChangeField(
                 paymentData = paymentData.copy(paymentCurrency = it.uppercase())))
         },
         modifier = Modifier.fillMaxWidth(),
@@ -94,7 +92,7 @@ internal fun PaymentFields(
     OutlinedTextField(
         value = paymentData.paymentDescription,
         onValueChange = {
-            viewModel.pushIntent(MainViewIntents.ChangeField(
+            intentListener(MainViewIntents.ChangeField(
                 paymentData = paymentData.copy(paymentDescription = it)))
         },
         modifier = Modifier.fillMaxWidth(),
@@ -104,7 +102,7 @@ internal fun PaymentFields(
     OutlinedTextField(
         value = paymentData.customerId,
         onValueChange = {
-            viewModel.pushIntent(MainViewIntents.ChangeField(
+            intentListener(MainViewIntents.ChangeField(
                 paymentData = paymentData.copy(customerId = it)))
         },
         modifier = Modifier.fillMaxWidth(),
@@ -114,10 +112,20 @@ internal fun PaymentFields(
     OutlinedTextField(
         value = paymentData.languageCode,
         onValueChange = {
-            viewModel.pushIntent(MainViewIntents.ChangeField(
+            intentListener(MainViewIntents.ChangeField(
                 paymentData = paymentData.copy(languageCode = it)))
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Language code") }
+    )
+    Spacer(modifier = Modifier.size(10.dp))
+    OutlinedTextField(
+        value = paymentData.forcePaymentMethod,
+        onValueChange = { changingString ->
+            intentListener(MainViewIntents.ChangeField(
+                paymentData = paymentData.copy(forcePaymentMethod = changingString)))
+        },
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Force payment method") }
     )
 }

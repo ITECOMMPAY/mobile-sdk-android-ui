@@ -10,7 +10,7 @@ import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.base.Constants
 
 
-class PaymentSDK(context: Context, paymentOptions: EcmpPaymentOptions, mockModeType: MockModeType = MockModeType.DISABLED) {
+class EcmpPaymentSDK(context: Context, paymentOptions: EcmpPaymentOptions, mockModeType: MockModeType = MockModeType.DISABLED) {
 
     val intent = PaymentActivity.buildPaymentIntent(
             context = context,

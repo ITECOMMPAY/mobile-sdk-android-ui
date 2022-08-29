@@ -1,7 +1,7 @@
 package com.paymentpage.ui.msdk.sample.ui.presentation.main.models
 
 import android.graphics.Bitmap
-import com.ecommpay.msdk.ui.PaymentSDK
+import com.ecommpay.msdk.ui.EcmpPaymentSDK
 import java.util.*
 
 data class PaymentData(
@@ -14,14 +14,14 @@ data class PaymentData(
     val customerId: String,
     val paymentDescription: String,
     val languageCode: String,
-    val forcePaymentMethod: String?,
+    val forcePaymentMethod: String,
     val hideSavedWallets: Boolean,
     val secretKey: String,
     val apiHost: String,
     val wsApiHost: String,
     val merchantId: String,
     val merchantName: String,
-    val mockModeType: PaymentSDK.MockModeType,
+    val mockModeType: EcmpPaymentSDK.MockModeType,
 ) {
     companion object {
         val defaultPaymentData = PaymentData(
@@ -34,14 +34,14 @@ data class PaymentData(
             customerId = "12",
             paymentDescription = "Test payment",
             languageCode = "",
-            forcePaymentMethod = null,
+            forcePaymentMethod = "",
             hideSavedWallets = false,
             secretKey = "123",
             apiHost = "pp-sdk.westresscode.net",
             wsApiHost = "paymentpage.westresscode.net",
             merchantId = "BCR2DN6TZ75OBLTH",
             merchantName = "Example Merchant",
-            mockModeType = PaymentSDK.MockModeType.DISABLED
+            mockModeType = EcmpPaymentSDK.MockModeType.DISABLED
         )
     }
 }
