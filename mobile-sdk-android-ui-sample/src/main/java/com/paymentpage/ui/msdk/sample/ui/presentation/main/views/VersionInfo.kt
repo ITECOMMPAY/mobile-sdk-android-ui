@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.paymentpage.ui.sample.BuildConfig
+import com.paymentpage.ui.msdk.sample.BuildConfig
 
 @Composable
 internal fun VersionInfo() {

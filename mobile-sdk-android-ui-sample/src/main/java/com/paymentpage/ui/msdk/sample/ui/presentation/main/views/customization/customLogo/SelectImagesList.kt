@@ -20,7 +20,7 @@ import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
 import com.paymentpage.ui.msdk.sample.utils.extensions.bitmapFromUri
 import com.paymentpage.ui.msdk.sample.utils.extensions.resIdByName
 import com.paymentpage.ui.msdk.sample.utils.extensions.uriFromResourceId
-import com.paymentpage.ui.sample.R
+import com.paymentpage.ui.msdk.sample.R
 
 
 @Composable

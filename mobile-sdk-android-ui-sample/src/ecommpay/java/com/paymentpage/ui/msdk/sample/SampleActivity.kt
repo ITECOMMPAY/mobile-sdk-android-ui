@@ -26,6 +26,7 @@ import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.ui.msdk.sample.data.ProcessRepository
 import com.paymentpage.ui.msdk.sample.ui.navigation.NavigationComponent
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewActions
+import com.paymentpage.ui.msdk.sample.ui.presentation.main.mappers.map
 import com.paymentpage.ui.msdk.sample.ui.presentation.recurrent.mappers.map
 import com.paymentpage.ui.msdk.sample.ui.presentation.threeDSecure.mappers.map
 import com.paymentpage.ui.msdk.sample.utils.SignatureGenerator
@@ -39,7 +40,7 @@ class SampleActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Scaffold() {
+                    Scaffold {
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -93,7 +94,7 @@ class SampleActivity : ComponentActivity() {
         val sdk = EcmpPaymentSDK(
             context = this.applicationContext,
             paymentOptions = paymentOptions,
-            mockModeType = repositoryPaymentData.mockModeType
+            mockModeType = repositoryPaymentData.mockModeType.map()
         )
 
         val intent = sdk.intent

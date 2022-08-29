@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.ecommpay.msdk.ui.EcmpPaymentSDK
-import com.ecommpay.msdk.ui.EcmpPaymentSDK.MockModeType.*
 import com.paymentpage.msdk.core.ApplicationInfo
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
@@ -23,11 +21,10 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         super.onCreate(savedInstanceState)
         if (!BuildConfig.DEBUG)
             CrashHandler.init(this)
-        mockModeType =
-            intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as EcmpPaymentSDK.MockModeType
+        mockModeType = intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
         val config = when {
-            mockModeType == SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow()
-            mockModeType == DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow()
+            mockModeType == SDKMockModeType.SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow()
+            mockModeType == SDKMockModeType.DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow()
             BuildConfig.DEBUG -> MSDKCoreSessionConfig.debug(
                 intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
                 intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
@@ -94,7 +91,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         private lateinit var paymentOptions: SDKPaymentOptions
 
-        var mockModeType = DISABLED
+        var mockModeType = SDKMockModeType.DISABLED
 
         private lateinit var msdkSession: MSDKCoreSession
         val stringResourceManager: StringResourceManager
@@ -103,7 +100,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         fun buildPaymentIntent(
             context: Context,
             paymentOptions: SDKPaymentOptions,
-            mockModeType: EcmpPaymentSDK.MockModeType,
+            mockModeType: SDKMockModeType,
         ): Intent {
             this.paymentOptions = paymentOptions
 

@@ -8,7 +8,7 @@ android {
     compileSdk = 32
 
     defaultConfig {
-        applicationId = "com.paymentpage.ui.sample"
+        applicationId = "com.paymentpage.ui.msdk.sample"
         minSdk = 21
         targetSdk = 32
 
@@ -47,7 +47,7 @@ android {
     flavorDimensions("brand")
     productFlavors {
         create("ecommpay") {
-            applicationId = "com.ecommpay.msdk.test"
+            applicationId = "com.paymentpage.ui.msdk.sample"
             dimension = "brand"
             buildConfigField(
                 "String",
