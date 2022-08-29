@@ -7,6 +7,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.paymentpage.msdk.core.domain.entities.SdkExpiry
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.utils.MaskVisualTransformation
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 
 @Composable
@@ -24,7 +25,7 @@ internal fun ExpiryField(
             val expiryDate = SdkExpiry(it)
             when {
                 !expiryDate.isValid() ->
-                    PaymentActivity.stringResourceManager.getStringByKey("message_about_expiry")
+                    getStringOverride("message_about_expiry")
                 else -> null
             }
         },
@@ -36,7 +37,7 @@ internal fun ExpiryField(
             )
         },
         visualTransformation = MaskVisualTransformation("##/##"),
-        label = PaymentActivity.stringResourceManager.getStringByKey("title_expiry"),
+        label = getStringOverride("title_expiry"),
         isDisabled = isDisabled,
         keyboardType = KeyboardType.Number,
         maxLength = 4,

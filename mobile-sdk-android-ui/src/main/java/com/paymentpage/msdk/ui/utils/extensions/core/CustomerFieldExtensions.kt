@@ -11,7 +11,7 @@ internal fun CustomerField.validate(
     var resultMessage: String? = null
     if (this.isRequired && value.isEmpty()) {
         resultMessage =
-            PaymentActivity.stringResourceManager.getStringByKey("message_required_field")
+            getStringOverride("message_required_field")
     } else if (validator != null) {
         val text = if (onTransformValueBeforeValidate != null)
             onTransformValueBeforeValidate(value)

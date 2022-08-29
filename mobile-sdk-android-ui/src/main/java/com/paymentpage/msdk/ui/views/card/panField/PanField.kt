@@ -20,6 +20,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.card.formatAmex
 import com.paymentpage.msdk.ui.utils.card.formatDinnersClub
 import com.paymentpage.msdk.ui.utils.card.formatOtherCardNumbers
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 import java.util.*
@@ -48,11 +49,11 @@ internal fun PanField(
         },
         onRequestValidatorMessage = {
             if (!PanValidator().isValid(it))
-                PaymentActivity.stringResourceManager.getStringByKey("message_about_card_number")
+                getStringOverride("message_about_card_number")
             else if (!paymentMethod.availableCardTypes.contains(card?.type)) {
                 val regex = Regex("\\[\\[.+]]")
                 val message = regex.replace(
-                    PaymentActivity.stringResourceManager.getStringByKey("message_wrong_card_type"),
+                    getStringOverride("message_wrong_card_type"),
                     card?.type?.value?.uppercase() ?: ""
                 )
                 message
@@ -70,7 +71,7 @@ internal fun PanField(
                 else -> formatOtherCardNumbers(number)
             }
         },
-        label = PaymentActivity.stringResourceManager.getStringByKey("title_card_number"),
+        label = getStringOverride("title_card_number"),
         onFocusChanged = { focusValue ->
             isFocused = focusValue
         },

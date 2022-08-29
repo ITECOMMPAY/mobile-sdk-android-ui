@@ -22,6 +22,7 @@ import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
@@ -108,7 +109,7 @@ internal fun SavedCardItem(
                     modifier = Modifier.clickable {
                         deleteCardAlertDialogState = true
                     },
-                    text = PaymentActivity.stringResourceManager.getStringByKey("button_delete"),
+                    text = getStringOverride("button_delete"),
                     style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.secondaryTextColor,
                         textDecoration = TextDecoration.Underline)
                 )
@@ -119,14 +120,14 @@ internal fun SavedCardItem(
             }
             if (deleteCardAlertDialogState) {
                 MessageAlertDialog(
-                    message = { Text(text = PaymentActivity.stringResourceManager.getStringByKey("message_delete_card_single")) },
-                    dismissButtonText = PaymentActivity.stringResourceManager.getStringByKey("button_cancel"),
+                    message = { Text(text = getStringOverride("message_delete_card_single")) },
+                    dismissButtonText = getStringOverride("button_cancel"),
                     onConfirmButtonClick = {
                         deleteCardAlertDialogState = false
                         viewModel.deleteSavedCard(method = method)
                     },
                     onDismissButtonClick = { deleteCardAlertDialogState = false },
-                    confirmButtonText = PaymentActivity.stringResourceManager.getStringByKey("button_delete"))
+                    confirmButtonText = getStringOverride("button_delete"))
             }
         }
     }

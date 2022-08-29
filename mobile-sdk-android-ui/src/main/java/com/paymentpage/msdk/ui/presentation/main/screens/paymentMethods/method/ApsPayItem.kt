@@ -18,6 +18,7 @@ import com.paymentpage.msdk.ui.presentation.main.showAps
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.button.PayButton
 
 @Composable
@@ -36,14 +37,14 @@ internal fun ApsPayItem(
         Column(Modifier.fillMaxWidth()) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = PaymentActivity.stringResourceManager.getStringByKey("aps_payment_disclaimer"),
+                text = getStringOverride("aps_payment_disclaimer"),
                 color = SDKTheme.colors.primaryTextColor,
                 style = SDKTheme.typography.s14Light,
                 textAlign = TextAlign.Start
             )
             Spacer(modifier = Modifier.size(20.dp))
             PayButton(
-                payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
+                payLabel = getStringOverride("button_pay"),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = true,
@@ -55,7 +56,7 @@ internal fun ApsPayItem(
 //            Spacer(modifier = Modifier.size(10.dp))
 //            Text(
 //                modifier = Modifier.fillMaxWidth(),
-//                text = PaymentActivity.stringResourceManager.getStringByKey("aps_vat_disclaimer"),
+//                text = getStringOverride("aps_vat_disclaimer"),
 //                color = SDKTheme.colors.primaryTextColor,
 //                style = SDKTheme.typography.s12Light,
 //                textAlign = TextAlign.Center

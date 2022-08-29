@@ -21,6 +21,7 @@ import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultTableInfo
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 
 @Composable
 internal fun ResultSuccessScreen(
@@ -47,7 +48,7 @@ internal fun ResultSuccessScreen(
                 )
                 Spacer(modifier = Modifier.size(15.dp))
                 Text(
-                    text = PaymentActivity.stringResourceManager.getStringByKey("title_result_succes_payment"),
+                    text = getStringOverride("title_result_succes_payment"),
                     style = SDKTheme.typography.s24Bold,
                     textAlign = TextAlign.Center
                 )

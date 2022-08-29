@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 import com.paymentpage.msdk.ui.views.common.alertDialog.ConfirmAlertDialog
 import com.paymentpage.msdk.ui.views.common.alertDialog.SDKAlertDialog
@@ -32,7 +33,7 @@ internal fun CvvField(
         onFilterValueBefore = { text -> text.filter { it.isDigit() } },
         onRequestValidatorMessage = {
             if (it.length != length)
-                PaymentActivity.stringResourceManager.getStringByKey("message_invalid_cvv")
+                getStringOverride("message_invalid_cvv")
             else
                 null
         },
@@ -40,7 +41,7 @@ internal fun CvvField(
             onValueChanged(value, value.length == length && isValid)
         },
         visualTransformation = PasswordVisualTransformation(),
-        label = PaymentActivity.stringResourceManager.getStringByKey("title_cvv"),
+        label = getStringOverride("title_cvv"),
         maxLength = length,
         isRequired = true,
         trailingIcon = {
@@ -52,10 +53,10 @@ internal fun CvvField(
     )
     if (cvvAlertDialogState) {
         ConfirmAlertDialog(
-            title = { Text(text = PaymentActivity.stringResourceManager.getStringByKey("title_about_cvv")) },
-            message = { Text(text = PaymentActivity.stringResourceManager.getStringByKey("message_about_cvv")) },
+            title = { Text(text = getStringOverride("title_about_cvv")) },
+            message = { Text(text = getStringOverride("message_about_cvv")) },
             onConfirmButtonClick = { cvvAlertDialogState = false },
-            confirmButtonText = PaymentActivity.stringResourceManager.getStringByKey("button_ok"),
+            confirmButtonText = getStringOverride("button_ok"),
             onDismissRequest = { cvvAlertDialogState = false }
         )
     }

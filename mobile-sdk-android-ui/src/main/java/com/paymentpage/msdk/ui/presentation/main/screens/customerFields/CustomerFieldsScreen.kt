@@ -19,6 +19,7 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.P
 import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
@@ -42,7 +43,7 @@ internal fun CustomerFieldsScreen(
 
     SDKScaffold(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-        title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_additional_data"),
+        title = getStringOverride("title_payment_additional_data"),
         notScrollableContent = {
             PaymentDetailsView()
             Spacer(modifier = Modifier.size(15.dp))
@@ -51,7 +52,7 @@ internal fun CustomerFieldsScreen(
             PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
             Text(
-                text = PaymentActivity.stringResourceManager.getStringByKey("title_payment_additional_data_disclaimer"),
+                text = getStringOverride("title_payment_additional_data_disclaimer"),
                 style = SDKTheme.typography.s14Normal
             )
             Spacer(modifier = Modifier.size(5.dp))
@@ -65,7 +66,7 @@ internal fun CustomerFieldsScreen(
             )
             Spacer(modifier = Modifier.size(22.dp))
             PayButton(
-                payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
+                payLabel = getStringOverride("button_pay"),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = isCustomerFieldsValid

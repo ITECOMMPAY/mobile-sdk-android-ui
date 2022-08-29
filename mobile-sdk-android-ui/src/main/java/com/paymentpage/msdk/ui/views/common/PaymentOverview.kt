@@ -21,6 +21,7 @@ import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.getColorMatrix
 
 @Composable
@@ -84,13 +85,13 @@ internal fun PaymentOverview(
                 //Spacer(modifier = Modifier.height(10.dp))
                 Row {
                     Text(
-                        text = PaymentActivity.stringResourceManager.getStringByKey("title_total_price"),
+                        text = getStringOverride("title_total_price"),
                         style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     if (currentMethod?.paymentMethod?.isVatInfo == true)
                         Text(
-                            text = PaymentActivity.stringResourceManager.getStringByKey("vat_included"),
+                            text = getStringOverride("vat_included"),
                             style = SDKTheme.typography.s14Light.copy(color = Color.White)
                         )
                 }

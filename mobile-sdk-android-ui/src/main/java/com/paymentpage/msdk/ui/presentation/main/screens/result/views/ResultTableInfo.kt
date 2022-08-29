@@ -12,10 +12,10 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.paymentDateToPatternDate
 
 @Composable
@@ -30,12 +30,11 @@ internal fun ResultTableInfo(
                 "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number}"
             }
             is UIPaymentMethod.UIApsPaymentMethod -> {
-                method.paymentMethod.name ?: PaymentActivity.stringResourceManager.getStringByKey(
-                    method.paymentMethod.translations["title"] ?: "")
+                method.paymentMethod.name
+                    ?: getStringOverride(method.paymentMethod.translations["title"] ?: "")
             }
             is UIPaymentMethod.UIGooglePayPaymentMethod -> {
-                method.paymentMethod.name
-                    ?: PaymentActivity.stringResourceManager.getStringByKey("google_pay_host_title")
+                method.paymentMethod.name ?: getStringOverride("google_pay_host_title")
             }
             else -> {
                 if (payment.paymentMethodType == PaymentMethodType.CARD)
@@ -46,17 +45,14 @@ internal fun ResultTableInfo(
         }
         val completeFields = payment.completeFields?.associate { field ->
             val translation =
-                field.name?.let { PaymentActivity.stringResourceManager.getStringByKey(it) }
+                field.name?.let { getStringOverride(it) }
                     ?: field.defaultLabel
             translation to field.value
         } ?: emptyMap()
         val titleKeyWithValueMap = mutableMapOf(
-            PaymentActivity.stringResourceManager.getStringByKey("title_card_wallet") to
-                    valueTitleCardWallet,
-            PaymentActivity.stringResourceManager.getStringByKey("title_payment_id") to
-                    "${payment.id}",
-            PaymentActivity.stringResourceManager.getStringByKey("title_payment_date") to
-                    payment.date?.paymentDateToPatternDate("dd.MM.yyyy HH:mm"),
+            getStringOverride("title_card_wallet") to valueTitleCardWallet,
+            getStringOverride("title_payment_id") to "${payment.id}",
+            getStringOverride("title_payment_date") to payment.date?.paymentDateToPatternDate("dd.MM.yyyy HH:mm"),
         ) + completeFields
         Column(
             modifier = Modifier
@@ -93,6 +89,11 @@ internal fun ResultTableInfo(
                 }
         }
     } else {
-        onError(ErrorResult(code = ErrorCode.PAYMENT_NOT_FOUND, message = "Not found payment in State"), true)
+        onError(
+            ErrorResult(
+                code = ErrorCode.PAYMENT_NOT_FOUND,
+                message = "Not found payment in State"
+            ), true
+        )
     }
 }

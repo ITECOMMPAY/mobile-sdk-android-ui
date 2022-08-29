@@ -1,12 +1,12 @@
 package com.paymentpage.msdk.ui.views.button
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.isAllCustomerFieldsHidden
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
@@ -15,11 +15,6 @@ import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 internal fun PayOrConfirmButton(
     method: UIPaymentMethod,
     customerFields: List<CustomerField>,
-//    isValidCvv: Boolean = false,
-//    isValidCustomerFields: Boolean = false,
-//    isValidPan: Boolean = false,
-//    isValidCardHolder: Boolean = false,
-//    isValidExpiry: Boolean = false,
     isValid: Boolean = false,
     isValidCustomerFields: Boolean = false,
     onClickButton: () -> Unit,
@@ -29,7 +24,7 @@ internal fun PayOrConfirmButton(
     when {
         condition -> {
             PayButton(
-                payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
+                payLabel = getStringOverride("button_pay"),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = isValid && isValidCustomerFields
@@ -39,7 +34,7 @@ internal fun PayOrConfirmButton(
         }
         customerFields.isAllCustomerFieldsHidden() -> {
             PayButton(
-                payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_pay"),
+                payLabel = getStringOverride("button_pay"),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = isValid
@@ -49,7 +44,7 @@ internal fun PayOrConfirmButton(
         }
         else -> {
             ConfirmButton(
-                payLabel = PaymentActivity.stringResourceManager.getStringByKey("button_confirmation"),
+                payLabel = getStringOverride("button_confirmation"),
                 isEnabled = isValid
             ) {
                 onClickButton()

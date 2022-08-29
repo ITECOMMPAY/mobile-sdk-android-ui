@@ -22,6 +22,7 @@ import com.paymentpage.msdk.ui.presentation.main.saleCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
@@ -138,7 +139,7 @@ internal fun NewCardItem(
                 Spacer(modifier = Modifier.width(10.dp))
                 Column {
                     Text(
-                        PaymentActivity.stringResourceManager.getStringByKey("title_saved_cards"),
+                        getStringOverride("title_saved_cards"),
                         color = SDKTheme.colors.primaryTextColor,
                         fontSize = 16.sp,
                     )

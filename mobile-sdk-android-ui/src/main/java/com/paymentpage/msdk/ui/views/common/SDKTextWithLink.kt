@@ -1,6 +1,7 @@
 package com.paymentpage.msdk.ui.views.common
 
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.TextStyle
@@ -16,23 +17,28 @@ internal fun SDKTextWithLink(
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip
 ) {
-    val linkedString = PaymentActivity
+    val linkedMessage = PaymentActivity
         .stringResourceManager
         .getLinkMessageByKey(overrideKey)
-        .annotatedString()
-    val uriHandler = LocalUriHandler.current
-    ClickableText(
-        style = style,
-        text = linkedString,
-        maxLines = maxLines,
-        overflow = overflow,
-        onClick = {
-            linkedString
-                .getStringAnnotations("URL", it, it)
-                .firstOrNull()?.let { stringAnnotation ->
-                    if (stringAnnotation.item.isNotBlank() && stringAnnotation.item.isNotEmpty())
-                        uriHandler.openUri(stringAnnotation.item)
-                }
-        }
-    )
+
+    if (linkedMessage == null) {
+        Text(text = overrideKey)
+    } else {
+        val linkedString = linkedMessage.annotatedString()
+        val uriHandler = LocalUriHandler.current
+        ClickableText(
+            style = style,
+            text = linkedString,
+            maxLines = maxLines,
+            overflow = overflow,
+            onClick = {
+                linkedString
+                    .getStringAnnotations("URL", it, it)
+                    .firstOrNull()?.let { stringAnnotation ->
+                        if (stringAnnotation.item.isNotBlank() && stringAnnotation.item.isNotEmpty())
+                            uriHandler.openUri(stringAnnotation.item)
+                    }
+            }
+        )
+    }
 }

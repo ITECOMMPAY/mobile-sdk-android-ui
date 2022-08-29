@@ -13,6 +13,7 @@ import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -24,7 +25,7 @@ internal fun PaymentMethodsScreen(onCancel: () -> Unit, onError: (ErrorResult, B
 
     SDKScaffold(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-        title = PaymentActivity.stringResourceManager.getStringByKey("title_payment_methods"),
+        title = getStringOverride("title_payment_methods"),
         notScrollableContent = {
             PaymentDetailsView()
             Spacer(modifier = Modifier.size(15.dp))

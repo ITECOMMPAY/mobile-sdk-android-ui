@@ -124,8 +124,8 @@
     <ID>MagicNumber:StringExtensions.kt$100.0</ID>
     <ID>MaxLineLength:CustomTextField.kt$color = if (isDisabled) SDKTheme.colors.disabledTextColor else SDKTheme.colors.secondaryTextColor</ID>
     <ID>MaxLineLength:Formatters.kt$*</ID>
-    <ID>MaxLineLength:PanField.kt$if (!PanValidator().isValid(it)) PaymentActivity.stringResourceManager.getStringByKey("message_about_card_number") else null</ID>
-    <ID>MaxLineLength:PaymentDetailsView.kt$paymentDescriptionLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_information_screen")</ID>
+    <ID>MaxLineLength:PanField.kt$if (!PanValidator().isValid(it)) getStringOverride("message_about_card_number") else null</ID>
+    <ID>MaxLineLength:PaymentDetailsView.kt$paymentDescriptionLabel = getStringOverride("title_payment_information_screen")</ID>
     <ID>MaxLineLength:PaymentDetailsView.kt$style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand.copy(alpha = if (isExpanded) 0.3f else 1f))</ID>
     <ID>MaxLineLength:PaymentMethods.kt$if</ID>
     <ID>NewLineAtEndOfFile:ActionType.kt$com.paymentpage.msdk.ui.ActionType.kt</ID>
