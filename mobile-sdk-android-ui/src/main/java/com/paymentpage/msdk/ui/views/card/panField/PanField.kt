@@ -14,7 +14,6 @@ import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCard
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.core.validators.custom.PanValidator
-import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.card.formatAmex
@@ -23,7 +22,6 @@ import com.paymentpage.msdk.ui.utils.card.formatOtherCardNumbers
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
 import com.paymentpage.msdk.ui.views.common.CustomTextField
-import java.util.*
 
 @Composable
 internal fun PanField(
@@ -92,21 +90,23 @@ internal fun PanField(
                         colorFilter = if (drawableId == 0) ColorFilter.tint(SDKTheme.colors.brand) else null
                     )
                 }
-                isFocused -> { null }
                 else -> {
-                    val cardTypesQueue = mutableListOf<PaymentMethodCardType?>()
-                    val firstCardType = paymentMethod.availableCardTypes.find { it == PaymentMethodCardType.VISA }
-                    val secondCardType = paymentMethod.availableCardTypes.find { it == PaymentMethodCardType.MASTER_5 }
-                    cardTypesQueue.add(firstCardType)
-                    cardTypesQueue.add(secondCardType)
-                    cardTypesQueue.addAll(paymentMethod.availableCardTypes.filter { it != firstCardType }.filter { it != secondCardType })
-                    ChangingCardTypeItems(
-                        cardTypes = cardTypesQueue.filterNotNull(),
-                        startIndex = startIndex, //saving current showing card type
-                        onCurrentIndexChanged = { currentIndex ->
-                            startIndex = currentIndex
-                        }
-                    )
+                    if (paymentMethod.availableCardTypes.isNotEmpty())
+                        ChangingCardTypeItems(
+                            cardTypes = paymentMethod.availableCardTypes,
+                            startIndex = startIndex, //saving current showing card type
+                            onCurrentIndexChanged = { currentIndex ->
+                                startIndex = currentIndex
+                            }
+                        )
+                    else
+                        Image(
+                            modifier = Modifier.padding(15.dp),
+                            painter = painterResource(id = R.drawable.card_logo),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+                            colorFilter =  ColorFilter.tint(SDKTheme.colors.brand)
+                        )
                 }
             }
         }
