@@ -40,7 +40,7 @@ internal fun NewCardItem(
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
     val additionalFields = LocalPaymentOptions.current.additionalFields
-    val savedState = remember { mutableStateOf(false) }
+    val savedState = remember { mutableStateOf(method.saveCard) }
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
     var isPanValid by remember { mutableStateOf(method.isValidPan) }

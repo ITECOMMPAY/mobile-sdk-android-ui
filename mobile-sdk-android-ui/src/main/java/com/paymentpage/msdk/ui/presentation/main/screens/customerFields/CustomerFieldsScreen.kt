@@ -33,11 +33,11 @@ internal fun CustomerFieldsScreen(
     onBack: () -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
+    val method = viewModel.lastState.currentMethod
     val customerFields = viewModel.lastState.customerFields
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
-    var customerFieldValues by remember { mutableStateOf<List<CustomerFieldValue>?>(null) }
-    val additionalFields = LocalPaymentOptions.current.additionalFields
-    var isCustomerFieldsValid by remember { mutableStateOf(false) }
+    var isCustomerFieldsValid by remember { mutableStateOf(method?.isCustomerFieldsValid ?: false) }
+
 
     BackHandler(true) { onBack() }
 
@@ -57,11 +57,14 @@ internal fun CustomerFieldsScreen(
             )
             Spacer(modifier = Modifier.size(5.dp))
             CustomerFields(
+                customerFieldValues = method?.customerFieldValues ?: emptyList(),
                 customerFields = visibleCustomerFields,
                 additionalFields = LocalPaymentOptions.current.additionalFields,
                 onCustomerFieldsChanged = { fields, isValid ->
-                    customerFieldValues = fields
                     isCustomerFieldsValid = isValid
+                    method?.customerFieldValues = fields
+                    method?.isCustomerFieldsValid = isValid
+
                 }
             )
             Spacer(modifier = Modifier.size(22.dp))
@@ -71,7 +74,7 @@ internal fun CustomerFieldsScreen(
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = isCustomerFieldsValid
             ) {
-                viewModel.sendCustomerFields(customerFieldValues ?: emptyList())
+                viewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
             }
             Spacer(modifier = Modifier.size(5.dp))
         },

@@ -18,10 +18,7 @@ internal sealed class UIPaymentMethod(
         index: Int,
         title: String,
         paymentMethod: PaymentMethod,
-    ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
-
-    }
-
+    ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod)
     class UISavedCardPayPaymentMethod(
         index: Int,
         title: String,

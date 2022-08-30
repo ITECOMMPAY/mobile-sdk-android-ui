@@ -11,6 +11,7 @@ import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleR
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePaySaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
+import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
@@ -29,7 +30,8 @@ internal fun MainViewModel.saleGooglePay(
         token = token,
         environment = environment
     )
-    request.customerFields = method.customerFieldValues
+    if (method.customerFieldValues.size <= Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS)
+        request.customerFields = method.customerFieldValues
     this.payInteractor.execute(request, this)
 }
 
@@ -40,7 +42,8 @@ internal fun MainViewModel.saleSavedCard(
     sendEvent(MainScreenUiEvent.ShowLoading)
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
     val request = SavedCardSaleRequest(cvv = method.cvv, accountId = method.accountId)
-    request.customerFields = method.customerFieldValues
+    if (method.customerFieldValues.size <= Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS)
+        request.customerFields = method.customerFieldValues
     this.payInteractor.execute(request, this)
 }
 
@@ -83,7 +86,8 @@ internal fun MainViewModel.saleCard(
         cardHolder = method.cardHolder,
         saveCard = method.saveCard
     )
-    request.customerFields = method.customerFieldValues
+    if (method.customerFieldValues.size <= Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS)
+        request.customerFields = method.customerFieldValues
     payInteractor.execute(request, this)
 }
 
@@ -112,12 +116,15 @@ internal fun MainViewModel.restorePayment(methodCode: String) {
 }
 
 internal fun MainViewModel.restoreAps(apsMethod: PaymentMethod) {
-    sendEvent(MainScreenUiEvent.SetCurrentMethod(
-        UIPaymentMethod.UIApsPaymentMethod(
-            index = 0,
-            title = apsMethod.name ?: apsMethod.code,
-            paymentMethod = apsMethod)
-    ))
+    sendEvent(
+        MainScreenUiEvent.SetCurrentMethod(
+            UIPaymentMethod.UIApsPaymentMethod(
+                index = 0,
+                title = apsMethod.name ?: apsMethod.code,
+                paymentMethod = apsMethod
+            )
+        )
+    )
     sendEvent(MainScreenUiEvent.ShowApsPage(apsMethod = apsMethod))
     payInteractor.execute(PaymentRestoreRequest(methodCode = apsMethod.code), this)
 }
