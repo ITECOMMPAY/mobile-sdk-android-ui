@@ -91,7 +91,7 @@ internal fun ExpandablePaymentMethodItem(
                 if (!isLocalResourceIcon) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(method.logoUrl)
+                            .data(if (!method.logoUrl.isNullOrEmpty()) method.logoUrl else method.paymentMethod.iconUrl)
                             .crossfade(true)
                             .diskCachePolicy(CachePolicy.ENABLED)
                             .build(),
@@ -113,7 +113,7 @@ internal fun ExpandablePaymentMethodItem(
                         painter = if (drawableId > 0) painterResource(id = drawableId) else fallbackIcon,
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
-                        colorFilter = iconColor,
+                        colorFilter = if (prefixNameResourceIcon == "aps" && drawableId == 0) ColorFilter.tint(color = SDKTheme.colors.brand) else iconColor,
                     )
                 }
                 Row(
