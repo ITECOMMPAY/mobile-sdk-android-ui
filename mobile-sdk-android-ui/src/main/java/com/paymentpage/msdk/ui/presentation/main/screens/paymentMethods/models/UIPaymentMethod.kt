@@ -11,14 +11,15 @@ internal sealed class UIPaymentMethod(
     val title: String,
     val logoUrl: String?,
     val paymentMethod: PaymentMethod,
-    var customerFieldValues: List<CustomerFieldValue> = emptyList()
+    var customerFieldValues: List<CustomerFieldValue> = emptyList(),
+    var isCustomerFieldsValid: Boolean = false
 ) {
     class UIGooglePayPaymentMethod(
         index: Int,
         title: String,
         paymentMethod: PaymentMethod,
     ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
-        var isCustomerFieldsValid: Boolean = false
+
     }
 
     class UISavedCardPayPaymentMethod(
@@ -29,7 +30,6 @@ internal sealed class UIPaymentMethod(
     ) : UIPaymentMethod(index, title, null, paymentMethod) {
         var cvv: String = ""
         var isValidCvv: Boolean = false
-        var isCustomerFieldsValid: Boolean = false
         val accountId: Long = savedAccount.id
     }
 
@@ -48,7 +48,6 @@ internal sealed class UIPaymentMethod(
         var isValidPan: Boolean = false
         var isValidExpiry: Boolean = false
         var isValidCardHolder: Boolean = false
-        var isCustomerFieldsValid: Boolean = false
     }
 
     class UIApsPaymentMethod(

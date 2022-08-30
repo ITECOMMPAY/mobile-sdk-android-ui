@@ -5,13 +5,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.LocalMsdkSession
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsView
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
@@ -20,7 +22,11 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
 
 @Composable
-internal fun PaymentMethodsScreen(onCancel: () -> Unit, onError: (ErrorResult, Boolean) -> Unit) {
+internal fun PaymentMethodsScreen(
+    uiPaymentMethods: List<UIPaymentMethod>,
+    onCancel: () -> Unit,
+    onError: (ErrorResult, Boolean) -> Unit
+) {
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
@@ -33,7 +39,7 @@ internal fun PaymentMethodsScreen(onCancel: () -> Unit, onError: (ErrorResult, B
         scrollableContent = {
             PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
-            PaymentMethodList()
+            PaymentMethodList(uiPaymentMethods = uiPaymentMethods)
         },
         footerContent = {
             SDKFooter(
