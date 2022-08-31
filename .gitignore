@@ -14,3 +14,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+/buildSrc/build
+/convention-plugins/build
+Gemfile.lock
