@@ -5,6 +5,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+val projectId: String = gradleLocalProperties(rootDir).getProperty("example.projectId")
+val salt: String = gradleLocalProperties(rootDir).getProperty("example.salt")
+
 android {
     compileSdk = 32
 
@@ -19,26 +22,25 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField(
+            "Integer",
+            "EXAMPLE_PROJECT_ID",
+            projectId
+        )
+        buildConfigField(
+            "String",
+            "EXAMPLE_SALT",
+            "\"$salt\""
+        )
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro")
-        }
-        debug {
-            val projectId: String = gradleLocalProperties(rootDir).getProperty("example.projectId")
-            val salt: String = gradleLocalProperties(rootDir).getProperty("example.salt")
-            buildConfigField(
-                "Integer",
-                "EXAMPLE_PROJECT_ID",
-                projectId
-            )
-            buildConfigField(
-                "String",
-                "EXAMPLE_SALT",
-                "\"$salt\""
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -64,7 +66,7 @@ android {
 
 dependencies {
     //Msdk-ui
-    implementation("com.ecommpay:msdk-ui:+")
+    implementation("com.ecommpay:msdk-ui:2.0.0")
     //Compose
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)

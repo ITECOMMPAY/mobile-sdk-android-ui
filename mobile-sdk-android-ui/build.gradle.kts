@@ -96,11 +96,6 @@ dependencies {
     api(Dependencies.Msdk.core)
     //AndroidX
     implementation(Dependencies.AndroidX.appCompat)
-    implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
-    implementation(Dependencies.AndroidX.constraintLayout)
-    debugImplementation(Dependencies.AndroidX.customView)
-    debugImplementation(Dependencies.AndroidX.customViewPoolingContainer)
-    implementation(Dependencies.AndroidX.coreKtx)
     //Coil
     implementation(Dependencies.Coil.compose)
     //Google

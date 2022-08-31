@@ -27,27 +27,27 @@ internal fun PaymentMethodList(uiPaymentMethods: List<UIPaymentMethod>) {
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
 
     //filter if saved accounts changed
-    val filteredUiPaymentMethods = uiPaymentMethods.filter { paymentMethod ->
+    val filteredUIPaymentMethods = uiPaymentMethods.filter { paymentMethod ->
         if (paymentMethod is UIPaymentMethod.UISavedCardPayPaymentMethod) {
             savedAccounts.isNotEmpty() && savedAccounts.map { it.id }
                 .contains(paymentMethod.savedAccount.id)
         } else true
     }
 
-    if (filteredUiPaymentMethods.isEmpty()) return
+    if (filteredUIPaymentMethods.isEmpty()) return
 
     LaunchedEffect(Unit) {
         val lastOpenedMethod = mainViewModel.lastState.currentMethod
         val openedMethod = lastOpenedMethod
-            ?: if (filteredUiPaymentMethods.first() is UIPaymentMethod.UIGooglePayPaymentMethod) //if first method is google pay
-                filteredUiPaymentMethods[1.coerceAtMost(filteredUiPaymentMethods.size - 1)]
+            ?: if (filteredUIPaymentMethods.first() is UIPaymentMethod.UIGooglePayPaymentMethod) //if first method is google pay
+                filteredUIPaymentMethods[1.coerceAtMost(filteredUIPaymentMethods.size - 1)]
             else //first by default
-                filteredUiPaymentMethods.first()
+                filteredUIPaymentMethods.first()
         mainViewModel.setCurrentMethod(openedMethod)
     }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        filteredUiPaymentMethods.forEach { uiPaymentMethod ->
+        filteredUIPaymentMethods.forEach { uiPaymentMethod ->
             PaymentMethodItem(
                 method = if (lastSelectedMethod?.index == uiPaymentMethod.index) lastSelectedMethod else uiPaymentMethod
             )

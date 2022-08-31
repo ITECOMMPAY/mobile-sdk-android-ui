@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.ecommpay.msdk.ui.EcmpPaymentInfo
-import com.ecommpay.msdk.ui.PaymentSDK
+import com.ecommpay.msdk.ui.EcmpPaymentSDK
 import com.ecommpay.msdk.ui.paymentOptions
 import com.paymentpage.ui.msdk.example.utils.CommonUtils
 import com.paymentpage.ui.msdk.example.utils.SignatureGenerator
@@ -75,7 +75,7 @@ class ComposeActivity : ComponentActivity() {
 //            additionalFields = EcmpAdditionalFields()
         }
         //4. Create sdk object
-        val sdk = PaymentSDK(
+        val sdk = EcmpPaymentSDK(
             context = applicationContext,
             paymentOptions = paymentOptions,
             //mockModeType = PaymentSDK.MockModeType.SUCCESS, // also you can use PaymentSDK.MockModeType.DECLINE or PaymentSDK.MockModeType.DISABLED
@@ -88,21 +88,21 @@ class ComposeActivity : ComponentActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (resultCode) {
-            PaymentSDK.RESULT_SUCCESS -> {
+            EcmpPaymentSDK.RESULT_SUCCESS -> {
                 Toast.makeText(this, "Payment was finished successfully", Toast.LENGTH_SHORT).show()
                 Log.d("PaymentSDK", "Payment was finished successfully")
             }
-            PaymentSDK.RESULT_CANCELLED -> {
+            EcmpPaymentSDK.RESULT_CANCELLED -> {
                 Toast.makeText(this, "Payment was cancelled", Toast.LENGTH_SHORT).show()
                 Log.d("PaymentSDK", "Payment was cancelled")
             }
-            PaymentSDK.RESULT_DECLINE -> {
+            EcmpPaymentSDK.RESULT_DECLINE -> {
                 Toast.makeText(this, "Payment was declined", Toast.LENGTH_SHORT).show()
                 Log.d("PaymentSDK", "Payment was declined")
             }
-            PaymentSDK.RESULT_ERROR -> {
-                val errorCode = data?.getStringExtra(PaymentSDK.EXTRA_ERROR_CODE)
-                val message = data?.getStringExtra(PaymentSDK.EXTRA_ERROR_MESSAGE)
+            EcmpPaymentSDK.RESULT_ERROR -> {
+                val errorCode = data?.getStringExtra(EcmpPaymentSDK.EXTRA_ERROR_CODE)
+                val message = data?.getStringExtra(EcmpPaymentSDK.EXTRA_ERROR_MESSAGE)
                 Toast.makeText(this, "Payment was interrupted. See logs", Toast.LENGTH_SHORT).show()
                 Log.d("PaymentSDK",
                     "Payment was interrupted. Error code: $errorCode. Message: $message")

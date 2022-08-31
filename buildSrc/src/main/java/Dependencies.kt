@@ -59,7 +59,7 @@ object Dependencies {
     }
 
     object Msdk {
-        const val core = "com.ecommpay:msdk-core-android:+"
+        const val core = "com.ecommpay:msdk-core-android:0.4.5"
     }
 
     object MsdkSample {
