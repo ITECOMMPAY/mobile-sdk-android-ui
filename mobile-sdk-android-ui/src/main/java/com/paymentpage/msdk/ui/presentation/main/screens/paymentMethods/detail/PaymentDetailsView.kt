@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 
 @Composable
 fun PaymentDetailsView() {
@@ -23,9 +24,9 @@ fun PaymentDetailsView() {
         isExpanded = expandPaymentDetailsState
     ) {
         PaymentDetailsContent(
-            paymentIdLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_id"),
+            paymentIdLabel = getStringOverride("title_payment_id"),
             paymentIdValue = LocalPaymentOptions.current.paymentInfo.paymentId,
-            paymentDescriptionLabel = PaymentActivity.stringResourceManager.getStringByKey("title_payment_information_description"),
+            paymentDescriptionLabel = getStringOverride("title_payment_information_description"),
             paymentDescriptionValue = LocalPaymentOptions.current.paymentInfo.paymentDescription,
             merchantAddressLabel = "",
             merchantAddressValue = null
@@ -46,7 +47,7 @@ fun ExpandablePaymentDetails(
     ) {
         Text(
             modifier = if (!isExpanded) Modifier.clickable { onExpandCallback() } else Modifier,
-            text = PaymentActivity.stringResourceManager.getStringByKey("title_payment_information_screen"),
+            text = getStringOverride("title_payment_information_screen"),
             style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.brand.copy(alpha = if (isExpanded) 0.3f else 1f)),
         )
         if (isExpanded)

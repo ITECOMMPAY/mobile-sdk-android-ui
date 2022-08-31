@@ -3,7 +3,6 @@ package com.paymentpage.msdk.ui.presentation.main.screens.aps
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
@@ -17,8 +16,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.saleAps
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
@@ -82,11 +81,6 @@ internal fun ApsPageView(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
                     )
-                    webChromeClient = object : WebChromeClient() {
-                        override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                            isLoading = newProgress < 100
-                        }
-                    }
                     webViewClient = object : WebViewClient() {
                         override fun onPageStarted(
                             view: WebView?,
@@ -95,7 +89,7 @@ internal fun ApsPageView(
                         ) {
                             super.onPageStarted(view, url, favicon)
                             isLoading = true
-                            if (url != paymentUrl)
+                            if (url?.startsWith(paymentUrl) == false)
                                 viewModel.saleAps(method)
                         }
 

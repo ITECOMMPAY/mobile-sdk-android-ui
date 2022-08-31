@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.paymentpage.ui.sample.BuildConfig
+import com.paymentpage.ui.msdk.sample.BuildConfig
 
 @Composable
 internal fun BrandTitle() {
     Row {
-        Text(text = "Brand")
+        Text(text = "Brand:")
         Spacer(modifier = Modifier.width(10.dp))
         Text(text = BuildConfig.BRAND, fontWeight = FontWeight.Bold)
     }

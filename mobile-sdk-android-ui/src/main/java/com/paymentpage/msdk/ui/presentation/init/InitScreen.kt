@@ -8,12 +8,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.core.base.ErrorCode
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.ui.LocalInitViewModel
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
+import com.paymentpage.msdk.ui.presentation.main.restoreAps
 import com.paymentpage.msdk.ui.presentation.main.restorePayment
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKFooter
@@ -39,8 +42,24 @@ internal fun InitScreen(
                 it.error != null -> onError(it.error, true)
                 it.isInitLoaded -> navigator.navigateTo(Route.Main)
                 it.payment != null -> {
-                    mainViewModel.restorePayment()
-                    navigator.navigateTo(Route.Main)
+                    val paymentMethod =
+                        it.paymentMethods?.find { paymentMethod -> paymentMethod.code == it.payment.method }
+                    if (paymentMethod == null) {
+                        onError(
+                            ErrorResult(
+                                code = ErrorCode.PAYMENT_METHOD_NOT_AVAILABLE,
+                                "Payment method ${it.payment.method} does not found"
+                            ), true
+                        )
+                    } else {
+                        if (it.payment.paymentMethodType == PaymentMethodType.APS && it.payment.status?.isFinal == false) {
+                            navigator.navigateTo(Route.RestoreAps)
+                            mainViewModel.restoreAps(apsMethod = paymentMethod )
+                        } else {
+                            navigator.navigateTo(Route.Restore)
+                            mainViewModel.restorePayment(paymentMethod.code)
+                        }
+                    }
                 }
 
             }

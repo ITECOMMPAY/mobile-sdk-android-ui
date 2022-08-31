@@ -11,9 +11,9 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
 ): List<UIPaymentMethod> {
     val result = mutableListOf<UIPaymentMethod>()
 
-    val googlePayMethod = find { it.type == PaymentMethodType.GOOGLE_PAY }
-    val cardPayMethod = find { it.type == PaymentMethodType.CARD }
-    val apsPaymentMethods = filter { it.type.isAps }
+    val googlePayMethod = find { it.paymentMethodType == PaymentMethodType.GOOGLE_PAY }
+    val cardPayMethod = find { it.paymentMethodType == PaymentMethodType.CARD }
+    val apsPaymentMethods = filter { it.paymentMethodType == PaymentMethodType.APS }
 
     var position = 0
     //get google pay host
@@ -21,7 +21,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
         result.add(
             UIPaymentMethod.UIGooglePayPaymentMethod(
                 index = position,
-                title = PaymentActivity.stringResourceManager.getStringByKey("google_pay_host_title"),
+                title = googlePayMethod.name ?: getStringOverride("google_pay_host_title"),
                 paymentMethod = it,
             )
         )
@@ -48,7 +48,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
         result.add(
             UIPaymentMethod.UICardPayPaymentMethod(
                 index = position,
-                title = PaymentActivity.stringResourceManager.getStringByKey("button_add_new_card"),
+                title = getStringOverride("button_add_new_card"),
                 paymentMethod = it,
             )
         )
@@ -59,8 +59,8 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
         result.add(
             UIPaymentMethod.UIApsPaymentMethod(
                 index = position,
-                title = PaymentActivity.stringResourceManager.getStringByKey(it.translations["title"] ?: ""),
-                paymentMethod = it
+                title = it.name ?: getStringOverride(it.translations["title"] ?: ""),
+                paymentMethod = it,
             )
         )
         position += 1

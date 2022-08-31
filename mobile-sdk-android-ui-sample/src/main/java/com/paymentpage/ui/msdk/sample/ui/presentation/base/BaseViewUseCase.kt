@@ -32,4 +32,17 @@ abstract class BaseViewUseCase<VI : ViewIntents, VS : ViewState> : ViewUseCaseCo
     protected suspend fun launchAction(action: ViewActions) {
         _viewAction.emit(action)
     }
+
+    override fun pushSideEffect(sideEffect: ViewSideEffects) {
+        useCaseScope.launch {
+            when(sideEffect){
+                ViewSideEffects.Init -> init()
+                ViewSideEffects.Launched -> launched()
+            }
+        }
+    }
+
+    protected open suspend fun init(){}
+
+    protected open suspend fun launched(){}
 }

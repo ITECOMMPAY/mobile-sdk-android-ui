@@ -4,7 +4,6 @@ package com.ecommpay.msdk.ui
 
 import android.graphics.Bitmap
 import com.paymentpage.msdk.core.domain.entities.RecipientInfo
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
 import com.paymentpage.msdk.ui.base.PaymentOptionsDsl
 
 
@@ -19,7 +18,6 @@ class EcmpPaymentOptions {
     lateinit var paymentInfo: EcmpPaymentInfo
 
     var recurrentData: EcmpRecurrentData? = null
-    var threeDSecureInfo: ThreeDSecureInfo? = null
     var recipientInfo: RecipientInfo? = null
     var actionType: EcmpActionType = EcmpActionType.Sale
     //var bankId: Int? = null

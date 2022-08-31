@@ -16,6 +16,7 @@ internal sealed class MainScreenUiEvent : UiEvent {
     class SetCurrentMethod(val method: UIPaymentMethod?) : MainScreenUiEvent()
     class SetPayment(val payment: Payment) : MainScreenUiEvent()
     object ShowLoading : MainScreenUiEvent()
+    class ShowDeleteCardLoading(val isLoading: Boolean?) : MainScreenUiEvent()
     class ShowError(val error: ErrorResult) : MainScreenUiEvent()
     class ShowCustomerFields(val customerFields: List<CustomerField>) :
         MainScreenUiEvent()
@@ -36,6 +37,7 @@ internal sealed class MainScreenUiEvent : UiEvent {
 @Immutable
 internal data class MainScreenState(
     val isLoading: Boolean? = null,
+    val isDeleteCardLoading: Boolean? = null,
     val currentMethod: UIPaymentMethod? = null,
     val payment: Payment? = null,
     val customerFields: List<CustomerField> = emptyList(),

@@ -33,13 +33,10 @@ internal class InitViewModel(
             request = InitRequest(
                 paymentInfo = paymentOptions.paymentInfo,
                 recurrentInfo = paymentOptions.recurrentInfo,
-                threeDSecureInfo = null
             ),
             callback = object : InitDelegate {
-                override fun onInitReceived(
-                    paymentMethods: List<PaymentMethod>,
-                    savedAccounts: List<SavedAccount>,
-                ) = sendEvent(InitScreenUiEvent.InitLoaded)
+                override fun onInitReceived(paymentMethods: List<PaymentMethod>, savedAccounts: List<SavedAccount>) =
+                    sendEvent(InitScreenUiEvent.InitLoaded(paymentMethods = paymentMethods, savedAccounts = savedAccounts))
 
                 override fun onError(code: ErrorCode, message: String) =
                     sendEvent(InitScreenUiEvent.ShowError(ErrorResult(code, message)))
@@ -62,7 +59,11 @@ internal class InitViewModel(
         override fun reduce(oldState: InitScreenState, event: InitScreenUiEvent) {
             when (event) {
                 is InitScreenUiEvent.InitLoaded -> setState(
-                    oldState.copy(isInitLoaded = true)
+                    oldState.copy(
+                        isInitLoaded = true,
+                        paymentMethods = event.paymentMethods,
+                        savedAccounts = event.savedAccounts
+                    )
                 )
                 is InitScreenUiEvent.ShowLoading -> setState(
                     oldState.copy(isInitLoaded = false)

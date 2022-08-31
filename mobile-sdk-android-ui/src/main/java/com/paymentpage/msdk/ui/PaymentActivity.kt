@@ -5,14 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.ecommpay.msdk.ui.PaymentSDK
-import com.ecommpay.msdk.ui.PaymentSDK.MockModeType.*
+import com.paymentpage.msdk.core.ApplicationInfo
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
+import com.paymentpage.msdk.core.UserAgentData
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
-import com.paymentpage.msdk.core.mock.init.MockInitCustomerFieldsConfig
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.presentation.MainContent
 
@@ -22,19 +21,17 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         super.onCreate(savedInstanceState)
         if (!BuildConfig.DEBUG)
             CrashHandler.init(this)
-        mockModeType =
-            intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as PaymentSDK.MockModeType
+        mockModeType = intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
         val config = when {
-            mockModeType == SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow(
-                MockInitCustomerFieldsConfig.ALL
-            )
-            mockModeType == DECLINE -> MSDKCoreSessionConfig.mockInitReturnedDecline()
+            mockModeType == SDKMockModeType.SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow()
+            mockModeType == SDKMockModeType.DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow()
             BuildConfig.DEBUG -> MSDKCoreSessionConfig.debug(
                 intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
                 intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
             )
             else -> MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
         }
+        config.userAgentData = UserAgentData(applicationInfo = ApplicationInfo(version = BuildConfig.SDK_VERSION_NAME))
         msdkSession = MSDKCoreSession(config)
 
         setContent {
@@ -94,7 +91,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         private lateinit var paymentOptions: SDKPaymentOptions
 
-        var mockModeType = DISABLED
+        var mockModeType = SDKMockModeType.DISABLED
 
         private lateinit var msdkSession: MSDKCoreSession
         val stringResourceManager: StringResourceManager
@@ -103,7 +100,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         fun buildPaymentIntent(
             context: Context,
             paymentOptions: SDKPaymentOptions,
-            mockModeType: PaymentSDK.MockModeType,
+            mockModeType: SDKMockModeType,
         ): Intent {
             this.paymentOptions = paymentOptions
 

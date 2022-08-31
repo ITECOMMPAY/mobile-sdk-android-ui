@@ -3,10 +3,11 @@ owner_name = "Ecommpay-1"
 destinations_group = "Collaborators"
 app_names = {"ecmp" => "mSDK-Android-UI"}
 paths = {
-  "ecmp" => "./paymentpage-sdk-android-sample/build/outputs/apk/ecommpay/debug/ecommpay-debug.apk", 
+  "ecmp" => "./mobile-sdk-android-ui-sample/build/outputs/apk/ecommpay/debug/mobile-sdk-android-ui-sample-ecommpay-debug.apk",
 }
 gradle_tasks = {"ecmp" => "assembleEcommpayDebug"}
-lib_env_names = {"ecmp" => "SDK_VERSION_NAME"}
+lib_env_version_names = {"ecmp" => "SDK_VERSION_NAME"}
+lib_env_version_codes = {"ecmp" => "SDK_VERSION_CODE"}
 
 default_platform(:android)
 platform :android do
@@ -37,14 +38,15 @@ platform :android do
         )
   
         build_version = last_appcenter_version["build_number"].to_i + 1
+        ENV[lib_env_version_codes[brand]] = build_version.to_s
       rescue Exception => e        
       end
     end  
     
-    ENV[lib_env_names[brand]] = version_name
+    ENV[lib_env_version_names[brand]] = version_name
     
     gradle(
-      task: ":paymentpage-sdk-android-sample:#{gradle_tasks[brand]}",
+      task: ":mobile-sdk-android-ui-sample:#{gradle_tasks[brand]}",
       properties: {
           "android.injected.version.code" => build_version,
           "android.injected.version.name" => version_name
@@ -64,7 +66,8 @@ platform :android do
       notify_testers: false
     )
 
-    ENV[lib_env_names[brand]] = nil
+    ENV[lib_env_version_names[brand]] = nil
+    ENV[lib_env_version_codes[brand]] = nil
   end
   
   desc "Check msdk flow constratints"

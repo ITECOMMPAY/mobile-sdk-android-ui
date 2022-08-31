@@ -19,6 +19,9 @@ import com.paymentpage.msdk.ui.navigation.RootNavigationView
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.theme.HexToJetpackColor
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.views.common.alertDialog.ErrorAlertDialog
+import com.paymentpage.msdk.ui.views.common.alertDialog.MessageAlertDialog
+import com.paymentpage.msdk.ui.views.common.alertDialog.SDKAlertDialog
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
@@ -66,34 +69,19 @@ internal fun MainContent(
         ) {
             when {
                 showDismissDialog -> {
-                    AlertDialog(
-                        text = { Text(text = stringResource(R.string.payment_dismiss_confirm_message)) },
-                        onDismissRequest = { showDismissDialog = false },
-                        confirmButton = {
-                            TextButton(onClick = { activity.onCancel() })
-                            {
-                                Text(
-                                    text = stringResource(R.string.ok_label),
-                                    color = SDKTheme.colors.brand
-                                )
-                            }
-                        },
-                        dismissButton = {
-                            TextButton(onClick = { showDismissDialog = false })
-                            {
-                                Text(
-                                    text = stringResource(R.string.cancel_label),
-                                    color = SDKTheme.colors.brand
-                                )
-                            }
-                        }
+                    MessageAlertDialog(
+                        message = { Text(text = stringResource(R.string.payment_dismiss_confirm_message)) },
+                        onConfirmButtonClick = { activity.onCancel() },
+                        confirmButtonText = stringResource(R.string.ok_label),
+                        onDismissButtonClick = { showDismissDialog = false },
+                        dismissButtonText = stringResource(R.string.cancel_label)
                     )
                 }
                 errorResultState != null -> {
-                    AlertDialog(
+                    ErrorAlertDialog(
                         title = { Text(text = stringResource(R.string.error_label)) },
-                        text = { Text(text = errorResultState?.message ?: "") },
-                        onDismissRequest = {
+                        message = { Text(text = errorResultState?.message ?: "") },
+                        onConfirmButtonClick = {
                             if (needCloseWhenError)
                                 activity.onError(
                                     errorResultState?.code ?: ErrorCode.UNKNOWN,
@@ -101,23 +89,15 @@ internal fun MainContent(
                                 )
                             errorResultState = null
                         },
-                        confirmButton = {
-                            TextButton(onClick = {
-                                if (needCloseWhenError)
-                                    activity.onError(
-                                        errorResultState?.code ?: ErrorCode.UNKNOWN,
-                                        errorResultState?.message
-                                    )
-                                errorResultState = null
-                            })
-                            {
-                                Text(
-                                    text = stringResource(R.string.ok_label),
-                                    color = SDKTheme.colors.errorTextColor
+                        confirmButtonText = stringResource(R.string.ok_label),
+                        onDismissRequest = {
+                            if (needCloseWhenError)
+                                activity.onError(
+                                    errorResultState?.code ?: ErrorCode.UNKNOWN,
+                                    errorResultState?.message
                                 )
-                            }
-                        }
-                    )
+                            errorResultState = null
+                        })
                 }
             }
         }

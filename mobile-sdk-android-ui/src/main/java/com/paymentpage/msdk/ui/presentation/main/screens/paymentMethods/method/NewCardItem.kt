@@ -3,28 +3,26 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
-
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.saleCard
-import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
@@ -32,6 +30,7 @@ import com.paymentpage.msdk.ui.views.card.CardHolderField
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
 import com.paymentpage.msdk.ui.views.card.panField.PanField
+import com.paymentpage.msdk.ui.views.common.SDKTextWithLink
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 @Composable
@@ -41,7 +40,7 @@ internal fun NewCardItem(
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
     val additionalFields = LocalPaymentOptions.current.additionalFields
-    val savedState = remember { mutableStateOf(false) }
+    val savedState = remember { mutableStateOf(method.saveCard) }
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
     var isPanValid by remember { mutableStateOf(method.isValidPan) }
@@ -53,6 +52,7 @@ internal fun NewCardItem(
         method = method,
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
         fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
+        iconColor = ColorFilter.tint(SDKTheme.colors.brand),
     ) {
         Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {
@@ -105,7 +105,7 @@ internal fun NewCardItem(
 
             if (customerFields.hasVisibleCustomerFields() && customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
                 CustomerFields(
-                    visibleCustomerFields = customerFields.visibleCustomerFields(),
+                    customerFields = customerFields.visibleCustomerFields(),
                     additionalFields = additionalFields,
                     customerFieldValues = method.customerFieldValues,
                     onCustomerFieldsChanged = { fields, isValid ->
@@ -139,44 +139,24 @@ internal fun NewCardItem(
                 Spacer(modifier = Modifier.width(10.dp))
                 Column {
                     Text(
-                        PaymentActivity.stringResourceManager.getStringByKey("title_saved_cards"),
+                        getStringOverride("title_saved_cards"),
                         color = SDKTheme.colors.primaryTextColor,
                         fontSize = 16.sp,
                     )
-                    val uriHandler = LocalUriHandler.current
-                    val linkedString = PaymentActivity
-                        .stringResourceManager
-                        .getLinkMessageByKey("cof_agreements")
-                        .annotatedString()
-                    ClickableText(
-                        style = SDKTheme.typography.s12Light,
-                        text = linkedString,
-                        onClick = {
-                            linkedString
-                                .getStringAnnotations("URL", it, it)
-                                .firstOrNull()?.let { stringAnnotation ->
-                                    uriHandler.openUri(stringAnnotation.item)
-                                }
-                        }
+                    SDKTextWithLink(
+                        overrideKey = "cof_agreements",
+                        style = SDKTheme.typography.s12Light
                     )
-
                 }
             }
             Spacer(modifier = Modifier.size(15.dp))
             PayOrConfirmButton(
                 method = method,
                 customerFields = customerFields,
-                isValidCvv = isCvvValid,
+                isValid = isCvvValid && isPanValid && isPanValid && isCardHolderValid && isExpiryValid,
                 isValidCustomerFields = isCustomerFieldsValid,
-                isValidPan = isPanValid,
-                isValidCardHolder = isCardHolderValid,
-                isValidExpiry = isExpiryValid,
                 onClickButton = {
-                    viewModel.saleCard(
-                        method = method,
-                        allCustomerFields = customerFields,
-                        additionalFields = additionalFields
-                    )
+                    viewModel.saleCard(method = method)
                 }
             )
         }

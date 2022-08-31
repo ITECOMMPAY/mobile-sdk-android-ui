@@ -7,26 +7,21 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewIntents
-import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewModel
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 internal fun ProjectSettings(
-    viewModel: MainViewModel = viewModel(),
+    paymentData: PaymentData,
+    intentListener: (MainViewIntents) -> Unit
 ) {
-    val viewState by viewModel.viewState.collectAsState()
-    val paymentData = viewState?.paymentData ?: PaymentData.defaultPaymentData
     OutlinedTextField(
         value = paymentData.projectId?.toString() ?: "",
         onValueChange = {
-            viewModel.pushIntent(MainViewIntents.ChangeField(
+            intentListener(MainViewIntents.ChangeField(
                 paymentData = paymentData.copy(projectId = it.filter { symbol ->
                     symbol.isDigit()
                 }
@@ -41,7 +36,7 @@ internal fun ProjectSettings(
     OutlinedTextField(
         value = paymentData.secretKey,
         onValueChange = {
-            viewModel.pushIntent(MainViewIntents.ChangeField(
+            intentListener(MainViewIntents.ChangeField(
                 paymentData = paymentData.copy(secretKey = it))
             )
         },

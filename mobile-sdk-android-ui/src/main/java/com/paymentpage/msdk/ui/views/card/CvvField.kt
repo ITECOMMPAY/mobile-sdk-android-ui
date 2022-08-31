@@ -2,9 +2,7 @@ package com.paymentpage.msdk.ui.views.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -14,8 +12,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.CustomTextField
+import com.paymentpage.msdk.ui.views.common.alertDialog.ConfirmAlertDialog
+import com.paymentpage.msdk.ui.views.common.alertDialog.SDKAlertDialog
 
 @Composable
 internal fun CvvField(
@@ -33,7 +33,7 @@ internal fun CvvField(
         onFilterValueBefore = { text -> text.filter { it.isDigit() } },
         onRequestValidatorMessage = {
             if (it.length != length)
-                PaymentActivity.stringResourceManager.getStringByKey("message_invalid_cvv")
+                getStringOverride("message_invalid_cvv")
             else
                 null
         },
@@ -41,7 +41,7 @@ internal fun CvvField(
             onValueChanged(value, value.length == length && isValid)
         },
         visualTransformation = PasswordVisualTransformation(),
-        label = PaymentActivity.stringResourceManager.getStringByKey("title_cvv"),
+        label = getStringOverride("title_cvv"),
         maxLength = length,
         isRequired = true,
         trailingIcon = {
@@ -52,19 +52,12 @@ internal fun CvvField(
         }
     )
     if (cvvAlertDialogState) {
-        AlertDialog(
-            title = { Text(text = PaymentActivity.stringResourceManager.getStringByKey("title_about_cvv")) },
-            text = { Text(text = PaymentActivity.stringResourceManager.getStringByKey("message_about_cvv")) },
-            onDismissRequest = { cvvAlertDialogState = false },
-            confirmButton = {
-                TextButton(onClick = { cvvAlertDialogState = false })
-                {
-                    Text(
-                        text = PaymentActivity.stringResourceManager.getStringByKey("button_ok"),
-                        color = SDKTheme.colors.brand
-                    )
-                }
-            }
+        ConfirmAlertDialog(
+            title = { Text(text = getStringOverride("title_about_cvv")) },
+            message = { Text(text = getStringOverride("message_about_cvv")) },
+            onConfirmButtonClick = { cvvAlertDialogState = false },
+            confirmButtonText = getStringOverride("button_ok"),
+            onDismissRequest = { cvvAlertDialogState = false }
         )
     }
 }

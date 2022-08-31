@@ -45,6 +45,10 @@ object Dependencies {
         const val activityKtx = "androidx.activity:activity-ktx:1.6.0-alpha05"
     }
 
+    object KotlinX {
+        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serialization}"
+    }
+
     object Coil {
         const val compose = "io.coil-kt:coil-compose:2.0.0-rc03"
     }

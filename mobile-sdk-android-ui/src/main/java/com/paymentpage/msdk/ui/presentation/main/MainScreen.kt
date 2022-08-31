@@ -5,12 +5,14 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalFocusManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.paymentpage.msdk.ui.ActionType
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalMsdkSession
 import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
@@ -23,6 +25,7 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.PaymentM
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultDeclineScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultSuccessScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.threeDSecure.ThreeDSecureScreen
+import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,6 +35,7 @@ import kotlinx.coroutines.flow.onEach
 @Suppress("UNUSED_PARAMETER")
 @Composable
 internal fun MainScreen(
+    startRoute: Route = Route.PaymentMethods,
     actionType: ActionType,
     mainScreenNavigator: Navigator,
     delegate: PaymentDelegate,
@@ -40,6 +44,12 @@ internal fun MainScreen(
 ) {
     val navController = rememberAnimatedNavController()
     val focusManager = LocalFocusManager.current
+
+    val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
+    val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
+    val mergedPaymentMethods = remember {
+        paymentMethods.mergeUIPaymentMethods(savedAccounts = savedAccounts)
+    }
 
     LaunchedEffect("mainScreenNavigation") {
         mainScreenNavigator.sharedFlow.onEach {
@@ -53,7 +63,7 @@ internal fun MainScreen(
         mainViewModel.state.onEach {
             when {
                 it.error != null -> onError(it.error, true)
-                it.isLoading == true && mainScreenNavigator.lastRoute != Route.Loading ->
+                it.isLoading == true ->
                     mainScreenNavigator.navigateTo(Route.Loading)
                 it.finalPaymentState != null -> {
                     when (it.finalPaymentState) {
@@ -68,10 +78,11 @@ internal fun MainScreen(
             }
         }.collect()
     }
+    val lastRoute = mainScreenNavigator.lastRoute
 
     AnimatedNavHost(
         navController = navController,
-        startDestination = Route.PaymentMethods.getPath(),
+        startDestination = lastRoute?.getPath() ?: startRoute.getPath(),
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
@@ -96,17 +107,21 @@ internal fun MainScreen(
             ApsScreen(onCancel = onCancel)
         }
         composable(route = Route.SuccessResult.getPath()) {
-            ResultSuccessScreen(onClose = { delegate.onCompleteWithSuccess(it) })
+            ResultSuccessScreen(onClose = { delegate.onCompleteWithSuccess(it) }, onError = onError)
         }
 
         composable(route = Route.DeclineResult.getPath()) {
-            ResultDeclineScreen(onClose = { delegate.onCompleteWithDecline(it) })
+            ResultDeclineScreen(onClose = { delegate.onCompleteWithDecline(it) }, onError = onError)
         }
         composable(route = Route.Loading.getPath()) {
             LoadingScreen(onCancel = onCancel)
         }
         composable(route = Route.PaymentMethods.getPath()) {
-            PaymentMethodsScreen(onCancel = onCancel, onError = onError)
+            PaymentMethodsScreen(
+                uiPaymentMethods = mergedPaymentMethods,
+                onCancel = onCancel,
+                onError = onError
+            )
         }
     }
 

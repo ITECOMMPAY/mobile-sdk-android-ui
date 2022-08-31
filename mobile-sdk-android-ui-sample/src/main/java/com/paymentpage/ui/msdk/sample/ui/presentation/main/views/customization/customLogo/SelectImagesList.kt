@@ -8,8 +8,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,22 +15,21 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewIntents
-import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewModel
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
 import com.paymentpage.ui.msdk.sample.utils.extensions.bitmapFromUri
 import com.paymentpage.ui.msdk.sample.utils.extensions.resIdByName
 import com.paymentpage.ui.msdk.sample.utils.extensions.uriFromResourceId
-import com.paymentpage.ui.sample.R
+import com.paymentpage.ui.msdk.sample.R
 
 
 @Composable
 internal fun SelectImagesList(
-    viewModel: MainViewModel = viewModel(),
+    selectedResourceImageId: Int,
+    paymentData: PaymentData,
+    intentListener: (MainViewIntents) -> Unit,
 ) {
     val context = LocalContext.current
-    val viewState by viewModel.viewState.collectAsState()
     val drawablesFields = R.drawable::class.java.fields.filter { it.name.contains("_logo") }
     drawablesFields.forEachIndexed { index, field ->
         Row(
@@ -46,12 +43,11 @@ internal fun SelectImagesList(
                 verticalAlignment = CenterVertically
             ) {
                 RadioButton(
-                    selected = index == viewState?.selectedResourceImageId,
+                    selected = index == selectedResourceImageId,
                     onClick = {
-                        viewModel.pushIntent(MainViewIntents.SelectResourceImage(
+                        intentListener(MainViewIntents.SelectResourceImage(
                             id = index,
-                            paymentData = viewState?.paymentData?.copy(bitmap = bitmap)
-                                ?: PaymentData.defaultPaymentData))
+                            paymentData = paymentData.copy(bitmap = bitmap)))
                     }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -72,7 +68,7 @@ internal fun SelectImagesList(
     Spacer(modifier = Modifier.size(10.dp))
     Text(text = "Current logo:", color = Color.Black, fontSize = 18.sp)
     Spacer(modifier = Modifier.size(10.dp))
-    val bitmapFinalImage = viewState?.paymentData?.bitmap?.asImageBitmap()
+    val bitmapFinalImage = paymentData.bitmap?.asImageBitmap()
     if (bitmapFinalImage != null) {
         Image(
             modifier = Modifier
@@ -92,9 +88,8 @@ internal fun SelectImagesList(
     }
     Spacer(modifier = Modifier.size(10.dp))
     SelectLocalImage {
-        viewModel.pushIntent(MainViewIntents.SelectLocalImage(it,
-            paymentData = viewState?.paymentData?.copy(bitmap = bitmapFromUri(it, context))
-                ?: PaymentData.defaultPaymentData))
+        intentListener(MainViewIntents.SelectLocalImage(it,
+            paymentData = paymentData.copy(bitmap = bitmapFromUri(it, context))))
     }
     Spacer(modifier = Modifier.size(10.dp))
     Button(
@@ -102,10 +97,9 @@ internal fun SelectImagesList(
             .fillMaxWidth()
             .height(50.dp),
         onClick = {
-            viewModel.pushIntent(MainViewIntents.SelectResourceImage(
+            intentListener(MainViewIntents.SelectResourceImage(
                 id = -1,
-                paymentData = viewState?.paymentData?.copy(bitmap = null)
-                    ?: PaymentData.defaultPaymentData
+                paymentData = paymentData.copy(bitmap = null)
             ))
         }
     ) {

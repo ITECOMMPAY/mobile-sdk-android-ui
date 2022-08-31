@@ -1,17 +1,16 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id ("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
     compileSdk = 32
 
     defaultConfig {
-        applicationId = "com.paymentpage.ui.sample"
+        applicationId = "com.paymentpage.ui.msdk.sample"
         minSdk = 21
         targetSdk = 32
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         signingConfig = signingConfigs.getByName("debug")
@@ -48,13 +47,15 @@ android {
     flavorDimensions("brand")
     productFlavors {
         create("ecommpay") {
-            applicationId = "com.ecommpay.msdk.test"
+            applicationId = "com.paymentpage.ui.msdk.sample"
             dimension = "brand"
             buildConfigField(
                 "String",
                 "BRAND",
                 "\"ECommPay\""
             )
+            versionName = System.getenv("SDK_VERSION_NAME") ?: Library.version
+            versionCode = System.getenv("SDK_VERSION_CODE")?.toInt() ?: 1
         }
     }
 }
@@ -74,6 +75,9 @@ dependencies {
     implementation(Dependencies.Compose.activity)
     implementation(Dependencies.Compose.navigation)
 
+    //Serialization
+    implementation(Dependencies.KotlinX.serialization)
+
     //Google
     implementation(Dependencies.Google.material)
 
@@ -90,6 +94,6 @@ dependencies {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-        freeCompilerArgs +="-Xjvm-default=all"
+        freeCompilerArgs += "-Xjvm-default=all"
     }
 }

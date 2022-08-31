@@ -2,12 +2,14 @@ package com.paymentpage.msdk.ui.views.common
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -25,52 +27,43 @@ internal fun SDKFooter(
     @DrawableRes iconLogo: Int,
     poweredByText: String,
     isVisiblePrivacyPolicy: Boolean = true,
-    isVisibleCookiePolicy: Boolean = false,
+    isVisibleCookiePolicy: Boolean = true,
 ) {
-    val uriHandler = LocalUriHandler.current
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
+            .padding(5.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         if (isVisiblePrivacyPolicy) {
-            val privacyPolicy = PaymentActivity
-                .stringResourceManager
-                .getLinkMessageByKey("privacy_policy")
-                .annotatedString()
-            ClickableText(
+            SDKTextWithLink(
+                overrideKey = "privacy_policy",
                 style = SDKTheme.typography.s12Light.copy(textAlign = TextAlign.End),
-                text = privacyPolicy,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                onClick = {
-                    privacyPolicy
-                        .getStringAnnotations("URL", it, it)
-                        .firstOrNull()?.let { stringAnnotation ->
-                            uriHandler.openUri(stringAnnotation.item)
-                        }
-                }
+                overflow = TextOverflow.Ellipsis
             )
         }
-        if (isVisibleCookiePolicy) {
-            val cookiePolicy = PaymentActivity
-                .stringResourceManager
-                .getLinkMessageByKey("cookie_policy")
-                .annotatedString()
+        if (isVisibleCookiePolicy && isVisiblePrivacyPolicy) {
             Spacer(modifier = Modifier.size(15.dp))
-            ClickableText(
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(3.dp)
+                        .background(SDKTheme.colors.footerTextColor)
+                )
+            }
+        }
+        if (isVisibleCookiePolicy) {
+            Spacer(modifier = Modifier.size(15.dp))
+            SDKTextWithLink(
+                overrideKey = "cookie_policy",
                 style = SDKTheme.typography.s12Light.copy(textAlign = TextAlign.Start),
-                text = cookiePolicy,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                onClick = {
-                    cookiePolicy
-                        .getStringAnnotations("URL", it, it)
-                        .firstOrNull()?.let { stringAnnotation ->
-                            uriHandler.openUri(stringAnnotation.item)
-                        }
-                }
+                overflow = TextOverflow.Ellipsis
             )
         }
     }

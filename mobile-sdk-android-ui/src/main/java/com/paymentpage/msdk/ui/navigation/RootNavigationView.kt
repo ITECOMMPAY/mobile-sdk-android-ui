@@ -62,5 +62,25 @@ internal fun RootNavigationView(
                 onError = onError
             )
         }
+        composable(route = Route.Restore.getPath()) {
+            MainScreen(
+                startRoute = Route.Loading,
+                actionType = actionType,
+                mainScreenNavigator = mainScreenNavigator,
+                delegate = delegate,
+                onCancel = onCancel,
+                onError = onError
+            )
+        }
+        composable(route = Route.RestoreAps.getPath()) {
+            MainScreen(
+                startRoute = Route.ApsPage,
+                actionType = actionType,
+                mainScreenNavigator = mainScreenNavigator,
+                delegate = delegate,
+                onCancel = onCancel,
+                onError = onError
+            )
+        }
     }
 }

@@ -15,37 +15,21 @@ import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.utils.extensions.paymentDateToPatternDate
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultTableInfo
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 
 @Composable
 internal fun ResultSuccessScreen(
-    onClose: (Payment) -> Unit
+    onClose: (Payment) -> Unit,
+    onError: (ErrorResult, Boolean) -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
-    val payment =
-        viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
-    val valueTitleCardWallet = when (val method = viewModel.lastState.currentMethod) {
-        is UIPaymentMethod.UICardPayPaymentMethod, is UIPaymentMethod.UISavedCardPayPaymentMethod -> {
-            "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number}"
-        }
-        is UIPaymentMethod.UIApsPaymentMethod, is UIPaymentMethod.UIGooglePayPaymentMethod -> {
-            method.paymentMethod.translations["title"] ?: ""
-        }
-        else -> {
-            payment.account?.type ?: ""
-        }
-    }
-
-    val completeFields = payment.completeFields?.associate {
-        val translation = if (it.name != null) PaymentActivity.stringResourceManager.getStringByKey(it.name!!) else it.defaultLabel
-        translation to it.value
-    } ?: emptyMap()
+    val payment = viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
 
     BackHandler(true) { onClose(payment) }
 
@@ -64,7 +48,7 @@ internal fun ResultSuccessScreen(
                 )
                 Spacer(modifier = Modifier.size(15.dp))
                 Text(
-                    text = PaymentActivity.stringResourceManager.getStringByKey("title_result_succes_payment"),
+                    text = getStringOverride("title_result_succes_payment"),
                     style = SDKTheme.typography.s24Bold,
                     textAlign = TextAlign.Center
                 )
@@ -72,16 +56,7 @@ internal fun ResultSuccessScreen(
             Spacer(modifier = Modifier.size(15.dp))
             PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
-            ResultTableInfo(
-                titleKeyWithValueMap = mutableMapOf(
-                    PaymentActivity.stringResourceManager.getStringByKey("title_card_wallet") to
-                            valueTitleCardWallet,
-                    PaymentActivity.stringResourceManager.getStringByKey("title_payment_id") to
-                            "${payment.id}",
-                    PaymentActivity.stringResourceManager.getStringByKey("title_payment_date") to
-                            payment.date?.paymentDateToPatternDate("dd.MM.yyyy HH:mm"),
-                ) + completeFields
-            )
+            ResultTableInfo(onError)
             Spacer(modifier = Modifier.size(15.dp))
         },
         footerContent = {

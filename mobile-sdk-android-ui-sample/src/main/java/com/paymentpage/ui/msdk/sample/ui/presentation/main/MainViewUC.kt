@@ -1,38 +1,33 @@
 package com.paymentpage.ui.msdk.sample.ui.presentation.main
 
 import com.paymentpage.ui.msdk.sample.data.ProcessRepository
+import com.paymentpage.ui.msdk.sample.ui.navigation.NavRoutes
 import com.paymentpage.ui.msdk.sample.ui.presentation.base.BaseViewUseCase
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
 
-class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
+class MainViewUC : BaseViewUseCase<MainViewIntents, MainViewState>() {
+    override suspend fun init() {
+        updateState(
+            MainViewState(
+                paymentData = PaymentData.defaultPaymentData,
+                isVisibleApiHostFields = false,
+                isVisibleGooglePayFields = false,
+                isVisibleCustomizationFields = false,
+                isVisibleMockModeType = false,
+                selectedResourceImageId = -1,
+                isVisibleForcePaymentMethodFields = false,
+                selectedForcePaymentMethodId = -1,
+                selectedMockModeTypeId = 0,
+                localImageUri = null
+            )
+        )
+    }
     override suspend fun reduce(viewIntent: MainViewIntents) {
         when (viewIntent) {
-            is MainViewIntents.Init -> {
-                updateState(
-                    MainViewState(
-                        paymentData = PaymentData.defaultPaymentData,
-                        isVisibleApiHostFields = false,
-                        isVisibleGooglePayFields = false,
-                        isVisibleCustomizationFields = false,
-                        isVisibleMockModeType = false,
-                        selectedResourceImageId = -1,
-                        isVisibleForcePaymentMethodFields = false,
-                        selectedForcePaymentMethodId = -1,
-                        selectedMockModeTypeId = 0,
-                        localImageUri = null
-                    )
-                )
-            }
             is MainViewIntents.ChangeField -> {
                 ProcessRepository.paymentData = viewIntent.paymentData
                 updateState(viewState.value?.copy(
                     paymentData = viewIntent.paymentData
-                ))
-            }
-            //Force payment method
-            is MainViewIntents.ChangeForcePaymentMethodCheckbox -> {
-                updateState(viewState.value?.copy(
-                    isVisibleForcePaymentMethodFields = !(viewState.value?.isVisibleForcePaymentMethodFields ?: false)
                 ))
             }
             is MainViewIntents.SelectForcePaymentMethod -> {
@@ -45,7 +40,8 @@ class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
             //Customization brand color and logo
             is MainViewIntents.ChangeCustomizationCheckbox -> {
                 updateState(viewState.value?.copy(
-                    isVisibleCustomizationFields = !(viewState.value?.isVisibleCustomizationFields ?: false)
+                    isVisibleCustomizationFields = !(viewState.value?.isVisibleCustomizationFields
+                        ?: false)
                 ))
             }
             is MainViewIntents.SelectResourceImage -> {
@@ -90,6 +86,15 @@ class MainViewUC: BaseViewUseCase<MainViewIntents, MainViewState>(){
             //Sale
             is MainViewIntents.Sale -> {
                 launchAction(MainViewActions.Sale)
+            }
+            is MainViewIntents.ThreeDSecure -> {
+                launchAction(NavRoutes.ThreeDSecure)
+            }
+            is MainViewIntents.Recurrent -> {
+                launchAction(NavRoutes.Recurrent)
+            }
+            is MainViewIntents.AdditionalFields -> {
+                launchAction(NavRoutes.AdditionalFields)
             }
         }
     }

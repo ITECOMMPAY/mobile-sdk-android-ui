@@ -9,18 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.paymentpage.ui.msdk.sample.ui.navigation.NavRouts
 
 
 @Composable
-internal fun AdditionalFieldsButton(navController: NavController) {
+internal fun AdditionalFieldsButton(listener: () -> Unit) {
     Button(modifier = Modifier
         .fillMaxWidth()
         .height(50.dp),
-        onClick = {
-            navController.navigate(NavRouts.AdditionalFields.route)
-        }) {
+        onClick = listener) {
         Text(text = "Additional fields", color = Color.White, fontSize = 18.sp)
     }
 }

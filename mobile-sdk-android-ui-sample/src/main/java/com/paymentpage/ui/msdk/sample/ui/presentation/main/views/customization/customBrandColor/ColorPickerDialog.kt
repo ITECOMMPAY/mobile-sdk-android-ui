@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import com.paymentpage.ui.msdk.sample.utils.extensions.resIdByName
-import com.paymentpage.ui.sample.R
+import com.paymentpage.ui.msdk.sample.R
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogButtons
 import com.vanpra.composematerialdialogs.MaterialDialogState

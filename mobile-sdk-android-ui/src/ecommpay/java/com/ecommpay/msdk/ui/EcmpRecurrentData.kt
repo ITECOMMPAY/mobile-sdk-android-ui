@@ -1,56 +1,74 @@
 package com.ecommpay.msdk.ui
 
+import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
+import com.paymentpage.msdk.core.domain.entities.RecurrentInfoSchedule
+
 class EcmpRecurrentData(
-    val register: Boolean = true,
+    register: Boolean = true,
     /**
      * Type of recurrent - R/C/U/I
      */
-    val type: String? = null,
+    type: String? = null,
     /**
      *  Day of recurrent expiration, must be string(2) day in DD format
      */
-    val expiryDay: String? = null,
+    expiryDay: String? = null,
     /**
      * Month of recurrent expiration, must be string(2) month in MM format
      */
-    val expiryMonth: String? = null,
+    expiryMonth: String? = null,
     /**
      *  Year of recurrent expiration, must be string(4) month in YYYY format
      */
-    val expiryYear: String? = null,
+    expiryYear: String? = null,
     /**
      *  Period of payment - Day/Week/Month/Quarter/Year
      */
-    val period: String? = null,
+    period: String? = null,
     /**
      * Time of recurrent payment to charge
      */
-    val time: String? = null,
+    time: String? = null,
     /**
      * Date to start recurrent payment, must be string(10) in DD-MM-YYYY format
      */
-    val startDate: String? = null,
+    startDate: String? = null,
     /**
      * Payment ID, must be unique within your project
      */
-    val scheduledPaymentID: String? = null,
+    scheduledPaymentID: String? = null,
     /**
      * Amount of COF purchase. By default the amount of COF purchase is equal to payment amount
      */
-    val amount: Long? = null,
+    amount: Long? = null,
     /**
      * Data and amount of COF purchase. By default the debit of funds is strictly fixed in time and amount
      */
-    val schedule: List<EcmpRecurrentDataSchedule>? = null
+    schedule: List<EcmpRecurrentDataSchedule>? = null,
+) : RecurrentInfo(
+    register = register,
+    type = type,
+    expiryDay = expiryDay,
+    expiryMonth = expiryMonth,
+    expiryYear = expiryYear,
+    period = period,
+    time = time,
+    startDate = startDate,
+    scheduledPaymentID = scheduledPaymentID,
+    amount = amount,
+    schedule = schedule
 )
 
 class EcmpRecurrentDataSchedule(
     /**
      *  Date of charge in format DD-MM-YYYY
      */
-    val date: String? = null,
+    date: String? = null,
     /**
      * Amount to charge, 1000 = 10.00
      */
-    val amount: Long? = null
+    amount: Long? = null,
+) : RecurrentInfoSchedule(
+    date = date,
+    amount = amount
 )
