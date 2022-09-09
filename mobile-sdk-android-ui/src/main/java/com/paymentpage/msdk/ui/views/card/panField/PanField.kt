@@ -32,7 +32,7 @@ internal fun PanField(
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     var card by remember { mutableStateOf<PaymentMethodCard?>(null) }
-    var isFocused by remember { mutableStateOf(false) }
+    //var isFocused by remember { mutableStateOf(false) }
     var currentPanFieldValue by remember { mutableStateOf(initialValue) }
     CustomTextField(
         initialValue = initialValue,
@@ -40,7 +40,7 @@ internal fun PanField(
         modifier = modifier,
         keyboardType = KeyboardType.Number,
         onFilterValueBefore = { value -> value.filter { it.isDigit() } },
-        maxLength = 19,
+        maxLength = card?.maxLength ?: 19,
         onValueChanged = { value, isValid ->
             onValueChanged(value, PanValidator().isValid(value) && isValid)
             currentPanFieldValue = value
@@ -48,7 +48,7 @@ internal fun PanField(
         onRequestValidatorMessage = {
             if (!PanValidator().isValid(it))
                 getStringOverride("message_about_card_number")
-            else if (!paymentMethod.availableCardTypes.contains(card?.type)) {
+            else if (!paymentMethod.availableCardTypes.contains(card?.code)) {
                 val regex = Regex("\\[\\[.+]]")
                 val message = regex.replace(
                     getStringOverride("message_wrong_card_type"),
@@ -70,9 +70,9 @@ internal fun PanField(
             }
         },
         label = getStringOverride("title_card_number"),
-        onFocusChanged = { focusValue ->
-            isFocused = focusValue
-        },
+//        onFocusChanged = { focusValue ->
+//            isFocused = focusValue
+//        },
         trailingIcon = {
             val context = LocalContext.current
             var startIndex by remember { mutableStateOf(0) }
