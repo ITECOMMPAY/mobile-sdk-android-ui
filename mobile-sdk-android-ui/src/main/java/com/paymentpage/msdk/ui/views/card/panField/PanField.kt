@@ -12,9 +12,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCard
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.core.validators.custom.PanValidator
 import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.card.formatAmex
 import com.paymentpage.msdk.ui.utils.card.formatDinnersClub
@@ -28,7 +28,7 @@ internal fun PanField(
     modifier: Modifier = Modifier,
     initialValue: String? = null,
     paymentMethod: PaymentMethod,
-    onPaymentMethodCardTypeChange: ((PaymentMethodCardType?) -> Unit)? = null,
+    onPaymentMethodCardTypeChange: ((String?) -> Unit)? = null,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     var card by remember { mutableStateOf<PaymentMethodCard?>(null) }
@@ -52,7 +52,7 @@ internal fun PanField(
                 val regex = Regex("\\[\\[.+]]")
                 val message = regex.replace(
                     getStringOverride("message_wrong_card_type"),
-                    card?.type?.value?.uppercase() ?: ""
+                    card?.code?.uppercase() ?: ""
                 )
                 message
             } else null
@@ -61,11 +61,11 @@ internal fun PanField(
             val trimmedCardNumber = number.text.replace(" ", "")
             card = paymentMethod.cardTypesManager.search(trimmedCardNumber)
             if (onPaymentMethodCardTypeChange != null) {
-                onPaymentMethodCardTypeChange(card?.type)
+                onPaymentMethodCardTypeChange(card?.code)
             }
-            when (card?.type) {
-                PaymentMethodCardType.AMEX -> formatAmex(number)
-                PaymentMethodCardType.DINERS_CLUB -> formatDinnersClub(number)
+            when (card?.code) {
+                Constants.AMEX_CARD_TYPE_NAME -> formatAmex(number)
+                Constants.DINERS_CLUB_CARD_TYPE_NAME -> formatDinnersClub(number)
                 else -> formatOtherCardNumbers(number)
             }
         },
@@ -105,7 +105,7 @@ internal fun PanField(
                             painter = painterResource(id = R.drawable.card_logo),
                             contentDescription = null,
                             contentScale = ContentScale.Fit,
-                            colorFilter =  ColorFilter.tint(SDKTheme.colors.brand)
+                            colorFilter = ColorFilter.tint(SDKTheme.colors.brand)
                         )
                 }
             }

@@ -13,10 +13,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.saleCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
@@ -46,7 +44,7 @@ internal fun NewCardItem(
     var isPanValid by remember { mutableStateOf(method.isValidPan) }
     var isCardHolderValid by remember { mutableStateOf(method.isValidCardHolder) }
     var isExpiryValid by remember { mutableStateOf(method.isValidExpiry) }
-    var cardType by remember { mutableStateOf<PaymentMethodCardType?>(null) }
+    var cardType by remember { mutableStateOf<String?>(null) }
 
     ExpandablePaymentMethodItem(
         method = method,

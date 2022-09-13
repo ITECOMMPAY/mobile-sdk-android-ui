@@ -9,20 +9,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
-import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 import com.paymentpage.msdk.ui.views.common.alertDialog.ConfirmAlertDialog
-import com.paymentpage.msdk.ui.views.common.alertDialog.SDKAlertDialog
 
 @Composable
 internal fun CvvField(
     initialValue: String? = null,
     modifier: Modifier,
-    cardType: PaymentMethodCardType? = null,
-    length: Int = if (cardType == PaymentMethodCardType.AMEX) 4 else 3,
+    cardType: String? = null,
+    length: Int = if (cardType == "amex") 4 else 3,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     var cvvAlertDialogState by remember { mutableStateOf(false) }
