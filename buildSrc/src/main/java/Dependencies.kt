@@ -13,6 +13,7 @@ object Versions {
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
     const val dagger = "2.38.1"
+    const val msdkCore = "0.4.6"
 }
 
 object Dependencies {
@@ -46,7 +47,8 @@ object Dependencies {
     }
 
     object KotlinX {
-        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serialization}"
+        const val serialization =
+            "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serialization}"
     }
 
     object Coil {
@@ -59,7 +61,7 @@ object Dependencies {
     }
 
     object Msdk {
-        const val core = "com.ecommpay:msdk-core-android:0.4.5"
+        const val core = "com.ecommpay:msdk-core-android:${Versions.msdkCore}"
     }
 
     object MsdkSample {

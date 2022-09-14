@@ -45,7 +45,7 @@ internal fun SavedCardItem(
     var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
     val isDeleteCardLoading = state.isDeleteCardLoading ?: false
     val context = LocalContext.current
-    val name = "card_type_${method.savedAccount.cardType.value.lowercase()}"
+    val name = "card_type_${method.savedAccount.cardType?.lowercase()}"
     val drawableId = remember(name) {
         context.drawableResourceIdFromDrawableName(name)
     }

@@ -10,24 +10,23 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
 
 @Composable
 internal fun ChangingCardTypeItems(
-    cardTypes: List<PaymentMethodCardType>,
+    cardTypes: List<String>,
     startIndex: Int = 0,
     onCurrentIndexChanged: ((Int) -> Unit)? = null,
 ) {
     val context = LocalContext.current
     var currentIndex by remember { mutableStateOf(startIndex) }
     var isRunning by remember { mutableStateOf(true) }
-    val drawableNameFirstCardType = "card_type_${cardTypes[0].value}"
+    val drawableNameFirstCardType = "card_type_${cardTypes[0]}"
     val drawableNameSecondCardType =
-        if (cardTypes.size > 1) "card_type_${cardTypes[1].value}" else ""
+        if (cardTypes.size > 1) "card_type_${cardTypes[1]}" else ""
     val drawableNameThirdCardType =
-        if (cardTypes.size > 2) "card_type_${cardTypes[2].value}" else ""
+        if (cardTypes.size > 2) "card_type_${cardTypes[2]}" else ""
     val drawableIdFirstCardType = remember(drawableNameFirstCardType) {
         context.drawableResourceIdFromDrawableName(drawableNameFirstCardType)
     }
@@ -38,7 +37,7 @@ internal fun ChangingCardTypeItems(
         context.drawableResourceIdFromDrawableName(drawableNameThirdCardType)
     }
     val drawableIdsList = cardTypes.map {
-        context.drawableResourceIdFromDrawableName("card_type_${it.value}")
+        context.drawableResourceIdFromDrawableName("card_type_${it}")
     }
         .filter { id -> id > 0 && id != drawableIdFirstCardType && id != drawableIdSecondCardType } //take all except first two elements
 
