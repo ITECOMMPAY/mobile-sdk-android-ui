@@ -74,7 +74,7 @@ class SampleActivity : ComponentActivity() {
             paymentAmount = repositoryPaymentData.paymentAmount ?: -1,
             paymentCurrency = repositoryPaymentData.paymentCurrency,
             customerId = repositoryPaymentData.customerId.ifEmpty { null },
-            paymentDescription = repositoryPaymentData.paymentDescription,
+            paymentDescription = repositoryPaymentData.paymentDescription.ifEmpty { null },
             languageCode = repositoryPaymentData.languageCode.ifEmpty { null },
             ecmpThreeDSecureInfo = threeDSecureInfoToSend?.map()
         )
