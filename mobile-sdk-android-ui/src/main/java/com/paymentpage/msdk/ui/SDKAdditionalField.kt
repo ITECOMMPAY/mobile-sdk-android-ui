@@ -2,9 +2,7 @@
 
 package com.paymentpage.msdk.ui
 
-import com.paymentpage.msdk.core.domain.entities.field.FieldType
-
 class SDKAdditionalField(
-    var type: FieldType = FieldType.UNKNOWN,
+    var name: String? = null,
     var value: String? = null,
 )

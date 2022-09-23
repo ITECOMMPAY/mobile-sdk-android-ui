@@ -1,7 +1,6 @@
 package com.ecommpay.msdk.ui.mappers
 
 import com.ecommpay.msdk.ui.EcmpPaymentOptions
-import com.paymentpage.msdk.core.domain.entities.field.FieldType
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.ui.ActionType
 import com.paymentpage.msdk.ui.SDKAdditionalField
@@ -21,8 +20,7 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
         merchantEnvironment = if (isTestEnvironment) GooglePayEnvironment.TEST else GooglePayEnvironment.PROD,
         additionalFields = additionalFields.map { additionalField ->
             SDKAdditionalField(
-                type = additionalField.type?.let { FieldType.valueOf(it.name) }
-                    ?: FieldType.UNKNOWN,
+                name = additionalField.type?.value,
                 value = additionalField.value
             )
         }

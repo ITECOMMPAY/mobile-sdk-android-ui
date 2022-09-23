@@ -19,9 +19,9 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!BuildConfig.DEBUG)
-            CrashHandler.init(this)
-        mockModeType = intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
+
+        mockModeType =
+            intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
         val config = when {
             mockModeType == SDKMockModeType.SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow()
             mockModeType == SDKMockModeType.DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow()
@@ -31,8 +31,17 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             )
             else -> MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
         }
-        config.userAgentData = UserAgentData(applicationInfo = ApplicationInfo(version = BuildConfig.SDK_VERSION_NAME))
+        config.userAgentData =
+            UserAgentData(applicationInfo = ApplicationInfo(version = BuildConfig.SDK_VERSION_NAME))
         msdkSession = MSDKCoreSession(config)
+
+        CrashHandler(
+            projectId = paymentOptions.paymentInfo.projectId.toLong(),
+            paymentId = paymentOptions.paymentInfo.paymentId,
+            customerId = paymentOptions.paymentInfo.customerId,
+            signature = paymentOptions.paymentInfo.signature,
+            errorInteractor = msdkSession.getErrorEventInteractor()
+        ).start(context = this)
 
         setContent {
             MainContent(
