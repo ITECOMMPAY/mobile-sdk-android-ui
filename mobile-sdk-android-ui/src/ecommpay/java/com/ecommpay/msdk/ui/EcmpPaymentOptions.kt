@@ -29,8 +29,11 @@ class EcmpPaymentOptions {
     var merchantName: String = ""
     var isTestEnvironment: Boolean = true
 
-    var additionalFields = mutableListOf<EcmpAdditionalField>()
+    private val _additionalFields = mutableListOf<EcmpAdditionalField>()
+    val additionalFields: List<EcmpAdditionalField>
+        get() = additionalFields.toList()
+
     fun additionalFields(block: EcmpAdditionalFields.() -> Unit) {
-        additionalFields.addAll(EcmpAdditionalFields().apply(block))
+        _additionalFields.addAll(EcmpAdditionalFields().apply(block))
     }
 }
