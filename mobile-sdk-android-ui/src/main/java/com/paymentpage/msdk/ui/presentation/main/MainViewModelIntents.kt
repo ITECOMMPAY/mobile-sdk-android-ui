@@ -1,5 +1,6 @@
 package com.paymentpage.msdk.ui.presentation.main
 
+import com.paymentpage.msdk.core.domain.entities.CardDate
 import com.paymentpage.msdk.core.domain.entities.SdkExpiry
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
@@ -81,8 +82,10 @@ internal fun MainViewModel.saleCard(
     val request = NewCardSaleRequest(
         cvv = method.cvv,
         pan = method.pan,
-        year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0,
-        month = expiry.month ?: 0,
+        expiryDate = CardDate(
+            month = expiry.month ?: 0,
+            year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
+        ),
         cardHolder = method.cardHolder,
         saveCard = method.saveCard
     )
@@ -110,9 +113,9 @@ internal fun MainViewModel.threeDSecureHandled() {
 }
 
 //restore payment if it received via init
-internal fun MainViewModel.restorePayment(methodCode: String) {
+internal fun MainViewModel.restorePayment() {
     sendEvent(MainScreenUiEvent.ShowLoading)
-    payInteractor.execute(PaymentRestoreRequest(methodCode = methodCode), this)
+    payInteractor.execute(PaymentRestoreRequest(), this)
 }
 
 internal fun MainViewModel.restoreAps(apsMethod: PaymentMethod) {
@@ -126,7 +129,7 @@ internal fun MainViewModel.restoreAps(apsMethod: PaymentMethod) {
         )
     )
     sendEvent(MainScreenUiEvent.ShowApsPage(apsMethod = apsMethod))
-    payInteractor.execute(PaymentRestoreRequest(methodCode = apsMethod.code), this)
+    payInteractor.execute(PaymentRestoreRequest(), this)
 }
 
 //set current method

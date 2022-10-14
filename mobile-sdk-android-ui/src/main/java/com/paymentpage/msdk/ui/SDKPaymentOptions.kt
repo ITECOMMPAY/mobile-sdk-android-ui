@@ -27,5 +27,5 @@ class SDKPaymentOptions(
     val merchantName: String = "",
     val merchantEnvironment: GooglePayEnvironment = GooglePayEnvironment.TEST,
 
-    val additionalFields: List<SDKAdditionalField> = mutableListOf()
+    val additionalFields: List<SDKAdditionalField> = emptyList()
 )

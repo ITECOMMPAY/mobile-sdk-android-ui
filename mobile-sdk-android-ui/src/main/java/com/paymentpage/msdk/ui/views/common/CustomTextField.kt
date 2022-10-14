@@ -145,7 +145,7 @@ fun CustomTextField(
                         fontSize = 14.sp
                     )
             },
-            textStyle = TextStyle(fontSize = 16.sp, color = SDKTheme.colors.primaryTextColor),
+            textStyle = TextStyle(fontSize = 16.sp),
             keyboardOptions = keyboardOptions,
             keyboardActions = KeyboardActions(
                 onNext = { nextFocus?.requestFocus() }

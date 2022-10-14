@@ -13,7 +13,7 @@ object Versions {
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
     const val dagger = "2.38.1"
-    const val msdkCore = "0.4.6"
+    const val msdkCore = "0.5.0"
 }
 
 object Dependencies {

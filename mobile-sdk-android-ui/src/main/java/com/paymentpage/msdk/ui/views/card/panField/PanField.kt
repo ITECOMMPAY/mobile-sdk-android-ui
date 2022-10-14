@@ -2,6 +2,7 @@ package com.paymentpage.msdk.ui.views.card.panField
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -32,7 +33,7 @@ internal fun PanField(
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     var card by remember { mutableStateOf<PaymentMethodCard?>(null) }
-    //var isFocused by remember { mutableStateOf(false) }
+    println(card?.maxLength)
     var currentPanFieldValue by remember { mutableStateOf(initialValue) }
     CustomTextField(
         initialValue = initialValue,
@@ -70,9 +71,6 @@ internal fun PanField(
             }
         },
         label = getStringOverride("title_card_number"),
-//        onFocusChanged = { focusValue ->
-//            isFocused = focusValue
-//        },
         trailingIcon = {
             val context = LocalContext.current
             var startIndex by remember { mutableStateOf(0) }
@@ -83,7 +81,9 @@ internal fun PanField(
                         context.drawableResourceIdFromDrawableName(name)
                     }
                     Image(
-                        modifier = Modifier.padding(15.dp),
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .size(25.dp),
                         painter = painterResource(id = if (drawableId > 0) drawableId else R.drawable.card_logo),
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
@@ -101,7 +101,9 @@ internal fun PanField(
                         )
                     else
                         Image(
-                            modifier = Modifier.padding(15.dp),
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .size(25.dp),
                             painter = painterResource(id = R.drawable.card_logo),
                             contentDescription = null,
                             contentScale = ContentScale.Fit,

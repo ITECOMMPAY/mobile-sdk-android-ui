@@ -18,9 +18,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.ecommpay.msdk.ui.EcmpPaymentInfo
-import com.ecommpay.msdk.ui.EcmpPaymentSDK
-import com.ecommpay.msdk.ui.paymentOptions
+import com.ecommpay.msdk.ui.*
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.ui.msdk.sample.data.ProcessRepository
@@ -74,7 +72,7 @@ class SampleActivity : ComponentActivity() {
             paymentAmount = repositoryPaymentData.paymentAmount ?: -1,
             paymentCurrency = repositoryPaymentData.paymentCurrency,
             customerId = repositoryPaymentData.customerId.ifEmpty { null },
-            paymentDescription = repositoryPaymentData.paymentDescription,
+            paymentDescription = repositoryPaymentData.paymentDescription.ifEmpty { null },
             languageCode = repositoryPaymentData.languageCode.ifEmpty { null },
             ecmpThreeDSecureInfo = threeDSecureInfoToSend?.map()
         )
@@ -88,8 +86,13 @@ class SampleActivity : ComponentActivity() {
             paymentInfo = payment
             merchantId = repositoryPaymentData.merchantId
             merchantName = repositoryPaymentData.merchantName
-            additionalFields = additionalFieldsToSend?.toMutableList() ?: mutableListOf()
+            //additionalFields = additionalFieldsToSend?.toMutableList() ?: mutableListOf()
             recurrentData = recurrentDataToSend?.map()
+            additionalFields {
+                additionalFieldsToSend?.forEach {
+                    field { it }
+                }
+            }
         }
         val sdk = EcmpPaymentSDK(
             context = this.applicationContext,
