@@ -31,7 +31,7 @@ class EcmpPaymentOptions {
 
     private val _additionalFields = mutableListOf<EcmpAdditionalField>()
     val additionalFields: List<EcmpAdditionalField>
-        get() = additionalFields.toList()
+        get() = _additionalFields.toList()
 
     fun additionalFields(block: EcmpAdditionalFields.() -> Unit) {
         _additionalFields.addAll(EcmpAdditionalFields().apply(block))
