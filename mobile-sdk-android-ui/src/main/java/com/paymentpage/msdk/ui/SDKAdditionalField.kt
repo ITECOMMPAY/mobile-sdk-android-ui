@@ -3,6 +3,6 @@
 package com.paymentpage.msdk.ui
 
 class SDKAdditionalField(
-    var name: String? = null,
+    var type: SDKAdditionalFieldType? = null,
     var value: String? = null,
 )

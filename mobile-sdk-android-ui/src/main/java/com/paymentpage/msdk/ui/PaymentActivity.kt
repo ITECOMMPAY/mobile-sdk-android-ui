@@ -15,10 +15,13 @@ import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.presentation.MainContent
 
-class PaymentActivity : ComponentActivity(), PaymentDelegate {
+internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val apiHost = intent.getStringExtra(Constants.EXTRA_API_HOST) ?: ""
+        val wsApiHost = intent.getStringExtra(Constants.EXTRA_WS_API_HOST) ?: ""
 
         mockModeType =
             intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
@@ -29,19 +32,24 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
                 intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
                 intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
             )
-            else -> MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
+            else -> MSDKCoreSessionConfig.release(apiHost, wsApiHost)
         }
         config.userAgentData =
-            UserAgentData(applicationInfo = ApplicationInfo(version = BuildConfig.SDK_VERSION_NAME))
+            UserAgentData(
+                applicationInfo = ApplicationInfo(
+                    version = BuildConfig.SDK_VERSION_NAME
+                )
+            )
         msdkSession = MSDKCoreSession(config)
 
-        CrashHandler(
-            projectId = paymentOptions.paymentInfo.projectId.toLong(),
-            paymentId = paymentOptions.paymentInfo.paymentId,
-            customerId = paymentOptions.paymentInfo.customerId,
-            signature = paymentOptions.paymentInfo.signature,
-            errorInteractor = msdkSession.getErrorEventInteractor()
-        ).start(context = this)
+        if (!BuildConfig.DEBUG)
+            CrashHandler(
+                projectId = paymentOptions.paymentInfo.projectId.toLong(),
+                paymentId = paymentOptions.paymentInfo.paymentId,
+                customerId = paymentOptions.paymentInfo.customerId,
+                signature = paymentOptions.paymentInfo.signature,
+                errorInteractor = msdkSession.getErrorEventInteractor()
+            ).start(context = this)
 
         setContent {
             MainContent(
@@ -108,6 +116,8 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         fun buildPaymentIntent(
             context: Context,
+            apiHost: String,
+            wsApiHost: String,
             paymentOptions: SDKPaymentOptions,
             mockModeType: SDKMockModeType,
         ): Intent {
@@ -116,6 +126,8 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             val intent = Intent(context, PaymentActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             intent.putExtra(Constants.EXTRA_MOCK_MODE_TYPE, mockModeType)
+            intent.putExtra(Constants.EXTRA_API_HOST, apiHost)
+            intent.putExtra(Constants.EXTRA_WS_API_HOST, wsApiHost)
             return intent
         }
     }

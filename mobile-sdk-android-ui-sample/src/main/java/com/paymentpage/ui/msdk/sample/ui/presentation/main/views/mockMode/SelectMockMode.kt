@@ -13,9 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.paymentpage.msdk.ui.SDKMockModeType
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewIntents
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.MainViewModel
-import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.MockModeType
 import com.paymentpage.ui.msdk.sample.ui.presentation.main.models.PaymentData
 
 @Composable
@@ -23,7 +23,7 @@ internal fun SelectMockMode(
     viewModel: MainViewModel = viewModel(),
 ) {
     val viewState by viewModel.viewState.collectAsState()
-    MockModeType.values()
+    SDKMockModeType.values()
         .forEachIndexed { index, mockModeType ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -53,7 +53,7 @@ internal fun SelectMockMode(
             viewModel.pushIntent(
                 MainViewIntents.SelectMockMode(
                     id = 0,
-                    paymentData = viewState?.paymentData?.copy(mockModeType = MockModeType.DISABLED)
+                    paymentData = viewState?.paymentData?.copy(mockModeType = SDKMockModeType.DISABLED)
                         ?: PaymentData.defaultPaymentData
                 )
             )

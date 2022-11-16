@@ -28,7 +28,7 @@ internal fun CustomerFields(
     val changedFieldsMap = remember {
         customerFields.associate { customerField ->
             val foundAdditionalField =
-                additionalFields.firstOrNull { customerField.name == it.name } //find field from additional data
+                additionalFields.firstOrNull { customerField.name == it.type?.value } //find field from additional data
             val foundCustomerFieldValue =
                 customerFieldValues.firstOrNull { it.name == customerField.name } //find field from remembered data
             val fieldValue = (foundCustomerFieldValue?.value ?: foundAdditionalField?.value) ?: ""
