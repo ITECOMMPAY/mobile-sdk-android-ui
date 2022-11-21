@@ -14,6 +14,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         signingConfig = signingConfigs.getByName("debug")
+
+        versionName = System.getenv("SDK_VERSION_NAME") ?: Library.version
+        versionCode = System.getenv("SDK_VERSION_CODE")?.toInt() ?: 1
     }
 
     buildTypes {
@@ -44,20 +47,6 @@ android {
         }
     }
 
-    flavorDimensions("brand")
-    productFlavors {
-        create("ecommpay") {
-            applicationId = "com.paymentpage.ui.msdk.sample"
-            dimension = "brand"
-            buildConfigField(
-                "String",
-                "BRAND",
-                "\"ECommPay\""
-            )
-            versionName = System.getenv("SDK_VERSION_NAME") ?: Library.version
-            versionCode = System.getenv("SDK_VERSION_CODE")?.toInt() ?: 1
-        }
-    }
 }
 
 dependencies {
@@ -88,7 +77,6 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.test.ext:junit:1.1.3")
     testImplementation("androidx.test.espresso:espresso-core:3.4.0")
-
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -97,3 +85,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         freeCompilerArgs += "-Xjvm-default=all"
     }
 }
+
+//configurations.forEach {
+//    it.exclude("com.ecommpay", "msdk-core-android")
+//}

@@ -34,6 +34,7 @@ internal class CrashHandler(
         val context = weakContext?.get()?.applicationContext
         collectDeviceInfo(context)
         val isDone: BlockingQueue<Boolean> = ArrayBlockingQueue(1)
+        val stackTrace = ex.stackTraceToString()
         val newThread = object : Thread() {
             override fun run() {
 
@@ -45,7 +46,7 @@ internal class CrashHandler(
                         manufacturer = Build.MANUFACTURER,
                         versionCode = infos["versionCode"] ?: "",
                         exceptionName = ex::class.java.simpleName,
-                        exceptionDescription = "Stack Trace:\n${ex.stackTraceToString()}",
+                        exceptionDescription = stackTrace,
                         projectId = projectId,
                         paymentId = paymentId,
                         customerId = customerId,

@@ -54,7 +54,6 @@ fun MainScreen(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
-        BrandTitle()
         VersionInfo()
         Spacer(modifier = Modifier.size(padding))
         ProjectSettings(paymentData = paymentData) { intentListener(it) }
