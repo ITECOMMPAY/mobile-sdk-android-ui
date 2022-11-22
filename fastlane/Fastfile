@@ -1,0 +1,87 @@
+origin_branch = "origin/master"
+owner_name = "Ecommpay-1"
+destinations_group = "Collaborators"
+app_name = "mSDK-Android-UI"
+path = "./mobile-sdk-android-ui-sample/build/outputs/apk/debug/mobile-sdk-android-ui-sample-debug.apk"
+lib_env_version_name = "SDK_VERSION_NAME"
+lib_env_version_code = "SDK_VERSION_CODE"
+
+default_platform(:android)
+platform :android do
+
+  desc "Upload Test application to Appсenter"
+  lane :appcenter do |options|
+    skip_docs
+    ensure_git_status_clean(
+        show_uncommitted_changes: true,
+        show_diff: true
+    )
+
+    current_branch_name = git_branch
+    if current_branch_name == "dev"
+        UI.user_error!("You are on developer branch. You can only create feature branch")
+    end
+    m = current_branch_name.scan(/MSDK-\d+/)
+    if m.length() == 0
+        UI.user_error!("Name of the branch is wrong. You can use like MSDK-1234...")
+    end
+    task_name = current_branch_name.scan(/MSDK-\d+/)[0]
+    UI.success("Task name is #{task_name}")
+
+    #parse tags to array
+    contains_command_result = sh(command: "git tag --points-at")
+    current_commit_tags_list = contains_command_result.split(/\n/)
+    first_tag = current_commit_tags_list.first
+
+    last_appcenter_version = appcenter_fetch_version_number(
+      api_token: ENV["APPCENTER_TOKEN"],
+      owner_name: owner_name,
+      app_name: app_name
+    )
+
+    build_version = 1
+    begin
+        build_version = last_appcenter_version["build_number"].to_i
+        UI.success("Last build number from appcenter is #{build_version}")
+        build_version = build_version + 1
+    rescue Exception => e
+    end
+    ENV[lib_env_version_code] = build_version.to_s
+
+    version_name = "#{task_name}"
+    ENV[lib_env_version_name] = version_name
+
+    gradle(
+      task: ":mobile-sdk-android-ui-sample:assembleDebug",
+      properties: {
+          "android.injected.version.code" => build_version,
+          "android.injected.version.name" => version_name
+      }
+    )
+
+    changelog = changelog_from_git_commits(
+      quiet: true,
+      merge_commit_filtering: "exclude_merges",
+      between: ["origin/dev", "HEAD"],
+      pretty: "- (%ae) %s"
+    )
+
+    commit = last_git_commit
+    release_notes = "Build from\r\n\r\nCommit: #{commit[:commit_hash]}\r\n\r\nCommits:\r\n#{changelog}"
+
+    appcenter_upload(
+      api_token: ENV["APPCENTER_TOKEN"],
+      file: path,
+      owner_name: owner_name,
+      app_name: app_name,
+      destinations: destinations_group,
+      release_notes: release_notes,
+      notify_testers: false
+    )
+
+    ENV[lib_env_version_name] = nil
+    ENV[lib_env_version_code] = nil
+
+  end
+
+end
