@@ -1,0 +1,7 @@
+<resources>
+    <string name="ok_label">OK</string>
+    <string name="cancel_label">Cancel</string>
+    <string name="powered_by_label">Powered by</string>
+    <string name="error_label">Error</string>
+    <string name="acs_mock_mode_toast_label">Acs page will be closed automatically after 2 seconds </string>
+</resources>
