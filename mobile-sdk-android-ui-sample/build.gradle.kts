@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.paymentpage.ui.msdk.sample"
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         signingConfig = signingConfigs.getByName("debug")
@@ -56,13 +56,11 @@ dependencies {
 
     //AndroidX
     implementation(Dependencies.AndroidX.coreKtx)
-    implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
 
     //Compose
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.activity)
-    implementation(Dependencies.Compose.navigation)
 
     //Serialization
     implementation(Dependencies.KotlinX.serialization)

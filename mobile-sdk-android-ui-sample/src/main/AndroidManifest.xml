@@ -14,7 +14,7 @@
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
         <activity
-            android:name="com.paymentpage.ui.msdk.sample.SampleActivity"
+            android:name="com.paymentpage.ui.msdk.sample.ui.sample.SampleActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
