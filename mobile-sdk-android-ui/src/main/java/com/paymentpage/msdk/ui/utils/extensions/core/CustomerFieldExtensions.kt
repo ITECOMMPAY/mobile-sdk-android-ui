@@ -1,7 +1,7 @@
 package com.paymentpage.msdk.ui.utils.extensions.core
 
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.OverridesKeys
 
 internal fun CustomerField.validate(
     value: String,
@@ -11,7 +11,7 @@ internal fun CustomerField.validate(
     var resultMessage: String? = null
     if (this.isRequired && value.isEmpty()) {
         resultMessage =
-            getStringOverride("message_required_field")
+            getStringOverride(OverridesKeys.MESSAGE_REQUIRED_FIELD)
     } else if (validator != null) {
         val text = if (onTransformValueBeforeValidate != null)
             onTransformValueBeforeValidate(value)

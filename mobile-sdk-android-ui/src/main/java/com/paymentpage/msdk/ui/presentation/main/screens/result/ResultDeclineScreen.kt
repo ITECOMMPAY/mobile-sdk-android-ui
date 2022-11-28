@@ -13,15 +13,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
+import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultTableInfo
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
-import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultTableInfo
-import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 
 @Composable
 internal fun ResultDeclineScreen(
@@ -48,7 +48,7 @@ internal fun ResultDeclineScreen(
                 )
                 Spacer(modifier = Modifier.size(15.dp))
                 Text(
-                    text = getStringOverride("title_result_error_payment"),
+                    text = getStringOverride(OverridesKeys.TITLE_RESULT_ERROR_PAYMENT),
                     style = SDKTheme.typography.s24Bold,
                     textAlign = TextAlign.Center
                 )

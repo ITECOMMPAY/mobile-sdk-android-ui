@@ -2,10 +2,8 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +13,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.deleteSavedCard
 import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
@@ -30,7 +28,6 @@ import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
 import com.paymentpage.msdk.ui.views.common.alertDialog.MessageAlertDialog
-import com.paymentpage.msdk.ui.views.common.alertDialog.SDKAlertDialog
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 @Composable
@@ -109,7 +106,7 @@ internal fun SavedCardItem(
                     modifier = Modifier.clickable {
                         deleteCardAlertDialogState = true
                     },
-                    text = getStringOverride("button_delete"),
+                    text = getStringOverride(OverridesKeys.BUTTON_DELETE),
                     style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.secondaryTextColor,
                         textDecoration = TextDecoration.Underline)
                 )
@@ -120,14 +117,14 @@ internal fun SavedCardItem(
             }
             if (deleteCardAlertDialogState) {
                 MessageAlertDialog(
-                    message = { Text(text = getStringOverride("message_delete_card_single")) },
-                    dismissButtonText = getStringOverride("button_cancel"),
+                    message = { Text(text = getStringOverride(OverridesKeys.MESSAGE_DELETE_CARD_SINGLE)) },
+                    dismissButtonText = getStringOverride(OverridesKeys.BUTTON_CANCEL),
                     onConfirmButtonClick = {
                         deleteCardAlertDialogState = false
                         viewModel.deleteSavedCard(method = method)
                     },
                     onDismissButtonClick = { deleteCardAlertDialogState = false },
-                    confirmButtonText = getStringOverride("button_delete"))
+                    confirmButtonText = getStringOverride(OverridesKeys.BUTTON_DELETE))
             }
         }
     }

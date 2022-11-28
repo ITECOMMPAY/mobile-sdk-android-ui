@@ -11,23 +11,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
 fun SDKInfoDialog(
     iconID: Int,
-    title:String,
+    title: String,
     message: String,
-    buttonText:String,
-    onDismiss: () -> Unit)
-{
-
+    buttonText: String,
+    onDismiss: () -> Unit
+) {
     Dialog(
         onDismissRequest = onDismiss
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .width(300.dp)
@@ -61,10 +58,12 @@ fun SDKInfoDialog(
                 text = message
             )
 
-            Spacer(modifier = Modifier
-                .background(color = Color.LightGray)
-                .fillMaxWidth()
-                .height(1.dp))
+            Spacer(
+                modifier = Modifier
+                    .background(color = Color.LightGray)
+                    .fillMaxWidth()
+                    .height(1.dp)
+            )
 
             Box(
                 modifier = Modifier
@@ -75,9 +74,9 @@ fun SDKInfoDialog(
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                    Text(
-                        text = buttonText
-                    )
+                Text(
+                    text = buttonText
+                )
             }
         }
     }

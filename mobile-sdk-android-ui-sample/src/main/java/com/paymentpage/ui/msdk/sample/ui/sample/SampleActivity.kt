@@ -9,8 +9,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.paymentpage.msdk.core.domain.entities.PaymentInfo
+import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.PaymentSDK
 import com.paymentpage.msdk.ui.SDKPaymentOptions
+import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.ui.msdk.sample.data.ProcessRepository
 import com.paymentpage.ui.msdk.sample.domain.mappers.map
 import com.paymentpage.ui.msdk.sample.domain.ui.base.MessageUI
@@ -18,10 +20,11 @@ import com.paymentpage.ui.msdk.sample.domain.ui.base.viewUseCase
 import com.paymentpage.ui.msdk.sample.domain.ui.sample.SampleViewIntents
 import com.paymentpage.ui.msdk.sample.domain.ui.sample.SampleViewUC
 import com.paymentpage.ui.msdk.sample.utils.SignatureGenerator
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 class SampleActivity : ComponentActivity() {
     private lateinit var viewUseCase: SampleViewUC
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -86,13 +89,27 @@ class SampleActivity : ComponentActivity() {
             val data = result.data
             when (result.resultCode) {
                 PaymentSDK.RESULT_SUCCESS -> {
-                    viewUseCase.pushIntent(
-                        SampleViewIntents.ShowMessage(
-                            MessageUI.Dialogs.Info.Success(
-                                "Your payment is successful"
+                    val payment = Json.decodeFromString<Payment?>(data?.getStringExtra(Constants.EXTRA_PAYMENT).toString())
+                    when {
+                        payment?.token != null -> {
+                            viewUseCase.pushIntent(
+                                SampleViewIntents.ShowMessage(
+                                    MessageUI.Dialogs.Info.SuccessTokenize(
+                                        payment.token!!
+                                    )
+                                )
                             )
-                        )
-                    )
+                        }
+                        else -> {
+                            viewUseCase.pushIntent(
+                                SampleViewIntents.ShowMessage(
+                                    MessageUI.Dialogs.Info.Success(
+                                        "Your payment is successful"
+                                    )
+                                )
+                            )
+                        }
+                    }
                 }
                 PaymentSDK.RESULT_CANCELLED -> {
                     viewUseCase.pushIntent(

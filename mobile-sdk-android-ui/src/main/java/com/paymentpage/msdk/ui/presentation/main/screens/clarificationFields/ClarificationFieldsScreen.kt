@@ -13,10 +13,10 @@ import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFiel
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.presentation.main.sendClarificationFields
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsView
+import com.paymentpage.msdk.ui.presentation.main.sendClarificationFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -39,7 +39,7 @@ internal fun ClarificationFieldsScreen(
 
     SDKScaffold(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-        title = getStringOverride("title_payment_additional_data"),
+        title = getStringOverride(OverridesKeys.TITLE_PAYMENT_ADDITIONAL_DATA),
         notScrollableContent = {
             PaymentDetailsView()
             Spacer(modifier = Modifier.size(15.dp))
@@ -48,7 +48,7 @@ internal fun ClarificationFieldsScreen(
             PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
             Text(
-                text = getStringOverride("title_payment_additional_data_disclaimer"),
+                text = getStringOverride(OverridesKeys.TITLE_PAYMENT_ADDITIONAL_DATA_DISCLAIMER),
                 style = SDKTheme.typography.s14Normal
             )
             Spacer(modifier = Modifier.size(5.dp))
@@ -78,7 +78,7 @@ internal fun ClarificationFieldsScreen(
             )
             Spacer(modifier = Modifier.size(22.dp))
             PayButton(
-                payLabel = getStringOverride("button_pay"),
+                payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = isClarificationFieldsValid

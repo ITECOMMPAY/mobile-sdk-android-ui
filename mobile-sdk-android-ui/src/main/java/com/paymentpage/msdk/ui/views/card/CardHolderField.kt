@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.VisualTransformation
 import com.paymentpage.msdk.core.validators.custom.CardHolderNameValidator
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 
@@ -25,13 +25,13 @@ internal fun CardHolderField(
         onRequestValidatorMessage = {
             when {
                 !CardHolderNameValidator().isValid(it) ->
-                    getStringOverride("message_card_holder")
+                    getStringOverride(OverridesKeys.MESSAGE_CARD_HOLDER)
                 else -> null
             }
 
         },
         visualTransformation = VisualTransformation.None,
-        label = getStringOverride("title_holder_name"),
+        label = getStringOverride(OverridesKeys.TITLE_HOLDER_NAME),
         isDisabled = isDisabled,
         isRequired = true
     )

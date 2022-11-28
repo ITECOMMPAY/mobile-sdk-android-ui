@@ -1,5 +1,5 @@
 package com.paymentpage.msdk.ui
 
-enum class ActionType {
+enum class SDKActionType {
     Sale, Auth, Tokenize, Verify
 }

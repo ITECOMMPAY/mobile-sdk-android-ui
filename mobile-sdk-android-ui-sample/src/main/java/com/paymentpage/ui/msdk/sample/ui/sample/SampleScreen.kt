@@ -3,10 +3,8 @@ package com.paymentpage.ui.msdk.sample.ui.sample
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,10 +14,11 @@ import com.paymentpage.ui.msdk.sample.domain.ui.sample.SampleViewActions
 import com.paymentpage.ui.msdk.sample.domain.ui.sample.SampleViewIntents
 import com.paymentpage.ui.msdk.sample.domain.ui.sample.SampleViewState
 import com.paymentpage.ui.msdk.sample.domain.ui.sample.SampleViewUC
-import com.paymentpage.ui.msdk.sample.ui.components.SDKToast
-import com.paymentpage.ui.msdk.sample.ui.navigation.NavigationState
 import com.paymentpage.ui.msdk.sample.ui.base.ComposeViewState
 import com.paymentpage.ui.msdk.sample.ui.components.SDKInfoDialog
+import com.paymentpage.ui.msdk.sample.ui.components.SDKToast
+import com.paymentpage.ui.msdk.sample.ui.navigation.NavigationState
+import com.paymentpage.ui.msdk.sample.utils.extensions.copyInClipBoard
 
 @Composable
 internal fun SampleActivity.SampleState(
@@ -30,6 +29,7 @@ internal fun SampleActivity.SampleState(
         actionListener = { viewAction ->
             when (viewAction) {
                 is SampleViewActions.StartPaymentSDK -> startPaymentPage()
+                is SampleViewActions.CopyInClipboard -> copyInClipBoard(text = viewAction.text, textToast = viewAction.textToast)
             }
         }
     ) { viewState, intentListener ->
@@ -58,6 +58,17 @@ fun SampleScreen(
         when (this) {
             is MessageUI.Toast -> SDKToast(message)
             is MessageUI.Dialogs.CancelYes -> {}
+            is MessageUI.Dialogs.Info.SuccessTokenize -> {
+                SDKInfoDialog(
+                    iconID = iconID,
+                    title = title,
+                    message = message,
+                    buttonText = buttonText
+                ) {
+                    intentListener(SampleViewIntents.ShowMessage(MessageUI.Empty))
+                    intentListener(SampleViewIntents.CopyInClipboard(text = message, textToast = "Token was copied"))
+                }
+            }
             is MessageUI.Dialogs.Info -> {
                 SDKInfoDialog(
                     iconID = iconID,

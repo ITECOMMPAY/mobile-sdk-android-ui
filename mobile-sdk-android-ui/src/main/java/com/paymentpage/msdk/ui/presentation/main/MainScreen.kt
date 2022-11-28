@@ -3,6 +3,7 @@ package com.paymentpage.msdk.ui.presentation.main
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -10,10 +11,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.paymentpage.msdk.ui.ActionType
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalMsdkSession
-import com.paymentpage.msdk.ui.PaymentDelegate
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
@@ -22,10 +21,14 @@ import com.paymentpage.msdk.ui.presentation.main.screens.clarificationFields.Cla
 import com.paymentpage.msdk.ui.presentation.main.screens.customerFields.CustomerFieldsScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.loading.LoadingScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.PaymentMethodsScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultDeclineScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultSuccessScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.threeDSecure.ThreeDSecureScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.tokenize.TokenizeScreen
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
+import com.paymentpage.msdk.ui.views.common.alertDialog.ConfirmAlertDialog
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -35,8 +38,8 @@ import kotlinx.coroutines.flow.onEach
 @Suppress("UNUSED_PARAMETER")
 @Composable
 internal fun MainScreen(
-    startRoute: Route = Route.PaymentMethods,
-    actionType: ActionType,
+    startRoute: Route,
+    actionType: SDKActionType,
     mainScreenNavigator: Navigator,
     delegate: PaymentDelegate,
     onError: (ErrorResult, Boolean) -> Unit,
@@ -50,15 +53,15 @@ internal fun MainScreen(
     val mergedPaymentMethods = remember {
         paymentMethods.mergeUIPaymentMethods(savedAccounts = savedAccounts)
     }
-
+    val isTokenize = actionType == SDKActionType.Tokenize
     LaunchedEffect("mainScreenNavigation") {
         mainScreenNavigator.sharedFlow.onEach {
             focusManager.clearFocus()
             navController.navigate(it.getPath())
         }.launchIn(this)
     }
-
     val mainViewModel = LocalMainViewModel.current
+
     LaunchedEffect(Unit) {
         mainViewModel.state.onEach {
             when {
@@ -66,9 +69,20 @@ internal fun MainScreen(
                 it.isLoading == true ->
                     mainScreenNavigator.navigateTo(Route.Loading)
                 it.finalPaymentState != null -> {
+
                     when (it.finalPaymentState) {
-                        is FinalPaymentState.Success -> mainScreenNavigator.navigateTo(Route.SuccessResult)
-                        is FinalPaymentState.Decline -> mainScreenNavigator.navigateTo(Route.DeclineResult)
+                        is FinalPaymentState.Success -> {
+                            if (isTokenize)
+                                mainScreenNavigator.navigateTo(Route.SuccessTokenizeDialog)
+                            else
+                                mainScreenNavigator.navigateTo(Route.SuccessResult)
+                        }
+                        is FinalPaymentState.Decline -> {
+                            if (isTokenize)
+                                mainScreenNavigator.navigateTo(Route.DeclineTokenizeDialog)
+                            else
+                                mainScreenNavigator.navigateTo(Route.DeclineResult)
+                        }
                     }
                 }
                 it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)
@@ -109,7 +123,6 @@ internal fun MainScreen(
         composable(route = Route.SuccessResult.getPath()) {
             ResultSuccessScreen(onClose = { delegate.onCompleteWithSuccess(it) }, onError = onError)
         }
-
         composable(route = Route.DeclineResult.getPath()) {
             ResultDeclineScreen(onClose = { delegate.onCompleteWithDecline(it) }, onError = onError)
         }
@@ -123,6 +136,36 @@ internal fun MainScreen(
                 onError = onError
             )
         }
+        composable(route = Route.Tokenize.getPath()) {
+            TokenizeScreen(
+                tokenizePaymentMethod = UIPaymentMethod.UITokenizeCardPayPaymentMethod(
+                    paymentMethod = paymentMethods.first {
+                        it.paymentMethodType == PaymentMethodType.CARD
+                    }
+                ),
+                onCancel = onCancel,
+                onError = onError
+            )
+        }
+        composable(route = Route.SuccessTokenizeDialog.getPath()) {
+            val payment = mainViewModel.lastState.payment
+                ?: throw IllegalStateException("Not found payment in State")
+            ConfirmAlertDialog(
+                message = { Text(text = getStringOverride(OverridesKeys.TITLE_RESULT_SUCCES_TOKENIZE)) },
+                onConfirmButtonClick = { delegate.onCompleteWithSuccess(payment = payment) },
+                confirmButtonText = getStringOverride(OverridesKeys.BUTTON_OK),
+                onDismissRequest = { delegate.onCompleteWithSuccess(payment = payment) }
+            )
+        }
+        composable(route = Route.DeclineTokenizeDialog.getPath()) {
+            val payment = mainViewModel.lastState.payment
+                ?: throw IllegalStateException("Not found payment in State")
+            ConfirmAlertDialog(
+                message = { Text(text = getStringOverride(OverridesKeys.TITLE_RESULT_ERROR_TOKENIZE)) },
+                onConfirmButtonClick = { delegate.onCompleteWithDecline(payment = payment) },
+                confirmButtonText = getStringOverride(OverridesKeys.BUTTON_OK),
+                onDismissRequest = { delegate.onCompleteWithDecline(payment = payment) }
+            )
+        }
     }
-
 }

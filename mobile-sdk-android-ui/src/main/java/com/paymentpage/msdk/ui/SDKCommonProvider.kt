@@ -11,6 +11,7 @@ import com.paymentpage.msdk.ui.utils.viewModelFactory
 
 internal val LocalPaymentOptions =
     compositionLocalOf<SDKPaymentOptions> { error("No PaymentOptions found!") }
+
 internal val LocalMsdkSession =
     compositionLocalOf<MSDKCoreSession> { error("No MSDKCoreSession found!") }
 

@@ -36,6 +36,10 @@ sealed interface MessageUI {
                 override val message: String
             ) : Info(R.drawable.success, "Success", message, "OK")
 
+            data class SuccessTokenize(
+                override val message: String
+            ) : Info(R.drawable.success, "Success tokenization", message, "OK")
+
             data class Cancelled(
                 override val message: String
             ) : Info(R.drawable.warning, "Cancelled", message, "OK")

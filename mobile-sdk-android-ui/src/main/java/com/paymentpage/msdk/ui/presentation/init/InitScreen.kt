@@ -10,8 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
-import com.paymentpage.msdk.ui.LocalInitViewModel
-import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
@@ -40,7 +39,11 @@ internal fun InitScreen(
         initViewModel.state.onEach {
             when {
                 it.error != null -> onError(it.error, true)
-                it.isInitLoaded -> navigator.navigateTo(Route.Main)
+                it.isInitLoaded -> when(PaymentActivity.paymentOptions.actionType) {
+                    SDKActionType.Sale -> navigator.navigateTo(Route.Main)
+                    SDKActionType.Tokenize -> navigator.navigateTo(Route.Tokenize)
+                    else -> navigator.navigateTo(Route.Main)
+                }
                 it.payment != null -> {
                     val paymentMethod =
                         it.paymentMethods?.find { paymentMethod -> paymentMethod.code == it.payment.method }

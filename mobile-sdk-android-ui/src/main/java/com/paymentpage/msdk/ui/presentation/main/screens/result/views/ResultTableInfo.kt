@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -31,10 +32,10 @@ internal fun ResultTableInfo(
             }
             is UIPaymentMethod.UIApsPaymentMethod -> {
                 method.paymentMethod.name
-                    ?: getStringOverride(method.paymentMethod.translations["title"] ?: "")
+                    ?: getStringOverride(method.paymentMethod.translations[OverridesKeys.TITLE] ?: "")
             }
             is UIPaymentMethod.UIGooglePayPaymentMethod -> {
-                method.paymentMethod.name ?: getStringOverride("google_pay_host_title")
+                method.paymentMethod.name ?: getStringOverride(OverridesKeys.GOOGLE_PAY_HOST_TITLE)
             }
             else -> {
                 if (payment.paymentMethodType == PaymentMethodType.CARD)
@@ -50,9 +51,9 @@ internal fun ResultTableInfo(
             translation to field.value
         } ?: emptyMap()
         val titleKeyWithValueMap = mutableMapOf(
-            getStringOverride("title_card_wallet") to valueTitleCardWallet,
-            getStringOverride("title_payment_id") to "${payment.id}",
-            getStringOverride("title_payment_date") to payment.date?.paymentDateToPatternDate("dd.MM.yyyy HH:mm"),
+            getStringOverride(OverridesKeys.TITLE_CARD_WALLET) to valueTitleCardWallet,
+            getStringOverride(OverridesKeys.TITLE_PAYMENT_ID) to "${payment.id}",
+            getStringOverride(OverridesKeys.TITLE_PAYMENT_DATE) to payment.date?.paymentDateToPatternDate("dd.MM.yyyy HH:mm"),
         ) + completeFields
         Column(
             modifier = Modifier

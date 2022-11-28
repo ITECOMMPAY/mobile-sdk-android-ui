@@ -14,6 +14,9 @@ internal fun PaymentMethodItem(
         is UIPaymentMethod.UICardPayPaymentMethod -> {
             NewCardItem(method = method)
         }
+        is UIPaymentMethod.UITokenizeCardPayPaymentMethod -> {
+            TokenizeCardPayItem(method = method)
+        }
         is UIPaymentMethod.UIGooglePayPaymentMethod -> {
             GooglePayItem(method = method)
         }

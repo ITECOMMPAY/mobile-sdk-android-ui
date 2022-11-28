@@ -23,6 +23,9 @@ class SampleViewUC: BaseViewUC<SampleViewIntents, SampleViewState>(SampleViewSta
             is SampleViewIntents.StartPaymentSDK -> {
                 launchAction(SampleViewActions.StartPaymentSDK)
             }
+            is SampleViewIntents.CopyInClipboard -> {
+                launchAction(SampleViewActions.CopyInClipboard(viewIntent.text, viewIntent.textToast))
+            }
         }
     }
 

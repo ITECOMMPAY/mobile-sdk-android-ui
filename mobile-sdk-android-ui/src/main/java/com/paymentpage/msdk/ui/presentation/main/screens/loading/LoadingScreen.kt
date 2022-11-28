@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -42,13 +43,13 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                     DotsLoading()
                     Spacer(modifier = Modifier.size(35.dp))
                     Text(
-                        text = getStringOverride("title_loading_screen"),
+                        text = getStringOverride(OverridesKeys.TITLE_LOADING_SCREEN),
                         style = SDKTheme.typography.s24Bold,
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.size(15.dp))
                     Text(
-                        text = getStringOverride("sub_title_loading_screen"),
+                        text = getStringOverride(OverridesKeys.SUB_TITLE_LOADING_SCREEN),
                         style = SDKTheme.typography.s14Normal,
                         textAlign = TextAlign.Center
                     )

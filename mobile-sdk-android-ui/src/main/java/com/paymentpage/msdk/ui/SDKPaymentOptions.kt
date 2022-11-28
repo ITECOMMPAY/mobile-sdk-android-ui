@@ -17,7 +17,7 @@ class SDKPaymentOptions(
 
     val recurrentInfo: RecurrentInfo? = null,
     val recipientInfo: RecipientInfo? = null,
-    val actionType: ActionType = ActionType.Sale,
+    val actionType: SDKActionType = SDKActionType.Sale,
     //val bankId: Int? = null,
 
     val logoImage: Bitmap? = null,

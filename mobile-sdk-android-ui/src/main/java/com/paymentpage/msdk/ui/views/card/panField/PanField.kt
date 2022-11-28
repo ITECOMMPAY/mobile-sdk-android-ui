@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCard
 import com.paymentpage.msdk.core.validators.custom.PanValidator
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -48,11 +49,11 @@ internal fun PanField(
         },
         onRequestValidatorMessage = {
             if (!PanValidator().isValid(it))
-                getStringOverride("message_about_card_number")
+                getStringOverride(OverridesKeys.MESSAGE_ABOUT_CARD_NUMBER)
             else if (!paymentMethod.availableCardTypes.contains(card?.code)) {
                 val regex = Regex("\\[\\[.+]]")
                 val message = regex.replace(
-                    getStringOverride("message_wrong_card_type"),
+                    getStringOverride(OverridesKeys.MESSAGE_WRONG_CARD_TYPE),
                     card?.code?.uppercase() ?: ""
                 )
                 message
@@ -60,7 +61,7 @@ internal fun PanField(
         },
         visualTransformation = { number ->
             val trimmedCardNumber = number.text.replace(" ", "")
-            card = paymentMethod.cardTypesManager.search(trimmedCardNumber)
+            card = paymentMethod.cardTypesManager?.search(trimmedCardNumber)
             if (onPaymentMethodCardTypeChange != null) {
                 onPaymentMethodCardTypeChange(card?.code)
             }
@@ -70,7 +71,7 @@ internal fun PanField(
                 else -> formatOtherCardNumbers(number)
             }
         },
-        label = getStringOverride("title_card_number"),
+        label = getStringOverride(OverridesKeys.TITLE_CARD_NUMBER),
         trailingIcon = {
             val context = LocalContext.current
             var startIndex by remember { mutableStateOf(0) }

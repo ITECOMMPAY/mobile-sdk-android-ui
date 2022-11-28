@@ -10,10 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
@@ -37,25 +34,29 @@ internal fun CustomerFieldsScreen(
     val customerFields = viewModel.lastState.customerFields
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
     var isCustomerFieldsValid by remember { mutableStateOf(method?.isCustomerFieldsValid ?: false) }
-
+    val isTokenize = PaymentActivity.paymentOptions.actionType == SDKActionType.Tokenize
 
     BackHandler(true) { onBack() }
 
     SDKScaffold(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-        title = getStringOverride("title_payment_additional_data"),
+        title = getStringOverride(OverridesKeys.TITLE_PAYMENT_ADDITIONAL_DATA),
         notScrollableContent = {
-            PaymentDetailsView()
-            Spacer(modifier = Modifier.size(15.dp))
+            if (!isTokenize) {
+                PaymentDetailsView()
+                Spacer(modifier = Modifier.size(15.dp))
+            }
         },
         scrollableContent = {
-            PaymentOverview()
-            Spacer(modifier = Modifier.size(15.dp))
-            Text(
-                text = getStringOverride("title_payment_additional_data_disclaimer"),
-                style = SDKTheme.typography.s14Normal
-            )
-            Spacer(modifier = Modifier.size(5.dp))
+            if (!isTokenize) {
+                PaymentOverview()
+                Spacer(modifier = Modifier.size(15.dp))
+                Text(
+                    text = getStringOverride(OverridesKeys.TITLE_PAYMENT_ADDITIONAL_DATA_DISCLAIMER),
+                    style = SDKTheme.typography.s14Normal
+                )
+                Spacer(modifier = Modifier.size(5.dp))
+            }
             CustomerFields(
                 customerFieldValues = method?.customerFieldValues ?: emptyList(),
                 customerFields = visibleCustomerFields,
@@ -69,7 +70,7 @@ internal fun CustomerFieldsScreen(
             )
             Spacer(modifier = Modifier.size(22.dp))
             PayButton(
-                payLabel = getStringOverride("button_pay"),
+                payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = isCustomerFieldsValid
