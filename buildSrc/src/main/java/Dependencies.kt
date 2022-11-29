@@ -6,12 +6,13 @@ object Library {
 }
 
 object Versions {
-    const val gradlePlugin = "7.1.3"
+    const val gradlePlugin = "7.3.0"
     const val kotlin = "1.6.10"
     const val compose = "1.1.1"
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
     const val msdkCore = "0.5.3"
+    const val cyclonedx = "1.7.2"
 }
 
 object Dependencies {

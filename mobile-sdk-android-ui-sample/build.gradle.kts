@@ -85,3 +85,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         freeCompilerArgs += "-Xjvm-default=all"
     }
 }
+
+//configurations.forEach {
+//    it.exclude("com.ecommpay", "msdk-core-android")
+//}

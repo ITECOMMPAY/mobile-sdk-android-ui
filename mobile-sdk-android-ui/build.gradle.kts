@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     //id("io.gitlab.arturbosch.detekt")
+    id("org.cyclonedx.bom")
 }
 
 android {
@@ -17,6 +18,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField(
+            "String",
+            "SDK_VERSION_NAME",
+            "\"$version\""
+        )
     }
 
     buildTypes {
@@ -31,22 +37,12 @@ android {
                 "IS_TIME_TRAVEL",
                 "false"
             )
-            buildConfigField(
-                "String",
-                "SDK_VERSION_NAME",
-                "\"$version\""
-            )
         }
         debug {
             buildConfigField(
                 "Boolean",
                 "IS_TIME_TRAVEL",
                 "true"
-            )
-            buildConfigField(
-                "String",
-                "SDK_VERSION_NAME",
-                "\"$version\""
             )
         }
 
@@ -103,4 +99,13 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
         freeCompilerArgs += "-Xjvm-default=all"
     }
+}
+
+tasks.cyclonedxBom {
+    setIncludeConfigs(listOf("runtimeClasspath"))
+    setSkipConfigs(listOf("compileClasspath", "testCompileClasspath"))
+    setProjectType("library")
+    setDestination(project.file("build/reports"))
+    setOutputName("bom")
+    setOutputFormat("json")
 }
