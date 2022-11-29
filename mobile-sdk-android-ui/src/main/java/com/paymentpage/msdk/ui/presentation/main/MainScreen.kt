@@ -50,10 +50,16 @@ internal fun MainScreen(
 
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
-    val mergedPaymentMethods = remember {
-        paymentMethods.mergeUIPaymentMethods(savedAccounts = savedAccounts)
-    }
+    val isSaleWithToken = LocalPaymentOptions.current.paymentInfo.token != null
     val isTokenize = actionType == SDKActionType.Tokenize
+
+    val mergedPaymentMethods = remember {
+        paymentMethods.mergeUIPaymentMethods(
+            isSaleWithToken = isSaleWithToken,
+            savedAccounts = savedAccounts
+        )
+    }
+
     LaunchedEffect("mainScreenNavigation") {
         mainScreenNavigator.sharedFlow.onEach {
             focusManager.clearFocus()
@@ -69,7 +75,6 @@ internal fun MainScreen(
                 it.isLoading == true ->
                     mainScreenNavigator.navigateTo(Route.Loading)
                 it.finalPaymentState != null -> {
-
                     when (it.finalPaymentState) {
                         is FinalPaymentState.Success -> {
                             if (isTokenize)

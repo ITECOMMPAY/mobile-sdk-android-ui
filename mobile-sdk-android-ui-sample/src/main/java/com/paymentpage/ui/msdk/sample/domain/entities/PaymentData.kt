@@ -6,16 +6,17 @@ import com.paymentpage.msdk.ui.SDKMockModeType
 import java.util.*
 
 data class PaymentData(
-    val brandColor: String = "#00579E",
+    val brandColor: String? = "#00579E",
     val bitmap: Bitmap? = null,
     val projectId: Int = 111781,
     val paymentId: String = "sdk_sample_ui_${UUID.randomUUID().toString().take(8)}",
     val paymentAmount: Long = 123,
     val paymentCurrency: String = "USD",
-    val customerId: String = "12",
-    val paymentDescription: String = "Test payment",
-    val languageCode: String = "",
-    val forcePaymentMethod: String = "",
+    val customerId: String? = "12",
+    val paymentDescription: String? = "Test payment",
+    val languageCode: String? = null,
+    val forcePaymentMethod: String? = null,
+    val token: String? = null,
     val hideSavedWallets: Boolean = false,
     val secretKey: String = "123",
     val apiHost: String = "pp-sdk.westresscode.net",
