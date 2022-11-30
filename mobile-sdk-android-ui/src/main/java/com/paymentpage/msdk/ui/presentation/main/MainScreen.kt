@@ -93,6 +93,7 @@ internal fun MainScreen(
     ) {
         composable(route = Route.CustomerFields.getPath()) {
             CustomerFieldsScreen(
+                actionType = actionType,
                 onBack = {
                     navController.navigateUp()
                     navController.navigateUp()

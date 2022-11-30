@@ -15,10 +15,7 @@ import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
-import com.paymentpage.msdk.ui.views.button.PayButton
-import com.paymentpage.msdk.ui.views.button.SDKButton
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -27,15 +24,15 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 internal fun CustomerFieldsScreen(
+    actionType: SDKActionType,
     onCancel: () -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     val viewModel = LocalMainViewModel.current
     val method = viewModel.lastState.currentMethod
     val customerFields = viewModel.lastState.customerFields
     val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
     var isCustomerFieldsValid by remember { mutableStateOf(method?.isCustomerFieldsValid ?: false) }
-    val isTokenize = PaymentActivity.paymentOptions.actionType == SDKActionType.Tokenize
 
     BackHandler(true) { onBack() }
 
@@ -43,13 +40,13 @@ internal fun CustomerFieldsScreen(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
         title = getStringOverride(OverridesKeys.TITLE_PAYMENT_ADDITIONAL_DATA),
         notScrollableContent = {
-            if (!isTokenize) {
+            if (actionType == SDKActionType.Sale) {
                 PaymentDetailsView()
                 Spacer(modifier = Modifier.size(15.dp))
             }
         },
         scrollableContent = {
-            if (!isTokenize) {
+            if (actionType == SDKActionType.Sale) {
                 PaymentOverview()
                 Spacer(modifier = Modifier.size(15.dp))
                 Text(
@@ -70,22 +67,11 @@ internal fun CustomerFieldsScreen(
                 }
             )
             Spacer(modifier = Modifier.size(22.dp))
-            if (!isTokenize)
-                PayButton(
-                    payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
-                    amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
-                    currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
-                    isEnabled = isCustomerFieldsValid
-                ) {
-                    viewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
-                }
-            else {
-                SDKButton(
-                    label = getStringOverride(OverridesKeys.BUTTON_PROCEED),
-                    isEnabled = isCustomerFieldsValid
-                ) {
-                    viewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
-                }
+            CustomerFieldsButton(
+                actionType = actionType,
+                isEnabled = isCustomerFieldsValid
+            ) {
+                viewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
             }
             Spacer(modifier = Modifier.size(5.dp))
         },
