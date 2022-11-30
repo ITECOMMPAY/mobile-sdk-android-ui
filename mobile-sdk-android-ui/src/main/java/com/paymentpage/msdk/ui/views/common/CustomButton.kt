@@ -20,8 +20,8 @@ internal fun CustomButton(
     modifier: Modifier = Modifier,
     content: @Composable (() -> Unit),
     isEnabled: Boolean,
+    color: Color = SDKTheme.colors.brand,
     onClick: () -> Unit,
-    color: Color = SDKTheme.colors.brand
 ) {
     Box(
         modifier = Modifier

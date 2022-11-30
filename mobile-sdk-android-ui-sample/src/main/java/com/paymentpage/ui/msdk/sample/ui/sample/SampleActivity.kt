@@ -45,19 +45,20 @@ class SampleActivity : ComponentActivity() {
     fun startPaymentPage() {
         val repositoryPaymentData = ProcessRepository.paymentData
         val additionalFieldsToSend = ProcessRepository.additionalFields
-        val recurrentDataToSend = ProcessRepository.recurrentData
-        val threeDSecureInfoToSend = ProcessRepository.commonJson?.threeDSecureInfo
+        val recurrentDataToSend = ProcessRepository.recurrentData.map()
+        val threeDSecureInfoToSend = ProcessRepository.commonJson?.threeDSecureInfo?.map()
         val paymentInfo = PaymentInfo(
-            forcePaymentMethod = repositoryPaymentData.forcePaymentMethod.ifEmpty { null },
+            forcePaymentMethod = repositoryPaymentData.forcePaymentMethod,
             hideSavedWallets = repositoryPaymentData.hideSavedWallets,
             projectId = repositoryPaymentData.projectId,
             paymentId = repositoryPaymentData.paymentId,
             paymentAmount = repositoryPaymentData.paymentAmount,
             paymentCurrency = repositoryPaymentData.paymentCurrency,
-            customerId = repositoryPaymentData.customerId.ifEmpty { null },
-            paymentDescription = repositoryPaymentData.paymentDescription.ifEmpty { null },
-            languageCode = repositoryPaymentData.languageCode.ifEmpty { null },
-            threeDSecureInfo = threeDSecureInfoToSend?.map()
+            customerId = repositoryPaymentData.customerId,
+            paymentDescription = repositoryPaymentData.paymentDescription,
+            languageCode = repositoryPaymentData.languageCode,
+            token = repositoryPaymentData.token,
+            threeDSecureInfo = threeDSecureInfoToSend
         )
         paymentInfo.signature =
             SignatureGenerator.generateSignature(
@@ -70,7 +71,7 @@ class SampleActivity : ComponentActivity() {
             brandColor = repositoryPaymentData.brandColor,
             merchantId = repositoryPaymentData.merchantId,
             merchantName = repositoryPaymentData.merchantName,
-            recurrentInfo = recurrentDataToSend.map(),
+            recurrentInfo = recurrentDataToSend,
             additionalFields = additionalFieldsToSend
         )
 

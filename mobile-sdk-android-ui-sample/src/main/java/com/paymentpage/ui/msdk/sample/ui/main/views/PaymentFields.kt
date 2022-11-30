@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.paymentpage.ui.msdk.sample.domain.ui.main.MainViewIntents
 import com.paymentpage.ui.msdk.sample.domain.entities.PaymentData
+import com.paymentpage.ui.msdk.sample.domain.ui.main.MainViewIntents
 import java.util.*
 
 @Composable
@@ -30,6 +30,7 @@ internal fun PaymentFields(
     paymentData: PaymentData,
     intentListener: (MainViewIntents) -> Unit
 ) {
+    val padding = 10.dp
     val context = LocalContext.current
     OutlinedTextField(
         value = paymentData.paymentId,
@@ -66,7 +67,7 @@ internal fun PaymentFields(
             }
         }
     )
-    Spacer(modifier = Modifier.size(10.dp))
+    Spacer(modifier = Modifier.size(padding))
     OutlinedTextField(
         value = paymentData.paymentAmount.toString(),
         onValueChange = {
@@ -80,7 +81,7 @@ internal fun PaymentFields(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         label = { Text(text = "Payment Amount") }
     )
-    Spacer(modifier = Modifier.size(10.dp))
+    Spacer(modifier = Modifier.size(padding))
     OutlinedTextField(
         value = paymentData.paymentCurrency,
         onValueChange = {
@@ -91,48 +92,59 @@ internal fun PaymentFields(
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Payment Currency") }
     )
-    Spacer(modifier = Modifier.size(10.dp))
+    Spacer(modifier = Modifier.size(padding))
     OutlinedTextField(
-        value = paymentData.paymentDescription,
-        onValueChange = {
+        value = paymentData.paymentDescription ?: "",
+        onValueChange = { changingString ->
             intentListener(
                 MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(paymentDescription = it)))
+                paymentData = paymentData.copy(paymentDescription = changingString.ifBlank { null })))
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Payment Description") }
     )
-    Spacer(modifier = Modifier.size(10.dp))
+    Spacer(modifier = Modifier.size(padding))
     OutlinedTextField(
-        value = paymentData.customerId,
-        onValueChange = {
+        value = paymentData.customerId ?: "",
+        onValueChange = { changingString ->
             intentListener(
                 MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(customerId = it)))
+                paymentData = paymentData.copy(customerId = changingString.ifBlank { null })))
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Customer Id") }
     )
-    Spacer(modifier = Modifier.size(10.dp))
+    Spacer(modifier = Modifier.size(padding))
     OutlinedTextField(
-        value = paymentData.languageCode,
-        onValueChange = {
+        value = paymentData.languageCode ?: "",
+        onValueChange = { changingString ->
             intentListener(
                 MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(languageCode = it)))
+                paymentData = paymentData.copy(languageCode = changingString.ifBlank { null })))
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Language code") }
     )
-    Spacer(modifier = Modifier.size(10.dp))
+    Spacer(modifier = Modifier.size(padding))
     OutlinedTextField(
-        value = paymentData.forcePaymentMethod,
+        value = paymentData.forcePaymentMethod ?: "",
         onValueChange = { changingString ->
             intentListener(
                 MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(forcePaymentMethod = changingString)))
+                paymentData = paymentData.copy(forcePaymentMethod = changingString.ifBlank { null })))
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Force payment method") }
+    )
+    Spacer(modifier = Modifier.size(padding))
+    OutlinedTextField(
+        value = paymentData.token ?: "",
+        onValueChange = { changingString ->
+            intentListener(
+                MainViewIntents.ChangeField(
+                    paymentData = paymentData.copy(token = changingString.ifBlank { null })))
+        },
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Token") }
     )
 }
