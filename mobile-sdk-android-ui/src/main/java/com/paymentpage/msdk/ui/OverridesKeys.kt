@@ -11,6 +11,8 @@ internal object OverridesKeys {
     internal const val BUTTON_DELETE = "button_delete"
     internal const val BUTTON_CANCEL = "button_cancel"
     internal const val BUTTON_CONFIRMATION = "button_confirmation"
+    internal const val BUTTON_TOKENIZE = "button_tokenize"
+    internal const val BUTTON_PROCEED = "button_proceed"
 
     //Loading screen
     internal const val TITLE_LOADING_SCREEN = "title_loading_screen"

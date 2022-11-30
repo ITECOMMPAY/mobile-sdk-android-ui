@@ -20,8 +20,6 @@ sealed class Route(
     object SuccessResult : Route(route = "successResult")
     object DeclineResult : Route(route = "declineResult")
     object Tokenize : Route(route = "tokenize")
-    object SuccessTokenizeDialog : Route(route = "successTokenizeDialog")
-    object DeclineTokenizeDialog : Route(route = "declineTokenizeDialog")
 
     override fun toString(): String {
         return when {

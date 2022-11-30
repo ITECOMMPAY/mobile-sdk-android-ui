@@ -39,9 +39,13 @@ internal fun TokenizeScreen(
 
     SDKScaffold(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-        title = getStringOverride(OverridesKeys.TITLE_PAYMENT_METHODS),
+        title = getStringOverride(OverridesKeys.BUTTON_TOKENIZE),
         scrollableContent = {
-            TokenizeCardPayItem(method = lastSelectedMethod as? UIPaymentMethod.UITokenizeCardPayPaymentMethod ?: tokenizePaymentMethod)
+            TokenizeCardPayItem(
+                method = (lastSelectedMethod as?
+                        UIPaymentMethod.UITokenizeCardPayPaymentMethod)
+                    ?: tokenizePaymentMethod
+            )
         },
         footerContent = {
             SDKFooter(

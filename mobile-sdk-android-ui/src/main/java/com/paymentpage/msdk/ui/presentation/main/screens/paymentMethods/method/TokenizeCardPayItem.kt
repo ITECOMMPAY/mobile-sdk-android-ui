@@ -18,7 +18,7 @@ import com.paymentpage.msdk.ui.presentation.main.tokenizeCard
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
-import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
+import com.paymentpage.msdk.ui.views.button.SaveButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
 import com.paymentpage.msdk.ui.views.card.panField.PanField
@@ -29,7 +29,9 @@ internal fun TokenizeCardPayItem(
     method: UIPaymentMethod.UITokenizeCardPayPaymentMethod,
 ) {
     val viewModel = LocalMainViewModel.current
-    val customerFields = remember { method.paymentMethod.customerFields }
+    val tokenizeCustomerFields = remember {
+        method.paymentMethod.customerFields.filter { it.isTokenize }
+    }
     val additionalFields = LocalPaymentOptions.current.additionalFields
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     var isPanValid by remember { mutableStateOf(method.isValidPan) }
@@ -78,9 +80,9 @@ internal fun TokenizeCardPayItem(
                     method.isValidExpiry = isValid
                 }
             )
-            if (customerFields.hasVisibleCustomerFields() && customerFields.visibleCustomerFields().size <= Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
+            if (tokenizeCustomerFields.hasVisibleCustomerFields() && tokenizeCustomerFields.visibleCustomerFields().size <= Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
                 CustomerFields(
-                    customerFields = customerFields.visibleCustomerFields(),
+                    customerFields = tokenizeCustomerFields.visibleCustomerFields(),
                     additionalFields = additionalFields,
                     customerFieldValues = method.customerFieldValues,
                     onCustomerFieldsChanged = { fields, isValid ->
@@ -91,9 +93,9 @@ internal fun TokenizeCardPayItem(
                 )
             }
             Spacer(modifier = Modifier.size(15.dp))
-            PayOrConfirmButton(
+            SaveButton(
                 method = method,
-                customerFields = customerFields,
+                customerFields = tokenizeCustomerFields,
                 isValid = isPanValid && isCardHolderValid && isExpiryValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {

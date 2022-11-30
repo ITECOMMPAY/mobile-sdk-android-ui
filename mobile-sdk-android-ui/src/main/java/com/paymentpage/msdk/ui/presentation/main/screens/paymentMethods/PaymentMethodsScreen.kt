@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
@@ -19,13 +20,20 @@ import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
-
 @Composable
 internal fun PaymentMethodsScreen(
     uiPaymentMethods: List<UIPaymentMethod>,
     onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
 ) {
+
+    val isSaleWithToken = LocalPaymentOptions.current.paymentInfo.token != null
+    val filteredUIPaymentMethods = with(uiPaymentMethods) {
+        if (isSaleWithToken)
+            filterIsInstance<UIPaymentMethod.UISavedCardPayPaymentMethod>()
+        else this
+    }
+
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
@@ -38,7 +46,7 @@ internal fun PaymentMethodsScreen(
         scrollableContent = {
             PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
-            PaymentMethodList(uiPaymentMethods = uiPaymentMethods)
+            PaymentMethodList(uiPaymentMethods = filteredUIPaymentMethods)
         },
         footerContent = {
             SDKFooter(

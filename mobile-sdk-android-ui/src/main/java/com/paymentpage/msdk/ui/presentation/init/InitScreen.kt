@@ -57,7 +57,7 @@ internal fun InitScreen(
                     } else {
                         if (it.payment.paymentMethodType == PaymentMethodType.APS && it.payment.status?.isFinal == false) {
                             navigator.navigateTo(Route.RestoreAps)
-                            mainViewModel.restoreAps(apsMethod = paymentMethod )
+                            mainViewModel.restoreAps(apsMethod = paymentMethod)
                         } else {
                             navigator.navigateTo(Route.Restore)
                             mainViewModel.restorePayment()

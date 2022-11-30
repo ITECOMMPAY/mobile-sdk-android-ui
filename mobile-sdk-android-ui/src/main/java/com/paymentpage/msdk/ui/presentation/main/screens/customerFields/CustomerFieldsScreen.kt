@@ -18,6 +18,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.button.PayButton
+import com.paymentpage.msdk.ui.views.button.SDKButton
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -69,13 +70,22 @@ internal fun CustomerFieldsScreen(
                 }
             )
             Spacer(modifier = Modifier.size(22.dp))
-            PayButton(
-                payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
-                amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
-                currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
-                isEnabled = isCustomerFieldsValid
-            ) {
-                viewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
+            if (!isTokenize)
+                PayButton(
+                    payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
+                    amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
+                    currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
+                    isEnabled = isCustomerFieldsValid
+                ) {
+                    viewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
+                }
+            else {
+                SDKButton(
+                    label = getStringOverride(OverridesKeys.BUTTON_PROCEED),
+                    isEnabled = isCustomerFieldsValid
+                ) {
+                    viewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
+                }
             }
             Spacer(modifier = Modifier.size(5.dp))
         },

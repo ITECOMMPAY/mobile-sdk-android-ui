@@ -7,7 +7,6 @@ import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 
 internal fun List<PaymentMethod>.mergeUIPaymentMethods(
-    isSaleWithToken: Boolean = false,
     savedAccounts: List<SavedAccount>? = null
 ): List<UIPaymentMethod> {
     val result = mutableListOf<UIPaymentMethod>()
@@ -67,5 +66,5 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
         position += 1
     }
 
-    return if (isSaleWithToken) result.filterIsInstance<UIPaymentMethod.UISavedCardPayPaymentMethod>() else result.toList()
+    return result.toList()
 }
