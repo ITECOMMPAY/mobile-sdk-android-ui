@@ -18,6 +18,7 @@ import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultTableInfo
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
+import com.paymentpage.msdk.ui.views.button.SDKButton
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -32,8 +33,6 @@ internal fun ResultSuccessSaleContent(
         viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
 
     SDKScaffold(
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-        notScrollableContent = {},
         scrollableContent = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -42,7 +41,7 @@ internal fun ResultSuccessSaleContent(
             ) {
                 Image(
                     painter = painterResource(id = SDKTheme.images.successLogo),
-                    contentDescription = ""
+                    contentDescription = null
                 )
                 Spacer(modifier = Modifier.size(15.dp))
                 Text(
@@ -52,17 +51,21 @@ internal fun ResultSuccessSaleContent(
                 )
             }
             Spacer(modifier = Modifier.size(15.dp))
-            PaymentOverview()
+            PaymentOverview(showPaymentDetailsButton = false)
             Spacer(modifier = Modifier.size(15.dp))
             ResultTableInfo(onError)
             Spacer(modifier = Modifier.size(15.dp))
-        },
-        footerContent = {
+            SDKButton(
+                label = getStringOverride(OverridesKeys.BUTTON_DONE),
+                isEnabled = true
+            ) {
+                onClose(payment)
+            }
+            Spacer(modifier = Modifier.size(15.dp))
             SDKFooter(
                 iconLogo = SDKTheme.images.sdkLogoResId,
                 poweredByText = stringResource(R.string.powered_by_label),
             )
-        },
-        onClose = { onClose(payment) }
+        }
     )
 }

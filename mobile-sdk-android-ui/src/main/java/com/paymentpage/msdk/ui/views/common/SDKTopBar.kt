@@ -21,25 +21,25 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
 internal fun SDKTopBar(
-    title: String,
+    modifier: Modifier = Modifier,
+    title: String? = null,
     onClose: (() -> Unit)? = null,
     onBack: (() -> Unit)? = null
 ) {
     Row(
-        Modifier
+        modifier
             .fillMaxWidth()
             //.background(SDKTheme.colors.backgroundColor)
-            .height(65.dp),
+            .wrapContentSize(),
         verticalAlignment = Alignment.CenterVertically,
         ) {
         Text(
             modifier = Modifier.weight(1f),
             maxLines = 1,
             style = SDKTheme.typography.s22Bold,
-            text = title,
+            text = title ?: "",
             overflow = TextOverflow.Ellipsis
         )
-
         Spacer(modifier = Modifier.width(5.dp))
         if (onBack != null) {
             Image(
@@ -77,15 +77,15 @@ internal fun SDKTopBar(
 @Composable
 @Preview
 internal fun PreviewLightToolbar() {
-    SDKTheme() {
-        SDKTopBar("Payment Methods", onClose = {})
+    SDKTheme {
+        SDKTopBar(title = "Payment Methods", onClose = {})
     }
 }
 
 @Composable
 @Preview
 internal fun PreviewToolbarWithLongTitle() {
-    SDKTheme() {
+    SDKTheme {
         SDKTopBar(
             title = "Very ver very Very ver very Very ver very Very ver very long title",
             onClose = {},

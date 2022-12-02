@@ -13,10 +13,13 @@ internal object OverridesKeys {
     internal const val BUTTON_CONFIRMATION = "button_confirmation"
     internal const val BUTTON_TOKENIZE = "button_tokenize"
     internal const val BUTTON_PROCEED = "button_proceed"
+    internal const val BUTTON_DONE = "button_done"
+    internal const val BUTTON_CLOSE = "button_close"
 
     //Loading screen
     internal const val TITLE_LOADING_SCREEN = "title_loading_screen"
     internal const val SUB_TITLE_LOADING_SCREEN = "sub_title_loading_screen"
+    internal const val TITLE_CANCEL_PAYMENT = "title_cancel_payment"
 
     //Result tokenize screen
     internal const val TITLE_RESULT_SUCCES_TOKENIZE = "title_result_succes_tokenize"

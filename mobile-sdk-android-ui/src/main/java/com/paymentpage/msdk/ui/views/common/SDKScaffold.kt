@@ -15,42 +15,47 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 @Composable
 internal fun SDKScaffold(
     modifier: Modifier = Modifier,
-    title: String = "",
-    notScrollableContent: @Composable () -> Unit = {},
-    scrollableContent: @Composable () -> Unit = {},
-    footerContent: @Composable () -> Unit = {},
+    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+    title: String? = null,
+    notScrollableContent: (@Composable ColumnScope.() -> Unit)? = null,
+    scrollableContent: (@Composable ColumnScope.() -> Unit)? = null,
     onClose: (() -> Unit)? = null,
     onBack: (() -> Unit)? = null
 ) {
-    Box(
+    Column(
         modifier = Modifier
             .background(SDKTheme.colors.backgroundColor)
             .height(LocalConfiguration.current.screenHeightDp.dp * 0.9f) //Height of bottom sheet
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(top = 25.dp, start = 25.dp, end = 25.dp),
         content = {
-            Column(
-                horizontalAlignment = Alignment.Start
-            ) {
-                Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-                    SDKTopBar(
-                        title = title,
-                        onClose = onClose,
-                        onBack = onBack
-                    )
-                }
+            if (title != null || onClose != null || onBack != null) {
+                SDKTopBar(
+                    title = title,
+                    onClose = onClose,
+                    onBack = onBack
+                )
+                Spacer(modifier = Modifier.size(15.dp))
+            }
+            if (notScrollableContent != null) {
                 Column(
                     modifier = modifier
-                ) {
-                    notScrollableContent()
-                    Column(
-                        modifier = Modifier
-                            .verticalScroll(rememberScrollState())
-                    ) {
-                        scrollableContent()
-                        Spacer(modifier = Modifier.size(5.dp))
-                        footerContent()
-                    }
-                }
+                        .fillMaxWidth(),
+                    content = notScrollableContent,
+                    verticalArrangement = verticalArrangement,
+                    horizontalAlignment = horizontalAlignment,
+                )
+            }
+            if (scrollableContent != null) {
+                Column(
+                    modifier = modifier
+                        .verticalScroll(rememberScrollState())
+                        .fillMaxWidth(),
+                    content = scrollableContent,
+                    verticalArrangement = verticalArrangement,
+                    horizontalAlignment = horizontalAlignment,
+                )
             }
         }
     )
