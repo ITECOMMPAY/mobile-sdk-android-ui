@@ -51,7 +51,11 @@ internal fun RootNavigationView(
         popExitTransition = { ExitTransition.None }
     ) {
         composable(route = Route.Init.getPath()) {
-            InitScreen(navigator = navigator, onCancel = onCancel, onError = onError)
+            InitScreen(
+                actionType = actionType,
+                navigator = navigator,
+                onCancel = onCancel,
+                onError = onError)
         }
         composable(route = Route.Main.getPath()) {
             MainScreen(
