@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 internal fun InitScreen(
+    actionType: SDKActionType,
     navigator: Navigator,
     onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
@@ -68,15 +69,25 @@ internal fun InitScreen(
             }
         }.collect()
     }
-    Content(onCancel = onCancel)
+    Content(
+        actionType = actionType,
+        onCancel = onCancel
+    )
 }
 
 
 @Composable
-private fun Content(onCancel: () -> Unit) {
+private fun Content(
+    actionType: SDKActionType,
+    onCancel: () -> Unit
+) {
     SDKScaffold(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-        title = stringResource(R.string.payment_methods_label),
+        title = when(actionType) {
+            SDKActionType.Sale -> stringResource(R.string.sale_label)
+            SDKActionType.Tokenize -> stringResource(R.string.tokenize_label)
+            else -> stringResource(R.string.sale_label)
+        },
         notScrollableContent = { Loading() },
         onClose = onCancel,
         footerContent = {
@@ -138,5 +149,8 @@ private fun Loading(
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun LoadingPreview() {
-    Content(onCancel = {})
+    Content(
+        actionType = SDKActionType.Sale,
+        onCancel = {}
+    )
 }
