@@ -19,6 +19,7 @@ import com.paymentpage.msdk.ui.presentation.main.deleteSavedCard
 import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.tokenizeSavedCard
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
@@ -98,7 +99,10 @@ internal fun SavedCardItem(
                 isValid = isCvvValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
-                    viewModel.saleSavedCard(method = method)
+                    if (isSaleWithToken)
+                        viewModel.tokenizeSavedCard(method = method)
+                    else
+                        viewModel.saleSavedCard(method = method)
                 }
             )
             if (!isSaleWithToken) {
