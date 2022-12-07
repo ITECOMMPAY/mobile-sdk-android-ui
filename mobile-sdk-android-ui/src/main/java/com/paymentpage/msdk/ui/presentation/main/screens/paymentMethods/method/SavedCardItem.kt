@@ -2,10 +2,8 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +13,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.deleteSavedCard
 import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
@@ -24,13 +21,13 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.U
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
+import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
 import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
 import com.paymentpage.msdk.ui.views.common.alertDialog.MessageAlertDialog
-import com.paymentpage.msdk.ui.views.common.alertDialog.SDKAlertDialog
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 @Composable
@@ -83,7 +80,7 @@ internal fun SavedCardItem(
             }
             if (customerFields.hasVisibleCustomerFields() && customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
                 CustomerFields(
-                    customerFields = customerFields.visibleCustomerFields(),
+                    customerFields = customerFields,
                     additionalFields = additionalFields,
                     customerFieldValues = method.customerFieldValues,
                     onCustomerFieldsChanged = { fields, isValid ->
@@ -100,7 +97,10 @@ internal fun SavedCardItem(
                 isValid = isCvvValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
-                    viewModel.saleSavedCard(method = method)
+                    viewModel.saleSavedCard(
+                        method = method,
+                        needSendCustomerFields = customerFields.needSendWithSaleRequest()
+                    )
                 }
             )
             Spacer(modifier = Modifier.size(15.dp))
@@ -110,8 +110,10 @@ internal fun SavedCardItem(
                         deleteCardAlertDialogState = true
                     },
                     text = getStringOverride("button_delete"),
-                    style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.secondaryTextColor,
-                        textDecoration = TextDecoration.Underline)
+                    style = SDKTheme.typography.s14Normal.copy(
+                        color = SDKTheme.colors.secondaryTextColor,
+                        textDecoration = TextDecoration.Underline
+                    )
                 )
             else {
                 CircularProgressIndicator(
@@ -127,7 +129,8 @@ internal fun SavedCardItem(
                         viewModel.deleteSavedCard(method = method)
                     },
                     onDismissButtonClick = { deleteCardAlertDialogState = false },
-                    confirmButtonText = getStringOverride("button_delete"))
+                    confirmButtonText = getStringOverride("button_delete")
+                )
             }
         }
     }
