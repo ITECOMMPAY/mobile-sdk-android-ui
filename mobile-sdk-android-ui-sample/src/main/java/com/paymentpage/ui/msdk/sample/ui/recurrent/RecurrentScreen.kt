@@ -211,6 +211,7 @@ internal fun RecurrentScreen(
                 intentListener(
                     RecurrentViewIntents.FillMockData(
                     mockData = RecurrentData(
+                        register = true,
                         type = "R",
                         expiryDay = "06",
                         expiryMonth = "11",
