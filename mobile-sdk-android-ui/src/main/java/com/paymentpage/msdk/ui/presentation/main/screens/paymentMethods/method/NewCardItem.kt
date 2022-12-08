@@ -22,6 +22,7 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.U
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
+import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
@@ -103,7 +104,7 @@ internal fun NewCardItem(
 
             if (customerFields.hasVisibleCustomerFields() && customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
                 CustomerFields(
-                    customerFields = customerFields.visibleCustomerFields(),
+                    customerFields = customerFields,
                     additionalFields = additionalFields,
                     customerFieldValues = method.customerFieldValues,
                     onCustomerFieldsChanged = { fields, isValid ->
@@ -154,7 +155,10 @@ internal fun NewCardItem(
                 isValid = isCvvValid && isPanValid && isPanValid && isCardHolderValid && isExpiryValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
-                    viewModel.saleCard(method = method)
+                    viewModel.saleCard(
+                        method = method,
+                        needSendCustomerFields = customerFields.needSendWithSaleRequest()
+                    )
                 }
             )
         }

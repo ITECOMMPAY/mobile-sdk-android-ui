@@ -35,7 +35,6 @@ internal fun CustomerFieldsScreen(
     val viewModel = LocalMainViewModel.current
     val method = viewModel.lastState.currentMethod
     val customerFields = viewModel.lastState.customerFields
-    val visibleCustomerFields = remember { customerFields.filter { !it.isHidden } }
     var isCustomerFieldsValid by remember { mutableStateOf(method?.isCustomerFieldsValid ?: false) }
 
 
@@ -58,7 +57,7 @@ internal fun CustomerFieldsScreen(
             Spacer(modifier = Modifier.size(5.dp))
             CustomerFields(
                 customerFieldValues = method?.customerFieldValues ?: emptyList(),
-                customerFields = visibleCustomerFields,
+                customerFields = customerFields,
                 additionalFields = LocalPaymentOptions.current.additionalFields,
                 onCustomerFieldsChanged = { fields, isValid ->
                     isCustomerFieldsValid = isValid
