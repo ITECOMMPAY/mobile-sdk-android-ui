@@ -1,9 +1,8 @@
 package com.paymentpage.ui.msdk.sample.domain.ui.main
 
 import android.net.Uri
-import com.paymentpage.ui.msdk.sample.domain.ui.base.MessageUI
-import com.paymentpage.ui.msdk.sample.domain.ui.base.ViewIntents
 import com.paymentpage.ui.msdk.sample.domain.entities.PaymentData
+import com.paymentpage.ui.msdk.sample.domain.ui.base.ViewIntents
 
 sealed interface MainViewIntents: ViewIntents {
     //Changing PaymentData fields

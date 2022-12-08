@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.paymentpage.ui.msdk.sample.domain.ui.main.MainViewIntents
 import com.paymentpage.ui.msdk.sample.domain.entities.PaymentData
+import com.paymentpage.ui.msdk.sample.domain.ui.main.MainViewIntents
 
 @Composable
 internal fun ProjectSettings(
@@ -19,12 +19,19 @@ internal fun ProjectSettings(
     intentListener: (MainViewIntents) -> Unit
 ) {
     OutlinedTextField(
-        value = paymentData.projectId.toString(),
+        value = if (paymentData.projectId.toString() == "-1")
+            ""
+        else
+            paymentData.projectId.toString(),
         onValueChange = {
-            intentListener(MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(projectId = it.filter { symbol ->
-                    symbol.isDigit()
-                }.toIntOrNull() ?: PaymentData().projectId))
+            intentListener(
+                MainViewIntents.ChangeField(
+                    paymentData = paymentData.copy(
+                        projectId = it.filter { symbol ->
+                            symbol.isDigit()
+                        }.toIntOrNull() ?: -1
+                    )
+                )
             )
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -37,7 +44,8 @@ internal fun ProjectSettings(
         onValueChange = {
             intentListener(
                 MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(secretKey = it))
+                    paymentData = paymentData.copy(secretKey = it)
+                )
             )
         },
         modifier = Modifier.fillMaxWidth(),
