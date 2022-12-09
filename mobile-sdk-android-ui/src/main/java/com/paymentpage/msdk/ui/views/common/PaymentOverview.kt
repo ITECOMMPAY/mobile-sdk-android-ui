@@ -56,6 +56,8 @@ internal fun ExpandablePaymentOverview(
 ) {
     val mainViewModel = LocalMainViewModel.current
     val currentMethod = mainViewModel.state.collectAsState().value.currentMethod
+    val payment = mainViewModel.lastState.payment
+    val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
 
     Box(
         modifier = Modifier
@@ -118,7 +120,13 @@ internal fun ExpandablePaymentOverview(
                     style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
                 )
                 Text(text = " ")
-                if (currentMethod?.paymentMethod?.isVatInfo == true)
+                if (currentMethod?.paymentMethod?.isVatInfo == true
+                    || paymentMethods.firstOrNull {
+                        if (payment != null)
+                            payment.method == it.code
+                        else false
+                    }?.isVatInfo == true
+                )
                     Text(
                         text = getStringOverride(OverridesKeys.VAT_INCLUDED),
                         style = SDKTheme.typography.s14Light.copy(color = Color.White)
