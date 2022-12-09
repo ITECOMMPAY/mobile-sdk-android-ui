@@ -27,7 +27,7 @@
 
         <activity
             android:name=".PaymentActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.SDKTheme"
             android:windowSoftInputMode="adjustResize" />
     </application>

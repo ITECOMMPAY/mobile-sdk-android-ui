@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.StateFlow
 internal class MainViewModel(
     val payInteractor: PayInteractor,
     val cardRemoveInteractor: CardRemoveInteractor,
-    private val paymentOptions: SDKPaymentOptions
 ) : BaseViewModel<MainScreenState, MainScreenUiEvent>(), PayDelegate, CardRemoveDelegate {
     override val reducer = MainReducer(MainScreenState.initial())
 

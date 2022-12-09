@@ -102,9 +102,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 tasks.cyclonedxBom {
-    setIncludeConfigs(listOf("runtimeClasspath"))
-    setSkipConfigs(listOf("compileClasspath", "testCompileClasspath"))
-    setProjectType("library")
+    setIncludeConfigs(listOf("debugCompileClasspath"))
     setDestination(project.file("build/reports"))
     setOutputName("bom")
     setOutputFormat("json")

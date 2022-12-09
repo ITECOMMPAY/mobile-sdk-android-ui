@@ -35,8 +35,7 @@ internal fun SDKCommonProvider(
             factory = viewModelFactory {
                 MainViewModel(
                     cardRemoveInteractor = msdkSession.getCardRemoveInteractor(),
-                    payInteractor = msdkSession.getPayInteractor(),
-                    paymentOptions = paymentOptions,
+                    payInteractor = msdkSession.getPayInteractor()
                 )
             }
         ),
