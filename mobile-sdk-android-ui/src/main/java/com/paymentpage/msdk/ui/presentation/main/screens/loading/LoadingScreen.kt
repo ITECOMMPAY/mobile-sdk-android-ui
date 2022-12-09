@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
@@ -21,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.presentation.main.screens.result.views.animation.VerticalSlideFadeAnimation
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.SDKFooter
@@ -37,8 +37,8 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
         }
     }
 
-
     BackHandler(true) { }
+
     SDKScaffold(
         verticalArrangement = Arrangement.Center,
         notScrollableContent = {
@@ -60,20 +60,10 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                     DotsLoading()
                 }
                 Spacer(modifier = Modifier.size(35.dp))
-                AnimatedVisibility(
+                VerticalSlideFadeAnimation(
                     visibleState = state,
-                    enter = fadeIn(
-                        animationSpec = tween(
-                            delayMillis = 1000,
-                            durationMillis = 500
-                        )
-                    ) + slideInVertically(
-                        animationSpec = tween(
-                            delayMillis = 1000,
-                            durationMillis = 500
-                        ),
-                        initialOffsetY = { it }
-                    )
+                    duration = 500,
+                    delay = 1000
                 ) {
                     Text(
                         text = getStringOverride(OverridesKeys.TITLE_LOADING_SCREEN),
@@ -82,20 +72,11 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                     )
                 }
                 Spacer(modifier = Modifier.size(15.dp))
-                AnimatedVisibility(
+                VerticalSlideFadeAnimation(
                     visibleState = state,
-                    enter = fadeIn(
-                        animationSpec = tween(
-                            delayMillis = 2000,
-                            durationMillis = 500
-                        )
-                    ) + slideInVertically(
-                        animationSpec = tween(
-                            delayMillis = 2000,
-                            durationMillis = 500
-                        ),
-                        initialOffsetY = { it/2 }
-                    )
+                    duration = 500,
+                    delay = 2000,
+                    initialOffsetYRatio = 0.5f
                 ) {
                     Text(
                         text = getStringOverride(OverridesKeys.SUB_TITLE_LOADING_SCREEN),
@@ -134,7 +115,9 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                 isVisiblePrivacyPolicy = false
             )
             Spacer(modifier = Modifier.size(25.dp))
-        }
+        },
+        onClose = onCancel,
+        showCloseButton = false
     )
 }
 

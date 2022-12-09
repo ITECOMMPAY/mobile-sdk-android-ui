@@ -21,6 +21,7 @@ fun PaymentDetailsContent(
     merchantAddressValue: String?
 ) {
     Column {
+        Spacer(modifier = Modifier.size(20.dp))
         //Payment ID
         Row {
             Text(

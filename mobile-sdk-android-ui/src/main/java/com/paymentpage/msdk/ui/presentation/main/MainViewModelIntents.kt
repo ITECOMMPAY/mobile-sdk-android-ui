@@ -53,12 +53,13 @@ internal fun MainViewModel.saleSavedCard(
 
 //tokenize with saved card
 internal fun MainViewModel.tokenizeSavedCard(
-    method: UIPaymentMethod.UISavedCardPayPaymentMethod
+    method: UIPaymentMethod.UISavedCardPayPaymentMethod,
+    needSendCustomerFields: Boolean
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
     val request = CardSaleTokenizeRequest(cvv = method.cvv)
-    if (method.customerFieldValues.size <= Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS)
+    if (needSendCustomerFields)
         request.customerFields = method.customerFieldValues
     this.payInteractor.execute(request, this)
 }
@@ -111,7 +112,8 @@ internal fun MainViewModel.saleCard(
 }
 
 internal fun MainViewModel.tokenizeCard(
-    method: UIPaymentMethod.UITokenizeCardPayPaymentMethod
+    method: UIPaymentMethod.UITokenizeCardPayPaymentMethod,
+    needSendCustomerFields: Boolean
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
@@ -124,7 +126,7 @@ internal fun MainViewModel.tokenizeCard(
         ),
         cardHolder = method.cardHolder
     )
-    if (method.customerFieldValues.size <= Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS)
+    if (needSendCustomerFields)
         request.customerFields = method.customerFieldValues
     payInteractor.execute(request, this)
 }

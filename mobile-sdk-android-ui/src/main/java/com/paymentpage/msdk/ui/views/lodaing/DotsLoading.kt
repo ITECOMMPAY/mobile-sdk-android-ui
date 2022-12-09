@@ -14,13 +14,14 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.theme.SDKTheme
 import kotlinx.coroutines.delay
 
 @Composable
 fun DotsLoading(
     modifier: Modifier = Modifier,
     circleSize: Dp = 12.dp,
-    circleColor: Color = Color.Black,
+    circleColor: Color = SDKTheme.colors.brand,
     spaceBetween: Dp = 10.dp,
     travelDistance: Dp = 24.dp
 ) {

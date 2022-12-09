@@ -15,6 +15,7 @@ internal object OverridesKeys {
     internal const val BUTTON_PROCEED = "button_proceed"
     internal const val BUTTON_DONE = "button_done"
     internal const val BUTTON_CLOSE = "button_close"
+    internal const val BUTTON_HIDE_DETAILS = "button_hide_details"
 
     //Loading screen
     internal const val TITLE_LOADING_SCREEN = "title_loading_screen"
@@ -51,6 +52,7 @@ internal object OverridesKeys {
 
     //Additional fields
     internal const val MESSAGE_REQUIRED_FIELD = "message_required_field"
+    internal const val MESSAGE_GENERAL_INVALID = "message_general_invalid"
     internal const val TITLE_PAYMENT_ADDITIONAL_DATA = "title_payment_additional_data"
     internal const val TITLE_PAYMENT_ADDITIONAL_DATA_DISCLAIMER = "title_payment_additional_data_disclaimer"
 

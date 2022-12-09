@@ -24,11 +24,13 @@ import com.paymentpage.msdk.ui.views.button.PayButton
 @Composable
 internal fun ApsPayItem(
     method: UIPaymentMethod.UIApsPaymentMethod,
+    isOnlyOneMethodOnScreen: Boolean = false,
 ) {
     val viewModel = LocalMainViewModel.current
 
     ExpandablePaymentMethodItem(
         method = method,
+        isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
         fallbackIcon = painterResource(id = SDKTheme.images.apsDefaultLogoResId),
         prefixNameResourceIcon = "aps",

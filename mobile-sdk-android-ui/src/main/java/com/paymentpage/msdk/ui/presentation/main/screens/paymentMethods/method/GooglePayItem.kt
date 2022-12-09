@@ -12,6 +12,7 @@ import com.google.android.gms.wallet.IsReadyToPayRequest
 import com.google.android.gms.wallet.Wallet
 import com.google.android.gms.wallet.WalletConstants
 import com.paymentpage.msdk.core.base.ErrorCode
+import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.core.googlePay.GooglePayHelper
@@ -27,13 +28,17 @@ import com.paymentpage.msdk.ui.presentation.main.showError
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.isAllCustomerFieldsHidden
+import com.paymentpage.msdk.ui.utils.extensions.core.mergeHiddenFieldsToList
 import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.views.button.GooglePayButton
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 
 @Composable
-internal fun GooglePayItem(method: UIPaymentMethod.UIGooglePayPaymentMethod) {
+internal fun GooglePayItem(
+    method: UIPaymentMethod.UIGooglePayPaymentMethod,
+    isOnlyOneMethodOnScreen: Boolean = false,
+) {
     val paymentOptions = LocalPaymentOptions.current
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
@@ -106,6 +111,7 @@ internal fun GooglePayItem(method: UIPaymentMethod.UIGooglePayPaymentMethod) {
         customerFields.hasVisibleCustomerFields() -> {
             ExpandablePaymentMethodItem(
                 method = method,
+                isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
                 headerBackgroundColor = SDKTheme.colors.backgroundColor,
                 fallbackIcon = painterResource(id = SDKTheme.images.googlePayMethodResId),
             ) {
@@ -128,6 +134,15 @@ internal fun GooglePayItem(method: UIPaymentMethod.UIGooglePayPaymentMethod) {
             }
         }
         customerFields.isAllCustomerFieldsHidden() && isForcePaymentMethod -> {
+            method.customerFieldValues = customerFields.mergeHiddenFieldsToList(
+                additionalFields = additionalFields,
+                customerFieldValues = method.customerFieldValues
+            ).map {
+                CustomerFieldValue(
+                    name = it.name,
+                    value = it.value
+                )
+            }
             LaunchedEffect(key1 = Unit, block = { launchGooglePaySheet() })
             GooglePayButton(
                 isEnabled = isGooglePayAvailable && !isGooglePayOpened,
@@ -137,7 +152,18 @@ internal fun GooglePayItem(method: UIPaymentMethod.UIGooglePayPaymentMethod) {
         customerFields.isAllCustomerFieldsHidden() -> {
             GooglePayButton(
                 isEnabled = isGooglePayAvailable && !isGooglePayOpened,
-                onClick = launchGooglePaySheet
+                onClick = {
+                    method.customerFieldValues = customerFields.mergeHiddenFieldsToList(
+                        additionalFields = additionalFields,
+                        customerFieldValues = method.customerFieldValues
+                    ).map {
+                        CustomerFieldValue(
+                            name = it.name,
+                            value = it.value
+                        )
+                    }
+                    launchGooglePaySheet()
+                }
             )
         }
     }

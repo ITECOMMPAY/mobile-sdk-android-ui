@@ -17,6 +17,7 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.U
 import com.paymentpage.msdk.ui.presentation.main.tokenizeCard
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
+import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.button.SaveButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
@@ -27,6 +28,7 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 @Composable
 internal fun TokenizeCardPayItem(
     method: UIPaymentMethod.UITokenizeCardPayPaymentMethod,
+    isOnlyOneMethodOnScreen: Boolean = false,
 ) {
     val viewModel = LocalMainViewModel.current
     val tokenizeCustomerFields = remember {
@@ -41,6 +43,7 @@ internal fun TokenizeCardPayItem(
 
     ExpandablePaymentMethodItem(
         method = method,
+        isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
         fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
         iconColor = ColorFilter.tint(SDKTheme.colors.brand),
@@ -82,7 +85,7 @@ internal fun TokenizeCardPayItem(
             )
             if (tokenizeCustomerFields.hasVisibleCustomerFields() && tokenizeCustomerFields.visibleCustomerFields().size <= Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
                 CustomerFields(
-                    customerFields = tokenizeCustomerFields.visibleCustomerFields(),
+                    customerFields = tokenizeCustomerFields,
                     additionalFields = additionalFields,
                     customerFieldValues = method.customerFieldValues,
                     onCustomerFieldsChanged = { fields, isValid ->
@@ -99,7 +102,10 @@ internal fun TokenizeCardPayItem(
                 isValid = isPanValid && isCardHolderValid && isExpiryValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
-                    viewModel.tokenizeCard(method = method)
+                    viewModel.tokenizeCard(
+                        method = method,
+                        needSendCustomerFields = tokenizeCustomerFields.needSendWithSaleRequest()
+                    )
                 }
             )
         }

@@ -1,6 +1,7 @@
 package com.paymentpage.msdk.ui.views.card.panField
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -22,24 +23,16 @@ internal fun ChangingCardTypeItems(
     val context = LocalContext.current
     var currentIndex by remember { mutableStateOf(startIndex) }
     var isRunning by remember { mutableStateOf(true) }
-    val drawableNameFirstCardType = "card_type_${cardTypes[0]}"
-    val drawableNameSecondCardType =
-        if (cardTypes.size > 1) "card_type_${cardTypes[1]}" else ""
-    val drawableNameThirdCardType =
-        if (cardTypes.size > 2) "card_type_${cardTypes[2]}" else ""
-    val drawableIdFirstCardType = remember(drawableNameFirstCardType) {
-        context.drawableResourceIdFromDrawableName(drawableNameFirstCardType)
-    }
-    val drawableIdSecondCardType = remember(drawableNameSecondCardType) {
-        context.drawableResourceIdFromDrawableName(drawableNameSecondCardType)
-    }
-    val drawableIdThirdCardType = remember(drawableNameThirdCardType) {
-        context.drawableResourceIdFromDrawableName(drawableNameThirdCardType)
+    val drawableNameStaticCardType =
+        if (cardTypes.isNotEmpty()) "card_type_${cardTypes[0]}" else ""
+
+    val drawableIdStaticCardType = remember(drawableNameStaticCardType) {
+        context.drawableResourceIdFromDrawableName(drawableNameStaticCardType)
     }
     val drawableIdsList = cardTypes.map {
         context.drawableResourceIdFromDrawableName("card_type_${it}")
     }
-        .filter { id -> id > 0 && id != drawableIdFirstCardType && id != drawableIdSecondCardType } //take all except first two elements
+        .filter { id -> id > 0 } //take all
 
     val alpha: Float by animateFloatAsState(
         targetValue = if (isRunning) 0f else 1f,
@@ -54,23 +47,6 @@ internal fun ChangingCardTypeItems(
     )
 
     Row(horizontalArrangement = Arrangement.Center) {
-        Image(
-            modifier = Modifier
-                .padding(5.dp)
-                .size(25.dp),
-            painter = painterResource(id = if (drawableIdFirstCardType > 0) drawableIdFirstCardType else R.drawable.card_logo),
-            contentDescription = null,
-            contentScale = ContentScale.Fit
-        )
-        if (cardTypes.size > 1)
-            Image(
-                modifier = Modifier
-                    .padding(5.dp)
-                    .size(25.dp),
-                painter = painterResource(id = if (drawableIdSecondCardType > 0) drawableIdSecondCardType else R.drawable.card_logo),
-                contentDescription = null,
-                contentScale = ContentScale.Fit
-            )
         if (drawableIdsList.size > 1) {
             if (currentIndex >= drawableIdsList.size) currentIndex = 0
             val drawableIdCurrentCardType = drawableIdsList[currentIndex]
@@ -86,12 +62,12 @@ internal fun ChangingCardTypeItems(
                 contentDescription = null,
                 contentScale = ContentScale.Fit
             ) //image with animation
-        } else if (drawableIdThirdCardType > 0) {
+        } else if (drawableIdStaticCardType > 0) {
             Image(
                 modifier = Modifier
                     .padding(5.dp)
                     .size(25.dp),
-                painter = painterResource(id = drawableIdThirdCardType),
+                painter = painterResource(id = drawableIdStaticCardType),
                 contentDescription = null,
                 contentScale = ContentScale.Fit
             ) //static image

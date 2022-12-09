@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
@@ -32,7 +33,9 @@ internal fun ResultTableInfo(
             }
             is UIPaymentMethod.UIApsPaymentMethod -> {
                 method.paymentMethod.name
-                    ?: getStringOverride(method.paymentMethod.translations[OverridesKeys.TITLE] ?: "")
+                    ?: getStringOverride(
+                        method.paymentMethod.translations[OverridesKeys.TITLE] ?: ""
+                    )
             }
             is UIPaymentMethod.UIGooglePayPaymentMethod -> {
                 method.paymentMethod.name ?: getStringOverride(OverridesKeys.GOOGLE_PAY_HOST_TITLE)
@@ -53,13 +56,18 @@ internal fun ResultTableInfo(
         val titleKeyWithValueMap = mutableMapOf(
             getStringOverride(OverridesKeys.TITLE_CARD_WALLET) to valueTitleCardWallet,
             getStringOverride(OverridesKeys.TITLE_PAYMENT_ID) to "${payment.id}",
-            getStringOverride(OverridesKeys.TITLE_PAYMENT_DATE) to payment.date?.paymentDateToPatternDate("dd.MM.yyyy HH:mm"),
+            getStringOverride(OverridesKeys.TITLE_PAYMENT_DATE) to payment.date?.paymentDateToPatternDate(
+                "dd.MM.yyyy HH:mm"
+            ),
         ) + completeFields
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .background(color = SDKTheme.colors.panelBackgroundColor)
+                .background(
+                    color = SDKTheme.colors.panelBackgroundColor,
+                    shape = SDKTheme.shapes.radius12
+                )
                 .padding(top = 15.dp, start = 15.dp, end = 15.dp)
         ) {
             titleKeyWithValueMap
@@ -96,5 +104,45 @@ internal fun ResultTableInfo(
                 message = "Not found payment in State"
             ), true
         )
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+internal fun ResultTableInfoPreview() {
+
+    val titleKeyWithValueMap = mutableMapOf(
+        "ssdfsdf234" to "234234",
+        "ssdfsdf44" to "dd.MM.yyyy HH:mm",
+        "ssdfsdf555" to "dd.MM.yyyy HH:mm33",
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(color = SDKTheme.colors.panelBackgroundColor)
+            .padding(top = 15.dp, start = 15.dp, end = 15.dp)
+    ) {
+        titleKeyWithValueMap.forEach { (key, value) ->
+            Row {
+                Column {
+                    Text(
+                        text = key,
+                        style = SDKTheme.typography.s14Light.copy(color = SDKTheme.colors.secondaryTextColor),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+                }
+                Text(text = " ")
+                Column(modifier = Modifier.weight(1f), horizontalAlignment = End) {
+                    Text(
+                        text = value,
+                        style = SDKTheme.typography.s14Normal,
+                        textAlign = TextAlign.End
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.size(15.dp))
+        }
     }
 }

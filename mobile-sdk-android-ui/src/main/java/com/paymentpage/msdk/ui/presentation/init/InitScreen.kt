@@ -98,6 +98,7 @@ private fun Content(
                 isVisiblePrivacyPolicy = false,
                 isVisibleCookiePolicy = false
             )
+            Spacer(modifier = Modifier.size(25.dp))
         },
         onClose = onCancel
     )

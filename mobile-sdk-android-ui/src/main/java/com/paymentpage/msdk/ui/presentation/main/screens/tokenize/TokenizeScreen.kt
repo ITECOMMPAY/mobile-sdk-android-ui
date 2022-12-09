@@ -44,7 +44,8 @@ internal fun TokenizeScreen(
             TokenizeCardPayItem(
                 method = (lastSelectedMethod as?
                         UIPaymentMethod.UITokenizeCardPayPaymentMethod)
-                    ?: tokenizePaymentMethod
+                    ?: tokenizePaymentMethod,
+                isOnlyOneMethodOnScreen = true
             )
             Spacer(modifier = Modifier.size(16.dp))
             SDKFooter(

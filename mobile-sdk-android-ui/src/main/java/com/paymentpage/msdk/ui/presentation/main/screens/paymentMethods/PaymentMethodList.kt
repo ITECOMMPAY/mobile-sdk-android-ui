@@ -47,9 +47,11 @@ internal fun PaymentMethodList(uiPaymentMethods: List<UIPaymentMethod>) {
     }
 
     Column(modifier = Modifier.fillMaxWidth()) {
+        val isOnlyOneMethodOnScreen = filteredUIPaymentMethods.size == 1
         filteredUIPaymentMethods.forEach { uiPaymentMethod ->
             PaymentMethodItem(
-                method = if (lastSelectedMethod?.index == uiPaymentMethod.index) lastSelectedMethod else uiPaymentMethod
+                method = if (lastSelectedMethod?.index == uiPaymentMethod.index) lastSelectedMethod else uiPaymentMethod,
+                isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
             )
             Spacer(modifier = Modifier.size(10.dp))
         }

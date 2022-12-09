@@ -23,6 +23,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 internal fun SDKTopBar(
     modifier: Modifier = Modifier,
     title: String? = null,
+    showCloseButton: Boolean = true,
     onClose: (() -> Unit)? = null,
     onBack: (() -> Unit)? = null
 ) {
@@ -52,12 +53,12 @@ internal fun SDKTopBar(
                     ),
                 imageVector = Icons.Default.ArrowBack,
                 colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
-                contentDescription = "",
+                contentDescription = null,
             )
             Spacer(modifier = Modifier.width(10.dp))
         }
 
-        if (onClose != null)
+        if (onClose != null && showCloseButton)
             Image(
                 modifier = Modifier
                     .size(25.dp)
@@ -68,7 +69,7 @@ internal fun SDKTopBar(
                     ),
                 imageVector = Icons.Default.Close,
                 colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
-                contentDescription = "",
+                contentDescription = null,
             )
     }
 

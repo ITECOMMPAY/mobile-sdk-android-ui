@@ -56,7 +56,7 @@ internal fun ClarificationFieldsScreen(
                         hint = it.defaultHint,
                         label = it.defaultLabel ?: "",
                         errorMessage = it.defaultErrorMessage,
-                        errorMessageKey = "message_general_invalid",
+                        errorMessageKey = OverridesKeys.MESSAGE_GENERAL_INVALID,
                         isRequired = true //clarification fields always are true
                     )
                 },

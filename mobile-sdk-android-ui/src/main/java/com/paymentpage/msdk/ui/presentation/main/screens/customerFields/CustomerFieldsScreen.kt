@@ -53,7 +53,6 @@ internal fun CustomerFieldsScreen(
                     isCustomerFieldsValid = isValid
                     method?.customerFieldValues = fields
                     method?.isCustomerFieldsValid = isValid
-
                 }
             )
             Spacer(modifier = Modifier.size(16.dp))
@@ -68,6 +67,7 @@ internal fun CustomerFieldsScreen(
                 iconLogo = SDKTheme.images.sdkLogoResId,
                 poweredByText = stringResource(R.string.powered_by_label),
             )
+            Spacer(modifier = Modifier.size(25.dp))
         },
         onClose = { onCancel() },
         onBack = { onBack() }

@@ -15,8 +15,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalMsdkSession
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsContent
@@ -44,7 +46,6 @@ internal fun PaymentOverview(
             merchantAddressValue = null
         )
     }
-
 }
 
 @Composable
@@ -59,21 +60,22 @@ internal fun ExpandablePaymentOverview(
     val payment = mainViewModel.lastState.payment
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
 
+    val gradient = arrayOf(
+        0.0f to SDKTheme.colors.brand,
+        0.3125f to SDKTheme.colors.brand,
+        0.3125f to SDKTheme.colors.brand.copy(alpha = 0.97f),
+        0.3750f to SDKTheme.colors.brand.copy(alpha = 0.97f),
+        0.3750f to SDKTheme.colors.brand.copy(alpha = 0.94f),
+        0.4375f to SDKTheme.colors.brand.copy(alpha = 0.94f),
+        0.4375f to SDKTheme.colors.brand.copy(alpha = 0.91f),
+        0.5000f to SDKTheme.colors.brand,
+        1f to SDKTheme.colors.brand
+    )
     Box(
         modifier = Modifier
             .background(
                 brush = Brush.sweepGradient(
-                    colorStops = arrayOf(
-                        0.0f to SDKTheme.colors.brand,
-                        0.3125f to SDKTheme.colors.brand,
-                        0.3125f to SDKTheme.colors.brand.copy(alpha = 0.97f),
-                        0.3750f to SDKTheme.colors.brand.copy(alpha = 0.97f),
-                        0.3750f to SDKTheme.colors.brand.copy(alpha = 0.94f),
-                        0.4375f to SDKTheme.colors.brand.copy(alpha = 0.94f),
-                        0.4375f to SDKTheme.colors.brand.copy(alpha = 0.91f),
-                        0.5000f to SDKTheme.colors.brand,
-                        1f to SDKTheme.colors.brand
-                    ),
+                    colorStops = gradient,
                     center = Offset(Float.POSITIVE_INFINITY, 0.0f),
                 ),
                 shape = SDKTheme.shapes.radius12
@@ -102,18 +104,13 @@ internal fun ExpandablePaymentOverview(
                     text = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                     style = SDKTheme.typography.s28Bold.copy(color = Color.White)
                 )
-                Spacer(
-                    modifier = Modifier
-                        .width(8.dp)
-                        .alignByBaseline()
-                )
+                Text(text = " ")
                 Text(
                     modifier = Modifier.alignByBaseline(),
                     text = LocalPaymentOptions.current.paymentInfo.paymentCurrency,
                     style = SDKTheme.typography.s16Normal.copy(color = Color.White)
                 )
             }
-            //Spacer(modifier = Modifier.height(10.dp))
             Row {
                 Text(
                     text = getStringOverride(OverridesKeys.TITLE_TOTAL_PRICE),
@@ -129,11 +126,21 @@ internal fun ExpandablePaymentOverview(
                 )
                     Text(
                         text = getStringOverride(OverridesKeys.VAT_INCLUDED),
-                        style = SDKTheme.typography.s14Light.copy(color = Color.White)
+                        style = SDKTheme.typography.s14Light.copy(color = Color.White),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
             }
             if (showPaymentDetailsButton) {
                 Spacer(modifier = Modifier.size(20.dp))
+                if (isExpanded) {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(SDKTheme.colors.panelBackgroundColor.copy(alpha = 0.1f))
+                    )
+                }
                 AnimatedVisibility(visible = isExpanded) {
                     Column(
                         content = {
@@ -147,7 +154,7 @@ internal fun ExpandablePaymentOverview(
                     label = if (!isExpanded)
                         getStringOverride(OverridesKeys.TITLE_PAYMENT_INFORMATION_SCREEN)
                     else
-                        "Hide details",
+                        getStringOverride(OverridesKeys.BUTTON_HIDE_DETAILS),
                     isEnabled = true,
                     onClick = onExpand
                 )

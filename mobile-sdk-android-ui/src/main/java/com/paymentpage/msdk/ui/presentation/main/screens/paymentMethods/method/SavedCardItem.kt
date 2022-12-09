@@ -35,6 +35,7 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 @Composable
 internal fun SavedCardItem(
     method: UIPaymentMethod.UISavedCardPayPaymentMethod,
+    isOnlyOneMethodOnScreen: Boolean = false,
 ) {
     val viewModel = LocalMainViewModel.current
     val state = viewModel.state.collectAsState().value
@@ -52,6 +53,7 @@ internal fun SavedCardItem(
     val isSaleWithToken = LocalPaymentOptions.current.paymentInfo.token != null
     ExpandablePaymentMethodItem(
         method = method,
+        isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
         fallbackIcon = painterResource(id = if (drawableId > 0) drawableId else SDKTheme.images.cardLogoResId),
     ) {
@@ -65,6 +67,7 @@ internal fun SavedCardItem(
                     modifier = Modifier.weight(1f),
                     initialValue = method.savedAccount.cardExpiry?.stringValue ?: "",
                     isDisabled = true,
+                    showRedStarForRequiredFields = false,
                     onValueChanged = { _, _ ->
                         //we can't change value and isValid always equals true
                     }
@@ -101,7 +104,10 @@ internal fun SavedCardItem(
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
                     if (isSaleWithToken)
-                        viewModel.tokenizeSavedCard(method = method)
+                        viewModel.tokenizeSavedCard(
+                            method = method,
+                            needSendCustomerFields = customerFields.needSendWithSaleRequest()
+                        )
                     else
                         viewModel.saleSavedCard(
                             method = method,

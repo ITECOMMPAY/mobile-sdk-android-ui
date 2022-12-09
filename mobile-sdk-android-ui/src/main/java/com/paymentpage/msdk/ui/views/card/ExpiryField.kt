@@ -15,6 +15,7 @@ internal fun ExpiryField(
     modifier: Modifier,
     initialValue: String? = null,
     isDisabled: Boolean = false,
+    showRedStarForRequiredFields: Boolean = true,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     CustomTextField(
@@ -41,7 +42,8 @@ internal fun ExpiryField(
         isDisabled = isDisabled,
         keyboardType = KeyboardType.Number,
         maxLength = 4,
-        isRequired = true
+        isRequired = true,
+        showRedStarForRequiredFields = showRedStarForRequiredFields
     )
 }
 
