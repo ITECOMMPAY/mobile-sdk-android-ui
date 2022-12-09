@@ -49,6 +49,7 @@ internal class CrashHandler(
                         customerId = customerId,
                         signature = signature
                     ), callback = object : ErrorEventDelegate {
+
                         override fun onError(code: ErrorCode, message: String) {
                             isDone.put(true)
                         }

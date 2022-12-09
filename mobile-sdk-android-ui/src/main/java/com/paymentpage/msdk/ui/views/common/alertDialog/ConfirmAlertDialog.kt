@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 
 @Composable
 internal fun ConfirmAlertDialog(
-    title: @Composable (() -> Unit),
+    title: @Composable (() -> Unit)? = null,
     message: @Composable (() -> Unit),
     onConfirmButtonClick: (() -> Unit),
     onDismissRequest: (() -> Unit)? = null,

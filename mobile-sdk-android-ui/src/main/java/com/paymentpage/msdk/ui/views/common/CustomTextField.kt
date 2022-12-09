@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 
@@ -103,7 +103,7 @@ fun CustomTextField(
                     if (!it.isFocused && isFocused)
                         errorMessage =
                             if (isRequired && textValue.isEmpty())
-                                getStringOverride("message_required_field")
+                                getStringOverride(OverridesKeys.MESSAGE_REQUIRED_FIELD)
                             else if (textValue.isNotEmpty())
                                 onRequestValidatorMessage?.invoke(textValue)
                             else null

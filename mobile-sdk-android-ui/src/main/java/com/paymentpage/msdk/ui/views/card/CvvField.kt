@@ -9,6 +9,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.CustomTextField
@@ -30,7 +31,7 @@ internal fun CvvField(
         onFilterValueBefore = { text -> text.filter { it.isDigit() } },
         onRequestValidatorMessage = {
             if (it.length != length)
-                getStringOverride("message_invalid_cvv")
+                getStringOverride(OverridesKeys.MESSAGE_INVALID_CVV)
             else
                 null
         },
@@ -38,7 +39,7 @@ internal fun CvvField(
             onValueChanged(value, value.length == length && isValid)
         },
         visualTransformation = PasswordVisualTransformation(),
-        label = getStringOverride("title_cvv"),
+        label = getStringOverride(OverridesKeys.TITLE_CVV),
         maxLength = length,
         isRequired = true,
         trailingIcon = {
@@ -50,10 +51,10 @@ internal fun CvvField(
     )
     if (cvvAlertDialogState) {
         ConfirmAlertDialog(
-            title = { Text(text = getStringOverride("title_about_cvv")) },
-            message = { Text(text = getStringOverride("message_about_cvv")) },
+            title = { Text(text = getStringOverride(OverridesKeys.TITLE_ABOUT_CVV)) },
+            message = { Text(text = getStringOverride(OverridesKeys.MESSAGE_ABOUT_CVV)) },
             onConfirmButtonClick = { cvvAlertDialogState = false },
-            confirmButtonText = getStringOverride("button_ok"),
+            confirmButtonText = getStringOverride(OverridesKeys.BUTTON_OK),
             onDismissRequest = { cvvAlertDialogState = false }
         )
     }

@@ -13,8 +13,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.paymentpage.msdk.ui.ActionType
 import com.paymentpage.msdk.ui.PaymentDelegate
+import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.init.InitScreen
 import com.paymentpage.msdk.ui.presentation.main.MainScreen
@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.onEach
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun RootNavigationView(
-    actionType: ActionType,
+    actionType: SDKActionType,
     navigator: Navigator,
     delegate: PaymentDelegate,
     onCancel: () -> Unit,
@@ -51,10 +51,25 @@ internal fun RootNavigationView(
         popExitTransition = { ExitTransition.None }
     ) {
         composable(route = Route.Init.getPath()) {
-            InitScreen(navigator = navigator, onCancel = onCancel, onError = onError)
+            InitScreen(
+                actionType = actionType,
+                navigator = navigator,
+                onCancel = onCancel,
+                onError = onError)
         }
         composable(route = Route.Main.getPath()) {
             MainScreen(
+                startRoute = Route.PaymentMethods,
+                actionType = actionType,
+                mainScreenNavigator = mainScreenNavigator,
+                delegate = delegate,
+                onCancel = onCancel,
+                onError = onError
+            )
+        }
+        composable(route = Route.Tokenize.getPath()) {
+            MainScreen(
+                startRoute = Route.Tokenize,
                 actionType = actionType,
                 mainScreenNavigator = mainScreenNavigator,
                 delegate = delegate,

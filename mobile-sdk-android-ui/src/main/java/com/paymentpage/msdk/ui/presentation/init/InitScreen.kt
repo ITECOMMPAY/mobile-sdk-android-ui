@@ -10,8 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
-import com.paymentpage.msdk.ui.LocalInitViewModel
-import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
@@ -28,6 +27,7 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 internal fun InitScreen(
+    actionType: SDKActionType,
     navigator: Navigator,
     onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
@@ -40,7 +40,11 @@ internal fun InitScreen(
         initViewModel.state.onEach {
             when {
                 it.error != null -> onError(it.error, true)
-                it.isInitLoaded -> navigator.navigateTo(Route.Main)
+                it.isInitLoaded -> when(PaymentActivity.paymentOptions.actionType) {
+                    SDKActionType.Sale -> navigator.navigateTo(Route.Main)
+                    SDKActionType.Tokenize -> navigator.navigateTo(Route.Tokenize)
+                    else -> navigator.navigateTo(Route.Main)
+                }
                 it.payment != null -> {
                     val paymentMethod =
                         it.paymentMethods?.find { paymentMethod -> paymentMethod.code == it.payment.method }
@@ -54,7 +58,7 @@ internal fun InitScreen(
                     } else {
                         if (it.payment.paymentMethodType == PaymentMethodType.APS && it.payment.status?.isFinal == false) {
                             navigator.navigateTo(Route.RestoreAps)
-                            mainViewModel.restoreAps(apsMethod = paymentMethod )
+                            mainViewModel.restoreAps(apsMethod = paymentMethod)
                         } else {
                             navigator.navigateTo(Route.Restore)
                             mainViewModel.restorePayment()
@@ -65,15 +69,25 @@ internal fun InitScreen(
             }
         }.collect()
     }
-    Content(onCancel = onCancel)
+    Content(
+        actionType = actionType,
+        onCancel = onCancel
+    )
 }
 
 
 @Composable
-private fun Content(onCancel: () -> Unit) {
+private fun Content(
+    actionType: SDKActionType,
+    onCancel: () -> Unit
+) {
     SDKScaffold(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-        title = stringResource(R.string.payment_methods_label),
+        title = when(actionType) {
+            SDKActionType.Sale -> stringResource(R.string.sale_label)
+            SDKActionType.Tokenize -> stringResource(R.string.tokenize_label)
+            else -> stringResource(R.string.sale_label)
+        },
         notScrollableContent = { Loading() },
         onClose = onCancel,
         footerContent = {
@@ -135,5 +149,8 @@ private fun Loading(
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun LoadingPreview() {
-    Content(onCancel = {})
+    Content(
+        actionType = SDKActionType.Sale,
+        onCancel = {}
+    )
 }

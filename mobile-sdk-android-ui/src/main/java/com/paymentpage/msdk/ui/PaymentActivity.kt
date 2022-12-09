@@ -43,13 +43,15 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
         msdkSession = MSDKCoreSession(config)
 
         if (!BuildConfig.DEBUG)
-            CrashHandler(
-                projectId = paymentOptions.paymentInfo.projectId.toLong(),
-                paymentId = paymentOptions.paymentInfo.paymentId,
-                customerId = paymentOptions.paymentInfo.customerId,
-                signature = paymentOptions.paymentInfo.signature,
-                errorInteractor = msdkSession.getErrorEventInteractor()
-            ).start(context = this)
+            with(paymentOptions.paymentInfo) {
+                CrashHandler(
+                    projectId = projectId.toLong(),
+                    paymentId = paymentId,
+                    customerId = customerId,
+                    signature = signature,
+                    errorInteractor = msdkSession.getErrorEventInteractor()
+                )
+            }.start(context = this@PaymentActivity)
 
         setContent {
             MainContent(
@@ -79,6 +81,9 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     override fun onCompleteWithSuccess(payment: Payment) {
         val dataIntent = Intent()
+        dataIntent.putExtra(
+            Constants.EXTRA_PAYMENT, payment.json
+        )
         setResult(Constants.RESULT_SUCCESS, dataIntent)
         finish()
     }
@@ -106,11 +111,11 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     companion object {
 
-        private lateinit var paymentOptions: SDKPaymentOptions
+        internal lateinit var paymentOptions: SDKPaymentOptions
 
         var mockModeType = SDKMockModeType.DISABLED
 
-        private lateinit var msdkSession: MSDKCoreSession
+        internal lateinit var msdkSession: MSDKCoreSession
         val stringResourceManager: StringResourceManager
             get() = msdkSession.getStringResourceManager()
 
@@ -120,15 +125,12 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
             wsApiHost: String,
             paymentOptions: SDKPaymentOptions,
             mockModeType: SDKMockModeType,
-        ): Intent {
-            this.paymentOptions = paymentOptions
-
-            val intent = Intent(context, PaymentActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-            intent.putExtra(Constants.EXTRA_MOCK_MODE_TYPE, mockModeType)
-            intent.putExtra(Constants.EXTRA_API_HOST, apiHost)
-            intent.putExtra(Constants.EXTRA_WS_API_HOST, wsApiHost)
-            return intent
-        }
+        ) = Intent(context, PaymentActivity::class.java).apply {
+                this@Companion.paymentOptions = paymentOptions
+                addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                putExtra(Constants.EXTRA_MOCK_MODE_TYPE, mockModeType)
+                putExtra(Constants.EXTRA_API_HOST, apiHost)
+                putExtra(Constants.EXTRA_WS_API_HOST, wsApiHost)
+            }
     }
 }

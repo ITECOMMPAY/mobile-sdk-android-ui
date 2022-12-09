@@ -19,6 +19,7 @@ sealed class Route(
     object PaymentMethods : Route(route = "paymentMethods")
     object SuccessResult : Route(route = "successResult")
     object DeclineResult : Route(route = "declineResult")
+    object Tokenize : Route(route = "tokenize")
 
     override fun toString(): String {
         return when {

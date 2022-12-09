@@ -17,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
@@ -85,13 +85,13 @@ internal fun PaymentOverview(
                 //Spacer(modifier = Modifier.height(10.dp))
                 Row {
                     Text(
-                        text = getStringOverride("title_total_price"),
+                        text = getStringOverride(OverridesKeys.TITLE_TOTAL_PRICE),
                         style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     if (currentMethod?.paymentMethod?.isVatInfo == true)
                         Text(
-                            text = getStringOverride("vat_included"),
+                            text = getStringOverride(OverridesKeys.VAT_INCLUDED),
                             style = SDKTheme.typography.s14Light.copy(color = Color.White)
                         )
                 }

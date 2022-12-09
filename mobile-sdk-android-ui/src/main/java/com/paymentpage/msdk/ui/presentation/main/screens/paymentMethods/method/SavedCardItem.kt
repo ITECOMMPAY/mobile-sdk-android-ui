@@ -13,11 +13,13 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.deleteSavedCard
 import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.tokenizeSavedCard
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
@@ -47,6 +49,7 @@ internal fun SavedCardItem(
         context.drawableResourceIdFromDrawableName(name)
     }
     var deleteCardAlertDialogState by remember { mutableStateOf(false) }
+    val isSaleWithToken = LocalPaymentOptions.current.paymentInfo.token != null
     ExpandablePaymentMethodItem(
         method = method,
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
@@ -97,40 +100,45 @@ internal fun SavedCardItem(
                 isValid = isCvvValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
-                    viewModel.saleSavedCard(
-                        method = method,
-                        needSendCustomerFields = customerFields.needSendWithSaleRequest()
-                    )
+                    if (isSaleWithToken)
+                        viewModel.tokenizeSavedCard(method = method)
+                    else
+                        viewModel.saleSavedCard(
+                            method = method,
+                            needSendCustomerFields = customerFields.needSendWithSaleRequest()
+                        )
                 }
             )
-            Spacer(modifier = Modifier.size(15.dp))
-            if (!isDeleteCardLoading)
-                Text(
-                    modifier = Modifier.clickable {
-                        deleteCardAlertDialogState = true
-                    },
-                    text = getStringOverride("button_delete"),
-                    style = SDKTheme.typography.s14Normal.copy(
-                        color = SDKTheme.colors.secondaryTextColor,
-                        textDecoration = TextDecoration.Underline
+            if (!isSaleWithToken) {
+                Spacer(modifier = Modifier.size(15.dp))
+                if (!isDeleteCardLoading)
+                    Text(
+                        modifier = Modifier.clickable {
+                            deleteCardAlertDialogState = true
+                        },
+                        text = getStringOverride(OverridesKeys.BUTTON_DELETE),
+                        style = SDKTheme.typography.s14Normal.copy(
+                            color = SDKTheme.colors.secondaryTextColor,
+                            textDecoration = TextDecoration.Underline
+                        )
                     )
-                )
-            else {
-                CircularProgressIndicator(
-                    color = SDKTheme.colors.brand
-                )
-            }
-            if (deleteCardAlertDialogState) {
-                MessageAlertDialog(
-                    message = { Text(text = getStringOverride("message_delete_card_single")) },
-                    dismissButtonText = getStringOverride("button_cancel"),
-                    onConfirmButtonClick = {
-                        deleteCardAlertDialogState = false
-                        viewModel.deleteSavedCard(method = method)
-                    },
-                    onDismissButtonClick = { deleteCardAlertDialogState = false },
-                    confirmButtonText = getStringOverride("button_delete")
-                )
+                else {
+                    CircularProgressIndicator(
+                        color = SDKTheme.colors.brand
+                    )
+                }
+                if (deleteCardAlertDialogState) {
+                    MessageAlertDialog(
+                        message = { Text(text = getStringOverride(OverridesKeys.MESSAGE_DELETE_CARD_SINGLE)) },
+                        dismissButtonText = getStringOverride(OverridesKeys.BUTTON_CANCEL),
+                        onConfirmButtonClick = {
+                            deleteCardAlertDialogState = false
+                            viewModel.deleteSavedCard(method = method)
+                        },
+                        onDismissButtonClick = { deleteCardAlertDialogState = false },
+                        confirmButtonText = getStringOverride(OverridesKeys.BUTTON_DELETE)
+                    )
+                }
             }
         }
     }

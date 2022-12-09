@@ -7,8 +7,10 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.aps.ApsSaleRequest
+import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.CardSaleTokenizeRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
+import com.paymentpage.msdk.core.domain.interactors.pay.card.tokenize.CardTokenizeRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePaySaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
@@ -45,6 +47,18 @@ internal fun MainViewModel.saleSavedCard(
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
     val request = SavedCardSaleRequest(cvv = method.cvv, accountId = method.accountId)
     if (needSendCustomerFields)
+        request.customerFields = method.customerFieldValues
+    this.payInteractor.execute(request, this)
+}
+
+//tokenize with saved card
+internal fun MainViewModel.tokenizeSavedCard(
+    method: UIPaymentMethod.UISavedCardPayPaymentMethod
+) {
+    sendEvent(MainScreenUiEvent.ShowLoading)
+    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
+    val request = CardSaleTokenizeRequest(cvv = method.cvv)
+    if (method.customerFieldValues.size <= Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS)
         request.customerFields = method.customerFieldValues
     this.payInteractor.execute(request, this)
 }
@@ -92,6 +106,25 @@ internal fun MainViewModel.saleCard(
         saveCard = method.saveCard
     )
     if (needSendCustomerFields)
+        request.customerFields = method.customerFieldValues
+    payInteractor.execute(request, this)
+}
+
+internal fun MainViewModel.tokenizeCard(
+    method: UIPaymentMethod.UITokenizeCardPayPaymentMethod
+) {
+    sendEvent(MainScreenUiEvent.ShowLoading)
+    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
+    val expiry = SdkExpiry(method.expiry)
+    val request = CardTokenizeRequest(
+        pan = method.pan,
+        expiryDate = CardDate(
+            month = expiry.month ?: 0,
+            year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
+        ),
+        cardHolder = method.cardHolder
+    )
+    if (method.customerFieldValues.size <= Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS)
         request.customerFields = method.customerFieldValues
     payInteractor.execute(request, this)
 }

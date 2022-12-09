@@ -15,13 +15,12 @@ import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.SDKCommonProvider
 import com.paymentpage.msdk.ui.SDKPaymentOptions
 import com.paymentpage.msdk.ui.base.ErrorResult
-import com.paymentpage.msdk.ui.navigation.RootNavigationView
 import com.paymentpage.msdk.ui.navigation.Navigator
+import com.paymentpage.msdk.ui.navigation.RootNavigationView
 import com.paymentpage.msdk.ui.theme.HexToJetpackColor
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.alertDialog.ErrorAlertDialog
 import com.paymentpage.msdk.ui.views.common.alertDialog.MessageAlertDialog
-import com.paymentpage.msdk.ui.views.common.alertDialog.SDKAlertDialog
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class)

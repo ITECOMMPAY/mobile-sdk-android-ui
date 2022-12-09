@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.saleCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
@@ -34,7 +35,7 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 @Composable
 internal fun NewCardItem(
-    method: UIPaymentMethod.UICardPayPaymentMethod,
+    method: UIPaymentMethod.UICardPayPaymentMethod
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
@@ -138,12 +139,12 @@ internal fun NewCardItem(
                 Spacer(modifier = Modifier.width(10.dp))
                 Column {
                     Text(
-                        getStringOverride("title_saved_cards"),
+                        getStringOverride(OverridesKeys.TITLE_SAVED_CARDS),
                         color = SDKTheme.colors.primaryTextColor,
                         fontSize = 16.sp,
                     )
                     SDKTextWithLink(
-                        overrideKey = "cof_agreements",
+                        overrideKey = OverridesKeys.COF_AGREEMENTS,
                         style = SDKTheme.typography.s12Light
                     )
                 }
@@ -152,7 +153,7 @@ internal fun NewCardItem(
             PayOrConfirmButton(
                 method = method,
                 customerFields = customerFields,
-                isValid = isCvvValid && isPanValid && isPanValid && isCardHolderValid && isExpiryValid,
+                isValid = isCvvValid && isPanValid && isCardHolderValid && isExpiryValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
                     viewModel.saleCard(
