@@ -17,21 +17,21 @@ platform :android do
         show_diff: true
     )
 
+    #parse tags to array
+    contains_command_result = sh(command: "git tag --points-at")
+    current_commit_tags_list = contains_command_result.split(/\n/)
+    first_tag = current_commit_tags_list.first
+
     current_branch_name = git_branch
     if current_branch_name == "dev"
         UI.user_error!("You are on developer branch. You can only create feature branch")
     end
     m = current_branch_name.scan(/MSDK-\d+/)
-    if m.length() == 0
-        UI.user_error!("Name of the branch is wrong. You can use like MSDK-1234...")
+    if m.length() == 0 && first_tag.nil?
+        UI.user_error!("Name of the branch is wrong or need set TAG. You can use like MSDK-1234...")
     end
-    task_name = current_branch_name.scan(/MSDK-\d+/)[0]
+    task_name = first_tag.nil? ? current_branch_name.scan(/MSDK-\d+/)[0] : first_tag
     UI.success("Task name is #{task_name}")
-
-    #parse tags to array
-    contains_command_result = sh(command: "git tag --points-at")
-    current_commit_tags_list = contains_command_result.split(/\n/)
-    first_tag = current_commit_tags_list.first
 
     last_appcenter_version = appcenter_fetch_version_number(
       api_token: ENV["APPCENTER_TOKEN"],
