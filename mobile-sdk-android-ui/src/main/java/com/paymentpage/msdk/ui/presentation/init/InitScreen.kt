@@ -1,7 +1,10 @@
 package com.paymentpage.msdk.ui.presentation.init
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -11,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.ui.*
-import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
@@ -40,7 +42,7 @@ internal fun InitScreen(
         initViewModel.state.onEach {
             when {
                 it.error != null -> onError(it.error, true)
-                it.isInitLoaded -> when(PaymentActivity.paymentOptions.actionType) {
+                it.isInitLoaded -> when (PaymentActivity.paymentOptions.actionType) {
                     SDKActionType.Sale -> navigator.navigateTo(Route.Main)
                     SDKActionType.Tokenize -> navigator.navigateTo(Route.Tokenize)
                     else -> navigator.navigateTo(Route.Main)
@@ -82,22 +84,23 @@ private fun Content(
     onCancel: () -> Unit
 ) {
     SDKScaffold(
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
         title = when(actionType) {
             SDKActionType.Sale -> stringResource(R.string.sale_label)
             SDKActionType.Tokenize -> stringResource(R.string.tokenize_label)
             else -> stringResource(R.string.sale_label)
         },
-        notScrollableContent = { Loading() },
-        onClose = onCancel,
-        footerContent = {
+        notScrollableContent = {
+            Loading()
+            Spacer(modifier = Modifier.size(5.dp))
             SDKFooter(
                 iconLogo = SDKTheme.images.sdkLogoResId,
                 poweredByText = stringResource(R.string.powered_by_label),
                 isVisiblePrivacyPolicy = false,
                 isVisibleCookiePolicy = false
             )
-        }
+            Spacer(modifier = Modifier.size(25.dp))
+        },
+        onClose = onCancel
     )
 }
 
@@ -136,13 +139,12 @@ private fun Loading(
         }
     }
     Spacer(modifier = Modifier.size(10.dp))
-    range.forEachIndexed { _, index ->
+    range.forEach { _ ->
         ShimmerAnimatedItem(
             itemHeight = 50.dp,
             borderRadius = 6.dp
         )
-        if (index != range.last)
-            Spacer(modifier = Modifier.size(10.dp))
+        Spacer(modifier = Modifier.size(10.dp))
     }
 }
 

@@ -19,8 +19,8 @@ class RecurrentViewUC : BaseViewUC<RecurrentViewIntents, RecurrentViewState>(Rec
     override suspend fun reduce(viewIntent: RecurrentViewIntents) {
         when (viewIntent) {
             is RecurrentViewIntents.ChangeField -> {
-                ProcessRepository.recurrentData = viewIntent.recurrentData
-                updateState(viewState.value.copy(recurrentData = viewIntent.recurrentData))
+                ProcessRepository.recurrentData = viewIntent.recurrentData.copy(register = true)
+                updateState(viewState.value.copy(recurrentData = ProcessRepository.recurrentData))
             }
             is RecurrentViewIntents.Exit -> {
                 ProcessRepository.recurrentData =

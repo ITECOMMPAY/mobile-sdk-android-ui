@@ -2,7 +2,6 @@ package com.paymentpage.msdk.ui.presentation.main.screens.clarificationFields
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -15,7 +14,6 @@ import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.presentation.main.sendClarificationFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
@@ -35,15 +33,11 @@ internal fun ClarificationFieldsScreen(
     val clarificationFields = viewModel.lastState.clarificationFields
     var clarificationFieldValues by remember { mutableStateOf<List<ClarificationFieldValue>?>(null) }
     var isClarificationFieldsValid by remember { mutableStateOf(false) }
+
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
         title = getStringOverride(OverridesKeys.TITLE_PAYMENT_ADDITIONAL_DATA),
-        notScrollableContent = {
-            PaymentDetailsView()
-            Spacer(modifier = Modifier.size(15.dp))
-        },
         scrollableContent = {
             PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
@@ -62,7 +56,7 @@ internal fun ClarificationFieldsScreen(
                         hint = it.defaultHint,
                         label = it.defaultLabel ?: "",
                         errorMessage = it.defaultErrorMessage,
-                        errorMessageKey = "message_general_invalid",
+                        errorMessageKey = OverridesKeys.MESSAGE_GENERAL_INVALID,
                         isRequired = true //clarification fields always are true
                     )
                 },
@@ -76,7 +70,7 @@ internal fun ClarificationFieldsScreen(
                     isClarificationFieldsValid = isValid
                 }
             )
-            Spacer(modifier = Modifier.size(22.dp))
+            Spacer(modifier = Modifier.size(16.dp))
             PayButton(
                 payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
@@ -85,9 +79,7 @@ internal fun ClarificationFieldsScreen(
             ) {
                 viewModel.sendClarificationFields(clarificationFieldValues!!)
             }
-            Spacer(modifier = Modifier.size(5.dp))
-        },
-        footerContent = {
+            Spacer(modifier = Modifier.size(16.dp))
             SDKFooter(
                 iconLogo = SDKTheme.images.sdkLogoResId,
                 poweredByText = stringResource(R.string.powered_by_label),

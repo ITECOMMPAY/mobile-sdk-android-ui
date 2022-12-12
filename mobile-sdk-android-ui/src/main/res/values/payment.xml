@@ -1,5 +1,5 @@
 <resources>
     <string name="sale_label">Payment Methods</string>
-    <string name="tokenize_label">Save card</string>
+    <string name="tokenize_label">Save Card</string>
     <string name="payment_dismiss_confirm_message">Your payment is being processed, are you sure you want to close the payment page?</string>
 </resources>

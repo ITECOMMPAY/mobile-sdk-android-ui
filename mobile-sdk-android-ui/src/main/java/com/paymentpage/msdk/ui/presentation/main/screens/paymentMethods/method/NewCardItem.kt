@@ -35,7 +35,8 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 @Composable
 internal fun NewCardItem(
-    method: UIPaymentMethod.UICardPayPaymentMethod
+    method: UIPaymentMethod.UICardPayPaymentMethod,
+    isOnlyOneMethodOnScreen: Boolean = false,
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
@@ -50,6 +51,7 @@ internal fun NewCardItem(
 
     ExpandablePaymentMethodItem(
         method = method,
+        isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
         fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
         iconColor = ColorFilter.tint(SDKTheme.colors.brand),

@@ -46,9 +46,7 @@ internal fun SDKCommonProvider(
                     paymentOptions = paymentOptions,
                 )
             }
-        )
-
-    ) {
-        content()
-    }
+        ),
+        content = content
+    )
 }

@@ -13,11 +13,13 @@ internal fun SDKButton(
     modifier: Modifier = Modifier,
     label: String,
     isEnabled: Boolean,
+    color: Color = SDKTheme.colors.brand,
     onClick: () -> Unit,
 ) {
     CustomButton(
         modifier = modifier,
         isEnabled = isEnabled,
+        color = color,
         content = {
             Text(
                 text = label,

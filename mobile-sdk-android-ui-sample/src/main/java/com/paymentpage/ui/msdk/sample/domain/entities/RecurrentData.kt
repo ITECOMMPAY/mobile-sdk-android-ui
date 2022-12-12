@@ -1,7 +1,7 @@
 package com.paymentpage.ui.msdk.sample.domain.entities
 
 data class RecurrentData(
-    val register: Boolean = true,
+    val register: Boolean? = null,
     val type: String? = null,
     val expiryDay: String? = null,
     val expiryMonth: String? = null,

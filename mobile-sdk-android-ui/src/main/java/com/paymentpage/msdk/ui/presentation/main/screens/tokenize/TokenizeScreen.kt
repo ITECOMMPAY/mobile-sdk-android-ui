@@ -1,7 +1,8 @@
 package com.paymentpage.msdk.ui.presentation.main.screens.tokenize
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -38,16 +39,15 @@ internal fun TokenizeScreen(
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
         title = getStringOverride(OverridesKeys.BUTTON_TOKENIZE),
         scrollableContent = {
             TokenizeCardPayItem(
                 method = (lastSelectedMethod as?
                         UIPaymentMethod.UITokenizeCardPayPaymentMethod)
-                    ?: tokenizePaymentMethod
+                    ?: tokenizePaymentMethod,
+                isOnlyOneMethodOnScreen = true
             )
-        },
-        footerContent = {
+            Spacer(modifier = Modifier.size(16.dp))
             SDKFooter(
                 iconLogo = SDKTheme.images.sdkLogoResId,
                 poweredByText = stringResource(R.string.powered_by_label),

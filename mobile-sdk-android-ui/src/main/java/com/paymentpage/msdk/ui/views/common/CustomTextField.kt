@@ -40,6 +40,7 @@ fun CustomTextField(
     placeholder: String? = null,
     isDisabled: Boolean = false,
     isRequired: Boolean = false,
+    showRedStarForRequiredFields: Boolean = true,
     trailingIcon: @Composable (() -> Unit)? = null,
     maxLength: Int? = null,
 ) {
@@ -126,7 +127,7 @@ fun CustomTextField(
                         },
                         maxLines = 1
                     )
-                    if (isRequired) {
+                    if (isRequired && showRedStarForRequiredFields) {
                         Text(
                             text = "*",
                             color = SDKTheme.colors.errorTextColor,

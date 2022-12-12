@@ -41,6 +41,7 @@ import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableNa
 @Composable
 internal fun ExpandablePaymentMethodItem(
     method: UIPaymentMethod,
+    isOnlyOneMethodOnScreen: Boolean = false,
     fallbackIcon: Painter,
     iconColor: ColorFilter? = null,
     isLocalResourceIcon: Boolean = method.logoUrl.isNullOrEmpty() && method.paymentMethod.iconUrl.isNullOrEmpty(),
@@ -74,19 +75,24 @@ internal fun ExpandablePaymentMethodItem(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Row(modifier = Modifier
-                .clickable(
-                    indication = null, //отключаем анимацию при клике
-                    interactionSource = remember { MutableInteractionSource() },
-                    onClick = {
-                        if (currentMethod?.index != method.index)
-                            mainViewModel.setCurrentMethod(method)
-                        else
-                            mainViewModel.setCurrentMethod(null)
-                    }
-                )
-                .height(50.dp)
-                .padding(15.dp),
+            Row(
+                modifier =
+                if (!isOnlyOneMethodOnScreen) Modifier
+                    .clickable(
+                        indication = null, //отключаем анимацию при клике
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = {
+                            if (currentMethod?.index != method.index)
+                                mainViewModel.setCurrentMethod(method)
+                            else
+                                mainViewModel.setCurrentMethod(null)
+                        }
+                    )
+                    .height(50.dp)
+                    .padding(15.dp)
+                else Modifier
+                    .height(50.dp)
+                    .padding(15.dp),
                 verticalAlignment = Alignment.CenterVertically) {
                 if (!isLocalResourceIcon) {
                     AsyncImage(
@@ -96,7 +102,7 @@ internal fun ExpandablePaymentMethodItem(
                             .diskCachePolicy(CachePolicy.ENABLED)
                             .build(),
                         fallback = fallbackIcon,
-                        contentDescription = "",
+                        contentDescription = null,
                         contentScale = ContentScale.Inside,
                         placeholder = fallbackIcon,
                         modifier = Modifier.size(height = 20.dp, width = 50.dp),
@@ -113,7 +119,11 @@ internal fun ExpandablePaymentMethodItem(
                         painter = if (drawableId > 0) painterResource(id = drawableId) else fallbackIcon,
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
-                        colorFilter = if (prefixNameResourceIcon == "aps" && drawableId == 0) ColorFilter.tint(color = SDKTheme.colors.brand) else iconColor,
+                        colorFilter =
+                        if (prefixNameResourceIcon == "aps" && drawableId == 0)
+                            ColorFilter.tint(color = SDKTheme.colors.brand)
+                        else
+                            iconColor
                     )
                 }
                 Row(
@@ -128,20 +138,27 @@ internal fun ExpandablePaymentMethodItem(
                         style = SDKTheme.typography.s14Normal
                     )
                     Spacer(modifier = Modifier.size(10.dp))
-                    Image(
-                        modifier = Modifier
-                            .rotate(rotationState),
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        colorFilter = ColorFilter.tint(SDKTheme.colors.navigationIconColor),
-                        contentDescription = "",
-                    )
+                    if (!isOnlyOneMethodOnScreen) {
+                        Image(
+                            modifier = Modifier
+                                .rotate(rotationState),
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            colorFilter = ColorFilter.tint(SDKTheme.colors.navigationIconColor),
+                            contentDescription = null,
+                        )
+                    }
                 }
             }
             AnimatedVisibility(visible = currentMethod?.index == method.index) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 15.dp, end = 15.dp, top = 10.dp, bottom = 20.dp),
+                        .padding(
+                            start = 15.dp,
+                            end = 15.dp,
+                            top = if (!isOnlyOneMethodOnScreen) 10.dp else 0.dp,
+                            bottom = 20.dp
+                        ),
                     content = content
                 )
             }

@@ -17,10 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
 
 @Composable
 internal fun SDKFooter(
@@ -32,8 +30,7 @@ internal fun SDKFooter(
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp),
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (isVisiblePrivacyPolicy) {
@@ -67,7 +64,8 @@ internal fun SDKFooter(
             )
         }
     }
-    Spacer(modifier = Modifier.size(20.dp))
+    if (isVisibleCookiePolicy || isVisiblePrivacyPolicy)
+        Spacer(modifier = Modifier.size(15.dp))
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
@@ -83,10 +81,9 @@ internal fun SDKFooter(
         Text(text = " ")
         Image(
             painter = painterResource(id = iconLogo),
-            contentDescription = ""
+            contentDescription = null
         )
     }
-
 }
 
 @Composable

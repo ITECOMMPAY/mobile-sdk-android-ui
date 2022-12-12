@@ -27,7 +27,7 @@ import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.SDKMockModeType
 import com.paymentpage.msdk.ui.presentation.main.threeDSecureHandled
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.views.common.SDKScaffold
+import com.paymentpage.msdk.ui.views.common.SDKScaffoldWebView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -40,18 +40,12 @@ internal fun ThreeDSecureScreen(
 
     BackHandler(true) { onCancel() }
 
-    SDKScaffold(
+    SDKScaffoldWebView(
         notScrollableContent = {
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(2.dp)
-                .background(SDKTheme.colors.panelBackgroundColor))
             if (acsPage != null) {
                 AcsPageView(acsPage = acsPage)
             }
         },
-        scrollableContent = {},
-        footerContent = {},
         onClose = { onCancel() }
     )
 }

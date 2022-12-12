@@ -1,12 +1,9 @@
 package com.paymentpage.msdk.ui.views.common
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,27 +20,22 @@ internal fun CustomButton(
     color: Color = SDKTheme.colors.brand,
     onClick: () -> Unit,
 ) {
-    Box(
-        modifier = Modifier
-            .wrapContentSize()
-            .background(SDKTheme.colors.backgroundColor)
-    ) {
-        Button(
-            onClick = onClick,
-            content = {
-                content()
-            },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = color,
-                disabledBackgroundColor = color.copy(alpha = 0.4f)
-            ),
-            shape = SDKTheme.shapes.radius6,
-            modifier = modifier
-                .height(LocalDimensions.current.buttonHeight)
-                .fillMaxWidth(),
-            enabled = isEnabled,
-        )
-    }
+    OutlinedButton(
+        modifier = modifier
+            .height(LocalDimensions.current.buttonHeight)
+            .fillMaxWidth(),
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = color,
+            disabledBackgroundColor = color.copy(alpha = 0.4f)
+        ),
+        shape = SDKTheme.shapes.radius6,
+        border = null,
+        enabled = isEnabled,
+        content = {
+            content()
+        }
+    )
 }
 
 @Composable

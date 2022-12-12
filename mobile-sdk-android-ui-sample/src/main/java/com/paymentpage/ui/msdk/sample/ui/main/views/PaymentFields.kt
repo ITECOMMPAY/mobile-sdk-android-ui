@@ -37,7 +37,9 @@ internal fun PaymentFields(
         onValueChange = {
             intentListener(
                 MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(paymentId = it)))
+                    paymentData = paymentData.copy(paymentId = it)
+                )
+            )
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Payment Id") },
@@ -46,7 +48,8 @@ internal fun PaymentFields(
                 IconButton(
                     onClick = {
                         val clipboardManager = context.getSystemService(
-                            ComponentActivity.CLIPBOARD_SERVICE) as ClipboardManager
+                            ComponentActivity.CLIPBOARD_SERVICE
+                        ) as ClipboardManager
                         val clipData = ClipData.newPlainText("PaymentId", paymentData.paymentId)
                         clipboardManager.setPrimaryClip(clipData)
                         Toast.makeText(context, "PaymentId in clipboard", Toast.LENGTH_SHORT).show()
@@ -58,8 +61,13 @@ internal fun PaymentFields(
                     onClick = {
                         intentListener(
                             MainViewIntents.ChangeField(
-                            paymentData = paymentData.copy(paymentId = "sdk_sample_ui_${UUID.randomUUID().toString().take(8)}")
-                        ))
+                                paymentData = paymentData.copy(
+                                    paymentId = "sdk_sample_ui_${
+                                        UUID.randomUUID().toString().take(8)
+                                    }"
+                                )
+                            )
+                        )
                     }
                 ) {
                     Icon(imageVector = Icons.Rounded.Refresh, contentDescription = null)
@@ -69,16 +77,26 @@ internal fun PaymentFields(
     )
     Spacer(modifier = Modifier.size(padding))
     OutlinedTextField(
-        value = paymentData.paymentAmount.toString(),
+        value = if (paymentData.paymentAmount.toString() == "-1")
+            ""
+        else
+            paymentData.paymentAmount.toString(),
         onValueChange = {
-            intentListener(MainViewIntents.ChangeField(
-                paymentData =
-                paymentData.copy(paymentAmount = it.filter { symbol ->
-                    symbol.isDigit()
-                }.toLongOrNull() ?: PaymentData().paymentAmount)))
+            intentListener(
+                MainViewIntents.ChangeField(
+                    paymentData =
+                    paymentData.copy(
+                        paymentAmount = it.filter { symbol ->
+                            symbol.isDigit()
+                        }.toLongOrNull() ?: -1
+                    )
+                )
+            )
         },
         modifier = Modifier.fillMaxWidth(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number
+        ),
         label = { Text(text = "Payment Amount") }
     )
     Spacer(modifier = Modifier.size(padding))
@@ -87,7 +105,11 @@ internal fun PaymentFields(
         onValueChange = {
             intentListener(
                 MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(paymentCurrency = it.uppercase())))
+                    paymentData = paymentData.copy(
+                        paymentCurrency = it.uppercase()
+                    )
+                )
+            )
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Payment Currency") }
@@ -98,7 +120,11 @@ internal fun PaymentFields(
         onValueChange = { changingString ->
             intentListener(
                 MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(paymentDescription = changingString.ifBlank { null })))
+                    paymentData = paymentData.copy(
+                        paymentDescription = changingString.ifBlank { null }
+                    )
+                )
+            )
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Payment Description") }
@@ -109,7 +135,11 @@ internal fun PaymentFields(
         onValueChange = { changingString ->
             intentListener(
                 MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(customerId = changingString.ifBlank { null })))
+                    paymentData = paymentData.copy(
+                        customerId = changingString.ifBlank { null }
+                    )
+                )
+            )
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Customer Id") }
@@ -120,7 +150,11 @@ internal fun PaymentFields(
         onValueChange = { changingString ->
             intentListener(
                 MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(languageCode = changingString.ifBlank { null })))
+                    paymentData = paymentData.copy(
+                        languageCode = changingString.ifBlank { null }
+                    )
+                )
+            )
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Language code") }
@@ -131,7 +165,11 @@ internal fun PaymentFields(
         onValueChange = { changingString ->
             intentListener(
                 MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(forcePaymentMethod = changingString.ifBlank { null })))
+                    paymentData = paymentData.copy(
+                        forcePaymentMethod = changingString.ifBlank { null }
+                    )
+                )
+            )
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Force payment method") }
@@ -142,7 +180,11 @@ internal fun PaymentFields(
         onValueChange = { changingString ->
             intentListener(
                 MainViewIntents.ChangeField(
-                    paymentData = paymentData.copy(token = changingString.ifBlank { null })))
+                    paymentData = paymentData.copy(
+                        token = changingString.ifBlank { null }
+                    )
+                )
+            )
         },
         modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Token") }

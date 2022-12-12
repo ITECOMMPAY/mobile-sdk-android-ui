@@ -3,7 +3,6 @@ package com.paymentpage.msdk.ui.presentation.main.screens.customerFields
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -12,7 +11,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsView
 import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -36,14 +34,7 @@ internal fun CustomerFieldsScreen(
     BackHandler(true) { onBack() }
 
     SDKScaffold(
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
         title = getStringOverride(OverridesKeys.TITLE_PAYMENT_ADDITIONAL_DATA),
-        notScrollableContent = {
-            if (actionType == SDKActionType.Sale) {
-                PaymentDetailsView()
-                Spacer(modifier = Modifier.size(15.dp))
-            }
-        },
         scrollableContent = {
             if (actionType == SDKActionType.Sale) {
                 PaymentOverview()
@@ -62,23 +53,21 @@ internal fun CustomerFieldsScreen(
                     isCustomerFieldsValid = isValid
                     method?.customerFieldValues = fields
                     method?.isCustomerFieldsValid = isValid
-
                 }
             )
-            Spacer(modifier = Modifier.size(22.dp))
+            Spacer(modifier = Modifier.size(16.dp))
             CustomerFieldsButton(
                 actionType = actionType,
                 isEnabled = isCustomerFieldsValid
             ) {
                 viewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
             }
-            Spacer(modifier = Modifier.size(5.dp))
-        },
-        footerContent = {
+            Spacer(modifier = Modifier.size(16.dp))
             SDKFooter(
                 iconLogo = SDKTheme.images.sdkLogoResId,
                 poweredByText = stringResource(R.string.powered_by_label),
             )
+            Spacer(modifier = Modifier.size(25.dp))
         },
         onClose = { onCancel() },
         onBack = { onBack() }

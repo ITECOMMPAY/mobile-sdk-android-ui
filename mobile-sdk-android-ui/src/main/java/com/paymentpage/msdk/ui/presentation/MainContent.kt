@@ -1,7 +1,6 @@
 package com.paymentpage.msdk.ui.presentation
 
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -64,7 +63,7 @@ internal fun MainContent(
             drawerState = drawerState,
             drawerBackgroundColor = Color.Transparent,
             gesturesEnabled = false,
-            drawerShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+            drawerElevation = 0.dp
         ) {
             when {
                 showDismissDialog -> {

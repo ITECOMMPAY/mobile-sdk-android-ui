@@ -13,10 +13,14 @@ internal object OverridesKeys {
     internal const val BUTTON_CONFIRMATION = "button_confirmation"
     internal const val BUTTON_TOKENIZE = "button_tokenize"
     internal const val BUTTON_PROCEED = "button_proceed"
+    internal const val BUTTON_DONE = "button_done"
+    internal const val BUTTON_CLOSE = "button_close"
+    internal const val BUTTON_HIDE_DETAILS = "button_hide_details"
 
     //Loading screen
     internal const val TITLE_LOADING_SCREEN = "title_loading_screen"
     internal const val SUB_TITLE_LOADING_SCREEN = "sub_title_loading_screen"
+    internal const val TITLE_CANCEL_PAYMENT = "title_cancel_payment"
 
     //Result tokenize screen
     internal const val TITLE_RESULT_SUCCES_TOKENIZE = "title_result_succes_tokenize"
@@ -48,6 +52,7 @@ internal object OverridesKeys {
 
     //Additional fields
     internal const val MESSAGE_REQUIRED_FIELD = "message_required_field"
+    internal const val MESSAGE_GENERAL_INVALID = "message_general_invalid"
     internal const val TITLE_PAYMENT_ADDITIONAL_DATA = "title_payment_additional_data"
     internal const val TITLE_PAYMENT_ADDITIONAL_DATA_DISCLAIMER = "title_payment_additional_data_disclaimer"
 
