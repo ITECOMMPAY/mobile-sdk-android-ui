@@ -1,5 +1,6 @@
 package com.paymentpage.msdk.ui.views.common
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.ButtonDefaults
@@ -15,7 +16,7 @@ import com.paymentpage.msdk.ui.views.button.PayButton
 @Composable
 internal fun CustomButton(
     modifier: Modifier = Modifier,
-    content: @Composable (() -> Unit),
+    content: @Composable (RowScope.() -> Unit),
     isEnabled: Boolean,
     color: Color = SDKTheme.colors.brand,
     onClick: () -> Unit,
@@ -32,9 +33,7 @@ internal fun CustomButton(
         shape = SDKTheme.shapes.radius6,
         border = null,
         enabled = isEnabled,
-        content = {
-            content()
-        }
+        content = content
     )
 }
 

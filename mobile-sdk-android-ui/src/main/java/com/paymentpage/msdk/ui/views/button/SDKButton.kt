@@ -4,6 +4,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomButton
@@ -12,6 +13,7 @@ import com.paymentpage.msdk.ui.views.common.CustomButton
 internal fun SDKButton(
     modifier: Modifier = Modifier,
     label: String,
+    textStyle: TextStyle = SDKTheme.typography.s16Normal.copy(color = Color.White),
     isEnabled: Boolean,
     color: Color = SDKTheme.colors.brand,
     onClick: () -> Unit,
@@ -23,7 +25,7 @@ internal fun SDKButton(
         content = {
             Text(
                 text = label,
-                style = SDKTheme.typography.s16Normal.copy(color = Color.White)
+                style = textStyle
             )
         },
         onClick = onClick

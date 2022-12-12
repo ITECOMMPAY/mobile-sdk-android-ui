@@ -109,12 +109,6 @@ private fun Loading(
     range: IntRange = (1..5),
 ) {
     ShimmerAnimatedItem(
-        itemHeight = 20.dp,
-        itemWidth = 125.dp,
-        borderRadius = 4.dp
-    )
-    Spacer(modifier = Modifier.size(10.dp))
-    ShimmerAnimatedItem(
         itemHeight = 150.dp,
         borderRadius = 12.dp
     )

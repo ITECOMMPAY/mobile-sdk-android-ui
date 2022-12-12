@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +39,8 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
         }
     }
 
+    val isPreview = LocalInspectionMode.current
+
     BackHandler(true) { }
 
     SDKScaffold(
@@ -53,7 +57,7 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                     visibleState = state,
                     enter = fadeIn(
                         animationSpec = tween(
-                            durationMillis = 1000
+                            durationMillis = 500
                         )
                     )
                 ) {
@@ -63,10 +67,13 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                 VerticalSlideFadeAnimation(
                     visibleState = state,
                     duration = 500,
-                    delay = 1000
+                    delay = 500
                 ) {
                     Text(
-                        text = getStringOverride(OverridesKeys.TITLE_LOADING_SCREEN),
+                        text = if (isPreview)
+                            "Just a moment"
+                        else
+                            getStringOverride(OverridesKeys.TITLE_LOADING_SCREEN),
                         style = SDKTheme.typography.s24Bold,
                         textAlign = TextAlign.Center
                     )
@@ -75,11 +82,14 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                 VerticalSlideFadeAnimation(
                     visibleState = state,
                     duration = 500,
-                    delay = 2000,
+                    delay = 800,
                     initialOffsetYRatio = 0.5f
                 ) {
                     Text(
-                        text = getStringOverride(OverridesKeys.SUB_TITLE_LOADING_SCREEN),
+                        text = if (isPreview)
+                            "Checking your operation status..."
+                        else
+                            getStringOverride(OverridesKeys.SUB_TITLE_LOADING_SCREEN),
                         style = SDKTheme.typography.s14Normal,
                         textAlign = TextAlign.Center
                     )
@@ -89,7 +99,7 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                     visibleState = state,
                     enter = fadeIn(
                         animationSpec = tween(
-                            delayMillis = 3000,
+                            delayMillis = 1300,
                             durationMillis = 500
                         )
                     )
@@ -100,7 +110,12 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                             textAlign = TextAlign.Center,
                             textDecoration = TextDecoration.Underline
                         ),
-                        text = AnnotatedString(getStringOverride(OverridesKeys.TITLE_CANCEL_PAYMENT)),
+                        text = AnnotatedString(
+                            if (isPreview)
+                                "Cancel Payment"
+                            else
+                                getStringOverride(OverridesKeys.TITLE_CANCEL_PAYMENT)
+                        ),
                         onClick = {
                             onCancel()
                         }
@@ -108,12 +123,19 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                 }
                 Spacer(modifier = Modifier.size(20.dp))
             }
-            SDKFooter(
-                iconLogo = SDKTheme.images.sdkLogoResId,
-                poweredByText = stringResource(R.string.powered_by_label),
-                isVisibleCookiePolicy = false,
-                isVisiblePrivacyPolicy = false
-            )
+            if (isPreview)
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Powered by",
+                    style = TextStyle(textAlign = TextAlign.Center)
+                )
+            else
+                SDKFooter(
+                    iconLogo = SDKTheme.images.sdkLogoResId,
+                    poweredByText = stringResource(R.string.powered_by_label),
+                    isVisibleCookiePolicy = false,
+                    isVisiblePrivacyPolicy = false
+                )
             Spacer(modifier = Modifier.size(25.dp))
         },
         onClose = onCancel,

@@ -10,7 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
@@ -61,22 +60,14 @@ internal fun ExpandablePaymentOverview(
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
 
     val gradient = arrayOf(
-        0.0f to SDKTheme.colors.brand,
-        0.3125f to SDKTheme.colors.brand,
-        0.3125f to SDKTheme.colors.brand.copy(alpha = 0.97f),
-        0.3750f to SDKTheme.colors.brand.copy(alpha = 0.97f),
-        0.3750f to SDKTheme.colors.brand.copy(alpha = 0.94f),
-        0.4375f to SDKTheme.colors.brand.copy(alpha = 0.94f),
-        0.4375f to SDKTheme.colors.brand.copy(alpha = 0.91f),
-        0.5000f to SDKTheme.colors.brand,
-        1f to SDKTheme.colors.brand
+        0.0f to Color(0xFF0D5189),
+        1f to Color(0xFF2582CE),
     )
     Box(
         modifier = Modifier
             .background(
-                brush = Brush.sweepGradient(
-                    colorStops = gradient,
-                    center = Offset(Float.POSITIVE_INFINITY, 0.0f),
+                brush = Brush.linearGradient(
+                    colorStops = gradient
                 ),
                 shape = SDKTheme.shapes.radius12
             )
@@ -150,7 +141,9 @@ internal fun ExpandablePaymentOverview(
                     )
                 }
                 SDKButton(
+                    modifier = Modifier.height(33.dp),
                     color = Color.White.copy(alpha = 0.1f),
+                    textStyle = SDKTheme.typography.s14Normal.copy(color = Color.White),
                     label = if (!isExpanded)
                         getStringOverride(OverridesKeys.TITLE_PAYMENT_INFORMATION_SCREEN)
                     else
