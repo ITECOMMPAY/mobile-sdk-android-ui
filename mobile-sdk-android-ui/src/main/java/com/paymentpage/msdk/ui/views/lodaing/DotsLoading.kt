@@ -5,63 +5,66 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.theme.SDKTheme
-
-val dotSize = 24.dp // made it bigger for demo
-val delayUnit = 300 // you can change delay to change animation speed
+import kotlinx.coroutines.delay
 
 @Composable
-fun DotsLoading() {
-    val maxOffset = 24f
+fun DotsLoading(
+    modifier: Modifier = Modifier,
+    circleSize: Dp = 12.dp,
+    circleColor: Color = SDKTheme.colors.brand,
+    spaceBetween: Dp = 10.dp,
+    travelDistance: Dp = 24.dp
+) {
+    val circles = listOf(
+        remember { Animatable(initialValue = 0f) },
+        remember { Animatable(initialValue = 0f) },
+        remember { Animatable(initialValue = 0f) }
+    )
 
-    @Composable
-    fun Dot(
-        offset: Float
-    ) = Spacer(
-        Modifier
-            .size(dotSize)
-            .offset(y = -offset.dp)
-            .background(
-                color = SDKTheme.colors.brand,
-                shape = CircleShape
+    circles.forEachIndexed { index, animatable ->
+        LaunchedEffect(key1 = animatable) {
+            delay(index * 200L)
+            animatable.animateTo(
+                targetValue = 1f,
+                animationSpec = infiniteRepeatable(
+                    animation = keyframes {
+                        durationMillis = 700
+                        0.0f at 0 with EaseInOutCubic
+                    },
+                    repeatMode = RepeatMode.Reverse
+                )
             )
-    )
-
-    val infiniteTransition = rememberInfiniteTransition()
-
-    @Composable
-    fun animateOffsetWithDelay(delay: Int) = infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 0f,
-        animationSpec = infiniteRepeatable(
-            animation = keyframes {
-                durationMillis = delayUnit * 4
-                0f at delay with LinearEasing
-                maxOffset at delay + delayUnit with LinearEasing
-                0f at delay + delayUnit * 2
-            }
-        )
-    )
-
-    val offset1 by animateOffsetWithDelay(0)
-    val offset2 by animateOffsetWithDelay(delayUnit)
-    val offset3 by animateOffsetWithDelay(delayUnit * 2)
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(top = maxOffset.dp)
-    ) {
-        val spaceSize = 15.dp
-
-        Dot(offset1)
-        Spacer(Modifier.width(spaceSize))
-        Dot(offset2)
-        Spacer(Modifier.width(spaceSize))
-        Dot(offset3)
+        }
     }
+
+    val circleValues = circles.map { it.value }
+    val distance = with(LocalDensity.current) { travelDistance.toPx() }
+    val lastCircle = circleValues.size - 1
+
+    Row(modifier = modifier.padding(top = travelDistance)) {
+        circleValues.forEachIndexed { index, value ->
+            Box(modifier = Modifier
+                .size(circleSize)
+                .graphicsLayer { translationY = -value * distance }
+                .background(color = circleColor, shape = CircleShape)
+            )
+            if (index != lastCircle) Spacer(modifier = Modifier.width(spaceBetween))
+        }
+    }
+}
+
+@Composable
+@Preview
+private fun DotsLoadingPreview() {
+    DotsLoading()
 }

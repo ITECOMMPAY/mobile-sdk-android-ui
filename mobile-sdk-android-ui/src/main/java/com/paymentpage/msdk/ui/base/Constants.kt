@@ -1,7 +1,7 @@
 package com.paymentpage.msdk.ui.base
 
 object Constants {
-    const val RESULT_SUCCESS = 0 //when payment completed successfully
+    const val RESULT_SUCCESS = 1 //when payment completed successfully
     const val RESULT_DECLINE = 100 //when payment declined
     const val RESULT_CANCELLED = 200 //when user canceled payment flow
 
@@ -18,4 +18,6 @@ object Constants {
     internal const val COUNT_OF_VISIBLE_CUSTOMER_FIELDS = 3
     internal const val GOOGLE_PAY_ACTIVITY_REQUEST_CODE = 991
 
+    internal const val AMEX_CARD_TYPE_NAME = "amex"
+    internal const val DINERS_CLUB_CARD_TYPE_NAME = "diners_club"
 }

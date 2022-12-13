@@ -11,6 +11,7 @@ import com.paymentpage.msdk.ui.utils.viewModelFactory
 
 internal val LocalPaymentOptions =
     compositionLocalOf<SDKPaymentOptions> { error("No PaymentOptions found!") }
+
 internal val LocalMsdkSession =
     compositionLocalOf<MSDKCoreSession> { error("No MSDKCoreSession found!") }
 
@@ -34,8 +35,7 @@ internal fun SDKCommonProvider(
             factory = viewModelFactory {
                 MainViewModel(
                     cardRemoveInteractor = msdkSession.getCardRemoveInteractor(),
-                    payInteractor = msdkSession.getPayInteractor(),
-                    paymentOptions = paymentOptions,
+                    payInteractor = msdkSession.getPayInteractor()
                 )
             }
         ),
@@ -46,9 +46,7 @@ internal fun SDKCommonProvider(
                     paymentOptions = paymentOptions,
                 )
             }
-        )
-
-    ) {
-        content()
-    }
+        ),
+        content = content
+    )
 }

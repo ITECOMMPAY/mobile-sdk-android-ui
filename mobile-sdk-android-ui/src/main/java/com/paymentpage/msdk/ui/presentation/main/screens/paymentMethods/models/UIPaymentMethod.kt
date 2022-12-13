@@ -4,6 +4,8 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
+import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 
 
 internal sealed class UIPaymentMethod(
@@ -42,6 +44,20 @@ internal sealed class UIPaymentMethod(
         var saveCard: Boolean = false
 
         var isValidCvv: Boolean = false
+        var isValidPan: Boolean = false
+        var isValidExpiry: Boolean = false
+        var isValidCardHolder: Boolean = false
+    }
+
+    class UITokenizeCardPayPaymentMethod(
+        index: Int = 0,
+        title: String = getStringOverride(OverridesKeys.BUTTON_ADD_NEW_CARD),
+        paymentMethod: PaymentMethod
+    ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
+        var pan: String = ""
+        var expiry: String = ""
+        var cardHolder: String = ""
+
         var isValidPan: Boolean = false
         var isValidExpiry: Boolean = false
         var isValidCardHolder: Boolean = false

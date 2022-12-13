@@ -15,13 +15,16 @@ import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.presentation.MainContent
 
-class PaymentActivity : ComponentActivity(), PaymentDelegate {
+internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!BuildConfig.DEBUG)
-            CrashHandler.init(this)
-        mockModeType = intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
+
+        val apiHost = intent.getStringExtra(Constants.EXTRA_API_HOST) ?: ""
+        val wsApiHost = intent.getStringExtra(Constants.EXTRA_WS_API_HOST) ?: ""
+
+        mockModeType =
+            intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
         val config = when {
             mockModeType == SDKMockModeType.SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow()
             mockModeType == SDKMockModeType.DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow()
@@ -29,10 +32,26 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
                 intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
                 intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
             )
-            else -> MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
+            else -> MSDKCoreSessionConfig.release(apiHost, wsApiHost)
         }
-        config.userAgentData = UserAgentData(applicationInfo = ApplicationInfo(version = BuildConfig.SDK_VERSION_NAME))
+        config.userAgentData =
+            UserAgentData(
+                applicationInfo = ApplicationInfo(
+                    version = BuildConfig.SDK_VERSION_NAME
+                )
+            )
         msdkSession = MSDKCoreSession(config)
+
+        if (!BuildConfig.DEBUG)
+            with(paymentOptions.paymentInfo) {
+                CrashHandler(
+                    projectId = projectId.toLong(),
+                    paymentId = paymentId,
+                    customerId = customerId,
+                    signature = signature,
+                    errorInteractor = msdkSession.getErrorEventInteractor()
+                )
+            }.start(context = this@PaymentActivity)
 
         setContent {
             MainContent(
@@ -62,6 +81,9 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     override fun onCompleteWithSuccess(payment: Payment) {
         val dataIntent = Intent()
+        dataIntent.putExtra(
+            Constants.EXTRA_PAYMENT, payment.json
+        )
         setResult(Constants.RESULT_SUCCESS, dataIntent)
         finish()
     }
@@ -89,25 +111,26 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     companion object {
 
-        private lateinit var paymentOptions: SDKPaymentOptions
+        internal lateinit var paymentOptions: SDKPaymentOptions
 
         var mockModeType = SDKMockModeType.DISABLED
 
-        private lateinit var msdkSession: MSDKCoreSession
+        internal lateinit var msdkSession: MSDKCoreSession
         val stringResourceManager: StringResourceManager
             get() = msdkSession.getStringResourceManager()
 
         fun buildPaymentIntent(
             context: Context,
+            apiHost: String,
+            wsApiHost: String,
             paymentOptions: SDKPaymentOptions,
             mockModeType: SDKMockModeType,
-        ): Intent {
-            this.paymentOptions = paymentOptions
-
-            val intent = Intent(context, PaymentActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-            intent.putExtra(Constants.EXTRA_MOCK_MODE_TYPE, mockModeType)
-            return intent
-        }
+        ) = Intent(context, PaymentActivity::class.java).apply {
+                this@Companion.paymentOptions = paymentOptions
+                addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                putExtra(Constants.EXTRA_MOCK_MODE_TYPE, mockModeType)
+                putExtra(Constants.EXTRA_API_HOST, apiHost)
+                putExtra(Constants.EXTRA_WS_API_HOST, wsApiHost)
+            }
     }
 }

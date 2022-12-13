@@ -2,6 +2,7 @@ package com.paymentpage.msdk.ui.views.card.panField
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -12,9 +13,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCard
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.core.validators.custom.PanValidator
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.card.formatAmex
 import com.paymentpage.msdk.ui.utils.card.formatDinnersClub
@@ -28,11 +30,11 @@ internal fun PanField(
     modifier: Modifier = Modifier,
     initialValue: String? = null,
     paymentMethod: PaymentMethod,
-    onPaymentMethodCardTypeChange: ((PaymentMethodCardType?) -> Unit)? = null,
+    onPaymentMethodCardTypeChange: ((String?) -> Unit)? = null,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     var card by remember { mutableStateOf<PaymentMethodCard?>(null) }
-    var isFocused by remember { mutableStateOf(false) }
+    println(card?.maxLength)
     var currentPanFieldValue by remember { mutableStateOf(initialValue) }
     CustomTextField(
         initialValue = initialValue,
@@ -40,39 +42,36 @@ internal fun PanField(
         modifier = modifier,
         keyboardType = KeyboardType.Number,
         onFilterValueBefore = { value -> value.filter { it.isDigit() } },
-        maxLength = 19,
+        maxLength = card?.maxLength ?: 19,
         onValueChanged = { value, isValid ->
             onValueChanged(value, PanValidator().isValid(value) && isValid)
             currentPanFieldValue = value
         },
         onRequestValidatorMessage = {
             if (!PanValidator().isValid(it))
-                getStringOverride("message_about_card_number")
-            else if (!paymentMethod.availableCardTypes.contains(card?.type)) {
+                getStringOverride(OverridesKeys.MESSAGE_ABOUT_CARD_NUMBER)
+            else if (!paymentMethod.availableCardTypes.contains(card?.code)) {
                 val regex = Regex("\\[\\[.+]]")
                 val message = regex.replace(
-                    getStringOverride("message_wrong_card_type"),
-                    card?.type?.value?.uppercase() ?: ""
+                    getStringOverride(OverridesKeys.MESSAGE_WRONG_CARD_TYPE),
+                    card?.code?.uppercase() ?: ""
                 )
                 message
             } else null
         },
         visualTransformation = { number ->
             val trimmedCardNumber = number.text.replace(" ", "")
-            card = paymentMethod.cardTypesManager.search(trimmedCardNumber)
+            card = paymentMethod.cardTypesManager?.search(trimmedCardNumber)
             if (onPaymentMethodCardTypeChange != null) {
-                onPaymentMethodCardTypeChange(card?.type)
+                onPaymentMethodCardTypeChange(card?.code)
             }
-            when (card?.type) {
-                PaymentMethodCardType.AMEX -> formatAmex(number)
-                PaymentMethodCardType.DINERS_CLUB -> formatDinnersClub(number)
+            when (card?.code) {
+                Constants.AMEX_CARD_TYPE_NAME -> formatAmex(number)
+                Constants.DINERS_CLUB_CARD_TYPE_NAME -> formatDinnersClub(number)
                 else -> formatOtherCardNumbers(number)
             }
         },
-        label = getStringOverride("title_card_number"),
-        onFocusChanged = { focusValue ->
-            isFocused = focusValue
-        },
+        label = getStringOverride(OverridesKeys.TITLE_CARD_NUMBER),
         trailingIcon = {
             val context = LocalContext.current
             var startIndex by remember { mutableStateOf(0) }
@@ -83,7 +82,9 @@ internal fun PanField(
                         context.drawableResourceIdFromDrawableName(name)
                     }
                     Image(
-                        modifier = Modifier.padding(15.dp),
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .size(25.dp),
                         painter = painterResource(id = if (drawableId > 0) drawableId else R.drawable.card_logo),
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
@@ -101,11 +102,13 @@ internal fun PanField(
                         )
                     else
                         Image(
-                            modifier = Modifier.padding(15.dp),
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .size(25.dp),
                             painter = painterResource(id = R.drawable.card_logo),
                             contentDescription = null,
                             contentScale = ContentScale.Fit,
-                            colorFilter =  ColorFilter.tint(SDKTheme.colors.brand)
+                            colorFilter = ColorFilter.tint(SDKTheme.colors.brand)
                         )
                 }
             }

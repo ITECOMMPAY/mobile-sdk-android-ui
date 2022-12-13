@@ -13,10 +13,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCardType
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.saleCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
@@ -24,6 +23,7 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.U
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
+import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
@@ -36,6 +36,7 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 @Composable
 internal fun NewCardItem(
     method: UIPaymentMethod.UICardPayPaymentMethod,
+    isOnlyOneMethodOnScreen: Boolean = false,
 ) {
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
@@ -46,10 +47,11 @@ internal fun NewCardItem(
     var isPanValid by remember { mutableStateOf(method.isValidPan) }
     var isCardHolderValid by remember { mutableStateOf(method.isValidCardHolder) }
     var isExpiryValid by remember { mutableStateOf(method.isValidExpiry) }
-    var cardType by remember { mutableStateOf<PaymentMethodCardType?>(null) }
+    var cardType by remember { mutableStateOf<String?>(null) }
 
     ExpandablePaymentMethodItem(
         method = method,
+        isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
         headerBackgroundColor = SDKTheme.colors.backgroundColor,
         fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
         iconColor = ColorFilter.tint(SDKTheme.colors.brand),
@@ -105,7 +107,7 @@ internal fun NewCardItem(
 
             if (customerFields.hasVisibleCustomerFields() && customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
                 CustomerFields(
-                    customerFields = customerFields.visibleCustomerFields(),
+                    customerFields = customerFields,
                     additionalFields = additionalFields,
                     customerFieldValues = method.customerFieldValues,
                     onCustomerFieldsChanged = { fields, isValid ->
@@ -139,12 +141,12 @@ internal fun NewCardItem(
                 Spacer(modifier = Modifier.width(10.dp))
                 Column {
                     Text(
-                        getStringOverride("title_saved_cards"),
+                        getStringOverride(OverridesKeys.TITLE_SAVED_CARDS),
                         color = SDKTheme.colors.primaryTextColor,
                         fontSize = 16.sp,
                     )
                     SDKTextWithLink(
-                        overrideKey = "cof_agreements",
+                        overrideKey = OverridesKeys.COF_AGREEMENTS,
                         style = SDKTheme.typography.s12Light
                     )
                 }
@@ -153,10 +155,13 @@ internal fun NewCardItem(
             PayOrConfirmButton(
                 method = method,
                 customerFields = customerFields,
-                isValid = isCvvValid && isPanValid && isPanValid && isCardHolderValid && isExpiryValid,
+                isValid = isCvvValid && isPanValid && isCardHolderValid && isExpiryValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
-                    viewModel.saleCard(method = method)
+                    viewModel.saleCard(
+                        method = method,
+                        needSendCustomerFields = customerFields.needSendWithSaleRequest()
+                    )
                 }
             )
         }

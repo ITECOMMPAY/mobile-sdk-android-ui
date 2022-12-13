@@ -1,7 +1,6 @@
 package com.paymentpage.msdk.ui.presentation
 
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -15,13 +14,12 @@ import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.SDKCommonProvider
 import com.paymentpage.msdk.ui.SDKPaymentOptions
 import com.paymentpage.msdk.ui.base.ErrorResult
-import com.paymentpage.msdk.ui.navigation.RootNavigationView
 import com.paymentpage.msdk.ui.navigation.Navigator
+import com.paymentpage.msdk.ui.navigation.RootNavigationView
 import com.paymentpage.msdk.ui.theme.HexToJetpackColor
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.alertDialog.ErrorAlertDialog
 import com.paymentpage.msdk.ui.views.common.alertDialog.MessageAlertDialog
-import com.paymentpage.msdk.ui.views.common.alertDialog.SDKAlertDialog
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
@@ -65,7 +63,7 @@ internal fun MainContent(
             drawerState = drawerState,
             drawerBackgroundColor = Color.Transparent,
             gesturesEnabled = false,
-            drawerShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+            drawerElevation = 0.dp
         ) {
             when {
                 showDismissDialog -> {

@@ -19,7 +19,7 @@ import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.presentation.main.saleAps
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.views.common.SDKScaffold
+import com.paymentpage.msdk.ui.views.common.SDKScaffoldWebView
 
 @Composable
 internal fun ApsScreen(onCancel: () -> Unit) {
@@ -29,15 +29,9 @@ internal fun ApsScreen(onCancel: () -> Unit) {
     val paymentUrl = apsMethod?.paymentUrl
     BackHandler(true) { onCancel() }
 
-    SDKScaffold(
+    SDKScaffoldWebView(
         title = method.title,
         notScrollableContent = {
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(2.dp)
-                    .background(SDKTheme.colors.panelBackgroundColor)
-            )
             if (paymentUrl != null) {
                 ApsPageView(
                     method = method,
@@ -45,8 +39,6 @@ internal fun ApsScreen(onCancel: () -> Unit) {
                 )
             }
         },
-        scrollableContent = {},
-        footerContent = {},
         onClose = { onCancel() }
     )
 }

@@ -1,68 +1,77 @@
 package com.paymentpage.msdk.ui
 
-import android.content.*
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
+import android.content.Context
 import android.os.Build
-import android.os.Looper
-import android.os.Process
-import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AlertDialog
 import com.paymentpage.msdk.core.base.ErrorCode
+import com.paymentpage.msdk.core.domain.interactors.analytics.error.ErrorEventDelegate
+import com.paymentpage.msdk.core.domain.interactors.analytics.error.ErrorEventInteractor
+import com.paymentpage.msdk.core.domain.interactors.analytics.error.ErrorEventRequest
 import java.lang.ref.WeakReference
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.BlockingQueue
 
 
-object CrashHandler : Thread.UncaughtExceptionHandler {
-    private var context: WeakReference<Context>? = null
+internal class CrashHandler(
+    private val projectId: Long? = null,
+    private val paymentId: String? = null,
+    private val customerId: String? = null,
+    private val signature: String? = null,
+    private val errorInteractor: ErrorEventInteractor
+) : Thread.UncaughtExceptionHandler {
+    private var weakContext: WeakReference<Context>? = null
     private var defaultHandler: Thread.UncaughtExceptionHandler? = null
-    private var infos: HashMap<String, String> = HashMap()
+    private var infos: HashMap<String?, String?> = HashMap()
 
-    fun init(context: Context) {
-        this.context = WeakReference(context)
-        defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
-        Thread.setDefaultUncaughtExceptionHandler(this)
+    fun start(context: Context?) {
+        this.weakContext = WeakReference(context)
+        this.defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler(this@CrashHandler)
     }
 
     override fun uncaughtException(thread: Thread, ex: Throwable) {
-        collectDeviceInfo(context?.get())
-        object : Thread() {
+
+        val isDone: BlockingQueue<Boolean> = ArrayBlockingQueue(1)
+        val stackTrace = getStackTrace(ex)
+        val newThread = object : Thread() {
             override fun run() {
-                Looper.prepare()
-                if (context?.get() != null) {
-                    val message = "Stack Trace:\n${ex.stackTraceToString()}\nPayment SDK Information:\n${infos.map { "${it.key}: ${it.value}" }.joinToString(separator = ";\n")}"
-                    val builder = AlertDialog.Builder(context?.get()!!, R.style.CrashDialogTheme)
-                    builder
-                        .setMessage("Error code: ${ErrorCode.UNKNOWN}\nMessage: $message")
-                        .setPositiveButton(R.string.ok_label) { _: DialogInterface?, _: Int ->
-                            val clipboardManager = context?.get()?.getSystemService(ComponentActivity.CLIPBOARD_SERVICE) as ClipboardManager
-                            val clipData = ClipData.newPlainText("StackTrace", message)
-                            clipboardManager.setPrimaryClip(clipData)
-                            Process.killProcess(Process.myPid())
+
+                errorInteractor.execute(
+                    request = ErrorEventRequest(
+                        version = BuildConfig.SDK_VERSION_NAME,
+                        device = Build.DEVICE,
+                        model = Build.MODEL,
+                        manufacturer = Build.MANUFACTURER,
+                        versionCode = "mSDK_Android_UI",
+                        exceptionName = ex::class.java.simpleName,
+                        exceptionDescription = stackTrace,
+                        projectId = projectId,
+                        paymentId = paymentId,
+                        customerId = customerId,
+                        signature = signature
+                    ), callback = object : ErrorEventDelegate {
+
+                        override fun onError(code: ErrorCode, message: String) {
+                            isDone.put(true)
                         }
-                    val alertDialog = builder.create()
-                    alertDialog.show()
-                }
-                Looper.loop()
+
+                        override fun onSuccess() {
+                            isDone.put(true)
+                        }
+
+                    }
+                )
             }
-        }.start()
+        }
+        newThread.start()
+        isDone.take()
+        defaultHandler?.uncaughtException(thread, ex)
     }
 
-    private fun collectDeviceInfo(context: Context?) {
-        try {
-            //Package Manager
-            val pm: PackageManager? = context?.packageManager
-            //Get package information
-            val pi: PackageInfo? = pm?.getPackageInfo(context.packageName, PackageManager.GET_ACTIVITIES)
-            val versionName = if (pi?.versionName == null) "null" else pi.versionName
-            val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                pi?.longVersionCode.toString()
-            } else {
-                pi?.versionCode.toString()
-            }
-            infos["versionName"] = versionName
-            infos["versionCode"] = versionCode
-        } catch (e: PackageManager.NameNotFoundException) {
-
+    private fun getStackTrace(ex: Throwable): String {
+        val ownStackTrace = ex.stackTrace.filter {
+            it.className.startsWith(BuildConfig.LIBRARY_PACKAGE_NAME)
         }
+        val mainElement = if (ownStackTrace.isNotEmpty()) ownStackTrace[0] else null
+        return "${mainElement?.fileName ?: "Unknown file name"}:${mainElement?.lineNumber ?: "Unknown line"}"
     }
 }

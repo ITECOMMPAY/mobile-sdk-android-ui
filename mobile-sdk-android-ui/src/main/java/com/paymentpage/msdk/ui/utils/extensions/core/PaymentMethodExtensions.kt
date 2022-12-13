@@ -3,7 +3,7 @@ package com.paymentpage.msdk.ui.utils.extensions.core
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
-import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 
 internal fun List<PaymentMethod>.mergeUIPaymentMethods(
@@ -21,7 +21,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
         result.add(
             UIPaymentMethod.UIGooglePayPaymentMethod(
                 index = position,
-                title = googlePayMethod.name ?: getStringOverride("google_pay_host_title"),
+                title = googlePayMethod.name ?: getStringOverride(OverridesKeys.GOOGLE_PAY_HOST_TITLE),
                 paymentMethod = it,
             )
         )
@@ -48,7 +48,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
         result.add(
             UIPaymentMethod.UICardPayPaymentMethod(
                 index = position,
-                title = getStringOverride("button_add_new_card"),
+                title = getStringOverride(OverridesKeys.BUTTON_ADD_NEW_CARD),
                 paymentMethod = it,
             )
         )
@@ -59,7 +59,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
         result.add(
             UIPaymentMethod.UIApsPaymentMethod(
                 index = position,
-                title = it.name ?: getStringOverride(it.translations["title"] ?: ""),
+                title = it.name ?: getStringOverride(it.translations[OverridesKeys.TITLE] ?: ""),
                 paymentMethod = it,
             )
         )
