@@ -39,6 +39,7 @@ class PaymentSDK(
         const val RESULT_DECLINE = Constants.RESULT_DECLINE
         const val RESULT_CANCELLED = Constants.RESULT_CANCELLED
 
+        const val EXTRA_PAYMENT = Constants.EXTRA_PAYMENT
         const val RESULT_ERROR = Constants.RESULT_ERROR
         const val EXTRA_ERROR_CODE = Constants.EXTRA_ERROR_CODE
         const val EXTRA_ERROR_MESSAGE = Constants.EXTRA_ERROR_MESSAGE

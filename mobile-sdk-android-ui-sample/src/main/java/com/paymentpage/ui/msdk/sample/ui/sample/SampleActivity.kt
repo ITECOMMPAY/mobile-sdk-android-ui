@@ -12,7 +12,6 @@ import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.PaymentSDK
 import com.paymentpage.msdk.ui.SDKPaymentOptions
-import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.ui.msdk.sample.data.ProcessRepository
 import com.paymentpage.ui.msdk.sample.domain.mappers.map
 import com.paymentpage.ui.msdk.sample.domain.ui.base.MessageUI
@@ -90,7 +89,7 @@ class SampleActivity : ComponentActivity() {
             val data = result.data
             when (result.resultCode) {
                 PaymentSDK.RESULT_SUCCESS -> {
-                    val payment = Json.decodeFromString<Payment?>(data?.getStringExtra(Constants.EXTRA_PAYMENT).toString())
+                    val payment = Json.decodeFromString<Payment?>(data?.getStringExtra(PaymentSDK.EXTRA_PAYMENT).toString())
                     when {
                         payment?.token != null -> {
                             viewUseCase.pushIntent(
