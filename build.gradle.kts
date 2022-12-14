@@ -23,6 +23,7 @@ ext["developerName"] = null
 ext["developerEmail"] = null
 ext["projectDescription"] = null
 ext["projectUrl"] = null
+ext["repositoryUrl"] = null
 
 // Grabbing secrets from local.properties file or from environment variables, which could be used on CI
 val secretPropsFile = project.rootProject.file("local.properties")
@@ -46,4 +47,5 @@ if (secretPropsFile.exists()) {
     ext["developerEmail"] = System.getenv("DEVELOPER_EMAIL")
     ext["projectDescription"] = System.getenv("PROJECT_DESCRIPTION")
     ext["projectUrl"] = System.getenv("PROJECT_URL")
+    ext["repositoryUrl"] = System.getenv("REPOSITORY_URL")
 }

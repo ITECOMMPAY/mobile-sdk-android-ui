@@ -162,7 +162,7 @@ afterEvaluate {
                         }
                     }
                     scm {
-                        url.set("https://github.com/ITECOMMPAY/paymentpage-sdk-android-core")
+                        url.set(getExtraString("repositoryUrl"))
                     }
 
                 }
