@@ -4,7 +4,12 @@ plugins {
     id("kotlin-kapt")
     //id("io.gitlab.arturbosch.detekt")
     id("org.cyclonedx.bom")
+    id("maven-publish")
+    id("signing")
 }
+
+group = System.getenv("SDK_GROUP") ?: Library.group
+version = System.getenv("SDK_VERSION_NAME") ?: Library.version
 
 android {
     compileSdk = 32
@@ -106,4 +111,58 @@ tasks.cyclonedxBom {
     setDestination(project.file("build/reports"))
     setOutputName("bom")
     setOutputFormat("json")
+}
+
+fun getExtraString(name: String) = rootProject.ext[name]?.toString() ?: ""
+
+val javadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+}
+
+afterEvaluate {
+
+    publishing {
+        // Configure maven central repository
+        repositories {
+            maven {
+                name = "sonatype"
+                setUrl(getExtraString("sonatypeUrl"))
+                credentials {
+                    username = getExtraString("ossrhUsername")
+                    password = getExtraString("ossrhPassword")
+                }
+            }
+        }
+
+        publications {
+            register("release", MavenPublication::class) {
+                from(components["release"])
+
+                artifactId = "${Library.artifactId}-common"
+
+                // Stub javadoc.jar artifact
+                artifact(javadocJar.get())
+
+                // Provide artifacts information requited by Maven Central
+                pom {
+                    name.set("mSDK UI Module")
+                    licenses {
+                        license {
+                            name.set("MIT")
+                        }
+                    }
+                    scm {
+                        url.set("https://github.com/ITECOMMPAY/paymentpage-sdk-android-core")
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    // Signing artifacts. Signing.* extra properties values will be used
+    signing {
+        sign(publishing.publications)
+    }
 }
