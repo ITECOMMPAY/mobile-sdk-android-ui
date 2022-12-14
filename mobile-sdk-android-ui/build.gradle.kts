@@ -12,11 +12,11 @@ group = System.getenv("SDK_GROUP") ?: Library.group
 version = System.getenv("SDK_VERSION_NAME") ?: Library.version
 
 android {
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
         version = System.getenv("SDK_VERSION_NAME") ?: Library.version
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -146,9 +146,19 @@ afterEvaluate {
                 // Provide artifacts information requited by Maven Central
                 pom {
                     name.set("mSDK UI Module")
+                    description.set(getExtraString("projectDescription"))
+                    url.set(getExtraString("projectUrl"))
                     licenses {
                         license {
                             name.set("MIT")
+                            url.set("https://opensource.org/licenses/MIT")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set(getExtraString("developerId"))
+                            name.set(getExtraString("developerName"))
+                            email.set(getExtraString("developerEmail"))
                         }
                     }
                     scm {
