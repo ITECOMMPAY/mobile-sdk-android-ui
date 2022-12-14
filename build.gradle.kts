@@ -18,6 +18,11 @@ ext["signing.secretKeyRingFile"] = null
 ext["ossrhUsername"] = null
 ext["ossrhPassword"] = null
 ext["sonatypeUrl"] = null
+ext["developerId"] = null
+ext["developerName"] = null
+ext["developerEmail"] = null
+ext["projectDescription"] = null
+ext["projectUrl"] = null
 
 // Grabbing secrets from local.properties file or from environment variables, which could be used on CI
 val secretPropsFile = project.rootProject.file("local.properties")
@@ -36,4 +41,9 @@ if (secretPropsFile.exists()) {
     ext["ossrhUsername"] = System.getenv("OSSRH_USERNAME")
     ext["ossrhPassword"] = System.getenv("OSSRH_PASSWORD")
     ext["sonatypeUrl"] = System.getenv("SONATYPE_URL")
+    ext["developerId"] = System.getenv("DEVELOPER_ID")
+    ext["developerName"] = System.getenv("DEVELOPER_NAME")
+    ext["developerEmail"] = System.getenv("DEVELOPER_EMAIL")
+    ext["projectDescription"] = System.getenv("PROJECT_DESCRIPTION")
+    ext["projectUrl"] = System.getenv("PROJECT_URL")
 }
