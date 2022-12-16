@@ -70,6 +70,20 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    lint {
+        quiet = true
+        abortOnError = false
+        ignoreWarnings = true
+        checkDependencies = true
+
+        enable.add("RtlHardcoded")
+        enable.add("RtlCompat")
+        enable.add("RtlEnabled")
+
+        disable.add("TypographyFractions")
+        disable.add("TypographyQuotes")
+    }
 }
 
 dependencies {
