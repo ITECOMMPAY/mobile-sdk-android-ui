@@ -52,6 +52,40 @@ android {
         }
 
     }
+
+    flavorDimensions.add("mode")
+    productFlavors {
+        create("nl3") {
+            dimension = "mode"
+            buildConfigField(
+                "String",
+                "API_HOST",
+                "\"pp-sdk.westresscode.net\""
+            )
+
+            buildConfigField(
+                "String",
+                "WS_API_HOST",
+                "\"paymentpage.westresscode.net\""
+            )
+        }
+
+        create("prod") {
+            dimension = "mode"
+            buildConfigField(
+                "String",
+                "API_HOST",
+                System.getenv("SDK_API_HOST") ?: "\"sdk.ecommpay.com\""
+            )
+
+            buildConfigField(
+                "String",
+                "WS_API_HOST",
+                System.getenv("SDK_WS_API_HOST") ?: "\"paymentpage.ecommpay.com\""
+            )
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -150,7 +184,7 @@ afterEvaluate {
 
         publications {
             register("release", MavenPublication::class) {
-                from(components["release"])
+                from(components["prodRelease"])
 
                 artifactId = "${Library.artifactId}-common"
 

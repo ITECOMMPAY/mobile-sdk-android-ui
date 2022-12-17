@@ -8,7 +8,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.paymentpage.ui.msdk.sample"
+        applicationId = "com.ecommpay.ui.msdk.sample"
         minSdk = 21
         targetSdk = 33
 
@@ -28,6 +28,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -47,12 +48,45 @@ android {
         }
     }
 
+    flavorDimensions.add("mode")
+    productFlavors {
+        create("nl3") {
+            dimension = "mode"
+            buildConfigField(
+                "String",
+                "API_HOST",
+                "\"pp-sdk.westresscode.net\""
+            )
+
+            buildConfigField(
+                "String",
+                "WS_API_HOST",
+                "\"paymentpage.westresscode.net\""
+            )
+        }
+
+        create("prod") {
+            dimension = "mode"
+            buildConfigField(
+                "String",
+                "API_HOST",
+                "\"sdk.ecommpay.com\""
+            )
+
+            buildConfigField(
+                "String",
+                "WS_API_HOST",
+                "\"paymentpage.ecommpay.com\""
+            )
+        }
+    }
+
 }
 
 dependencies {
 
     //Projects
-    implementation(project(":mobile-sdk-android-ui"))
+    implementation(project(":mobile-sdk-android-ui-ecommpay"))
 
     //AndroidX
     implementation(Dependencies.AndroidX.coreKtx)
@@ -83,7 +117,3 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         freeCompilerArgs += "-Xjvm-default=all"
     }
 }
-
-//configurations.forEach {
-//    it.exclude("com.ecommpay", "msdk-core-android")
-//}
