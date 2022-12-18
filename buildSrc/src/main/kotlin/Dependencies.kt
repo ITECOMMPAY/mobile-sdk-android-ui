@@ -7,8 +7,6 @@ object Library {
 }
 
 object Versions {
-    const val gradlePlugin = "7.3.0"
-    const val kotlin = "1.6.10"
     const val compose = "1.1.1"
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
@@ -16,7 +14,7 @@ object Versions {
     const val cyclonedx = "1.7.2"
 }
 
-object Dependencies {
+object LibraryDependencies {
     object Compose {
         const val ui = "androidx.compose.ui:ui:${Versions.compose}"
         const val material = "androidx.compose.material:material:${Versions.compose}"

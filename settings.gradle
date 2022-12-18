@@ -21,3 +21,5 @@ rootProject.name = "msdk-android-ui"
 include ':mobile-sdk-android-ui'
 include ':mobile-sdk-android-ui-ecommpay'
 include ':mobile-sdk-android-ui-sample'
+
+enableFeaturePreview("VERSION_CATALOGS")
