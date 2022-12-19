@@ -122,7 +122,6 @@ dependencies {
     implementation(LibraryDependencies.Compose.material)
     implementation(LibraryDependencies.Compose.animationCore)
     implementation(LibraryDependencies.Compose.toolingPreview)
-    testImplementation(LibraryDependencies.Compose.junit4)
     debugImplementation(LibraryDependencies.Compose.uiTooling)
     implementation(LibraryDependencies.Compose.navigation)
     implementation(LibraryDependencies.Compose.activity)
@@ -130,6 +129,8 @@ dependencies {
     implementation(LibraryDependencies.Accompanist.navigation)
 
     //Testing
+    testImplementation(LibraryDependencies.Compose.junit4)
+    testImplementation("io.mockk:mockk:1.13.3")
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.test.ext:junit:1.1.4")
     testImplementation("androidx.test.espresso:espresso-core:3.5.0")
