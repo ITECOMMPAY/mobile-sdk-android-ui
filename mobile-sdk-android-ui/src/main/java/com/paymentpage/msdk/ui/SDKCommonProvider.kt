@@ -5,6 +5,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paymentpage.msdk.core.MSDKCoreSession
+import com.paymentpage.msdk.ui.core.CardRemoveInteractorProxyImpl
+import com.paymentpage.msdk.ui.core.PayInteractorProxyImpl
 import com.paymentpage.msdk.ui.presentation.init.InitViewModel
 import com.paymentpage.msdk.ui.presentation.main.MainViewModel
 import com.paymentpage.msdk.ui.utils.viewModelFactory
@@ -34,8 +36,8 @@ internal fun SDKCommonProvider(
         LocalMainViewModel provides viewModel(
             factory = viewModelFactory {
                 MainViewModel(
-                    cardRemoveInteractor = msdkSession.getCardRemoveInteractor(),
-                    payInteractor = msdkSession.getPayInteractor()
+                    cardRemoveInteractor = CardRemoveInteractorProxyImpl(interactor = msdkSession.getCardRemoveInteractor()),
+                    payInteractor = PayInteractorProxyImpl(interactor = msdkSession.getPayInteractor())
                 )
             }
         ),

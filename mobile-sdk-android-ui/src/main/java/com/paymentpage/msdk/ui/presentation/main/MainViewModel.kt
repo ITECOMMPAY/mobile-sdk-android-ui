@@ -7,19 +7,24 @@ import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.entities.payment.PaymentStatus
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
 import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveDelegate
-import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveInteractor
 import com.paymentpage.msdk.core.domain.interactors.pay.PayDelegate
-import com.paymentpage.msdk.core.domain.interactors.pay.PayInteractor
-import com.paymentpage.msdk.ui.SDKPaymentOptions
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.TimeMachine
 import com.paymentpage.msdk.ui.base.mvvm.BaseViewModel
+import com.paymentpage.msdk.ui.core.CardRemoveInteractorProxy
+import com.paymentpage.msdk.ui.core.PayInteractorProxy
 import kotlinx.coroutines.flow.StateFlow
 
 internal class MainViewModel(
-    val payInteractor: PayInteractor,
-    val cardRemoveInteractor: CardRemoveInteractor,
+    val payInteractor: PayInteractorProxy,
+    val cardRemoveInteractor: CardRemoveInteractorProxy,
 ) : BaseViewModel<MainScreenState, MainScreenUiEvent>(), PayDelegate, CardRemoveDelegate {
+
+    init {
+        payInteractor.delegate = this
+        cardRemoveInteractor.delegate = this
+    }
+
     override val reducer = MainReducer(MainScreenState.initial())
 
     override val state: StateFlow<MainScreenState>
