@@ -20,9 +20,6 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val apiHost = intent.getStringExtra(Constants.EXTRA_API_HOST) ?: ""
-        val wsApiHost = intent.getStringExtra(Constants.EXTRA_WS_API_HOST) ?: ""
-
         mockModeType =
             intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
         val config = when {
@@ -32,7 +29,7 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
                 intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
                 intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
             )
-            else -> MSDKCoreSessionConfig.release(apiHost, wsApiHost)
+            else -> MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
         }
         config.userAgentData =
             UserAgentData(
@@ -121,16 +118,12 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         fun buildPaymentIntent(
             context: Context,
-            apiHost: String,
-            wsApiHost: String,
             paymentOptions: SDKPaymentOptions,
             mockModeType: SDKMockModeType,
         ) = Intent(context, PaymentActivity::class.java).apply {
                 this@Companion.paymentOptions = paymentOptions
                 addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 putExtra(Constants.EXTRA_MOCK_MODE_TYPE, mockModeType)
-                putExtra(Constants.EXTRA_API_HOST, apiHost)
-                putExtra(Constants.EXTRA_WS_API_HOST, wsApiHost)
             }
     }
 }
