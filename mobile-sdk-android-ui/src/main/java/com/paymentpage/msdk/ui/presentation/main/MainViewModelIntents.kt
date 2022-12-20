@@ -35,7 +35,7 @@ internal fun MainViewModel.saleGooglePay(
     )
     if (needSendCustomerFields)
         request.customerFields = method.customerFieldValues
-    this.payInteractor.execute(request, this)
+    this.payInteractor.sendRequest(request)
 }
 
 //sale with saved card
@@ -48,7 +48,7 @@ internal fun MainViewModel.saleSavedCard(
     val request = SavedCardSaleRequest(cvv = method.cvv, accountId = method.accountId)
     if (needSendCustomerFields)
         request.customerFields = method.customerFieldValues
-    this.payInteractor.execute(request, this)
+    this.payInteractor.sendRequest(request)
 }
 
 //tokenize with saved card
@@ -61,7 +61,7 @@ internal fun MainViewModel.tokenizeSavedCard(
     val request = CardSaleTokenizeRequest(cvv = method.cvv)
     if (needSendCustomerFields)
         request.customerFields = method.customerFieldValues
-    this.payInteractor.execute(request, this)
+    this.payInteractor.sendRequest(request)
 }
 
 internal fun MainViewModel.deleteSavedCard(
@@ -69,7 +69,7 @@ internal fun MainViewModel.deleteSavedCard(
 ) {
     sendEvent(MainScreenUiEvent.ShowDeleteCardLoading(isLoading = true))
     val request = CardRemoveRequest(id = method.accountId)
-    this.cardRemoveInteractor.execute(request, this)
+    this.cardRemoveInteractor.sendRequest(request = request)
 }
 
 internal fun MainViewModel.showAps(
@@ -85,7 +85,7 @@ internal fun MainViewModel.saleAps(
 ) {
     sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
     val request = ApsSaleRequest(methodCode = method.paymentMethod.code)
-    payInteractor.execute(request = request, callback = this)
+    payInteractor.sendRequest(request)
 }
 
 //sale with new card
@@ -108,7 +108,7 @@ internal fun MainViewModel.saleCard(
     )
     if (needSendCustomerFields)
         request.customerFields = method.customerFieldValues
-    payInteractor.execute(request, this)
+    payInteractor.sendRequest(request)
 }
 
 internal fun MainViewModel.tokenizeCard(
@@ -128,7 +128,7 @@ internal fun MainViewModel.tokenizeCard(
     )
     if (needSendCustomerFields)
         request.customerFields = method.customerFieldValues
-    payInteractor.execute(request, this)
+    payInteractor.sendRequest(request)
 }
 
 //send customer fields to core interactor
@@ -152,7 +152,7 @@ internal fun MainViewModel.threeDSecureHandled() {
 //restore payment if it received via init
 internal fun MainViewModel.restorePayment() {
     sendEvent(MainScreenUiEvent.ShowLoading)
-    payInteractor.execute(PaymentRestoreRequest(), this)
+    payInteractor.sendRequest(PaymentRestoreRequest())
 }
 
 internal fun MainViewModel.restoreAps(apsMethod: PaymentMethod) {
@@ -166,7 +166,7 @@ internal fun MainViewModel.restoreAps(apsMethod: PaymentMethod) {
         )
     )
     sendEvent(MainScreenUiEvent.ShowApsPage(apsMethod = apsMethod))
-    payInteractor.execute(PaymentRestoreRequest(), this)
+    payInteractor.sendRequest(PaymentRestoreRequest())
 }
 
 //set current method
