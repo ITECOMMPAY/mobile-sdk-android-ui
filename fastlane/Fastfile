@@ -17,6 +17,8 @@ platform :android do
         show_diff: true
     )
 
+    gradle(task: "test")
+
     #parse tags to array
     contains_command_result = sh(command: "git tag --points-at")
     current_commit_tags_list = contains_command_result.split(/\n/)
