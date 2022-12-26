@@ -22,8 +22,10 @@ import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
+import com.paymentpage.msdk.ui.presentation.main.FinalPaymentState
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultTableInfo
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.animation.VerticalSlideFadeAnimation
+import com.paymentpage.msdk.ui.presentation.main.tryAgain
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.button.SDKButton
@@ -40,7 +42,9 @@ internal fun ResultDeclineSaleContent(
     val viewModel = LocalMainViewModel.current
     val payment =
         viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
-
+    val method = viewModel.lastState.currentMethod
+    val isTryAgain =
+        (viewModel.lastState.finalPaymentState as? FinalPaymentState.Decline)?.isTryAgain ?: false
     val visibleState = remember {
         MutableTransitionState(false).apply {
             // Start the animation immediately
@@ -160,10 +164,16 @@ internal fun ResultDeclineSaleContent(
                 ) {
                     Column {
                         Spacer(modifier = Modifier.size(15.dp))
-                        SDKButton(
-                            label = getStringOverride(OverridesKeys.BUTTON_CLOSE),
-                            isEnabled = true
-                        ) { onClose(payment) }
+                        if (!isTryAgain)
+                            SDKButton(
+                                label = getStringOverride(OverridesKeys.BUTTON_CLOSE),
+                                isEnabled = true
+                            ) { onClose(payment) }
+                        else
+                            SDKButton(
+                                label = getStringOverride(OverridesKeys.BUTTON_TRY_AGAIN),
+                                isEnabled = true
+                            ) { viewModel.tryAgain(method = method) }
                     }
                 }
 
@@ -183,6 +193,6 @@ internal fun ResultDeclineSaleContent(
             }
         },
         onClose = { onClose(payment) },
-        showCloseButton = false
+        showCloseButton = isTryAgain
     )
 }

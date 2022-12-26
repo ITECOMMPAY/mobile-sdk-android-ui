@@ -5,7 +5,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalFocusManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -48,11 +48,9 @@ internal fun MainScreen(
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
 
-    val mergedPaymentMethods = remember {
-        paymentMethods.mergeUIPaymentMethods(
-            savedAccounts = savedAccounts
-        )
-    }
+    val mergedPaymentMethods = paymentMethods.mergeUIPaymentMethods(
+        savedAccounts = savedAccounts
+    )
 
     LaunchedEffect("mainScreenNavigation") {
         mainScreenNavigator.sharedFlow.onEach {
@@ -61,6 +59,7 @@ internal fun MainScreen(
         }.launchIn(this)
     }
     val mainViewModel = LocalMainViewModel.current
+    val state = mainViewModel.state.collectAsState().value //for recomposition
 
     LaunchedEffect(Unit) {
         mainViewModel.state.onEach {
@@ -68,6 +67,7 @@ internal fun MainScreen(
                 it.error != null -> onError(it.error, true)
                 it.isLoading == true ->
                     mainScreenNavigator.navigateTo(Route.Loading)
+                it.isTryAgain == true -> mainScreenNavigator.navigateTo(Route.PaymentMethods)
                 it.finalPaymentState != null -> {
                     when (it.finalPaymentState) {
                         is FinalPaymentState.Success -> mainScreenNavigator.navigateTo(Route.SuccessResult)

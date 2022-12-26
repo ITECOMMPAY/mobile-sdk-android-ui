@@ -20,7 +20,7 @@ internal sealed class MainScreenUiEvent : UiEvent {
     class ShowError(val error: ErrorResult) : MainScreenUiEvent()
     class ShowCustomerFields(val customerFields: List<CustomerField>) :
         MainScreenUiEvent()
-
+    object TryAgain : MainScreenUiEvent()
     class ShowClarificationFields(val clarificationFields: List<ClarificationField>) :
         MainScreenUiEvent()
 
@@ -38,6 +38,7 @@ internal sealed class MainScreenUiEvent : UiEvent {
 internal data class MainScreenState(
     val isLoading: Boolean? = null,
     val isDeleteCardLoading: Boolean? = null,
+    val isTryAgain: Boolean? = null,
     val currentMethod: UIPaymentMethod? = null,
     val payment: Payment? = null,
     val customerFields: List<CustomerField> = emptyList(),

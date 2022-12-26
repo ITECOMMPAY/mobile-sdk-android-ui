@@ -14,7 +14,8 @@ internal class MainReducer(initial: MainScreenState) :
                     finalPaymentState = null,
                     apsPageState = null,
                     isLoading = true,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowDeleteCardLoading -> setState(
@@ -25,7 +26,8 @@ internal class MainReducer(initial: MainScreenState) :
                     finalPaymentState = null,
                     apsPageState = null,
                     isLoading = null,
-                    isDeleteCardLoading = event.isLoading
+                    isDeleteCardLoading = event.isLoading,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowError -> setState(
@@ -36,7 +38,8 @@ internal class MainReducer(initial: MainScreenState) :
                     finalPaymentState = null,
                     apsPageState = null,
                     error = event.error,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowCustomerFields -> setState(
@@ -47,7 +50,8 @@ internal class MainReducer(initial: MainScreenState) :
                     acsPageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowClarificationFields -> setState(
@@ -58,7 +62,8 @@ internal class MainReducer(initial: MainScreenState) :
                     acsPageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowAcsPage -> setState(
@@ -72,7 +77,8 @@ internal class MainReducer(initial: MainScreenState) :
                     ),
                     finalPaymentState = null,
                     apsPageState = null,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowSuccessPage -> setState(
@@ -83,7 +89,8 @@ internal class MainReducer(initial: MainScreenState) :
                     acsPageState = null,
                     finalPaymentState = FinalPaymentState.Success,
                     apsPageState = null,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowDeclinePage -> setState(
@@ -97,17 +104,36 @@ internal class MainReducer(initial: MainScreenState) :
                         paymentMessage = event.paymentMessage,
                         isTryAgain = event.isTryAgain
                     ),
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.SetCurrentMethod -> setState(
                 oldState.copy(currentMethod = event.method)
             )
             is MainScreenUiEvent.SetPayment -> setState(
-                oldState.copy(payment = event.payment)
+                oldState.copy(
+                    payment = event.payment
+                )
             )
             is MainScreenUiEvent.ShowApsPage -> setState(
-                oldState.copy(apsPageState = ApsPageState(apsMethod = event.apsMethod))
+                oldState.copy(
+                    apsPageState = ApsPageState(apsMethod = event.apsMethod),
+                    isTryAgain = null
+                )
+            )
+            is MainScreenUiEvent.TryAgain -> setState(
+                oldState.copy(
+                    isTryAgain = true,
+                    isLoading = false,
+                    customerFields = emptyList(),
+                    clarificationFields = emptyList(),
+                    acsPageState = null,
+                    finalPaymentState = null,
+                    apsPageState = null,
+                    isDeleteCardLoading = null,
+                    currentMethod = null
+                )
             )
         }
     }

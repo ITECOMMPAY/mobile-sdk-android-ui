@@ -179,5 +179,10 @@ internal fun MainViewModel.showError(errorResult: ErrorResult) {
     sendEvent(MainScreenUiEvent.ShowError(errorResult))
 }
 
+//try again
+internal fun MainViewModel.tryAgain(method: UIPaymentMethod?) {
+    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
+    sendEvent(MainScreenUiEvent.TryAgain)
+}
 
 

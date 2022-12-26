@@ -142,6 +142,31 @@ internal class MainViewModelTest {
     }
 
     @Test
+    fun `should set state to try again`() = scope.runTest {
+        //GIVEN
+        val payment = mockk<Payment>()
+        val viewModel = MainViewModel(
+            payInteractor = PayInteractorProxyMockImpl {
+                it?.onCompleteWithDecline(paymentMessage = null, payment = payment)
+            },
+            cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
+        )
+        val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
+
+        //WHEN
+        viewModel.saleCard(method = method, needSendCustomerFields = false)
+        viewModel.sendEvent(MainScreenUiEvent.TryAgain)
+
+        //THEN
+        with(viewModel.state.value) {
+            assertTrue(this.payment != null && this.payment == payment)
+            assertTrue(this.currentMethod == null)
+            assertTrue(finalPaymentState == null)
+            assertTrue(isTryAgain == true)
+        }
+    }
+
+    @Test
     fun `should set successful state of deleting save card operation`() = scope.runTest {
         //GIVEN
         val viewModel = MainViewModel(

@@ -39,6 +39,7 @@ internal fun GooglePayItem(
     method: UIPaymentMethod.UIGooglePayPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
 ) {
+    val lastState = LocalMainViewModel.current.lastState
     val paymentOptions = LocalPaymentOptions.current
     val viewModel = LocalMainViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
@@ -46,6 +47,7 @@ internal fun GooglePayItem(
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     val isForcePaymentMethod =
         paymentOptions.paymentInfo.forcePaymentMethod == PaymentMethodType.GOOGLE_PAY.value
+    val isTryAgain = lastState.isTryAgain ?: false
 
     val merchantId = LocalPaymentOptions.current.merchantId
     val merchantName = LocalPaymentOptions.current.merchantName
@@ -133,7 +135,7 @@ internal fun GooglePayItem(
                 )
             }
         }
-        customerFields.isAllCustomerFieldsHidden() && isForcePaymentMethod -> {
+        customerFields.isAllCustomerFieldsHidden() && (isForcePaymentMethod || isTryAgain) -> {
             method.customerFieldValues = customerFields.mergeHiddenFieldsToList(
                 additionalFields = additionalFields,
                 customerFieldValues = method.customerFieldValues
