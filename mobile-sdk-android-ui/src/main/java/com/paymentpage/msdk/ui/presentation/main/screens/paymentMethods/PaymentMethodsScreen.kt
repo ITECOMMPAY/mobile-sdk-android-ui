@@ -48,7 +48,7 @@ internal fun PaymentMethodsScreen(
         title = getStringOverride(OverridesKeys.TITLE_PAYMENT_METHODS),
         scrollableContent = {
             PaymentOverview()
-            Spacer(modifier = Modifier.size(15.dp))
+            Spacer(modifier = Modifier.size(16.dp))
             PaymentMethodList(uiPaymentMethods = filteredUIPaymentMethods)
             Spacer(modifier = Modifier.size(6.dp))
             SDKFooter()

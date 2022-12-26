@@ -86,19 +86,18 @@ internal fun ExpandablePaymentOverview(
                 )
                 Spacer(modifier = Modifier.size(20.dp))
             }
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    modifier = Modifier.alignByBaseline(),
                     text = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                     style = SDKTheme.typography.s28Bold.copy(color = Color.White)
                 )
-                Text(text = " ")
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    modifier = Modifier.alignByBaseline(),
                     text = LocalPaymentOptions.current.paymentInfo.paymentCurrency,
                     style = SDKTheme.typography.s16Normal.copy(color = Color.White)
                 )
             }
+            Spacer(modifier = Modifier.size(6.dp))
             Row {
                 Text(
                     text = getStringOverride(OverridesKeys.TITLE_TOTAL_PRICE),
