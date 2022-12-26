@@ -2,7 +2,7 @@ origin_branch = "origin/master"
 owner_name = "Ecommpay-1"
 destinations_group = "Collaborators"
 app_name = "mSDK-Android-UI"
-path = "./mobile-sdk-android-ui-sample/build/outputs/apk/debug/mobile-sdk-android-ui-sample-debug.apk"
+path = "./mobile-sdk-android-ui-sample/build/outputs/apk/nl3/debug/mobile-sdk-android-ui-sample-nl3-debug.apk"
 lib_env_version_name = "SDK_VERSION_NAME"
 lib_env_version_code = "SDK_VERSION_CODE"
 
