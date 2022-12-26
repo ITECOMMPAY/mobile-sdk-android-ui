@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Integration Example</string>
+    <string name="title_activity_compose">ComposeActivity</string>
+    <string name="title_activity_xml">XmlActivity</string>
+</resources>
