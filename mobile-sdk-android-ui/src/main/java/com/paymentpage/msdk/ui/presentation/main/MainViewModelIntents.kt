@@ -144,9 +144,8 @@ internal fun MainViewModel.sendClarificationFields(clarificationFields: List<Cla
 }
 
 //send when 3ds handled
-internal fun MainViewModel.threeDSecureHandled() {
-    sendEvent(MainScreenUiEvent.ShowLoading)
-    payInteractor.threeDSecureHandled()
+internal fun MainViewModel.threeDSecureRedirectHandle(url: String) {
+    payInteractor.threeDSecureRedirectHandle(url)
 }
 
 //restore payment if it received via init

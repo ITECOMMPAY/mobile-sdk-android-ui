@@ -5,7 +5,7 @@ import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFiel
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.entities.payment.PaymentStatus
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
+import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePage
 import com.paymentpage.msdk.ui.core.CardRemoveInteractorProxyMockImpl
 import com.paymentpage.msdk.ui.core.PayInteractorProxyMockImpl
 import com.paymentpage.msdk.ui.presentation.main.*
@@ -266,7 +266,7 @@ internal class MainViewModelTest {
         )
         val status = mockk<PaymentStatus>()
         val payment = mockk<Payment>()
-        val acsPage = mockk<AcsPage>()
+        val threeDSecurePage = mockk<ThreeDSecurePage>()
         val viewModel = MainViewModel(
             payInteractor = PayInteractorProxyMockImpl {
                 it?.onCustomerFields(customerFields = customerFields)
@@ -276,7 +276,7 @@ internal class MainViewModelTest {
                     payment = payment
                 )
                 it?.onStatusChanged(status = status, payment = payment)
-                it?.onThreeDSecure(acsPage = acsPage, isCascading = false, payment = payment)
+                it?.onThreeDSecure(threeDSecurePage = threeDSecurePage, isCascading = false, payment = payment)
                 it?.onStatusChanged(status = status, payment = payment)
                 it?.onCompleteWithSuccess(payment = payment)
             },
@@ -294,7 +294,7 @@ internal class MainViewModelTest {
         assertTrue(finalState.customerFields == emptyList<CustomerField>())
         assertTrue(finalState.clarificationFields == emptyList<ClarificationField>())
         assertTrue(finalState.error == null)
-        assertTrue(finalState.acsPageState == null)
+        assertTrue(finalState.threeDSecurePageState == null)
         assertTrue(finalState.finalPaymentState is FinalPaymentState.Success)
     }
 }

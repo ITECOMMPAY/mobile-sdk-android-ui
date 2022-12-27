@@ -5,7 +5,7 @@ import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFiel
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.entities.payment.PaymentStatus
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
+import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePage
 import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveDelegate
 import com.paymentpage.msdk.core.domain.interactors.pay.PayDelegate
 import com.paymentpage.msdk.ui.base.ErrorResult
@@ -48,17 +48,7 @@ internal class MainViewModel(
         sendEvent(MainScreenUiEvent.ShowClarificationFields(clarificationFields = clarificationFields))
     }
 
-    override fun onCompleteWithDecline(paymentMessage: String?, payment: Payment) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
-        sendEvent(
-            MainScreenUiEvent.ShowDeclinePage(
-                paymentMessage = paymentMessage,
-                isTryAgain = false
-            )
-        )
-    }
-
-    override fun onCompleteWithFail(
+    override fun onCompleteWithDecline(
         isTryAgain: Boolean,
         paymentMessage: String?,
         payment: Payment
@@ -71,7 +61,6 @@ internal class MainViewModel(
             )
         )
     }
-
 
     override fun onCompleteWithSuccess(payment: Payment) {
         sendEvent(MainScreenUiEvent.SetPayment(payment))
@@ -100,7 +89,11 @@ internal class MainViewModel(
         sendEvent(MainScreenUiEvent.SetPayment(payment))
     }
 
-    override fun onThreeDSecure(acsPage: AcsPage, isCascading: Boolean, payment: Payment) {
-        sendEvent(MainScreenUiEvent.ShowAcsPage(acsPage = acsPage, isCascading = isCascading))
+    override fun onThreeDSecure(
+        threeDSecurePage: ThreeDSecurePage,
+        isCascading: Boolean,
+        payment: Payment
+    ) {
+        sendEvent(MainScreenUiEvent.ShowThreeDSecurePage(threeDSecurePage = threeDSecurePage, isCascading = isCascading))
     }
 }

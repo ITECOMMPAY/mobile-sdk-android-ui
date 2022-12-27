@@ -12,6 +12,7 @@ import com.paymentpage.msdk.core.UserAgentData
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
+import com.paymentpage.msdk.core.utils.Duration
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.presentation.MainContent
 
@@ -23,8 +24,12 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
         mockModeType =
             intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
         val config = when {
-            mockModeType == SDKMockModeType.SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow()
-            mockModeType == SDKMockModeType.DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow()
+            mockModeType == SDKMockModeType.SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow(
+                duration = Duration.millis(Constants.THREE_D_SECURE_REDIRECT_DURATION)
+            )
+            mockModeType == SDKMockModeType.DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow(
+                duration = Duration.millis(Constants.THREE_D_SECURE_REDIRECT_DURATION)
+            )
             BuildConfig.DEBUG -> MSDKCoreSessionConfig.debug(
                 apiHost = intent.getStringExtra(Constants.EXTRA_API_HOST) ?: apiHost,
                 wsApiHost = intent.getStringExtra(Constants.EXTRA_WS_API_HOST) ?: wsApiHost

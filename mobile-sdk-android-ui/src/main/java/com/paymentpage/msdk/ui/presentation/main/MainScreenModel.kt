@@ -5,7 +5,7 @@ import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFiel
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
+import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePage
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.UiEvent
 import com.paymentpage.msdk.ui.base.mvi.UiState
@@ -24,7 +24,7 @@ internal sealed class MainScreenUiEvent : UiEvent {
     class ShowClarificationFields(val clarificationFields: List<ClarificationField>) :
         MainScreenUiEvent()
 
-    class ShowAcsPage(val acsPage: AcsPage, val isCascading: Boolean) :
+    class ShowThreeDSecurePage(val threeDSecurePage: ThreeDSecurePage, val isCascading: Boolean) :
         MainScreenUiEvent()
 
     object ShowSuccessPage : MainScreenUiEvent()
@@ -43,7 +43,7 @@ internal data class MainScreenState(
     val payment: Payment? = null,
     val customerFields: List<CustomerField> = emptyList(),
     val clarificationFields: List<ClarificationField> = emptyList(),
-    val acsPageState: AcsPageState? = null,
+    val threeDSecurePageState: ThreeDSecurePageState? = null,
     val apsPageState: ApsPageState? = null,
     val finalPaymentState: FinalPaymentState? = null,
     val error: ErrorResult? = null
@@ -58,8 +58,8 @@ internal class ApsPageState(
     val apsMethod: PaymentMethod?
 )
 
-internal class AcsPageState(
-    val acsPage: AcsPage? = null,
+internal class ThreeDSecurePageState(
+    val threeDSecurePage: ThreeDSecurePage? = null,
     val isCascading: Boolean = false
 )
 

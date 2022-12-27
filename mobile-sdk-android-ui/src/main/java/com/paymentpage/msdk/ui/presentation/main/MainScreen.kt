@@ -11,6 +11,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
+import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePageType
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
@@ -76,7 +77,10 @@ internal fun MainScreen(
                 }
                 it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.ClarificationFields)
-                it.acsPageState != null -> mainScreenNavigator.navigateTo(Route.AcsPage)
+                it.threeDSecurePageState != null -> when(it.threeDSecurePageState.threeDSecurePage?.type) {
+                    ThreeDSecurePageType.THREE_DS_2_FRICTIONLESS -> mainScreenNavigator.navigateTo(Route.ThreeDSecureLoadingPage)
+                    else -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)
+                }
                 it.apsPageState != null -> mainScreenNavigator.navigateTo(Route.ApsPage)
             }
         }.collect()
@@ -104,9 +108,15 @@ internal fun MainScreen(
         composable(route = Route.ClarificationFields.getPath()) {
             ClarificationFieldsScreen(onCancel = onCancel)
         }
-        composable(route = Route.AcsPage.getPath()) {
+
+        //3DS
+        composable(route = Route.ThreeDSecurePage.getPath()) {
             ThreeDSecureScreen(onCancel = onCancel)
         }
+        composable(route = Route.ThreeDSecureLoadingPage.getPath()) {
+            ThreeDSecureScreen(onCancel = onCancel)
+        }
+
         composable(route = Route.ApsPage.getPath()) {
             ApsScreen(onCancel = onCancel)
         }

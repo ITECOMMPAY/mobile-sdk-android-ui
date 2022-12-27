@@ -10,7 +10,7 @@ internal class MainReducer(initial: MainScreenState) :
                 oldState.copy(
                     customerFields = emptyList(),
                     clarificationFields = emptyList(),
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isLoading = true,
@@ -22,7 +22,7 @@ internal class MainReducer(initial: MainScreenState) :
                 oldState.copy(
                     customerFields = emptyList(),
                     clarificationFields = emptyList(),
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isLoading = null,
@@ -34,7 +34,7 @@ internal class MainReducer(initial: MainScreenState) :
                 oldState.copy(
                     customerFields = emptyList(),
                     isLoading = false,
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     error = event.error,
@@ -47,7 +47,7 @@ internal class MainReducer(initial: MainScreenState) :
                     isLoading = event.customerFields.none { !it.isHidden },
                     customerFields = event.customerFields,
                     clarificationFields = emptyList(),
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isDeleteCardLoading = null,
@@ -59,20 +59,20 @@ internal class MainReducer(initial: MainScreenState) :
                     isLoading = false,
                     customerFields = emptyList(),
                     clarificationFields = event.clarificationFields,
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isDeleteCardLoading = null,
                     isTryAgain = null
                 )
             )
-            is MainScreenUiEvent.ShowAcsPage -> setState(
+            is MainScreenUiEvent.ShowThreeDSecurePage -> setState(
                 oldState.copy(
                     isLoading = false,
                     customerFields = emptyList(),
                     clarificationFields = emptyList(),
-                    acsPageState = AcsPageState(
-                        acsPage = event.acsPage,
+                    threeDSecurePageState = ThreeDSecurePageState(
+                        threeDSecurePage = event.threeDSecurePage,
                         isCascading = event.isCascading
                     ),
                     finalPaymentState = null,
@@ -86,7 +86,7 @@ internal class MainReducer(initial: MainScreenState) :
                     isLoading = false,
                     customerFields = emptyList(),
                     clarificationFields = emptyList(),
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = FinalPaymentState.Success,
                     apsPageState = null,
                     isDeleteCardLoading = null,
@@ -98,7 +98,7 @@ internal class MainReducer(initial: MainScreenState) :
                     isLoading = false,
                     customerFields = emptyList(),
                     clarificationFields = emptyList(),
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     apsPageState = null,
                     finalPaymentState = FinalPaymentState.Decline(
                         paymentMessage = event.paymentMessage,
@@ -128,7 +128,7 @@ internal class MainReducer(initial: MainScreenState) :
                     isLoading = false,
                     customerFields = emptyList(),
                     clarificationFields = emptyList(),
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isDeleteCardLoading = null,

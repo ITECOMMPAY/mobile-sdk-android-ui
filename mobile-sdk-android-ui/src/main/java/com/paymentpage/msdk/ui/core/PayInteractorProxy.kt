@@ -10,7 +10,7 @@ internal interface PayInteractorProxy {
     var delegate: PayDelegate?
     fun sendRequest(request: PayRequest)
     fun cancel()
-    fun threeDSecureHandled()
+    fun threeDSecureRedirectHandle(url: String)
     fun sendClarificationFields(fields: List<ClarificationFieldValue>)
     fun sendCustomerFields(fields: List<CustomerFieldValue>)
 }
@@ -29,8 +29,8 @@ internal class PayInteractorProxyImpl(
         interactor.cancel()
     }
 
-    override fun threeDSecureHandled() {
-        interactor.threeDSecureHandled()
+    override fun threeDSecureRedirectHandle(url: String) {
+        interactor.threeDSecureRedirectHandle(url)
     }
 
     override fun sendClarificationFields(fields: List<ClarificationFieldValue>) {
@@ -55,8 +55,9 @@ internal class PayInteractorProxyMockImpl(
     override fun cancel() {
     }
 
-    override fun threeDSecureHandled() {
+    override fun threeDSecureRedirectHandle(url: String) {
     }
+
 
     override fun sendClarificationFields(fields: List<ClarificationFieldValue>) {
     }
