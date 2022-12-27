@@ -33,6 +33,9 @@ internal class MainViewModel(
     override val timeMachine: TimeMachine<MainScreenState>
         get() = reducer.timeMachine
 
+    val payment: Payment?
+        get() = _payment
+    private var _payment: Payment? = null
 
     override fun onCleared() {
         super.onCleared()
@@ -53,7 +56,8 @@ internal class MainViewModel(
         paymentMessage: String?,
         payment: Payment
     ) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
+        //sendEvent(MainScreenUiEvent.SetPayment(payment))
+        this._payment = payment
         sendEvent(
             MainScreenUiEvent.ShowDeclinePage(
                 paymentMessage = paymentMessage,
@@ -63,7 +67,8 @@ internal class MainViewModel(
     }
 
     override fun onCompleteWithSuccess(payment: Payment) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
+        //sendEvent(MainScreenUiEvent.SetPayment(payment))
+        this._payment = payment
         sendEvent(MainScreenUiEvent.ShowSuccessPage)
     }
 
@@ -79,14 +84,13 @@ internal class MainViewModel(
 
     override fun onSuccess(result: Boolean) {
         sendEvent(MainScreenUiEvent.ShowDeleteCardLoading(isLoading = false))
-        setCurrentMethod(null)
     }
 
     override fun onPaymentCreated() {
     }
 
     override fun onStatusChanged(status: PaymentStatus, payment: Payment) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
+        this._payment = payment
     }
 
     override fun onThreeDSecure(
@@ -94,6 +98,11 @@ internal class MainViewModel(
         isCascading: Boolean,
         payment: Payment
     ) {
-        sendEvent(MainScreenUiEvent.ShowThreeDSecurePage(threeDSecurePage = threeDSecurePage, isCascading = isCascading))
+        sendEvent(
+            MainScreenUiEvent.ShowThreeDSecurePage(
+                threeDSecurePage = threeDSecurePage,
+                isCascading = isCascading
+            )
+        )
     }
 }

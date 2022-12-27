@@ -19,6 +19,7 @@ import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.presentation.main.restoreAps
 import com.paymentpage.msdk.ui.presentation.main.restorePayment
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -37,6 +38,7 @@ internal fun InitScreen(
     BackHandler(true) { onCancel() }
     val initViewModel = LocalInitViewModel.current
     val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     LaunchedEffect(Unit) {
         initViewModel.loadInit()
         initViewModel.state.onEach {
@@ -60,6 +62,13 @@ internal fun InitScreen(
                     } else {
                         if (it.payment.paymentMethodType == PaymentMethodType.APS && it.payment.status?.isFinal == false) {
                             navigator.navigateTo(Route.RestoreAps)
+                            paymentMethodsViewModel.setCurrentMethod(
+                                UIPaymentMethod.UIApsPaymentMethod(
+                                    index = 0,
+                                    title = paymentMethod.name ?: paymentMethod.code,
+                                    paymentMethod = paymentMethod
+                                )
+                            )
                             mainViewModel.restoreAps(apsMethod = paymentMethod)
                         } else {
                             navigator.navigateTo(Route.Restore)
@@ -84,7 +93,7 @@ private fun Content(
     onCancel: () -> Unit
 ) {
     SDKScaffold(
-        title = when(actionType) {
+        title = when (actionType) {
             SDKActionType.Sale -> stringResource(R.string.sale_label)
             SDKActionType.Tokenize -> stringResource(R.string.tokenize_label)
             else -> stringResource(R.string.sale_label)

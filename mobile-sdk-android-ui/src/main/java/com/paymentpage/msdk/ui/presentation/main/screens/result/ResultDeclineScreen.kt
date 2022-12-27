@@ -17,7 +17,7 @@ internal fun ResultDeclineScreen(
 ) {
     val viewModel = LocalMainViewModel.current
     val payment =
-        viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
+        viewModel.payment ?: throw IllegalStateException("Not found payment in State")
 
     BackHandler(true) { onClose(payment) }
 

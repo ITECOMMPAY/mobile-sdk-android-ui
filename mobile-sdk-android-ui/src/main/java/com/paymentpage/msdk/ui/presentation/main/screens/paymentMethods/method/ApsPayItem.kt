@@ -11,6 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
@@ -26,7 +27,8 @@ internal fun ApsPayItem(
     method: UIPaymentMethod.UIApsPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
 ) {
-    val viewModel = LocalMainViewModel.current
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
 
     ExpandablePaymentMethodItem(
         method = method,
@@ -51,9 +53,8 @@ internal fun ApsPayItem(
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = true,
             ) {
-                viewModel.showAps(
-                    method = method,
-                )
+                paymentMethodsViewModel.setCurrentMethod(method)
+                mainViewModel.showAps(method = method)
             }
 //            Spacer(modifier = Modifier.size(10.dp))
 //            Text(

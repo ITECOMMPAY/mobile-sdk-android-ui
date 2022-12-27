@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
@@ -39,12 +40,12 @@ internal fun ResultDeclineSaleContent(
     onClose: (Payment) -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
 ) {
-    val viewModel = LocalMainViewModel.current
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val payment =
-        viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
-    val method = viewModel.lastState.currentMethod
+        mainViewModel.payment ?: throw IllegalStateException("Not found payment in State")
     val isTryAgain =
-        (viewModel.lastState.finalPaymentState as? FinalPaymentState.Decline)?.isTryAgain ?: false
+        (mainViewModel.lastState.finalPaymentState as? FinalPaymentState.Decline)?.isTryAgain ?: false
     val visibleState = remember {
         MutableTransitionState(false).apply {
             // Start the animation immediately
@@ -173,7 +174,10 @@ internal fun ResultDeclineSaleContent(
                             SDKButton(
                                 label = getStringOverride(OverridesKeys.BUTTON_TRY_AGAIN),
                                 isEnabled = true
-                            ) { viewModel.tryAgain(method = method) }
+                            ) {
+                                paymentMethodsViewModel.setCurrentMethod(null)
+                                mainViewModel.tryAgain()
+                            }
                     }
                 }
 

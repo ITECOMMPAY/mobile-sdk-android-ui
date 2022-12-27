@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
@@ -38,7 +39,8 @@ internal fun NewCardItem(
     method: UIPaymentMethod.UICardPayPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
 ) {
-    val viewModel = LocalMainViewModel.current
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
     val additionalFields = LocalPaymentOptions.current.additionalFields
     val savedState = remember { mutableStateOf(method.saveCard) }
@@ -158,7 +160,8 @@ internal fun NewCardItem(
                 isValid = isCvvValid && isPanValid && isCardHolderValid && isExpiryValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
-                    viewModel.saleCard(
+                    paymentMethodsViewModel.setCurrentMethod(method)
+                    mainViewModel.saleCard(
                         method = method,
                         needSendCustomerFields = customerFields.needSendWithSaleRequest()
                     )

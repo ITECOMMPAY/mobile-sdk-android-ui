@@ -108,14 +108,12 @@ internal class MainReducer(initial: MainScreenState) :
                     isTryAgain = null
                 )
             )
-            is MainScreenUiEvent.SetCurrentMethod -> setState(
-                oldState.copy(currentMethod = event.method)
-            )
-            is MainScreenUiEvent.SetPayment -> setState(
-                oldState.copy(
-                    payment = event.payment
-                )
-            )
+//            is MainScreenUiEvent.SetCurrentMethod -> setState(
+//                oldState.copy(currentMethod = event.method)
+//            )
+//            is MainScreenUiEvent.SetPayment -> setState(
+//                oldState.copy(payment = event.payment)
+//            )
             is MainScreenUiEvent.ShowApsPage -> setState(
                 oldState.copy(
                     apsPageState = ApsPageState(apsMethod = event.apsMethod),
@@ -132,7 +130,7 @@ internal class MainReducer(initial: MainScreenState) :
                     finalPaymentState = null,
                     apsPageState = null,
                     isDeleteCardLoading = null,
-                    currentMethod = null
+                    //currentMethod = null
                 )
             )
         }

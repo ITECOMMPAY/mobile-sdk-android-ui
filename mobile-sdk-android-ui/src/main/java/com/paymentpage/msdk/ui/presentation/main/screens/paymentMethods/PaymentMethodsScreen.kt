@@ -7,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
-import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -25,14 +25,16 @@ internal fun PaymentMethodsScreen(
     onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
 ) {
-    val lastState = LocalMainViewModel.current.lastState
+
+    val viewModel = LocalMainViewModel.current
+    val lastState = viewModel.lastState
     val isTryAgain = lastState.isTryAgain ?: false
     val isSaleWithToken = LocalPaymentOptions.current.paymentInfo.token != null
     val filteredUIPaymentMethods = with(uiPaymentMethods) {
         if (isSaleWithToken)
             filterIsInstance<UIPaymentMethod.UISavedCardPayPaymentMethod>()
         else if (isTryAgain)
-            filter { it.paymentMethod.code == lastState.payment?.method }
+            filter { it.paymentMethod.code == viewModel.payment?.method }
         else this
     }
 

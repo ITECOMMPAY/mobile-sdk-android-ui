@@ -13,8 +13,8 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.U
 
 @Immutable
 internal sealed class MainScreenUiEvent : UiEvent {
-    class SetCurrentMethod(val method: UIPaymentMethod?) : MainScreenUiEvent()
-    class SetPayment(val payment: Payment) : MainScreenUiEvent()
+   // class SetCurrentMethod(val method: UIPaymentMethod?) : MainScreenUiEvent()
+   // class SetPayment(val payment: Payment) : MainScreenUiEvent()
     object ShowLoading : MainScreenUiEvent()
     class ShowDeleteCardLoading(val isLoading: Boolean?) : MainScreenUiEvent()
     class ShowError(val error: ErrorResult) : MainScreenUiEvent()
@@ -39,8 +39,8 @@ internal data class MainScreenState(
     val isLoading: Boolean? = null,
     val isDeleteCardLoading: Boolean? = null,
     val isTryAgain: Boolean? = null,
-    val currentMethod: UIPaymentMethod? = null,
-    val payment: Payment? = null,
+    //val currentMethod: UIPaymentMethod? = null,
+    //val payment: Payment? = null,
     val customerFields: List<CustomerField> = emptyList(),
     val clarificationFields: List<ClarificationField> = emptyList(),
     val threeDSecurePageState: ThreeDSecurePageState? = null,

@@ -5,7 +5,8 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalFocusManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -43,15 +44,19 @@ internal fun MainScreen(
     onError: (ErrorResult, Boolean) -> Unit,
     onCancel: () -> Unit
 ) {
+    val lastRoute = mainScreenNavigator.lastRoute
+
     val navController = rememberAnimatedNavController()
     val focusManager = LocalFocusManager.current
 
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
 
-    val mergedPaymentMethods = paymentMethods.mergeUIPaymentMethods(
-        savedAccounts = savedAccounts
-    )
+    val mergedPaymentMethods = remember {
+        mutableStateOf(
+            paymentMethods.mergeUIPaymentMethods(savedAccounts = savedAccounts)
+        )
+    }
 
     LaunchedEffect("mainScreenNavigation") {
         mainScreenNavigator.sharedFlow.onEach {
@@ -60,15 +65,17 @@ internal fun MainScreen(
         }.launchIn(this)
     }
     val mainViewModel = LocalMainViewModel.current
-    val state = mainViewModel.state.collectAsState().value //for recomposition
 
     LaunchedEffect(Unit) {
         mainViewModel.state.onEach {
             when {
                 it.error != null -> onError(it.error, true)
-                it.isLoading == true ->
-                    mainScreenNavigator.navigateTo(Route.Loading)
-                it.isTryAgain == true -> mainScreenNavigator.navigateTo(Route.PaymentMethods)
+                it.isLoading == true -> mainScreenNavigator.navigateTo(Route.Loading)
+                it.isTryAgain == true -> {
+                    mergedPaymentMethods.value =
+                        paymentMethods.mergeUIPaymentMethods(savedAccounts = savedAccounts)
+                    mainScreenNavigator.navigateTo(Route.PaymentMethods)
+                }
                 it.finalPaymentState != null -> {
                     when (it.finalPaymentState) {
                         is FinalPaymentState.Success -> mainScreenNavigator.navigateTo(Route.SuccessResult)
@@ -77,15 +84,16 @@ internal fun MainScreen(
                 }
                 it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.ClarificationFields)
-                it.threeDSecurePageState != null -> when(it.threeDSecurePageState.threeDSecurePage?.type) {
-                    ThreeDSecurePageType.THREE_DS_2_FRICTIONLESS -> mainScreenNavigator.navigateTo(Route.ThreeDSecureLoadingPage)
+                it.threeDSecurePageState != null -> when (it.threeDSecurePageState.threeDSecurePage?.type) {
+                    ThreeDSecurePageType.THREE_DS_2_FRICTIONLESS -> mainScreenNavigator.navigateTo(
+                        Route.ThreeDSecureLoadingPage
+                    )
                     else -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)
                 }
                 it.apsPageState != null -> mainScreenNavigator.navigateTo(Route.ApsPage)
             }
         }.collect()
     }
-    val lastRoute = mainScreenNavigator.lastRoute
 
     AnimatedNavHost(
         navController = navController,
@@ -139,7 +147,7 @@ internal fun MainScreen(
         }
         composable(route = Route.PaymentMethods.getPath()) {
             PaymentMethodsScreen(
-                uiPaymentMethods = mergedPaymentMethods,
+                uiPaymentMethods = mergedPaymentMethods.value,
                 onCancel = onCancel,
                 onError = onError
             )

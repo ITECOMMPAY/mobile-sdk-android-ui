@@ -9,6 +9,7 @@ import com.paymentpage.msdk.ui.core.CardRemoveInteractorProxyImpl
 import com.paymentpage.msdk.ui.core.PayInteractorProxyImpl
 import com.paymentpage.msdk.ui.presentation.init.InitViewModel
 import com.paymentpage.msdk.ui.presentation.main.MainViewModel
+import com.paymentpage.msdk.ui.presentation.main.PaymentMethodsViewModel
 import com.paymentpage.msdk.ui.utils.viewModelFactory
 
 internal val LocalPaymentOptions =
@@ -22,6 +23,9 @@ internal val LocalMainViewModel =
 
 internal val LocalInitViewModel =
     compositionLocalOf<InitViewModel> { error("No InitViewModel found!") }
+
+internal val LocalPaymentMethodsViewModel =
+    compositionLocalOf<PaymentMethodsViewModel> { error("No MainViewModel found!") }
 
 
 @Composable
@@ -49,6 +53,7 @@ internal fun SDKCommonProvider(
                 )
             }
         ),
+        LocalPaymentMethodsViewModel provides viewModel(),
         content = content
     )
 }

@@ -27,7 +27,6 @@ internal fun MainViewModel.saleGooglePay(
     needSendCustomerFields: Boolean
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
-    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
     val request = GooglePaySaleRequest(
         merchantId = merchantId,
         token = token,
@@ -44,7 +43,6 @@ internal fun MainViewModel.saleSavedCard(
     needSendCustomerFields: Boolean
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
-    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
     val request = SavedCardSaleRequest(cvv = method.cvv, accountId = method.accountId)
     if (needSendCustomerFields)
         request.customerFields = method.customerFieldValues
@@ -57,7 +55,6 @@ internal fun MainViewModel.tokenizeSavedCard(
     needSendCustomerFields: Boolean
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
-    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
     val request = CardSaleTokenizeRequest(cvv = method.cvv)
     if (needSendCustomerFields)
         request.customerFields = method.customerFieldValues
@@ -76,14 +73,12 @@ internal fun MainViewModel.showAps(
     method: UIPaymentMethod.UIApsPaymentMethod,
 ) {
     sendEvent(MainScreenUiEvent.ShowApsPage(apsMethod = method.paymentMethod))
-    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
 }
 
 //sale with aps
 internal fun MainViewModel.saleAps(
     method: UIPaymentMethod.UIApsPaymentMethod,
 ) {
-    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
     val request = ApsSaleRequest(methodCode = method.paymentMethod.code)
     payInteractor.sendRequest(request)
 }
@@ -94,7 +89,6 @@ internal fun MainViewModel.saleCard(
     needSendCustomerFields: Boolean
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
-    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
     val expiry = SdkExpiry(method.expiry)
     val request = NewCardSaleRequest(
         cvv = method.cvv,
@@ -116,7 +110,6 @@ internal fun MainViewModel.tokenizeCard(
     needSendCustomerFields: Boolean
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
-    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
     val expiry = SdkExpiry(method.expiry)
     val request = CardTokenizeRequest(
         pan = method.pan,
@@ -155,22 +148,8 @@ internal fun MainViewModel.restorePayment() {
 }
 
 internal fun MainViewModel.restoreAps(apsMethod: PaymentMethod) {
-    sendEvent(
-        MainScreenUiEvent.SetCurrentMethod(
-            UIPaymentMethod.UIApsPaymentMethod(
-                index = 0,
-                title = apsMethod.name ?: apsMethod.code,
-                paymentMethod = apsMethod
-            )
-        )
-    )
     sendEvent(MainScreenUiEvent.ShowApsPage(apsMethod = apsMethod))
     payInteractor.sendRequest(PaymentRestoreRequest())
-}
-
-//set current method
-internal fun MainViewModel.setCurrentMethod(method: UIPaymentMethod?) {
-    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
 }
 
 //set current method
@@ -179,8 +158,7 @@ internal fun MainViewModel.showError(errorResult: ErrorResult) {
 }
 
 //try again
-internal fun MainViewModel.tryAgain(method: UIPaymentMethod?) {
-    sendEvent(MainScreenUiEvent.SetCurrentMethod(method))
+internal fun MainViewModel.tryAgain() {
     sendEvent(MainScreenUiEvent.TryAgain)
 }
 

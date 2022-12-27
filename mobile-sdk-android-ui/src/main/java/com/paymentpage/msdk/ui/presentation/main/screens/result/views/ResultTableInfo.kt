@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
@@ -24,10 +25,11 @@ import com.paymentpage.msdk.ui.utils.extensions.paymentDateToPatternDate
 internal fun ResultTableInfo(
     onError: (ErrorResult, Boolean) -> Unit,
 ) {
-    val viewModel = LocalMainViewModel.current
-    val payment = viewModel.lastState.payment
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val payment = mainViewModel.payment
     if (payment != null) {
-        val valueTitleCardWallet = when (val method = viewModel.lastState.currentMethod) {
+        val valueTitleCardWallet = when (val method = paymentMethodsViewModel.lastState.currentMethod) {
             is UIPaymentMethod.UICardPayPaymentMethod, is UIPaymentMethod.UISavedCardPayPaymentMethod -> {
                 "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number}"
             }

@@ -9,11 +9,12 @@ class Navigator {
     val sharedFlow = _sharedFlow.asSharedFlow()
 
     private var _lastRoute: Route? = null
-    val lastRoute = _lastRoute
+    val lastRoute: Route?
+        get() = _lastRoute
 
     fun navigateTo(route: Route) {
-        if (route == _lastRoute)
-            return
+//        if (route == _lastRoute)
+//            return
         _lastRoute = route
         _sharedFlow.tryEmit(route)
     }
