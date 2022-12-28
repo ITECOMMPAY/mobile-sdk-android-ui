@@ -13,6 +13,7 @@ import com.paymentpage.msdk.ui.presentation.main.screens.result.views.decline.Re
 internal fun ResultDeclineScreen(
     actionType: SDKActionType? = null,
     onClose: (Payment) -> Unit,
+    onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
@@ -22,8 +23,15 @@ internal fun ResultDeclineScreen(
     BackHandler(true) { onClose(payment) }
 
     when (actionType) {
-        SDKActionType.Sale -> ResultDeclineSaleContent(onClose = onClose, onError = onError)
-        SDKActionType.Tokenize -> ResultDeclineTokenizeContent(onClose = onClose, onError = onError)
+        SDKActionType.Sale -> ResultDeclineSaleContent(
+            onClose = onClose,
+            onCancel = onCancel,
+            onError = onError,
+        )
+        SDKActionType.Tokenize -> ResultDeclineTokenizeContent(
+            onClose = onClose,
+            onError = onError
+        )
         else -> Unit
     }
 
