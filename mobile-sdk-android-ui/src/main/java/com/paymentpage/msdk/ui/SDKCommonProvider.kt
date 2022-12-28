@@ -25,7 +25,7 @@ internal val LocalInitViewModel =
     compositionLocalOf<InitViewModel> { error("No InitViewModel found!") }
 
 internal val LocalPaymentMethodsViewModel =
-    compositionLocalOf<PaymentMethodsViewModel> { error("No MainViewModel found!") }
+    compositionLocalOf<PaymentMethodsViewModel> { error("No LocalPaymentMethodsViewModel found!") }
 
 
 @Composable
@@ -34,13 +34,15 @@ internal fun SDKCommonProvider(
     msdkSession: MSDKCoreSession,
     content: @Composable () -> Unit
 ) {
+    val cardRemoveInteractorProxy =
+        CardRemoveInteractorProxyImpl(interactor = msdkSession.getCardRemoveInteractor())
     CompositionLocalProvider(
         LocalPaymentOptions provides paymentOptions,
         LocalMsdkSession provides msdkSession,
         LocalMainViewModel provides viewModel(
             factory = viewModelFactory {
                 MainViewModel(
-                    cardRemoveInteractor = CardRemoveInteractorProxyImpl(interactor = msdkSession.getCardRemoveInteractor()),
+                    cardRemoveInteractor = cardRemoveInteractorProxy,
                     payInteractor = PayInteractorProxyImpl(interactor = msdkSession.getPayInteractor())
                 )
             }
@@ -53,7 +55,11 @@ internal fun SDKCommonProvider(
                 )
             }
         ),
-        LocalPaymentMethodsViewModel provides viewModel(),
+        LocalPaymentMethodsViewModel provides viewModel(
+            factory = viewModelFactory {
+                PaymentMethodsViewModel(cardRemoveInteractor = cardRemoveInteractorProxy)
+            }
+        ),
         content = content
     )
 }

@@ -22,7 +22,7 @@ internal class MainViewModel(
 
     init {
         payInteractor.delegate = this
-        cardRemoveInteractor.delegate = this
+        cardRemoveInteractor.addDelegate(this)
     }
 
     override val reducer = MainReducer(MainScreenState.initial())
@@ -40,6 +40,7 @@ internal class MainViewModel(
     override fun onCleared() {
         super.onCleared()
         payInteractor.cancel()
+        cardRemoveInteractor.removeDelegate(this)
         cardRemoveInteractor.cancel()
     }
 
