@@ -3,15 +3,11 @@ package com.paymentpage.msdk.ui.presentation.main
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalFocusManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePageType
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.ErrorResult
@@ -27,7 +23,6 @@ import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultDeclineScr
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultSuccessScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.threeDSecure.ThreeDSecureScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.tokenize.TokenizeScreen
-import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -48,15 +43,10 @@ internal fun MainScreen(
 
     val navController = rememberAnimatedNavController()
     val focusManager = LocalFocusManager.current
-
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
-
-    val mergedPaymentMethods = remember {
-        mutableStateOf(
-            paymentMethods.mergeUIPaymentMethods(savedAccounts = savedAccounts)
-        )
-    }
+    val uiPaymentMethods = paymentMethodsViewModel.state.collectAsState().value.paymentMethods ?: throw IllegalStateException("Not found paymentMethods in State")
 
     LaunchedEffect("mainScreenNavigation") {
         mainScreenNavigator.sharedFlow.onEach {
@@ -72,8 +62,10 @@ internal fun MainScreen(
                 it.error != null -> onError(it.error, true)
                 it.isLoading == true -> mainScreenNavigator.navigateTo(Route.Loading)
                 it.isTryAgain == true -> {
-                    mergedPaymentMethods.value =
-                        paymentMethods.mergeUIPaymentMethods(savedAccounts = savedAccounts)
+                    paymentMethodsViewModel.updatePaymentMethods(
+                        paymentMethods = paymentMethods,
+                        savedAccounts = savedAccounts
+                    )
                     mainScreenNavigator.navigateTo(Route.PaymentMethods)
                 }
                 it.finalPaymentState != null -> {
@@ -147,18 +139,15 @@ internal fun MainScreen(
         }
         composable(route = Route.PaymentMethods.getPath()) {
             PaymentMethodsScreen(
-                uiPaymentMethods = mergedPaymentMethods.value,
+                uiPaymentMethods = uiPaymentMethods,
                 onCancel = onCancel,
                 onError = onError
             )
         }
         composable(route = Route.Tokenize.getPath()) {
             TokenizeScreen(
-                tokenizePaymentMethod = UIPaymentMethod.UITokenizeCardPayPaymentMethod(
-                    paymentMethod = paymentMethods.first {
-                        it.paymentMethodType == PaymentMethodType.CARD
-                    }
-                ),
+                tokenizePaymentMethod = uiPaymentMethods.first() as
+                        UIPaymentMethod.UITokenizeCardPayPaymentMethod,
                 onCancel = onCancel,
                 onError = onError
             )

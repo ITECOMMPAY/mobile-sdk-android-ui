@@ -21,6 +21,7 @@ import com.paymentpage.msdk.ui.presentation.main.restoreAps
 import com.paymentpage.msdk.ui.presentation.main.restorePayment
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.shimmer.ShimmerAnimatedItem
@@ -39,6 +40,27 @@ internal fun InitScreen(
     val initViewModel = LocalInitViewModel.current
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
+    val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
+
+    if (paymentMethods.isNotEmpty())
+        when (actionType) {
+            SDKActionType.Sale -> paymentMethodsViewModel.setPaymentMethods(
+                paymentMethods.mergeUIPaymentMethods(savedAccounts)
+            )
+            SDKActionType.Tokenize ->
+                paymentMethodsViewModel.setPaymentMethods(
+                    listOf(
+                        UIPaymentMethod.UITokenizeCardPayPaymentMethod(
+                            paymentMethod = paymentMethods.first { paymentMethod ->
+                                paymentMethod.paymentMethodType == PaymentMethodType.CARD
+                            }
+                        )
+                    )
+                )
+            else -> Unit
+        }
+
     LaunchedEffect(Unit) {
         initViewModel.loadInit()
         initViewModel.state.onEach {

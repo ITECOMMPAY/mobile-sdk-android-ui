@@ -25,7 +25,7 @@ internal class MainViewModel(
         cardRemoveInteractor.addDelegate(this)
     }
 
-    override val reducer = MainReducer(MainScreenState.initial())
+    override val reducer = MainReducer(MainScreenState())
 
     override val state: StateFlow<MainScreenState>
         get() = reducer.state

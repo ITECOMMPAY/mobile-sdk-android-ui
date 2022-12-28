@@ -124,7 +124,6 @@ internal class MainReducer(initial: MainScreenState) :
                     finalPaymentState = null,
                     apsPageState = null,
                     isDeleteCardLoading = null,
-                    //currentMethod = null
                 )
             )
         }

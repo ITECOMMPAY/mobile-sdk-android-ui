@@ -6,15 +6,13 @@ import com.paymentpage.msdk.ui.base.mvi.UiState
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 
 @Immutable
-internal sealed class PaymentMethodsUiEvent : UiEvent {
-    class SetCurrentMethod(val method: UIPaymentMethod?) : PaymentMethodsUiEvent()
+internal sealed interface PaymentMethodsUiEvent : UiEvent {
+    data class SetCurrentMethod(val method: UIPaymentMethod?) : PaymentMethodsUiEvent
+    data class SetPaymentMethods(val paymentMethods: List<UIPaymentMethod>?) : PaymentMethodsUiEvent
 }
 
 @Immutable
 internal data class PaymentMethodsState(
-    val currentMethod: UIPaymentMethod? = null
-) : UiState {
-    companion object {
-        fun initial() = PaymentMethodsState()
-    }
-}
+    val currentMethod: UIPaymentMethod? = null,
+    val paymentMethods: List<UIPaymentMethod>? = null
+) : UiState

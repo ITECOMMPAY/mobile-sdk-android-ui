@@ -12,19 +12,19 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
     override suspend fun reduce(viewIntent: MainViewIntents) {
         when (viewIntent) {
             is MainViewIntents.ChangeField -> {
-                com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData = viewIntent.paymentData
+                ProcessRepository.paymentData = viewIntent.paymentData
                 updateState(
                     viewState.value.copy(
-                        paymentData = com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData
+                        paymentData = ProcessRepository.paymentData
                     )
                 )
             }
             is MainViewIntents.SelectForcePaymentMethod -> {
-                com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData = viewIntent.paymentData
+                ProcessRepository.paymentData = viewIntent.paymentData
                 updateState(
                     viewState.value.copy(
                         selectedForcePaymentMethodId = viewIntent.id,
-                        paymentData = com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData
+                        paymentData = ProcessRepository.paymentData
                     )
                 )
             }
@@ -37,20 +37,20 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                 )
             }
             is MainViewIntents.SelectResourceImage -> {
-                com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData = viewIntent.paymentData
+                ProcessRepository.paymentData = viewIntent.paymentData
                 updateState(
                     viewState.value.copy(
                         selectedResourceImageId = viewIntent.id,
-                        paymentData = com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData
+                        paymentData = ProcessRepository.paymentData
                     )
                 )
             }
             is MainViewIntents.SelectLocalImage -> {
-                com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData = viewIntent.paymentData
+                ProcessRepository.paymentData = viewIntent.paymentData
                 updateState(
                     viewState.value.copy(
                         localImageUri = viewIntent.uri,
-                        paymentData = com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData,
+                        paymentData = ProcessRepository.paymentData,
                         selectedResourceImageId = -1
                     )
                 )
@@ -64,11 +64,11 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                 )
             }
             is MainViewIntents.SelectMockMode -> {
-                com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData = viewIntent.paymentData
+                ProcessRepository.paymentData = viewIntent.paymentData
                 updateState(
                     viewState.value.copy(
                         selectedMockModeTypeId = viewIntent.id,
-                        paymentData = com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData
+                        paymentData = ProcessRepository.paymentData
                     )
                 )
             }
@@ -89,14 +89,14 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
             }
             //Sale
             is MainViewIntents.Sale -> {
-                com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData =
-                    com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData.copy(actionType = EcmpActionType.Sale)
+                ProcessRepository.paymentData =
+                    ProcessRepository.paymentData.copy(actionType = EcmpActionType.Sale)
                 pushExternalIntent(SampleViewIntents.StartPaymentSDK)
             }
             //Tokenize
             is MainViewIntents.Tokenize -> {
-                com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData =
-                    com.ecommpay.ui.msdk.sample.data.ProcessRepository.paymentData.copy(actionType = EcmpActionType.Tokenize)
+                ProcessRepository.paymentData =
+                    ProcessRepository.paymentData.copy(actionType = EcmpActionType.Tokenize)
                 pushExternalIntent(SampleViewIntents.StartPaymentSDK)
             }
             is MainViewIntents.ThreeDSecure -> {

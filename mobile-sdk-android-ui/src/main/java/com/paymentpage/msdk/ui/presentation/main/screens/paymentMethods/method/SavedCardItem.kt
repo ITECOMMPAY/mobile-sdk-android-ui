@@ -16,10 +16,10 @@ import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
-import com.paymentpage.msdk.ui.presentation.main.deleteSavedCard
 import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.showDeleteCardLoading
 import com.paymentpage.msdk.ui.presentation.main.tokenizeSavedCard
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -142,7 +142,8 @@ internal fun SavedCardItem(
                         dismissButtonText = getStringOverride(OverridesKeys.BUTTON_CANCEL),
                         onConfirmButtonClick = {
                             deleteCardAlertDialogState = false
-                            mainViewModel.deleteSavedCard(method = method)
+                            mainViewModel.showDeleteCardLoading()
+                            paymentMethodsViewModel.deleteSavedCard(method = method)
                         },
                         onDismissButtonClick = { deleteCardAlertDialogState = false },
                         confirmButtonText = getStringOverride(OverridesKeys.BUTTON_DELETE)

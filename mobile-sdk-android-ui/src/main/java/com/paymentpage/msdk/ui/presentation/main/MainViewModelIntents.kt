@@ -5,7 +5,6 @@ import com.paymentpage.msdk.core.domain.entities.SdkExpiry
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
-import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.aps.ApsSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.CardSaleTokenizeRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
@@ -61,12 +60,8 @@ internal fun MainViewModel.tokenizeSavedCard(
     this.payInteractor.sendRequest(request)
 }
 
-internal fun MainViewModel.deleteSavedCard(
-    method: UIPaymentMethod.UISavedCardPayPaymentMethod,
-) {
+internal fun MainViewModel.showDeleteCardLoading() {
     sendEvent(MainScreenUiEvent.ShowDeleteCardLoading(isLoading = true))
-    val request = CardRemoveRequest(id = method.accountId)
-    this.cardRemoveInteractor.sendRequest(request = request)
 }
 
 internal fun MainViewModel.showAps(
