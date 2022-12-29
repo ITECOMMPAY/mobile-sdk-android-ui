@@ -19,12 +19,16 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
 @Composable
 internal fun TokenizeScreen(
-    tokenizePaymentMethod: UIPaymentMethod.UITokenizeCardPayPaymentMethod,
     onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
 ) {
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val lastSelectedMethod = paymentMethodsViewModel.state.collectAsState().value.currentMethod
+
+    val uiPaymentMethods = paymentMethodsViewModel.state.collectAsState().value.paymentMethods
+        ?: throw IllegalStateException("Not found paymentMethods in State")
+    val tokenizePaymentMethod =
+        uiPaymentMethods.first() as UIPaymentMethod.UITokenizeCardPayPaymentMethod
 
     LaunchedEffect(key1 = Unit) {
         val lastOpenedMethod =

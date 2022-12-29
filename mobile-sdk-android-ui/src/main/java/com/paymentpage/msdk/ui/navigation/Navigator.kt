@@ -13,8 +13,6 @@ class Navigator {
         get() = _lastRoute
 
     fun navigateTo(route: Route) {
-//        if (route == _lastRoute)
-//            return
         _lastRoute = route
         _sharedFlow.tryEmit(route)
     }

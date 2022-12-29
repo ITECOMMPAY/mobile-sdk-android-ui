@@ -18,7 +18,6 @@ import com.paymentpage.msdk.ui.presentation.main.screens.clarificationFields.Cla
 import com.paymentpage.msdk.ui.presentation.main.screens.customerFields.CustomerFieldsScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.loading.LoadingScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.PaymentMethodsScreen
-import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultDeclineScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultSuccessScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.threeDSecure.ThreeDSecureScreen
@@ -43,10 +42,10 @@ internal fun MainScreen(
 
     val navController = rememberAnimatedNavController()
     val focusManager = LocalFocusManager.current
+    val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
-    val uiPaymentMethods = paymentMethodsViewModel.state.collectAsState().value.paymentMethods ?: throw IllegalStateException("Not found paymentMethods in State")
 
     LaunchedEffect("mainScreenNavigation") {
         mainScreenNavigator.sharedFlow.onEach {
@@ -54,7 +53,6 @@ internal fun MainScreen(
             navController.navigate(it.getPath())
         }.launchIn(this)
     }
-    val mainViewModel = LocalMainViewModel.current
 
     LaunchedEffect(Unit) {
         mainViewModel.state.onEach {
@@ -99,8 +97,7 @@ internal fun MainScreen(
             CustomerFieldsScreen(
                 actionType = actionType,
                 onBack = {
-                    navController.navigateUp()
-                    navController.navigateUp()
+                    mainScreenNavigator.navigateTo(Route.PaymentMethods)
                 },
                 onCancel = onCancel
             )
@@ -139,15 +136,12 @@ internal fun MainScreen(
         }
         composable(route = Route.PaymentMethods.getPath()) {
             PaymentMethodsScreen(
-                uiPaymentMethods = uiPaymentMethods,
                 onCancel = onCancel,
                 onError = onError
             )
         }
         composable(route = Route.Tokenize.getPath()) {
             TokenizeScreen(
-                tokenizePaymentMethod = uiPaymentMethods.first() as
-                        UIPaymentMethod.UITokenizeCardPayPaymentMethod,
                 onCancel = onCancel,
                 onError = onError
             )
