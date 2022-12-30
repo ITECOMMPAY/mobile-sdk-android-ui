@@ -26,16 +26,11 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build common UI library
-      run: |
-        ./gradlew :mobile-sdk-android-ui:lint
-        ./gradlew :mobile-sdk-android-ui:test
-        ./gradlew :mobile-sdk-android-ui:assembleDebug
-
-    - name: Build Ecommpay UI library
-      run: |
-        ./gradlew :mobile-sdk-android-ui-ecommpay:assembleDebug
 
     - name: Build sample
       run: |
         ./gradlew :mobile-sdk-android-ui:assembleDebug
+
+    - name: Tests
+      run: |
+        ./gradlew :mobile-sdk-android-ui:test
