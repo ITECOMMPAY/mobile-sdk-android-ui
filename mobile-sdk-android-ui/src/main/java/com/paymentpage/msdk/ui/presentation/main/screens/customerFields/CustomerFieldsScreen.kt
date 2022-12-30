@@ -63,10 +63,7 @@ internal fun CustomerFieldsScreen(
                 viewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
             }
             Spacer(modifier = Modifier.size(16.dp))
-            SDKFooter(
-                iconLogo = SDKTheme.images.sdkLogoResId,
-                poweredByText = stringResource(R.string.powered_by_label),
-            )
+            SDKFooter()
             Spacer(modifier = Modifier.size(25.dp))
         },
         onClose = { onCancel() },

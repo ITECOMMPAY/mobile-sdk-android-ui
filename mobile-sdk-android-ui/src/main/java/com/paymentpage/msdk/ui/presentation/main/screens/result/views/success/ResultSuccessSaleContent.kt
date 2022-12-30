@@ -166,10 +166,7 @@ internal fun ResultSuccessSaleContent(
                 ) {
                     Column {
                         Spacer(modifier = Modifier.size(15.dp))
-                        SDKFooter(
-                            iconLogo = SDKTheme.images.sdkLogoResId,
-                            poweredByText = stringResource(R.string.powered_by_label),
-                        )
+                        SDKFooter()
                         Spacer(modifier = Modifier.size(25.dp))
                     }
                 }

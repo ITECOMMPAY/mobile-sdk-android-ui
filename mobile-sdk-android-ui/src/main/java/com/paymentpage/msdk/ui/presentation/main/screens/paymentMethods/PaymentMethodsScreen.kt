@@ -41,10 +41,7 @@ internal fun PaymentMethodsScreen(
             Spacer(modifier = Modifier.size(15.dp))
             PaymentMethodList(uiPaymentMethods = filteredUIPaymentMethods)
             Spacer(modifier = Modifier.size(6.dp))
-            SDKFooter(
-                iconLogo = SDKTheme.images.sdkLogoResId,
-                poweredByText = stringResource(R.string.powered_by_label),
-            )
+            SDKFooter()
             Spacer(modifier = Modifier.size(25.dp))
         },
         onClose = onCancel

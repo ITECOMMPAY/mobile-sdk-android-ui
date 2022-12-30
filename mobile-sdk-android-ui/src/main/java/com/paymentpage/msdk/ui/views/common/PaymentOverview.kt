@@ -84,8 +84,7 @@ internal fun ExpandablePaymentOverview(
                     bitmap = it.asImageBitmap(),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .height(35.dp)
+                    modifier = Modifier.height(35.dp)
                 )
                 Spacer(modifier = Modifier.size(20.dp))
             }

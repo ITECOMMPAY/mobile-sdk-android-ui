@@ -80,10 +80,7 @@ internal fun ClarificationFieldsScreen(
                 viewModel.sendClarificationFields(clarificationFieldValues!!)
             }
             Spacer(modifier = Modifier.size(16.dp))
-            SDKFooter(
-                iconLogo = SDKTheme.images.sdkLogoResId,
-                poweredByText = stringResource(R.string.powered_by_label),
-            )
+            SDKFooter()
         },
         onClose = { onCancel() },
     )

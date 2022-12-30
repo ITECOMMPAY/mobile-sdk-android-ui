@@ -70,4 +70,6 @@ internal object OverridesKeys {
     //APS
     internal const val APS_PAYMENT_DISCLAIMER = "aps_payment_disclaimer"
     internal const val TITLE = "title"
+
+    internal const val TITLE_PRIVACY_POLICY = "privacy_policy"
 }

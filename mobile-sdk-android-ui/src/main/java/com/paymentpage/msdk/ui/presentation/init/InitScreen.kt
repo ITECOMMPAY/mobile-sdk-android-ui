@@ -93,8 +93,6 @@ private fun Content(
             Loading()
             Spacer(modifier = Modifier.size(5.dp))
             SDKFooter(
-                iconLogo = SDKTheme.images.sdkLogoResId,
-                poweredByText = stringResource(R.string.powered_by_label),
                 isVisiblePrivacyPolicy = false,
                 isVisibleCookiePolicy = false
             )

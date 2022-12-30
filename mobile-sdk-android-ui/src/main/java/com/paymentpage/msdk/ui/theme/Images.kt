@@ -8,7 +8,6 @@ import com.paymentpage.msdk.ui.R
 
 
 internal class Images(
-    sdkLogoResId: Int,
     cardLogoResId: Int,
     apsDefaultLogo: Int,
     googlePayMethodResId: Int,
@@ -16,8 +15,6 @@ internal class Images(
     successLogo: Int,
     errorLogo: Int
 ) {
-    var sdkLogoResId by mutableStateOf(sdkLogoResId)
-        private set
     var cardLogoResId by mutableStateOf(cardLogoResId)
         private set
     var apsDefaultLogoResId by mutableStateOf(apsDefaultLogo)
@@ -33,7 +30,6 @@ internal class Images(
 }
 
 internal fun lightImages(): Images = Images(
-    sdkLogoResId = R.drawable.sdk_logo,
     cardLogoResId = R.drawable.card_logo,
     apsDefaultLogo = R.drawable.aps_default_logo,
     googlePayMethodResId = R.drawable.payment_method_google_pay,
