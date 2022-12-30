@@ -8,4 +8,10 @@ group = "com.ecommpay"
 dependencies {
     //Projects
     implementation(project(":mobile-sdk-android-ui"))
+
+    android {
+        defaultConfig {
+            vectorDrawables.useSupportLibrary = true
+        }
+    }
 }
