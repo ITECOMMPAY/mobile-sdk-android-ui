@@ -54,9 +54,9 @@ internal class PaymentMethodsViewModel(
         this.cardRemoveInteractor.sendRequest(request = request)
     }
 
-    override fun onError(code: ErrorCode, message: String) {
+    override fun onError(code: ErrorCode, message: String) {}
 
-    }
+    override fun onStartingRemove() {}
 
     override fun onSuccess(result: Boolean) {
         sendEvent(

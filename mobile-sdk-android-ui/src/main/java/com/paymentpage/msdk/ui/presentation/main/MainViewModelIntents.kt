@@ -60,10 +60,6 @@ internal fun MainViewModel.tokenizeSavedCard(
     this.payInteractor.sendRequest(request)
 }
 
-internal fun MainViewModel.showDeleteCardLoading() {
-    sendEvent(MainScreenUiEvent.ShowDeleteCardLoading(isLoading = true))
-}
-
 internal fun MainViewModel.showAps(
     method: UIPaymentMethod.UIApsPaymentMethod,
 ) {
