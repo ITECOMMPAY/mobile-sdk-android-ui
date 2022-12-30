@@ -3,14 +3,12 @@ package com.paymentpage.msdk.ui.presentation.main
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalFocusManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
+import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePageType
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
@@ -20,12 +18,10 @@ import com.paymentpage.msdk.ui.presentation.main.screens.clarificationFields.Cla
 import com.paymentpage.msdk.ui.presentation.main.screens.customerFields.CustomerFieldsScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.loading.LoadingScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.PaymentMethodsScreen
-import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultDeclineScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultSuccessScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.threeDSecure.ThreeDSecureScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.tokenize.TokenizeScreen
-import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -42,17 +38,14 @@ internal fun MainScreen(
     onError: (ErrorResult, Boolean) -> Unit,
     onCancel: () -> Unit
 ) {
+    val lastRoute = mainScreenNavigator.lastRoute
+
     val navController = rememberAnimatedNavController()
     val focusManager = LocalFocusManager.current
-
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
-
-    val mergedPaymentMethods = remember {
-        paymentMethods.mergeUIPaymentMethods(
-            savedAccounts = savedAccounts
-        )
-    }
 
     LaunchedEffect("mainScreenNavigation") {
         mainScreenNavigator.sharedFlow.onEach {
@@ -60,14 +53,19 @@ internal fun MainScreen(
             navController.navigate(it.getPath())
         }.launchIn(this)
     }
-    val mainViewModel = LocalMainViewModel.current
 
     LaunchedEffect(Unit) {
         mainViewModel.state.onEach {
             when {
                 it.error != null -> onError(it.error, true)
-                it.isLoading == true ->
-                    mainScreenNavigator.navigateTo(Route.Loading)
+                it.isLoading == true -> mainScreenNavigator.navigateTo(Route.Loading)
+                it.isTryAgain == true -> {
+                    paymentMethodsViewModel.updatePaymentMethods(
+                        paymentMethods = paymentMethods,
+                        savedAccounts = savedAccounts
+                    )
+                    mainScreenNavigator.navigateTo(Route.PaymentMethods)
+                }
                 it.finalPaymentState != null -> {
                     when (it.finalPaymentState) {
                         is FinalPaymentState.Success -> mainScreenNavigator.navigateTo(Route.SuccessResult)
@@ -76,12 +74,16 @@ internal fun MainScreen(
                 }
                 it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.ClarificationFields)
-                it.acsPageState != null -> mainScreenNavigator.navigateTo(Route.AcsPage)
+                it.threeDSecurePageState != null -> when (it.threeDSecurePageState.threeDSecurePage?.type) {
+                    ThreeDSecurePageType.THREE_DS_2_FRICTIONLESS -> mainScreenNavigator.navigateTo(
+                        Route.ThreeDSecureLoadingPage
+                    )
+                    else -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)
+                }
                 it.apsPageState != null -> mainScreenNavigator.navigateTo(Route.ApsPage)
             }
         }.collect()
     }
-    val lastRoute = mainScreenNavigator.lastRoute
 
     AnimatedNavHost(
         navController = navController,
@@ -95,8 +97,7 @@ internal fun MainScreen(
             CustomerFieldsScreen(
                 actionType = actionType,
                 onBack = {
-                    navController.navigateUp()
-                    navController.navigateUp()
+                    mainScreenNavigator.navigateTo(Route.PaymentMethods)
                 },
                 onCancel = onCancel
             )
@@ -104,9 +105,15 @@ internal fun MainScreen(
         composable(route = Route.ClarificationFields.getPath()) {
             ClarificationFieldsScreen(onCancel = onCancel)
         }
-        composable(route = Route.AcsPage.getPath()) {
+
+        //3DS
+        composable(route = Route.ThreeDSecurePage.getPath()) {
             ThreeDSecureScreen(onCancel = onCancel)
         }
+        composable(route = Route.ThreeDSecureLoadingPage.getPath()) {
+            ThreeDSecureScreen(onCancel = onCancel)
+        }
+
         composable(route = Route.ApsPage.getPath()) {
             ApsScreen(onCancel = onCancel)
         }
@@ -129,18 +136,12 @@ internal fun MainScreen(
         }
         composable(route = Route.PaymentMethods.getPath()) {
             PaymentMethodsScreen(
-                uiPaymentMethods = mergedPaymentMethods,
                 onCancel = onCancel,
                 onError = onError
             )
         }
         composable(route = Route.Tokenize.getPath()) {
             TokenizeScreen(
-                tokenizePaymentMethod = UIPaymentMethod.UITokenizeCardPayPaymentMethod(
-                    paymentMethod = paymentMethods.first {
-                        it.paymentMethodType == PaymentMethodType.CARD
-                    }
-                ),
                 onCancel = onCancel,
                 onError = onError
             )

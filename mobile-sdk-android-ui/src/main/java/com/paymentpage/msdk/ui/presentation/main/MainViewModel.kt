@@ -5,7 +5,7 @@ import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFiel
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.entities.payment.PaymentStatus
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
+import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePage
 import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveDelegate
 import com.paymentpage.msdk.core.domain.interactors.pay.PayDelegate
 import com.paymentpage.msdk.ui.base.ErrorResult
@@ -22,10 +22,10 @@ internal class MainViewModel(
 
     init {
         payInteractor.delegate = this
-        cardRemoveInteractor.delegate = this
+        cardRemoveInteractor.addDelegate(this)
     }
 
-    override val reducer = MainReducer(MainScreenState.initial())
+    override val reducer = MainReducer(MainScreenState())
 
     override val state: StateFlow<MainScreenState>
         get() = reducer.state
@@ -33,10 +33,14 @@ internal class MainViewModel(
     override val timeMachine: TimeMachine<MainScreenState>
         get() = reducer.timeMachine
 
+    val payment: Payment?
+        get() = _payment
+    private var _payment: Payment? = null
 
     override fun onCleared() {
         super.onCleared()
         payInteractor.cancel()
+        cardRemoveInteractor.removeDelegate(this)
         cardRemoveInteractor.cancel()
     }
 
@@ -48,22 +52,13 @@ internal class MainViewModel(
         sendEvent(MainScreenUiEvent.ShowClarificationFields(clarificationFields = clarificationFields))
     }
 
-    override fun onCompleteWithDecline(paymentMessage: String?, payment: Payment) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
-        sendEvent(
-            MainScreenUiEvent.ShowDeclinePage(
-                paymentMessage = paymentMessage,
-                isTryAgain = false
-            )
-        )
-    }
-
-    override fun onCompleteWithFail(
+    override fun onCompleteWithDecline(
         isTryAgain: Boolean,
         paymentMessage: String?,
         payment: Payment
     ) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
+        //sendEvent(MainScreenUiEvent.SetPayment(payment))
+        this._payment = payment
         sendEvent(
             MainScreenUiEvent.ShowDeclinePage(
                 paymentMessage = paymentMessage,
@@ -72,9 +67,9 @@ internal class MainViewModel(
         )
     }
 
-
     override fun onCompleteWithSuccess(payment: Payment) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
+        //sendEvent(MainScreenUiEvent.SetPayment(payment))
+        this._payment = payment
         sendEvent(MainScreenUiEvent.ShowSuccessPage)
     }
 
@@ -90,17 +85,25 @@ internal class MainViewModel(
 
     override fun onSuccess(result: Boolean) {
         sendEvent(MainScreenUiEvent.ShowDeleteCardLoading(isLoading = false))
-        setCurrentMethod(null)
     }
 
     override fun onPaymentCreated() {
     }
 
     override fun onStatusChanged(status: PaymentStatus, payment: Payment) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
+        this._payment = payment
     }
 
-    override fun onThreeDSecure(acsPage: AcsPage, isCascading: Boolean, payment: Payment) {
-        sendEvent(MainScreenUiEvent.ShowAcsPage(acsPage = acsPage, isCascading = isCascading))
+    override fun onThreeDSecure(
+        threeDSecurePage: ThreeDSecurePage,
+        isCascading: Boolean,
+        payment: Payment
+    ) {
+        sendEvent(
+            MainScreenUiEvent.ShowThreeDSecurePage(
+                threeDSecurePage = threeDSecurePage,
+                isCascading = isCascading
+            )
+        )
     }
 }

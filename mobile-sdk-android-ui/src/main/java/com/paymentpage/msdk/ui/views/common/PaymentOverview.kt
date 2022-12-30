@@ -16,10 +16,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalMsdkSession
-import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsContent
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
@@ -55,8 +52,9 @@ internal fun ExpandablePaymentOverview(
     expandableContent: @Composable ColumnScope.() -> Unit,
 ) {
     val mainViewModel = LocalMainViewModel.current
-    val currentMethod = mainViewModel.state.collectAsState().value.currentMethod
-    val payment = mainViewModel.lastState.payment
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val currentMethod = paymentMethodsViewModel.state.collectAsState().value.currentMethod
+    val payment = mainViewModel.payment
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
 
     val gradient = arrayOf(

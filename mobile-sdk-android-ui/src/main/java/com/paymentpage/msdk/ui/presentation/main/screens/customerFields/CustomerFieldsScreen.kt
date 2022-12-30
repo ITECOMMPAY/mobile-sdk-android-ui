@@ -19,16 +19,16 @@ import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 internal fun CustomerFieldsScreen(
     actionType: SDKActionType,
     onCancel: () -> Unit,
     onBack: () -> Unit,
 ) {
-    val viewModel = LocalMainViewModel.current
-    val method = viewModel.lastState.currentMethod
-    val customerFields = viewModel.lastState.customerFields
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val method = paymentMethodsViewModel.lastState.currentMethod
+    val customerFields = mainViewModel.lastState.customerFields
     var isCustomerFieldsValid by remember { mutableStateOf(method?.isCustomerFieldsValid ?: false) }
 
     BackHandler(true) { onBack() }
@@ -60,7 +60,7 @@ internal fun CustomerFieldsScreen(
                 actionType = actionType,
                 isEnabled = isCustomerFieldsValid
             ) {
-                viewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
+                mainViewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
             }
             Spacer(modifier = Modifier.size(16.dp))
             SDKFooter()

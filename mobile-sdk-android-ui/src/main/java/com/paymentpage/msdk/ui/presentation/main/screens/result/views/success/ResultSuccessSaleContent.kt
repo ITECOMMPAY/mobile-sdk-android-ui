@@ -39,7 +39,7 @@ internal fun ResultSuccessSaleContent(
 ) {
     val viewModel = LocalMainViewModel.current
     val payment =
-        viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
+        viewModel.payment ?: throw IllegalStateException("Not found payment in State")
 
     val visibleState = remember {
         MutableTransitionState(false).apply {

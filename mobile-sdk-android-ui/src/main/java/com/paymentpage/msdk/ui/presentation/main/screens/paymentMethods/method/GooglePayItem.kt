@@ -17,6 +17,7 @@ import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.core.googlePay.GooglePayHelper
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.base.ErrorResult
@@ -39,13 +40,16 @@ internal fun GooglePayItem(
     method: UIPaymentMethod.UIGooglePayPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
 ) {
+    val lastState = LocalMainViewModel.current.lastState
     val paymentOptions = LocalPaymentOptions.current
-    val viewModel = LocalMainViewModel.current
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
     val additionalFields = LocalPaymentOptions.current.additionalFields
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     val isForcePaymentMethod =
         paymentOptions.paymentInfo.forcePaymentMethod == PaymentMethodType.GOOGLE_PAY.value
+    val isTryAgain = lastState.isTryAgain ?: false
 
     val merchantId = LocalPaymentOptions.current.merchantId
     val merchantName = LocalPaymentOptions.current.merchantName
@@ -64,7 +68,7 @@ internal fun GooglePayItem(
     }
     val handle: (GooglePayActivityContract.Result) -> Unit = { result ->
         if (!result.errorMessage.isNullOrEmpty()) {
-            viewModel.showError(
+            mainViewModel.showError(
                 ErrorResult(
                     code = ErrorCode.UNKNOWN,
                     message = result.errorMessage
@@ -72,7 +76,8 @@ internal fun GooglePayItem(
             )
         } else
             result.token?.let {
-                viewModel.saleGooglePay(
+                paymentMethodsViewModel.setCurrentMethod(method)
+                mainViewModel.saleGooglePay(
                     method = method,
                     merchantId = merchantId,
                     token = it,
@@ -133,7 +138,7 @@ internal fun GooglePayItem(
                 )
             }
         }
-        customerFields.isAllCustomerFieldsHidden() && isForcePaymentMethod -> {
+        customerFields.isAllCustomerFieldsHidden() && (isForcePaymentMethod || isTryAgain) -> {
             method.customerFieldValues = customerFields.mergeHiddenFieldsToList(
                 additionalFields = additionalFields,
                 customerFieldValues = method.customerFieldValues

@@ -33,8 +33,8 @@ import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
 
@@ -50,7 +50,8 @@ internal fun ExpandablePaymentMethodItem(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val mainViewModel = LocalMainViewModel.current
-    val currentMethod = mainViewModel.state.collectAsState().value.currentMethod
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val currentMethod = paymentMethodsViewModel.state.collectAsState().value.currentMethod
     val rotationState by animateFloatAsState(if (currentMethod?.index == method.index) 180f else 0f)
     Box(
         modifier = Modifier
@@ -83,9 +84,9 @@ internal fun ExpandablePaymentMethodItem(
                         interactionSource = remember { MutableInteractionSource() },
                         onClick = {
                             if (currentMethod?.index != method.index)
-                                mainViewModel.setCurrentMethod(method)
+                                paymentMethodsViewModel.setCurrentMethod(method)
                             else
-                                mainViewModel.setCurrentMethod(null)
+                                paymentMethodsViewModel.setCurrentMethod(null)
                         }
                     )
                     .height(50.dp)

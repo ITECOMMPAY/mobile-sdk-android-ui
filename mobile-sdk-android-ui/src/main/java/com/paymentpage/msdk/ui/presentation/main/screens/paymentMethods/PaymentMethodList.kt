@@ -13,16 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalMsdkSession
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.PaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.presentation.main.setCurrentMethod
 
 @Composable
 internal fun PaymentMethodList(uiPaymentMethods: List<UIPaymentMethod>) {
     val mainViewModel = LocalMainViewModel.current
-    val state = mainViewModel.state.collectAsState().value //for recomposition
-    val lastSelectedMethod = state.currentMethod
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
 
+    val lastSelectedMethod = paymentMethodsViewModel.state.collectAsState().value.currentMethod
 
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
 
@@ -37,13 +37,13 @@ internal fun PaymentMethodList(uiPaymentMethods: List<UIPaymentMethod>) {
     if (filteredUIPaymentMethods.isEmpty()) return
 
     LaunchedEffect(Unit) {
-        val lastOpenedMethod = mainViewModel.lastState.currentMethod
+        val lastOpenedMethod = paymentMethodsViewModel.state.value.currentMethod
         val openedMethod = lastOpenedMethod
             ?: if (filteredUIPaymentMethods.first() is UIPaymentMethod.UIGooglePayPaymentMethod) //if first method is google pay
                 filteredUIPaymentMethods[1.coerceAtMost(filteredUIPaymentMethods.size - 1)]
             else //first by default
                 filteredUIPaymentMethods.first()
-        mainViewModel.setCurrentMethod(openedMethod)
+        paymentMethodsViewModel.setCurrentMethod(openedMethod)
     }
 
     Column(modifier = Modifier.fillMaxWidth()) {

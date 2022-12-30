@@ -5,7 +5,7 @@ import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFiel
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.entities.payment.PaymentStatus
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
+import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePage
 import com.paymentpage.msdk.ui.core.CardRemoveInteractorProxyMockImpl
 import com.paymentpage.msdk.ui.core.PayInteractorProxyMockImpl
 import com.paymentpage.msdk.ui.presentation.main.*
@@ -37,6 +37,7 @@ internal class MainViewModelTest {
     @Test
     fun `should return visible customer fields from state`() = scope.runTest {
         //GIVEN
+        val cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
         val customerFields = listOf(
             CustomerField(
                 name = "first_name",
@@ -50,11 +51,11 @@ internal class MainViewModelTest {
                 errorMessageKey = "message_general_invalid"
             )
         )
-        val viewModel = MainViewModel(
+        val mainViewModel = MainViewModel(
             payInteractor = PayInteractorProxyMockImpl {
                 it?.onCustomerFields(customerFields = customerFields)
             },
-            cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
+            cardRemoveInteractor = cardRemoveInteractor
         )
         val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
         val expectedCustomerFields = listOf(
@@ -66,8 +67,8 @@ internal class MainViewModelTest {
         )
 
         //WHEN
-        viewModel.saleCard(method = method, needSendCustomerFields = false)
-        val actualCustomerFields = viewModel.state.value.customerFields
+        mainViewModel.saleCard(method = method, needSendCustomerFields = false)
+        val actualCustomerFields = mainViewModel.state.value.customerFields
 
         //THEN
         assertTrue(actualCustomerFields.isEqual(expectedCustomerFields))
@@ -76,20 +77,21 @@ internal class MainViewModelTest {
     @Test
     fun `should set state to error state`() = scope.runTest {
         //GIVEN
+        val cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
         val errorCode = mockk<ErrorCode>()
-        val viewModel = MainViewModel(
+        val mainViewModel = MainViewModel(
             payInteractor = PayInteractorProxyMockImpl {
                 it?.onError(code = errorCode, "message")
             },
-            cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
+            cardRemoveInteractor = cardRemoveInteractor
         )
         val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
 
         //WHEN
-        viewModel.saleCard(method = method, needSendCustomerFields = false)
+        mainViewModel.saleCard(method = method, needSendCustomerFields = false)
 
         //THEN
-        with(viewModel.state.value) {
+        with(mainViewModel.state.value) {
             assertTrue(error != null)
             assertTrue(isLoading == false)
         }
@@ -98,21 +100,21 @@ internal class MainViewModelTest {
     @Test
     fun `should set state to successful state`() = scope.runTest {
         //GIVEN
+        val cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
         val payment = mockk<Payment>()
-        val viewModel = MainViewModel(
+        val mainViewModel = MainViewModel(
             payInteractor = PayInteractorProxyMockImpl {
                 it?.onCompleteWithSuccess(payment = payment)
             },
-            cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
+            cardRemoveInteractor = cardRemoveInteractor
         )
         val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
 
         //WHEN
-        viewModel.saleCard(method = method, needSendCustomerFields = false)
+        mainViewModel.saleCard(method = method, needSendCustomerFields = false)
 
         //THEN
-        with(viewModel.state.value) {
-            assertTrue(this.payment != null && this.payment == payment)
+        with(mainViewModel.state.value) {
             assertTrue(finalPaymentState is FinalPaymentState.Success)
             assertTrue(isLoading == false)
         }
@@ -121,103 +123,111 @@ internal class MainViewModelTest {
     @Test
     fun `should set state to decline state`() = scope.runTest {
         //GIVEN
+        val cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
         val payment = mockk<Payment>()
-        val viewModel = MainViewModel(
+        val mainViewModel = MainViewModel(
             payInteractor = PayInteractorProxyMockImpl {
                 it?.onCompleteWithDecline(paymentMessage = null, payment = payment)
             },
-            cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
+            cardRemoveInteractor = cardRemoveInteractor
         )
         val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
 
         //WHEN
-        viewModel.saleCard(method = method, needSendCustomerFields = false)
+        mainViewModel.saleCard(method = method, needSendCustomerFields = false)
 
         //THEN
-        with(viewModel.state.value) {
-            assertTrue(this.payment != null && this.payment == payment)
+        with(mainViewModel.state.value) {
             assertTrue(finalPaymentState is FinalPaymentState.Decline)
             assertTrue(isLoading == false)
         }
     }
 
     @Test
+    fun `should set state to try again`() = scope.runTest {
+        //GIVEN
+        val cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
+        val payment = mockk<Payment>()
+        val mainViewModel = MainViewModel(
+            payInteractor = PayInteractorProxyMockImpl {
+                it?.onCompleteWithDecline(paymentMessage = null, payment = payment)
+            },
+            cardRemoveInteractor = cardRemoveInteractor
+        )
+        val paymentMethodsViewModel = PaymentMethodsViewModel(
+            cardRemoveInteractor = cardRemoveInteractor
+        )
+        val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
+
+        //WHEN
+        mainViewModel.saleCard(method = method, needSendCustomerFields = false)
+        mainViewModel.sendEvent(MainScreenUiEvent.TryAgain)
+
+        //THEN
+        with(mainViewModel.state.value) {
+            assertTrue(finalPaymentState == null)
+            assertTrue(isTryAgain == true)
+        }
+
+        assertTrue(paymentMethodsViewModel.state.value.currentMethod == null)
+    }
+
+    @Test
     fun `should set successful state of deleting save card operation`() = scope.runTest {
         //GIVEN
-        val viewModel = MainViewModel(
+        val cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {
+            it?.onSuccess(true)
+        }
+        val paymentMethodsViewModel = PaymentMethodsViewModel(
+            cardRemoveInteractor = cardRemoveInteractor
+        )
+        val mainViewModel = MainViewModel(
             payInteractor = PayInteractorProxyMockImpl {},
-            cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {
-                it?.onSuccess(true)
-            }
+            cardRemoveInteractor = cardRemoveInteractor
         )
         val method = mockk<UIPaymentMethod.UISavedCardPayPaymentMethod>(relaxed = true)
 
         //WHEN
-        viewModel.setCurrentMethod(method = method)
-        assertTrue(viewModel.state.value.currentMethod == method)
-        viewModel.deleteSavedCard(method = method)
-
+        paymentMethodsViewModel.setCurrentMethod(method = method)
+        assertTrue(paymentMethodsViewModel.state.value.currentMethod == method)
+        mainViewModel.showDeleteCardLoading()
+        paymentMethodsViewModel.deleteSavedCard(method = method)
+        paymentMethodsViewModel.setCurrentMethod(method = null)
         //THEN
-        assertTrue(viewModel.state.value.isDeleteCardLoading == false)
-        assertTrue(viewModel.state.value.currentMethod == null)
+        assertTrue(mainViewModel.state.value.isDeleteCardLoading == false)
+        assertTrue(paymentMethodsViewModel.state.value.currentMethod == null)
     }
 
     @Test
     fun `should set current method to state correctly every time`() = scope.runTest {
         //GIVEN
-        val viewModel = MainViewModel(
-            payInteractor = PayInteractorProxyMockImpl { },
-            cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
-        )
+        val cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
         val uiSavedCardPayPaymentMethod =
             mockk<UIPaymentMethod.UISavedCardPayPaymentMethod>(relaxed = true)
-
+        val paymentMethodsViewModel = PaymentMethodsViewModel(
+            cardRemoveInteractor = cardRemoveInteractor
+        )
         //WHEN
-        viewModel.setCurrentMethod(method = uiSavedCardPayPaymentMethod)
+        paymentMethodsViewModel.setCurrentMethod(method = uiSavedCardPayPaymentMethod)
 
         //THEN
-        assertTrue(viewModel.state.value.currentMethod is UIPaymentMethod.UISavedCardPayPaymentMethod)
+        assertTrue(paymentMethodsViewModel.state.value.currentMethod is UIPaymentMethod.UISavedCardPayPaymentMethod)
 
         //GIVEN
         val uiCardPayPaymentMethod =
             mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
 
         //WHEN
-        viewModel.setCurrentMethod(method = uiCardPayPaymentMethod)
+        paymentMethodsViewModel.setCurrentMethod(method = uiCardPayPaymentMethod)
 
         //THEN
-        assertTrue(viewModel.state.value.currentMethod is UIPaymentMethod.UICardPayPaymentMethod)
-    }
-
-    @Test
-    fun `should set current payment object to state when status is changing`() = scope.runTest {
-        //GIVEN
-        val viewModel = MainViewModel(
-            payInteractor = PayInteractorProxyMockImpl { },
-            cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
-        )
-        val status = mockk<PaymentStatus>()
-        var payment = mockk<Payment>()
-
-        //WHEN
-        viewModel.sendEvent(MainScreenUiEvent.SetPayment(payment = payment))
-
-        //THEN
-        assertTrue(viewModel.state.value.payment == payment)
-
-        //GIVEN
-        payment = mockk()
-
-        //WHEN
-        viewModel.onStatusChanged(status = status, payment = payment)
-
-        //THEN
-        assertTrue(viewModel.state.value.payment == payment)
+        assertTrue(paymentMethodsViewModel.state.value.currentMethod is UIPaymentMethod.UICardPayPaymentMethod)
     }
 
     @Test
     fun `should pass card sale successful flow correctly`() = scope.runTest {
         //GIVEN
+        val cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
         val customerFields = listOf(
             CustomerField(
                 name = "first_name",
@@ -241,8 +251,8 @@ internal class MainViewModelTest {
         )
         val status = mockk<PaymentStatus>()
         val payment = mockk<Payment>()
-        val acsPage = mockk<AcsPage>()
-        val viewModel = MainViewModel(
+        val threeDSecurePage = mockk<ThreeDSecurePage>()
+        val mainViewModel = MainViewModel(
             payInteractor = PayInteractorProxyMockImpl {
                 it?.onCustomerFields(customerFields = customerFields)
                 it?.onStatusChanged(status = status, payment = payment)
@@ -251,25 +261,28 @@ internal class MainViewModelTest {
                     payment = payment
                 )
                 it?.onStatusChanged(status = status, payment = payment)
-                it?.onThreeDSecure(acsPage = acsPage, isCascading = false, payment = payment)
+                it?.onThreeDSecure(
+                    threeDSecurePage = threeDSecurePage,
+                    isCascading = false,
+                    payment = payment
+                )
                 it?.onStatusChanged(status = status, payment = payment)
                 it?.onCompleteWithSuccess(payment = payment)
             },
-            cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {}
+            cardRemoveInteractor = cardRemoveInteractor
         )
         val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
 
         //WHEN
-        viewModel.saleCard(method = method, true)
+        mainViewModel.saleCard(method = method, true)
 
         //THEN
-        val finalState = viewModel.state.value
-        assertTrue(finalState.payment == payment)
+        val finalState = mainViewModel.state.value
         assertTrue(finalState.isLoading == false)
         assertTrue(finalState.customerFields == emptyList<CustomerField>())
         assertTrue(finalState.clarificationFields == emptyList<ClarificationField>())
         assertTrue(finalState.error == null)
-        assertTrue(finalState.acsPageState == null)
+        assertTrue(finalState.threeDSecurePageState == null)
         assertTrue(finalState.finalPaymentState is FinalPaymentState.Success)
     }
 }

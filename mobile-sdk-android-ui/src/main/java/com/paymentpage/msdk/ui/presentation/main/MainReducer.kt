@@ -10,33 +10,36 @@ internal class MainReducer(initial: MainScreenState) :
                 oldState.copy(
                     customerFields = emptyList(),
                     clarificationFields = emptyList(),
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isLoading = true,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowDeleteCardLoading -> setState(
                 oldState.copy(
                     customerFields = emptyList(),
                     clarificationFields = emptyList(),
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isLoading = null,
-                    isDeleteCardLoading = event.isLoading
+                    isDeleteCardLoading = event.isLoading,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowError -> setState(
                 oldState.copy(
                     customerFields = emptyList(),
                     isLoading = false,
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     error = event.error,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowCustomerFields -> setState(
@@ -44,10 +47,11 @@ internal class MainReducer(initial: MainScreenState) :
                     isLoading = event.customerFields.none { !it.isHidden },
                     customerFields = event.customerFields,
                     clarificationFields = emptyList(),
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowClarificationFields -> setState(
@@ -55,24 +59,26 @@ internal class MainReducer(initial: MainScreenState) :
                     isLoading = false,
                     customerFields = emptyList(),
                     clarificationFields = event.clarificationFields,
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
-            is MainScreenUiEvent.ShowAcsPage -> setState(
+            is MainScreenUiEvent.ShowThreeDSecurePage -> setState(
                 oldState.copy(
                     isLoading = false,
                     customerFields = emptyList(),
                     clarificationFields = emptyList(),
-                    acsPageState = AcsPageState(
-                        acsPage = event.acsPage,
+                    threeDSecurePageState = ThreeDSecurePageState(
+                        threeDSecurePage = event.threeDSecurePage,
                         isCascading = event.isCascading
                     ),
                     finalPaymentState = null,
                     apsPageState = null,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowSuccessPage -> setState(
@@ -80,10 +86,11 @@ internal class MainReducer(initial: MainScreenState) :
                     isLoading = false,
                     customerFields = emptyList(),
                     clarificationFields = emptyList(),
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     finalPaymentState = FinalPaymentState.Success,
                     apsPageState = null,
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
             is MainScreenUiEvent.ShowDeclinePage -> setState(
@@ -91,23 +98,33 @@ internal class MainReducer(initial: MainScreenState) :
                     isLoading = false,
                     customerFields = emptyList(),
                     clarificationFields = emptyList(),
-                    acsPageState = null,
+                    threeDSecurePageState = null,
                     apsPageState = null,
                     finalPaymentState = FinalPaymentState.Decline(
                         paymentMessage = event.paymentMessage,
                         isTryAgain = event.isTryAgain
                     ),
-                    isDeleteCardLoading = null
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
                 )
             )
-            is MainScreenUiEvent.SetCurrentMethod -> setState(
-                oldState.copy(currentMethod = event.method)
-            )
-            is MainScreenUiEvent.SetPayment -> setState(
-                oldState.copy(payment = event.payment)
-            )
             is MainScreenUiEvent.ShowApsPage -> setState(
-                oldState.copy(apsPageState = ApsPageState(apsMethod = event.apsMethod))
+                oldState.copy(
+                    apsPageState = ApsPageState(apsMethod = event.apsMethod),
+                    isTryAgain = null
+                )
+            )
+            is MainScreenUiEvent.TryAgain -> setState(
+                oldState.copy(
+                    isTryAgain = true,
+                    isLoading = false,
+                    customerFields = emptyList(),
+                    clarificationFields = emptyList(),
+                    threeDSecurePageState = null,
+                    finalPaymentState = null,
+                    apsPageState = null,
+                    isDeleteCardLoading = null,
+                )
             )
         }
     }

@@ -5,10 +5,8 @@ import android.graphics.Bitmap
 import android.net.http.SslError
 import android.view.ViewGroup
 import android.webkit.SslErrorHandler
-import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,33 +15,28 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
+import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePage
+import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePageType
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.R
-import com.paymentpage.msdk.ui.SDKMockModeType
-import com.paymentpage.msdk.ui.presentation.main.threeDSecureHandled
+import com.paymentpage.msdk.ui.presentation.main.threeDSecureRedirectHandle
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKScaffoldWebView
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 internal fun ThreeDSecureScreen(
     onCancel: () -> Unit,
 ) {
     val viewModel = LocalMainViewModel.current
-    val acsPage = viewModel.lastState.acsPageState?.acsPage
+    val threeDSecurePage = viewModel.lastState.threeDSecurePageState?.threeDSecurePage
 
     BackHandler(true) { onCancel() }
 
     SDKScaffoldWebView(
         notScrollableContent = {
-            if (acsPage != null) {
-                AcsPageView(acsPage = acsPage)
+            if (threeDSecurePage != null) {
+                ThreeDSecurePageView(threeDSecurePage = threeDSecurePage)
             }
         },
         onClose = { onCancel() }
@@ -52,14 +45,11 @@ internal fun ThreeDSecureScreen(
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-private fun AcsPageView(
-    acsPage: AcsPage,
+private fun ThreeDSecurePageView(
+    threeDSecurePage: ThreeDSecurePage,
 ) {
     val viewModel = LocalMainViewModel.current
-    var isLoading by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
-    if (isLoading)
+    if (threeDSecurePage.type == ThreeDSecurePageType.THREE_DS_2_FRICTIONLESS)
         Box(
             modifier = Modifier
                 .height(LocalConfiguration.current.screenHeightDp.dp * 0.9f) //Height of bottom sheet
@@ -72,20 +62,16 @@ private fun AcsPageView(
             )
         }
     Column(modifier = Modifier.fillMaxSize()) {
-        AndroidView(modifier = Modifier
-            .weight(1f)
-            .background(SDKTheme.colors.backgroundColor),
+        AndroidView(
+            modifier = Modifier
+                .weight(1f)
+                .background(SDKTheme.colors.backgroundColor),
             factory = {
                 WebView(it).apply {
                     layoutParams = ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
                     )
-                    webChromeClient = object : WebChromeClient() {
-                        override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                            isLoading = newProgress < 100
-                        }
-                    }
                     webViewClient = object : WebViewClient() {
                         override fun onPageStarted(
                             view: WebView?,
@@ -93,22 +79,11 @@ private fun AcsPageView(
                             favicon: Bitmap?,
                         ) {
                             super.onPageStarted(view, url, favicon)
-                            isLoading = true
-                            if (url.equals(acsPage.acs?.termUrl)) {
-                                viewModel.threeDSecureHandled()
-                            }
+                            viewModel.threeDSecureRedirectHandle(url = url ?: "")
                         }
 
                         override fun onPageFinished(view: WebView?, url: String?) {
                             super.onPageFinished(view, url)
-                            isLoading = false
-                            if (PaymentActivity.mockModeType != SDKMockModeType.DISABLED) {
-                                Toast.makeText(context, R.string.acs_mock_mode_toast_label, Toast.LENGTH_SHORT).show()
-                                coroutineScope.launch {
-                                    delay(2000)
-                                    viewModel.threeDSecureHandled()
-                                }
-                            }
                         }
 
                         override fun onReceivedSslError(
@@ -122,8 +97,8 @@ private fun AcsPageView(
                     }
                     settings.javaScriptEnabled = true
                     loadDataWithBaseURL(
-                        acsPage.acs?.acsUrl ?: "",
-                        acsPage.content ?: "",
+                        threeDSecurePage.loadUrl ?: "",
+                        threeDSecurePage.content ?: "",
                         "text/html",
                         "UTF-8",
                         null
@@ -131,6 +106,7 @@ private fun AcsPageView(
                 }
             }, update = {
 
-            })
+            }
+        )
     }
 }
