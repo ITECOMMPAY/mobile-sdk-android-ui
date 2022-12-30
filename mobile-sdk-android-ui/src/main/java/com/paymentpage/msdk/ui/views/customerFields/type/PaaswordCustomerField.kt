@@ -5,7 +5,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 
 @Composable
-fun PasswordCustomerTextField(
+internal fun PasswordCustomerTextField(
     value: String? = null,
     onValueChanged: (CustomerField, String, Boolean) -> Unit,
     customerField: CustomerField

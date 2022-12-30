@@ -9,7 +9,7 @@ import com.paymentpage.msdk.ui.utils.extensions.core.validate
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 
 @Composable
-fun BaseCustomerTextField(
+internal fun BaseCustomerTextField(
     initialValue: String?,
     onValueChanged: (CustomerField, String, Boolean) -> Unit,
     customerField: CustomerField,

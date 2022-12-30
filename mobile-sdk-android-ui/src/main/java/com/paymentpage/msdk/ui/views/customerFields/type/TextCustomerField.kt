@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 
 @Composable
-fun TextCustomerTextField(
+internal fun TextCustomerTextField(
     value: String? = null,
     onValueChanged: (CustomerField, String, Boolean) -> Unit,
     customerField: CustomerField
