@@ -1,6 +1,10 @@
 package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method
 
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 
 @Composable
@@ -32,6 +36,7 @@ internal fun PaymentMethodItem(
                 method = method,
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
             )
+            Spacer(modifier = Modifier.size(6.dp))
         }
         is UIPaymentMethod.UIApsPaymentMethod -> {
             ApsPayItem(

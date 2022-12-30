@@ -121,6 +121,7 @@ internal fun MainScreen(
             ResultSuccessScreen(
                 actionType = actionType,
                 onClose = { delegate.onCompleteWithSuccess(it) },
+                onCancel = onCancel,
                 onError = onError
             )
         }
@@ -128,7 +129,8 @@ internal fun MainScreen(
             ResultDeclineScreen(
                 actionType = actionType,
                 onClose = { delegate.onCompleteWithDecline(it) },
-                onError = onError
+                onCancel = onCancel,
+                onError = onError,
             )
         }
         composable(route = Route.Loading.getPath()) {

@@ -38,7 +38,8 @@ import kotlinx.coroutines.delay
 @Composable
 internal fun ResultDeclineSaleContent(
     onClose: (Payment) -> Unit,
-    onError: (ErrorResult, Boolean) -> Unit
+    onCancel: () -> Unit,
+    onError: (ErrorResult, Boolean) -> Unit,
 ) {
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
@@ -196,7 +197,7 @@ internal fun ResultDeclineSaleContent(
 
             }
         },
-        onClose = { onClose(payment) },
+        onClose = { onCancel() },
         showCloseButton = isTryAgain
     )
 }
