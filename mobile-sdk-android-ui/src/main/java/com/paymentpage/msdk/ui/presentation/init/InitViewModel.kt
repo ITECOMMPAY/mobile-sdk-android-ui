@@ -2,6 +2,7 @@ package com.paymentpage.msdk.ui.presentation.init
 
 
 import com.paymentpage.msdk.core.base.ErrorCode
+import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
@@ -33,10 +34,24 @@ internal class InitViewModel(
             request = InitRequest(
                 paymentInfo = paymentOptions.paymentInfo,
                 recurrentInfo = paymentOptions.recurrentInfo,
+                additionalFields = paymentOptions.additionalFields.map {
+                    CustomerFieldValue.fromNameWithValue(
+                        name = it.type?.value ?: "",
+                        value = it.value ?: ""
+                    )
+                }
             ),
             callback = object : InitDelegate {
-                override fun onInitReceived(paymentMethods: List<PaymentMethod>, savedAccounts: List<SavedAccount>) =
-                    sendEvent(InitScreenUiEvent.InitLoaded(paymentMethods = paymentMethods, savedAccounts = savedAccounts))
+                override fun onInitReceived(
+                    paymentMethods: List<PaymentMethod>,
+                    savedAccounts: List<SavedAccount>
+                ) =
+                    sendEvent(
+                        InitScreenUiEvent.InitLoaded(
+                            paymentMethods = paymentMethods,
+                            savedAccounts = savedAccounts
+                        )
+                    )
 
                 override fun onError(code: ErrorCode, message: String) =
                     sendEvent(InitScreenUiEvent.ShowError(ErrorResult(code, message)))
