@@ -111,6 +111,7 @@ internal class MainReducer(initial: MainScreenState) :
             is MainScreenUiEvent.ShowApsPage -> setState(
                 oldState.copy(
                     apsPageState = ApsPageState(apsMethod = event.apsMethod),
+                    customerFields = emptyList(),
                     isTryAgain = null
                 )
             )
