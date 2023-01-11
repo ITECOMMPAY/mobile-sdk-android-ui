@@ -27,9 +27,10 @@ import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 
 @Composable
 fun CustomTextField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
+    value: String? = null,
     initialValue: String? = null,
-    onValueChanged: (String, Boolean) -> Unit,
+    onValueChanged: ((String, Boolean) -> Unit)?,
     onRequestValidatorMessage: ((String) -> String?)? = null,
     onFilterValueBefore: ((String) -> String)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
@@ -39,6 +40,7 @@ fun CustomTextField(
     label: String,
     placeholder: String? = null,
     isDisabled: Boolean = false,
+    isEditable: Boolean = true,
     isRequired: Boolean = false,
     showRedStarForRequiredFields: Boolean = true,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -49,6 +51,9 @@ fun CustomTextField(
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isFocused by remember { mutableStateOf(false) }
 
+    LaunchedEffect(key1 = value) {
+        textValue = value ?: initialValue ?: "" //if you want paste value by yourself
+    }
 
     val keyboardOptions = KeyboardOptions(
         keyboardType = keyboardType,
@@ -67,7 +72,9 @@ fun CustomTextField(
                 var isValid = true
                 if (isRequired)
                     isValid = textValue.isNotEmpty()
-                onValueChanged(text, isValid)
+                if (onValueChanged != null) {
+                    onValueChanged(text, isValid)
+                }
             },
             visualTransformation = visualTransformation,
             colors = TextFieldDefaults.textFieldColors(
@@ -81,6 +88,7 @@ fun CustomTextField(
                 cursorColor = SDKTheme.colors.brand,
             ),
             enabled = !isDisabled,
+            readOnly = !isEditable,
             modifier = Modifier
                 .fillMaxWidth()
                 .border(
@@ -122,7 +130,6 @@ fun CustomTextField(
                         color = when {
                             isFocused -> SDKTheme.colors.brand
                             isDisabled -> SDKTheme.colors.disabledTextColor
-                            !isDisabled -> SDKTheme.colors.secondaryTextColor
                             else -> SDKTheme.colors.secondaryTextColor
                         },
                         maxLines = 1
@@ -169,11 +176,9 @@ fun CustomTextField(
 @Preview(showBackground = true)
 private fun CustomTextFieldPreview() {
     CustomTextField(
-        modifier = Modifier,
         initialValue = "VALUE",
         keyboardType = KeyboardType.Number,
-        onValueChanged = { _, _ ->
-        },
+        onValueChanged = null,
         label = "LABEL",
     )
 }

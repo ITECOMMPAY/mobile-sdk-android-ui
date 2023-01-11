@@ -83,6 +83,10 @@ internal class MainViewModel(
         sendEvent(MainScreenUiEvent.ShowError(ErrorResult(code = code, message = message)))
     }
 
+    override fun onStartingRemove() {
+        sendEvent(MainScreenUiEvent.ShowDeleteCardLoading(isLoading = true))
+    }
+
     override fun onSuccess(result: Boolean) {
         sendEvent(MainScreenUiEvent.ShowDeleteCardLoading(isLoading = false))
     }

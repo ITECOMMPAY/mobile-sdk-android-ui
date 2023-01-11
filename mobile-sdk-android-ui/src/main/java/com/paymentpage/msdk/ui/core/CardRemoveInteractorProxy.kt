@@ -37,6 +37,10 @@ internal class CardRemoveInteractorProxyImpl(
         delegates.forEach { it.onError(code = code, message = message) }
     }
 
+    override fun onStartingRemove() {
+        delegates.forEach { it.onStartingRemove() }
+    }
+
     override fun onSuccess(result: Boolean) {
         delegates.forEach { it.onSuccess(result = result) }
     }

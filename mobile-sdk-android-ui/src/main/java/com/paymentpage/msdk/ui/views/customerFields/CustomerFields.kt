@@ -98,6 +98,7 @@ internal fun CustomerFields(
 
     Column(modifier = Modifier.fillMaxWidth()) {
         visibleCustomerFields.forEachIndexed { index, field ->
+            val options = field.options ?: emptyList()
             if (index < visibleCustomerFields.size)
                 Spacer(modifier = Modifier.size(10.dp))
             when (field.serverType) {
@@ -167,17 +168,31 @@ internal fun CustomerFields(
                     )
                 }
                 else -> {
-                    TextCustomerTextField(
-                        value = changedFieldsMap[field.name]?.value,
-                        onValueChanged = { customerField, value, isValid ->
-                            fieldChanged(
-                                customerField,
-                                value,
-                                isValid
-                            )
-                        },
-                        customerField = field
-                    )
+                    if (options.isNotEmpty())
+                        SelectableCustomerField(
+                            items = options.associate { it.name to it.value },
+                            initialValue = changedFieldsMap[field.name]?.value,
+                            onValueChanged = { customerField, value, isValid ->
+                                fieldChanged(
+                                    customerField,
+                                    value,
+                                    isValid
+                                )
+                            },
+                            customerField = field
+                        )
+                    else
+                        TextCustomerTextField(
+                            value = changedFieldsMap[field.name]?.value,
+                            onValueChanged = { customerField, value, isValid ->
+                                fieldChanged(
+                                    customerField,
+                                    value,
+                                    isValid
+                                )
+                            },
+                            customerField = field
+                        )
                 }
             }
         }

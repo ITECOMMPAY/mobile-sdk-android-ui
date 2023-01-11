@@ -190,7 +190,6 @@ internal class MainViewModelTest {
         //WHEN
         paymentMethodsViewModel.setCurrentMethod(method = method)
         assertTrue(paymentMethodsViewModel.state.value.currentMethod == method)
-        mainViewModel.showDeleteCardLoading()
         paymentMethodsViewModel.deleteSavedCard(method = method)
         paymentMethodsViewModel.setCurrentMethod(method = null)
         //THEN
