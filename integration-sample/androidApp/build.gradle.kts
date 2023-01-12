@@ -60,7 +60,7 @@ android {
 }
 
 dependencies {
-    implementation("com.ecommpay:msdk-ui:2.1.1")
+    implementation("com.ecommpay:msdk-ui:2.2.0")
 
     //Compose
     implementation("androidx.compose.ui:ui:1.3.2")
