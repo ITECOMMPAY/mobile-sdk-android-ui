@@ -82,7 +82,7 @@ internal fun InitScreen(
                             ), true
                         )
                     } else {
-                        if (it.payment.paymentMethodType == PaymentMethodType.APS && it.payment.status?.isFinal == false) {
+                        if (it.payment.paymentMethodType == PaymentMethodType.APS) {
                             navigator.navigateTo(Route.RestoreAps)
                             paymentMethodsViewModel.setCurrentMethod(
                                 UIPaymentMethod.UIApsPaymentMethod(
