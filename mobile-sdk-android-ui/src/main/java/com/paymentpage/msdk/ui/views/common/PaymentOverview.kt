@@ -16,10 +16,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalMsdkSession
-import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsContent
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
@@ -55,8 +52,9 @@ internal fun ExpandablePaymentOverview(
     expandableContent: @Composable ColumnScope.() -> Unit,
 ) {
     val mainViewModel = LocalMainViewModel.current
-    val currentMethod = mainViewModel.state.collectAsState().value.currentMethod
-    val payment = mainViewModel.lastState.payment
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val currentMethod = paymentMethodsViewModel.state.collectAsState().value.currentMethod
+    val payment = mainViewModel.payment
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
 
     val gradient = arrayOf(
@@ -84,24 +82,22 @@ internal fun ExpandablePaymentOverview(
                     bitmap = it.asImageBitmap(),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .height(35.dp)
+                    modifier = Modifier.height(35.dp)
                 )
                 Spacer(modifier = Modifier.size(20.dp))
             }
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    modifier = Modifier.alignByBaseline(),
                     text = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                     style = SDKTheme.typography.s28Bold.copy(color = Color.White)
                 )
-                Text(text = " ")
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    modifier = Modifier.alignByBaseline(),
                     text = LocalPaymentOptions.current.paymentInfo.paymentCurrency,
                     style = SDKTheme.typography.s16Normal.copy(color = Color.White)
                 )
             }
+            Spacer(modifier = Modifier.size(6.dp))
             Row {
                 Text(
                     text = getStringOverride(OverridesKeys.TITLE_TOTAL_PRICE),

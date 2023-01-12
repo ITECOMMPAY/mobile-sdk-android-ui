@@ -5,7 +5,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 
 @Composable
-fun NumberCustomerTextField(
+internal fun NumberCustomerTextField(
     value: String? = null,
     onValueChanged: (CustomerField, String, Boolean) -> Unit,
     customerField: CustomerField
@@ -15,6 +15,6 @@ fun NumberCustomerTextField(
         customerField = customerField,
         onValueChanged = onValueChanged,
         keyboardType = KeyboardType.Number,
-        onFilterValueBefore = { value -> value.filter { it.isDigit() } },
+        onFilterValueBefore = { filteredValue -> filteredValue.filter { it.isDigit() } },
     )
 }

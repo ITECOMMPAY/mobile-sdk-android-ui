@@ -16,7 +16,7 @@ internal fun ResultDeclineTokenizeContent(
 ) {
     val viewModel = LocalMainViewModel.current
     val payment =
-        viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
+        viewModel.payment ?: throw IllegalStateException("Not found payment in State")
 
     ConfirmAlertDialog(
         message = { Text(text = getStringOverride(OverridesKeys.TITLE_RESULT_ERROR_TOKENIZE)) },

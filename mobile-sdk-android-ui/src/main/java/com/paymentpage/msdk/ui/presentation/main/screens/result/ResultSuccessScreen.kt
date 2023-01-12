@@ -13,17 +13,25 @@ import com.paymentpage.msdk.ui.presentation.main.screens.result.views.success.Re
 internal fun ResultSuccessScreen(
     actionType: SDKActionType,
     onClose: (Payment) -> Unit,
+    onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
     val payment =
-        viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
+        viewModel.payment ?: throw IllegalStateException("Not found payment in State")
 
     BackHandler(true) { onClose(payment) }
 
     when (actionType) {
-        SDKActionType.Sale -> ResultSuccessSaleContent(onClose = onClose, onError = onError)
-        SDKActionType.Tokenize -> ResultSuccessTokenizeContent(onClose = onClose, onError = onError)
+        SDKActionType.Sale -> ResultSuccessSaleContent(
+            onClose = onClose,
+            onCancel = onCancel,
+            onError = onError
+        )
+        SDKActionType.Tokenize -> ResultSuccessTokenizeContent(
+            onClose = onClose,
+            onError = onError
+        )
         else -> Unit
     }
 

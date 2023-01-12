@@ -12,10 +12,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
-import com.paymentpage.msdk.ui.presentation.main.deleteSavedCard
 import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
@@ -37,8 +37,9 @@ internal fun SavedCardItem(
     method: UIPaymentMethod.UISavedCardPayPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
 ) {
-    val viewModel = LocalMainViewModel.current
-    val state = viewModel.state.collectAsState().value
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val state = mainViewModel.state.collectAsState().value
     val customerFields = remember { method.paymentMethod.customerFields }
     val additionalFields = LocalPaymentOptions.current.additionalFields
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
@@ -103,13 +104,14 @@ internal fun SavedCardItem(
                 isValid = isCvvValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
+                    paymentMethodsViewModel.setCurrentMethod(method)
                     if (isSaleWithToken)
-                        viewModel.tokenizeSavedCard(
+                        mainViewModel.tokenizeSavedCard(
                             method = method,
                             needSendCustomerFields = customerFields.needSendWithSaleRequest()
                         )
                     else
-                        viewModel.saleSavedCard(
+                        mainViewModel.saleSavedCard(
                             method = method,
                             needSendCustomerFields = customerFields.needSendWithSaleRequest()
                         )
@@ -139,7 +141,7 @@ internal fun SavedCardItem(
                         dismissButtonText = getStringOverride(OverridesKeys.BUTTON_CANCEL),
                         onConfirmButtonClick = {
                             deleteCardAlertDialogState = false
-                            viewModel.deleteSavedCard(method = method)
+                            paymentMethodsViewModel.deleteSavedCard(method = method)
                         },
                         onDismissButtonClick = { deleteCardAlertDialogState = false },
                         confirmButtonText = getStringOverride(OverridesKeys.BUTTON_DELETE)

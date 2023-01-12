@@ -16,6 +16,7 @@ internal object OverridesKeys {
     internal const val BUTTON_DONE = "button_done"
     internal const val BUTTON_CLOSE = "button_close"
     internal const val BUTTON_HIDE_DETAILS = "button_hide_details"
+    internal const val BUTTON_TRY_AGAIN = "button_try_again"
 
     //Loading screen
     internal const val TITLE_LOADING_SCREEN = "title_loading_screen"
@@ -70,4 +71,6 @@ internal object OverridesKeys {
     //APS
     internal const val APS_PAYMENT_DISCLAIMER = "aps_payment_disclaimer"
     internal const val TITLE = "title"
+
+    internal const val TITLE_PRIVACY_POLICY = "privacy_policy"
 }

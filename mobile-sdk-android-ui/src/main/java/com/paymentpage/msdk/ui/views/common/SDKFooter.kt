@@ -1,6 +1,5 @@
 package com.paymentpage.msdk.ui.views.common
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,20 +9,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
 internal fun SDKFooter(
-    @DrawableRes iconLogo: Int,
-    poweredByText: String,
     isVisiblePrivacyPolicy: Boolean = true,
     isVisibleCookiePolicy: Boolean = true,
 ) {
@@ -35,7 +32,7 @@ internal fun SDKFooter(
     ) {
         if (isVisiblePrivacyPolicy) {
             SDKTextWithLink(
-                overrideKey = "privacy_policy",
+                overrideKey = OverridesKeys.TITLE_PRIVACY_POLICY,
                 style = SDKTheme.typography.s12Light.copy(textAlign = TextAlign.End),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -44,8 +41,7 @@ internal fun SDKFooter(
         if (isVisibleCookiePolicy && isVisiblePrivacyPolicy) {
             Spacer(modifier = Modifier.size(15.dp))
             Box(
-                modifier = Modifier
-                    .clip(CircleShape)
+                modifier = Modifier.clip(CircleShape)
             ) {
                 Box(
                     modifier = Modifier
@@ -71,7 +67,7 @@ internal fun SDKFooter(
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            text = poweredByText,
+            text = LocalPaymentOptions.current.footerLabel ?: "",
             style = SDKTheme.typography.s12Light
                 .copy(
                     color = SDKTheme.colors.footerTextColor,
@@ -79,10 +75,12 @@ internal fun SDKFooter(
                 )
         )
         Text(text = " ")
-        Image(
-            painter = painterResource(id = iconLogo),
-            contentDescription = null
-        )
+        LocalPaymentOptions.current.footerImage?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                contentDescription = null,
+            )
+        }
     }
 }
 
@@ -90,9 +88,6 @@ internal fun SDKFooter(
 @Preview(showBackground = true)
 internal fun FooterPreview() {
     SDKTheme {
-        SDKFooter(
-            iconLogo = SDKTheme.images.sdkLogoResId,
-            poweredByText = stringResource(id = R.string.powered_by_label)
-        )
+        SDKFooter()
     }
 }

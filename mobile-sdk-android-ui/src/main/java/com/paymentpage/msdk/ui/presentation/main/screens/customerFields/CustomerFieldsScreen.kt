@@ -1,16 +1,13 @@
 package com.paymentpage.msdk.ui.presentation.main.screens.customerFields
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.*
-import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -19,16 +16,16 @@ import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 internal fun CustomerFieldsScreen(
     actionType: SDKActionType,
     onCancel: () -> Unit,
     onBack: () -> Unit,
 ) {
-    val viewModel = LocalMainViewModel.current
-    val method = viewModel.lastState.currentMethod
-    val customerFields = viewModel.lastState.customerFields
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val method = paymentMethodsViewModel.lastState.currentMethod
+    val customerFields = mainViewModel.lastState.customerFields
     var isCustomerFieldsValid by remember { mutableStateOf(method?.isCustomerFieldsValid ?: false) }
 
     BackHandler(true) { onBack() }
@@ -60,13 +57,10 @@ internal fun CustomerFieldsScreen(
                 actionType = actionType,
                 isEnabled = isCustomerFieldsValid
             ) {
-                viewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
+                mainViewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
             }
             Spacer(modifier = Modifier.size(16.dp))
-            SDKFooter(
-                iconLogo = SDKTheme.images.sdkLogoResId,
-                poweredByText = stringResource(R.string.powered_by_label),
-            )
+            SDKFooter()
             Spacer(modifier = Modifier.size(25.dp))
         },
         onClose = { onCancel() },

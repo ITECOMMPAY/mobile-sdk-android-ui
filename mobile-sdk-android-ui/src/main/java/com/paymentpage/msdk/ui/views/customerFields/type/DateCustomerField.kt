@@ -7,7 +7,7 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.ui.utils.MaskVisualTransformation
 
 @Composable
-fun DateCustomerTextField(
+internal fun DateCustomerTextField(
     value: String? = null,
     onValueChanged: (CustomerField, String, Boolean) -> Unit,
     customerField: CustomerField
@@ -17,7 +17,7 @@ fun DateCustomerTextField(
         customerField = customerField,
         onValueChanged = onValueChanged,
         keyboardType = KeyboardType.Number,
-        onFilterValueBefore = { value -> value.filter { it.isDigit() } },
+        onFilterValueBefore = { filteredValue -> filteredValue.filter { it.isDigit() } },
         maxLength = 8,
         visualTransformation = MaskVisualTransformation("##-##-####"),
         onTransformValueBeforeValidate = { SdkDate(it).stringValue }

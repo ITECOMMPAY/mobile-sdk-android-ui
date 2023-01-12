@@ -5,22 +5,27 @@ import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFiel
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.entities.payment.PaymentStatus
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.AcsPage
+import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePage
 import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveDelegate
-import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveInteractor
 import com.paymentpage.msdk.core.domain.interactors.pay.PayDelegate
-import com.paymentpage.msdk.core.domain.interactors.pay.PayInteractor
-import com.paymentpage.msdk.ui.SDKPaymentOptions
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.TimeMachine
 import com.paymentpage.msdk.ui.base.mvvm.BaseViewModel
+import com.paymentpage.msdk.ui.core.CardRemoveInteractorProxy
+import com.paymentpage.msdk.ui.core.PayInteractorProxy
 import kotlinx.coroutines.flow.StateFlow
 
 internal class MainViewModel(
-    val payInteractor: PayInteractor,
-    val cardRemoveInteractor: CardRemoveInteractor,
+    val payInteractor: PayInteractorProxy,
+    val cardRemoveInteractor: CardRemoveInteractorProxy,
 ) : BaseViewModel<MainScreenState, MainScreenUiEvent>(), PayDelegate, CardRemoveDelegate {
-    override val reducer = MainReducer(MainScreenState.initial())
+
+    init {
+        payInteractor.delegate = this
+        cardRemoveInteractor.addDelegate(this)
+    }
+
+    override val reducer = MainReducer(MainScreenState())
 
     override val state: StateFlow<MainScreenState>
         get() = reducer.state
@@ -28,10 +33,14 @@ internal class MainViewModel(
     override val timeMachine: TimeMachine<MainScreenState>
         get() = reducer.timeMachine
 
+    val payment: Payment?
+        get() = _payment
+    private var _payment: Payment? = null
 
     override fun onCleared() {
         super.onCleared()
         payInteractor.cancel()
+        cardRemoveInteractor.removeDelegate(this)
         cardRemoveInteractor.cancel()
     }
 
@@ -43,22 +52,13 @@ internal class MainViewModel(
         sendEvent(MainScreenUiEvent.ShowClarificationFields(clarificationFields = clarificationFields))
     }
 
-    override fun onCompleteWithDecline(paymentMessage: String?, payment: Payment) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
-        sendEvent(
-            MainScreenUiEvent.ShowDeclinePage(
-                paymentMessage = paymentMessage,
-                isTryAgain = false
-            )
-        )
-    }
-
-    override fun onCompleteWithFail(
+    override fun onCompleteWithDecline(
         isTryAgain: Boolean,
         paymentMessage: String?,
         payment: Payment
     ) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
+        //sendEvent(MainScreenUiEvent.SetPayment(payment))
+        this._payment = payment
         sendEvent(
             MainScreenUiEvent.ShowDeclinePage(
                 paymentMessage = paymentMessage,
@@ -67,9 +67,9 @@ internal class MainViewModel(
         )
     }
 
-
     override fun onCompleteWithSuccess(payment: Payment) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
+        //sendEvent(MainScreenUiEvent.SetPayment(payment))
+        this._payment = payment
         sendEvent(MainScreenUiEvent.ShowSuccessPage)
     }
 
@@ -83,19 +83,31 @@ internal class MainViewModel(
         sendEvent(MainScreenUiEvent.ShowError(ErrorResult(code = code, message = message)))
     }
 
+    override fun onStartingRemove() {
+        sendEvent(MainScreenUiEvent.ShowDeleteCardLoading(isLoading = true))
+    }
+
     override fun onSuccess(result: Boolean) {
         sendEvent(MainScreenUiEvent.ShowDeleteCardLoading(isLoading = false))
-        setCurrentMethod(null)
     }
 
     override fun onPaymentCreated() {
     }
 
     override fun onStatusChanged(status: PaymentStatus, payment: Payment) {
-        sendEvent(MainScreenUiEvent.SetPayment(payment))
+        this._payment = payment
     }
 
-    override fun onThreeDSecure(acsPage: AcsPage, isCascading: Boolean, payment: Payment) {
-        sendEvent(MainScreenUiEvent.ShowAcsPage(acsPage = acsPage, isCascading = isCascading))
+    override fun onThreeDSecure(
+        threeDSecurePage: ThreeDSecurePage,
+        isCascading: Boolean,
+        payment: Payment
+    ) {
+        sendEvent(
+            MainScreenUiEvent.ShowThreeDSecurePage(
+                threeDSecurePage = threeDSecurePage,
+                isCascading = isCascading
+            )
+        )
     }
 }

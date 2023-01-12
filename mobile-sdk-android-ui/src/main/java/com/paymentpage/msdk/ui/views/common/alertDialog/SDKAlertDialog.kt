@@ -3,7 +3,7 @@ package com.paymentpage.msdk.ui.views.common.alertDialog
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.DialogProperties
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
@@ -26,23 +26,17 @@ internal fun SDKAlertDialog(
             }
         },
         dismissButton = {
-            TextButton(onClick = {
-                if (onDismissButtonClick != null) {
-                    onDismissButtonClick()
+            if (onDismissButtonClick != null) {
+                TextButton(onClick = onDismissButtonClick) {
+                    Text(
+                        text = dismissButtonText ?: "",
+                        color = SDKTheme.colors.brand
+                    )
                 }
-            })
-            {
-                Text(
-                    text = dismissButtonText ?: "",
-                    color = SDKTheme.colors.brand
-                )
             }
         },
         confirmButton = {
-            TextButton(onClick = {
-                onConfirmButtonClick()
-            })
-            {
+            TextButton(onClick = onConfirmButtonClick) {
                 Text(
                     text = confirmButtonText,
                     color = SDKTheme.colors.brand

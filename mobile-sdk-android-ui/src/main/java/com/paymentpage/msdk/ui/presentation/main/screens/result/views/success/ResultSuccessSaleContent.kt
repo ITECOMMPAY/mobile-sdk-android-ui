@@ -35,11 +35,12 @@ import kotlinx.coroutines.delay
 @Composable
 internal fun ResultSuccessSaleContent(
     onClose: (Payment) -> Unit,
+    onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
     val payment =
-        viewModel.lastState.payment ?: throw IllegalStateException("Not found payment in State")
+        viewModel.payment ?: throw IllegalStateException("Not found payment in State")
 
     val visibleState = remember {
         MutableTransitionState(false).apply {
@@ -166,16 +167,13 @@ internal fun ResultSuccessSaleContent(
                 ) {
                     Column {
                         Spacer(modifier = Modifier.size(15.dp))
-                        SDKFooter(
-                            iconLogo = SDKTheme.images.sdkLogoResId,
-                            poweredByText = stringResource(R.string.powered_by_label),
-                        )
+                        SDKFooter()
                         Spacer(modifier = Modifier.size(25.dp))
                     }
                 }
             }
         },
-        onClose = { onClose(payment) },
+        onClose = { onCancel() },
         showCloseButton = false
     )
 }

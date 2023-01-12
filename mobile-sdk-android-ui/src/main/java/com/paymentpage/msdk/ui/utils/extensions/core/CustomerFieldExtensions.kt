@@ -13,7 +13,8 @@ internal fun CustomerField.validate(
 ): String? {
     val validator = this.validator
     var resultMessage: String? = null
-    if (this.isRequired && value.isEmpty()) {
+    val trimmedValue = value.trim()
+    if (this.isRequired && trimmedValue.isEmpty()) {
         resultMessage =
             getStringOverride(OverridesKeys.MESSAGE_REQUIRED_FIELD)
     } else if (validator != null) {

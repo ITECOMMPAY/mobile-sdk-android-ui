@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.presentation.main.saleAps
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -23,9 +24,11 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffoldWebView
 
 @Composable
 internal fun ApsScreen(onCancel: () -> Unit) {
-    val viewModel = LocalMainViewModel.current
-    val method = viewModel.lastState.currentMethod as UIPaymentMethod.UIApsPaymentMethod
-    val apsMethod = viewModel.lastState.apsPageState?.apsMethod
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val method =
+        paymentMethodsViewModel.lastState.currentMethod as UIPaymentMethod.UIApsPaymentMethod
+    val apsMethod = mainViewModel.lastState.apsPageState?.apsMethod
     val paymentUrl = apsMethod?.paymentUrl
     BackHandler(true) { onCancel() }
 
@@ -49,7 +52,8 @@ internal fun ApsPageView(
     method: UIPaymentMethod.UIApsPaymentMethod,
     paymentUrl: String,
 ) {
-    val viewModel = LocalMainViewModel.current
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     var isLoading by remember { mutableStateOf(false) }
     if (isLoading)
         Box(
@@ -81,8 +85,10 @@ internal fun ApsPageView(
                         ) {
                             super.onPageStarted(view, url, favicon)
                             isLoading = true
-                            if (url?.startsWith(paymentUrl) == false)
-                                viewModel.saleAps(method)
+                            if (url?.startsWith(paymentUrl) == false) {
+                                paymentMethodsViewModel.setCurrentMethod(method)
+                                mainViewModel.saleAps(method)
+                            }
                         }
 
                         override fun onPageFinished(view: WebView?, url: String?) {

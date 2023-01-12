@@ -15,7 +15,6 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.FieldServerType
 import com.paymentpage.msdk.ui.SDKAdditionalField
-import com.paymentpage.msdk.ui.utils.extensions.core.mergeHiddenFieldsToList
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeVisibleFieldsToList
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.customerFields.model.UICustomerFieldValue
@@ -35,31 +34,17 @@ internal fun CustomerFields(
         ).associateBy { it.name }.toMutableMap()
     }
     val visibleCustomerFields = remember { customerFields.visibleCustomerFields() }
-    val mergedHiddenFields = remember {
-        customerFields.mergeHiddenFieldsToList(
-            additionalFields = additionalFields,
-            customerFieldValues = customerFieldValues
-        ).map {
-            CustomerFieldValue(
-                name = it.name,
-                value = it.value
-            )
-        }
-    }
 
     LaunchedEffect(Unit) {
         val isAllFieldsValid = changedFieldsMap.values.none { !it.isValid } //if all fields is valid
-        val resultList = mutableListOf<CustomerFieldValue>()
-        resultList.addAll(changedFieldsMap.values.map {
-            CustomerFieldValue(
-                name = it.name,
-                value = it.value
-            )
-        })
-        resultList.addAll(mergedHiddenFields)
         //call once at first time
         onCustomerFieldsChanged(
-            resultList.toList(),
+            changedFieldsMap.values.map {
+                CustomerFieldValue(
+                    name = it.name,
+                    value = it.value
+                )
+            }.toList(),
             isAllFieldsValid
         )
     }
@@ -80,17 +65,13 @@ internal fun CustomerFields(
             val isAllFieldsValid =
                 changedFieldsMap.values.none { !it.isValid } //if all fields is valid
 
-            val resultList = mutableListOf<CustomerFieldValue>()
-            resultList.addAll(changedFieldsMap.values.map {
-                CustomerFieldValue(
-                    name = it.name,
-                    value = it.value
-                )
-            })
-            resultList.addAll(mergedHiddenFields)
-
             onCustomerFieldsChanged(
-                resultList.toList(),
+                changedFieldsMap.values.map {
+                    CustomerFieldValue(
+                        name = it.name,
+                        value = it.value
+                    )
+                }.toList(),
                 isAllFieldsValid
             )
         }
@@ -98,6 +79,7 @@ internal fun CustomerFields(
 
     Column(modifier = Modifier.fillMaxWidth()) {
         visibleCustomerFields.forEachIndexed { index, field ->
+            val options = field.options ?: emptyList()
             if (index < visibleCustomerFields.size)
                 Spacer(modifier = Modifier.size(10.dp))
             when (field.serverType) {
@@ -167,17 +149,31 @@ internal fun CustomerFields(
                     )
                 }
                 else -> {
-                    TextCustomerTextField(
-                        value = changedFieldsMap[field.name]?.value,
-                        onValueChanged = { customerField, value, isValid ->
-                            fieldChanged(
-                                customerField,
-                                value,
-                                isValid
-                            )
-                        },
-                        customerField = field
-                    )
+                    if (options.isNotEmpty())
+                        SelectableCustomerField(
+                            items = options.associate { it.name to it.value },
+                            initialValue = changedFieldsMap[field.name]?.value,
+                            onValueChanged = { customerField, value, isValid ->
+                                fieldChanged(
+                                    customerField,
+                                    value,
+                                    isValid
+                                )
+                            },
+                            customerField = field
+                        )
+                    else
+                        TextCustomerTextField(
+                            value = changedFieldsMap[field.name]?.value,
+                            onValueChanged = { customerField, value, isValid ->
+                                fieldChanged(
+                                    customerField,
+                                    value,
+                                    isValid
+                                )
+                            },
+                            customerField = field
+                        )
                 }
             }
         }

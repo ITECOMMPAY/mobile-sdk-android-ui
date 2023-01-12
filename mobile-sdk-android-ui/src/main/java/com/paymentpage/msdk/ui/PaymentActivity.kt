@@ -12,6 +12,7 @@ import com.paymentpage.msdk.core.UserAgentData
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.manager.resource.strings.StringResourceManager
+import com.paymentpage.msdk.core.utils.Duration
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.presentation.MainContent
 
@@ -23,13 +24,17 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
         mockModeType =
             intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
         val config = when {
-            mockModeType == SDKMockModeType.SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow()
-            mockModeType == SDKMockModeType.DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow()
-            BuildConfig.DEBUG -> MSDKCoreSessionConfig.debug(
-                intent.getStringExtra(Constants.EXTRA_API_HOST).toString(),
-                intent.getStringExtra(Constants.EXTRA_WS_API_HOST).toString()
+            mockModeType == SDKMockModeType.SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow(
+                duration = Duration.millis(Constants.THREE_D_SECURE_REDIRECT_DURATION)
             )
-            else -> MSDKCoreSessionConfig.release(BuildConfig.API_HOST, BuildConfig.WS_API_HOST)
+            mockModeType == SDKMockModeType.DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow(
+                duration = Duration.millis(Constants.THREE_D_SECURE_REDIRECT_DURATION)
+            )
+            BuildConfig.DEBUG -> MSDKCoreSessionConfig.debug(
+                apiHost = intent.getStringExtra(Constants.EXTRA_API_HOST) ?: apiHost,
+                wsApiHost = intent.getStringExtra(Constants.EXTRA_WS_API_HOST) ?: wsApiHost
+            )
+            else -> MSDKCoreSessionConfig.release(apiHost = apiHost, wsApiHost = wsApiHost)
         }
         config.userAgentData =
             UserAgentData(
@@ -110,6 +115,9 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         internal lateinit var paymentOptions: SDKPaymentOptions
 
+        internal lateinit var apiHost: String
+        internal lateinit var wsApiHost: String
+
         var mockModeType = SDKMockModeType.DISABLED
 
         internal lateinit var msdkSession: MSDKCoreSession
@@ -118,12 +126,16 @@ internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         fun buildPaymentIntent(
             context: Context,
+            apiHost: String,
+            wsApiHost: String,
             paymentOptions: SDKPaymentOptions,
             mockModeType: SDKMockModeType,
         ) = Intent(context, PaymentActivity::class.java).apply {
-                this@Companion.paymentOptions = paymentOptions
-                addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                putExtra(Constants.EXTRA_MOCK_MODE_TYPE, mockModeType)
-            }
+            this@Companion.paymentOptions = paymentOptions
+            this@Companion.apiHost = apiHost
+            this@Companion.wsApiHost = wsApiHost
+            addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            putExtra(Constants.EXTRA_MOCK_MODE_TYPE, mockModeType)
+        }
     }
 }

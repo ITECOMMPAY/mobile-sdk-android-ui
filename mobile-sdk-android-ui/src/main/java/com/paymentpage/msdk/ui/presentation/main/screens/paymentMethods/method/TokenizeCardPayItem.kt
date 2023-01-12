@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
@@ -30,7 +31,8 @@ internal fun TokenizeCardPayItem(
     method: UIPaymentMethod.UITokenizeCardPayPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
 ) {
-    val viewModel = LocalMainViewModel.current
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val tokenizeCustomerFields = remember {
         method.paymentMethod.customerFields.filter { it.isTokenize }
     }
@@ -102,7 +104,8 @@ internal fun TokenizeCardPayItem(
                 isValid = isPanValid && isCardHolderValid && isExpiryValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
-                    viewModel.tokenizeCard(
+                    paymentMethodsViewModel.setCurrentMethod(method)
+                    mainViewModel.tokenizeCard(
                         method = method,
                         needSendCustomerFields = tokenizeCustomerFields.needSendWithSaleRequest()
                     )

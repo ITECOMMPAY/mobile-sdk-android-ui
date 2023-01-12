@@ -23,6 +23,9 @@ class SDKPaymentOptions(
     val logoImage: Bitmap? = null,
     val brandColor: String? = null,
 
+    var footerImage: Bitmap? = null,
+    var footerLabel: String? = null,
+
     val merchantId: String = "",
     val merchantName: String = "",
     val merchantEnvironment: GooglePayEnvironment = GooglePayEnvironment.TEST,
