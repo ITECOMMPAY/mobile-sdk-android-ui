@@ -37,6 +37,20 @@ internal fun InitScreen(
     onError: (ErrorResult, Boolean) -> Unit
 ) {
     BackHandler(true) { onCancel() }
+
+    setupStateListener(actionType = actionType, navigator = navigator, onError = onError)
+    Content(
+        actionType = actionType,
+        onCancel = onCancel
+    )
+}
+
+@Composable
+private fun setupStateListener(
+    actionType: SDKActionType,
+    navigator: Navigator,
+    onError: (ErrorResult, Boolean) -> Unit,
+) {
     val initViewModel = LocalInitViewModel.current
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
@@ -102,10 +116,6 @@ internal fun InitScreen(
             }
         }.collect()
     }
-    Content(
-        actionType = actionType,
-        onCancel = onCancel
-    )
 }
 
 

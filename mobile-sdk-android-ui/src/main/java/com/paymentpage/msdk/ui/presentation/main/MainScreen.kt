@@ -42,10 +42,7 @@ internal fun MainScreen(
 
     val navController = rememberAnimatedNavController()
     val focusManager = LocalFocusManager.current
-    val mainViewModel = LocalMainViewModel.current
-    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
-    val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
-    val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
+
 
     LaunchedEffect("mainScreenNavigation") {
         mainScreenNavigator.sharedFlow.onEach {
@@ -54,36 +51,7 @@ internal fun MainScreen(
         }.launchIn(this)
     }
 
-    LaunchedEffect(Unit) {
-        mainViewModel.state.onEach {
-            when {
-                it.error != null -> onError(it.error, true)
-                it.isLoading == true -> mainScreenNavigator.navigateTo(Route.Loading)
-                it.isTryAgain == true -> {
-                    paymentMethodsViewModel.updatePaymentMethods(
-                        paymentMethods = paymentMethods,
-                        savedAccounts = savedAccounts
-                    )
-                    mainScreenNavigator.navigateTo(Route.PaymentMethods)
-                }
-                it.finalPaymentState != null -> {
-                    when (it.finalPaymentState) {
-                        is FinalPaymentState.Success -> mainScreenNavigator.navigateTo(Route.SuccessResult)
-                        is FinalPaymentState.Decline -> mainScreenNavigator.navigateTo(Route.DeclineResult)
-                    }
-                }
-                it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)
-                it.clarificationFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.ClarificationFields)
-                it.threeDSecurePageState != null -> when (it.threeDSecurePageState.threeDSecurePage?.type) {
-                    ThreeDSecurePageType.THREE_DS_2_FRICTIONLESS -> mainScreenNavigator.navigateTo(
-                        Route.ThreeDSecureLoadingPage
-                    )
-                    else -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)
-                }
-                it.apsPageState != null -> mainScreenNavigator.navigateTo(Route.ApsPage)
-            }
-        }.collect()
-    }
+    setupStateListener(mainScreenNavigator = mainScreenNavigator, onError = onError)
 
     AnimatedNavHost(
         navController = navController,
@@ -96,9 +64,7 @@ internal fun MainScreen(
         composable(route = Route.CustomerFields.getPath()) {
             CustomerFieldsScreen(
                 actionType = actionType,
-                onBack = {
-                    mainScreenNavigator.navigateTo(Route.PaymentMethods)
-                },
+                onBack = { mainScreenNavigator.navigateTo(Route.PaymentMethods) },
                 onCancel = onCancel
             )
         }
@@ -148,5 +114,45 @@ internal fun MainScreen(
                 onError = onError
             )
         }
+    }
+}
+
+@Composable
+private fun setupStateListener(
+    mainScreenNavigator: Navigator,
+    onError: (ErrorResult, Boolean) -> Unit,
+) {
+    val mainViewModel = LocalMainViewModel.current
+    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
+    val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
+    LaunchedEffect(Unit) {
+        mainViewModel.state.onEach {
+            when {
+                it.error != null -> onError(it.error, true)
+                it.isLoading == true -> mainScreenNavigator.navigateTo(Route.Loading)
+                it.isTryAgain == true -> {
+                    paymentMethodsViewModel.updatePaymentMethods(
+                        paymentMethods = paymentMethods,
+                        savedAccounts = savedAccounts
+                    )
+                    mainScreenNavigator.navigateTo(Route.PaymentMethods)
+                }
+                it.finalPaymentState != null -> {
+                    when (it.finalPaymentState) {
+                        is FinalPaymentState.Success -> mainScreenNavigator.navigateTo(Route.SuccessResult)
+                        is FinalPaymentState.Decline -> mainScreenNavigator.navigateTo(Route.DeclineResult)
+                    }
+                }
+                it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)
+                it.clarificationFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.ClarificationFields)
+                it.threeDSecurePageState != null -> when (it.threeDSecurePageState.threeDSecurePage?.type) {
+                    ThreeDSecurePageType.THREE_DS_2_FRICTIONLESS ->
+                        mainScreenNavigator.navigateTo(Route.ThreeDSecureLoadingPage)
+                    else -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)
+                }
+                it.apsPageState != null -> mainScreenNavigator.navigateTo(Route.ApsPage)
+            }
+        }.collect()
     }
 }

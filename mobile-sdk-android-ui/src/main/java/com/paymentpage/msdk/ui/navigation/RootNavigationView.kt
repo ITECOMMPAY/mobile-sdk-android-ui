@@ -50,14 +50,14 @@ internal fun RootNavigationView(
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None }
     ) {
-        composable(route = Route.Init.getPath()) {
+        composable(route = Route.Init.getPath()) {//RootNavigationView <-InitScreen
             InitScreen(
                 actionType = actionType,
                 navigator = navigator,
                 onCancel = onCancel,
                 onError = onError)
         }
-        composable(route = Route.Main.getPath()) {
+        composable(route = Route.Main.getPath()) { //RootNavigationView <-MainScreen <- inner AnimatedNavHost
             MainScreen(
                 startRoute = Route.PaymentMethods,
                 actionType = actionType,
@@ -67,7 +67,7 @@ internal fun RootNavigationView(
                 onError = onError
             )
         }
-        composable(route = Route.Tokenize.getPath()) {
+        composable(route = Route.Tokenize.getPath()) { //RootNavigationView <-MainScreen <- inner AnimatedNavHost
             MainScreen(
                 startRoute = Route.Tokenize,
                 actionType = actionType,
@@ -77,7 +77,7 @@ internal fun RootNavigationView(
                 onError = onError
             )
         }
-        composable(route = Route.Restore.getPath()) {
+        composable(route = Route.Restore.getPath()) { //RootNavigationView <-MainScreen <- inner AnimatedNavHost
             MainScreen(
                 startRoute = Route.Loading,
                 actionType = actionType,
@@ -87,7 +87,7 @@ internal fun RootNavigationView(
                 onError = onError
             )
         }
-        composable(route = Route.RestoreAps.getPath()) {
+        composable(route = Route.RestoreAps.getPath()) { //RootNavigationView <-MainScreen <- inner AnimatedNavHost
             MainScreen(
                 startRoute = Route.ApsPage,
                 actionType = actionType,
