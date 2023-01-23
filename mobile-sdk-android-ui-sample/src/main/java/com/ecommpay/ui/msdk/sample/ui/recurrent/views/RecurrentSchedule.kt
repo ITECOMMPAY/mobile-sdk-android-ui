@@ -50,7 +50,7 @@ internal fun RecurrentSchedule(
                     changed?.removeAt(index)
                     listener(
                         RecurrentViewIntents.ChangeField(
-                        recurrentData = RecurrentData(schedule = changed)
+                        recurrentData = viewState.recurrentData.copy(schedule = changed)
                     ))
                 }
             ) {

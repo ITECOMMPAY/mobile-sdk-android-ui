@@ -23,7 +23,8 @@ internal fun ResultDeclineScreen(
     BackHandler(true) { onClose(payment) }
 
     when (actionType) {
-        SDKActionType.Sale -> ResultDeclineSaleContent(
+        SDKActionType.Sale,
+        SDKActionType.Auth -> ResultDeclineSaleContent(
             onClose = onClose,
             onCancel = onCancel,
             onError = onError,

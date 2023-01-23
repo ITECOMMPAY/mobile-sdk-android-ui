@@ -20,9 +20,12 @@ sealed interface MainViewIntents: ViewIntents {
     data class SelectMockMode(val id: Int, val paymentData: PaymentData): MainViewIntents
     //Sale button
     object Sale: MainViewIntents
+    //Auth button
+    object Auth: MainViewIntents
     //Tokenize button
     object Tokenize: MainViewIntents
     object ThreeDSecure: MainViewIntents
     object Recurrent: MainViewIntents
+    object Recipient: MainViewIntents
     object AdditionalFields: MainViewIntents
 }

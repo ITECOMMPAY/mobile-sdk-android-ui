@@ -32,7 +32,7 @@ internal sealed class UIPaymentMethod(
         val accountId: Long = savedAccount.id
     }
 
-    class UICardPayPaymentMethod(
+    open class UICardPayPaymentMethod(
         index: Int,
         title: String,
         paymentMethod: PaymentMethod
@@ -53,15 +53,7 @@ internal sealed class UIPaymentMethod(
         index: Int = 0,
         title: String = getStringOverride(OverridesKeys.BUTTON_ADD_NEW_CARD),
         paymentMethod: PaymentMethod
-    ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
-        var pan: String = ""
-        var expiry: String = ""
-        var cardHolder: String = ""
-
-        var isValidPan: Boolean = false
-        var isValidExpiry: Boolean = false
-        var isValidCardHolder: Boolean = false
-    }
+    ) : UICardPayPaymentMethod(index, title, paymentMethod)
 
     class UIApsPaymentMethod(
         index: Int,

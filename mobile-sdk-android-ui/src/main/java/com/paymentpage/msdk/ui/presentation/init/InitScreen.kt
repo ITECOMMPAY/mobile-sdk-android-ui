@@ -20,7 +20,6 @@ import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.presentation.main.restoreAps
 import com.paymentpage.msdk.ui.presentation.main.restorePayment
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -59,11 +58,13 @@ private fun setupStateListener(
 
     if (paymentMethods.isNotEmpty())
         when (actionType) {
-            SDKActionType.Sale -> paymentMethodsViewModel.setPaymentMethods(
-                paymentMethods.mergeUIPaymentMethods(savedAccounts)
-            )
-            SDKActionType.Tokenize ->
-                paymentMethodsViewModel.setPaymentMethods(
+            SDKActionType.Sale,
+            SDKActionType.Auth -> paymentMethodsViewModel
+                .setPaymentMethods(
+                    paymentMethods.mergeUIPaymentMethods(savedAccounts)
+                )
+            SDKActionType.Tokenize -> paymentMethodsViewModel
+                .setPaymentMethods(
                     listOf(
                         UIPaymentMethod.UITokenizeCardPayPaymentMethod(
                             paymentMethod = paymentMethods.first { paymentMethod ->
@@ -81,7 +82,8 @@ private fun setupStateListener(
             when {
                 it.error != null -> onError(it.error, true)
                 it.isInitLoaded -> when (PaymentActivity.paymentOptions.actionType) {
-                    SDKActionType.Sale -> navigator.navigateTo(Route.Main)
+                    SDKActionType.Sale,
+                    SDKActionType.Auth -> navigator.navigateTo(Route.Main)
                     SDKActionType.Tokenize -> navigator.navigateTo(Route.Tokenize)
                     else -> navigator.navigateTo(Route.Main)
                 }

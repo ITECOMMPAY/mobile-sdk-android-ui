@@ -13,12 +13,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
-import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
-import com.paymentpage.msdk.ui.presentation.main.saleCard
+import com.paymentpage.msdk.ui.presentation.main.payNewCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -42,7 +39,8 @@ internal fun NewCardItem(
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
-    val additionalFields = LocalPaymentOptions.current.additionalFields
+    val paymentOptions = LocalPaymentOptions.current
+    val additionalFields = paymentOptions.additionalFields
     val savedState = remember { mutableStateOf(method.saveCard) }
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
@@ -161,8 +159,10 @@ internal fun NewCardItem(
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
                     paymentMethodsViewModel.setCurrentMethod(method)
-                    mainViewModel.saleCard(
+                    mainViewModel.payNewCard(
+                        actionType = paymentOptions.actionType,
                         method = method,
+                        recipientInfo = paymentOptions.recipientInfo,
                         needSendCustomerFields = customerFields.needSendWithSaleRequest()
                     )
                 }

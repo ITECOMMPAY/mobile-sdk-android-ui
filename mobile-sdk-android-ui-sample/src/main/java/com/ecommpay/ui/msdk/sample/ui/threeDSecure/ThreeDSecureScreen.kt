@@ -38,11 +38,12 @@ internal fun ThreeDSecureScreen(
     intentListener: (ThreeDSecureInfoViewIntents) -> Unit
 ) {
     val jsonThreeDSecureInfo = viewState?.jsonThreeDSecureInfo ?: ""
+    val padding = 10.dp
     Column(
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier.padding(20.dp),
         horizontalAlignment = Alignment.Start
     ) {
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(padding))
         Button(modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
@@ -52,7 +53,7 @@ internal fun ThreeDSecureScreen(
         ) {
             Text(text = "Remove customer account info", color = Color.White, fontSize = 18.sp)
         }
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(padding))
         Button(modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
@@ -62,7 +63,7 @@ internal fun ThreeDSecureScreen(
         ) {
             Text(text = "Remove customer shipping", color = Color.White, fontSize = 18.sp)
         }
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(padding))
         Button(modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
@@ -72,7 +73,7 @@ internal fun ThreeDSecureScreen(
         ) {
             Text(text = "Remove customer mpi result", color = Color.White, fontSize = 18.sp)
         }
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(padding))
         Button(modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
@@ -82,7 +83,7 @@ internal fun ThreeDSecureScreen(
         ) {
             Text(text = "Remove payment merchant risk", color = Color.White, fontSize = 18.sp)
         }
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(padding))
         Button(modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
@@ -92,7 +93,7 @@ internal fun ThreeDSecureScreen(
         ) {
             Text(text = "Reset", color = Color.White, fontSize = 18.sp)
         }
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(padding))
         Button(modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
@@ -102,13 +103,13 @@ internal fun ThreeDSecureScreen(
         ) {
             Text(text = "Back", color = Color.White, fontSize = 18.sp)
         }
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(padding))
         ThreeDSecureCheckbox(
             isChecked = viewState?.isEnabledThreeDSecure ?: false
         ) {
             intentListener(ThreeDSecureInfoViewIntents.ChangeCheckbox)
         }
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
             value = jsonThreeDSecureInfo,
             onValueChange = {

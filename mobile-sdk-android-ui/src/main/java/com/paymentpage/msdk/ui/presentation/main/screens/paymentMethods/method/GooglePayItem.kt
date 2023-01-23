@@ -22,7 +22,7 @@ import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.googlePay.GooglePayActivityContract
-import com.paymentpage.msdk.ui.presentation.main.saleGooglePay
+import com.paymentpage.msdk.ui.presentation.main.payGoogle
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.showError
@@ -45,14 +45,14 @@ internal fun GooglePayItem(
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
-    val additionalFields = LocalPaymentOptions.current.additionalFields
+    val additionalFields = paymentOptions.additionalFields
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     val isForcePaymentMethod =
         paymentOptions.paymentInfo.forcePaymentMethod == PaymentMethodType.GOOGLE_PAY.value
     val isTryAgain = lastState.isTryAgain ?: false
 
-    val merchantId = LocalPaymentOptions.current.merchantId
-    val merchantName = LocalPaymentOptions.current.merchantName
+    val merchantId = paymentOptions.merchantId
+    val merchantName = paymentOptions.merchantName
     var isGooglePayAvailable by remember { mutableStateOf(isForcePaymentMethod) }
     var isGooglePayOpened by remember { mutableStateOf(false) }
     val googlePayHelper = GooglePayHelper(merchantId, merchantName)
@@ -77,11 +77,13 @@ internal fun GooglePayItem(
         } else
             result.token?.let {
                 paymentMethodsViewModel.setCurrentMethod(method)
-                mainViewModel.saleGooglePay(
+                mainViewModel.payGoogle(
+                    actionType = paymentOptions.actionType,
                     method = method,
                     merchantId = merchantId,
                     token = it,
                     environment = paymentOptions.merchantEnvironment,
+                    recipientInfo = paymentOptions.recipientInfo,
                     needSendCustomerFields = customerFields.needSendWithSaleRequest()
                 )
             }
