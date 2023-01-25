@@ -58,8 +58,8 @@ internal fun ExpandablePaymentOverview(
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
 
     val gradient = arrayOf(
-        0.0f to Color(0xFF0D5189),
-        1f to Color(0xFF2582CE),
+        0.0f to SDKTheme.colors.brand.copy(alpha = 0.95f),
+        1f to SDKTheme.colors.brand.copy(alpha = 0.80f),
     )
     Box(
         modifier = Modifier
