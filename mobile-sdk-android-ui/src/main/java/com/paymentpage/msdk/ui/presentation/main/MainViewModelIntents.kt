@@ -39,20 +39,22 @@ internal fun MainViewModel.payGoogle(
                 merchantId = merchantId,
                 token = token,
                 environment = environment
-            )
+            ).apply {
+                this.recipientInfo = recipientInfo
+            }
         }
         else -> {
             GooglePayAuthRequest(
                 merchantId = merchantId,
                 token = token,
                 environment = environment
-            )
+            ).apply {
+                this.recipientInfo = recipientInfo
+            }
         }
     }
     if (needSendCustomerFields)
         request.customerFields = method.customerFieldValues
-    if (recipientInfo != null)
-        request.recipientInfo = recipientInfo
     this.payInteractor.sendRequest(request)
 }
 
