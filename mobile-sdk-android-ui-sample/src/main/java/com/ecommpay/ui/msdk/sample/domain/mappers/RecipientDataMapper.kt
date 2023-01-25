@@ -11,7 +11,5 @@ internal fun RecipientData.map(): RecipientInfo = RecipientInfo(
     cardHolder = cardHolder,
     address = address,
     city = city,
-    stateCode = stateCode,
-    firstName = firstName,
-    lastName = lastName
+    stateCode = stateCode
 )

@@ -143,30 +143,6 @@ internal fun RecipientScreen(
             label = { Text(text = "State code") }
         )
         Spacer(modifier = Modifier.size(padding))
-        OutlinedTextField(
-            value = recipientData.firstName ?: "",
-            onValueChange = {
-                intentListener(
-                    RecipientViewIntents.ChangeField(
-                        recipientData = recipientData.copy(firstName = it))
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(text = "First name") }
-        )
-        Spacer(modifier = Modifier.size(padding))
-        OutlinedTextField(
-            value = recipientData.lastName ?: "",
-            onValueChange = {
-                intentListener(
-                    RecipientViewIntents.ChangeField(
-                        recipientData = recipientData.copy(lastName = it))
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(text = "Last name") }
-        )
-        Spacer(modifier = Modifier.size(padding))
         RecipientCheckbox(
             isChecked = viewState.isEnabledRecipient,
             listener = intentListener

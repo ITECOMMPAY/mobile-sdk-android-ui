@@ -9,8 +9,6 @@ data class RecipientData(
     val address: String? = null,
     val city: String? = null,
     val stateCode: String? = null,
-    val firstName: String? = null,
-    val lastName: String? = null
 ) {
     companion object {
         val mockData = RecipientData(
@@ -22,8 +20,6 @@ data class RecipientData(
             address = "Address",
             city = "City",
             stateCode = "TX",
-            firstName = "James",
-            lastName = "Smith"
         )
     }
 }
