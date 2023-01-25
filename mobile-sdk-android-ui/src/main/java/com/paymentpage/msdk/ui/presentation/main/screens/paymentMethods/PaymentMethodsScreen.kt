@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
@@ -20,6 +21,7 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffold
 
 @Composable
 internal fun PaymentMethodsScreen(
+    actionType: SDKActionType,
     onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
 ) {
@@ -43,7 +45,10 @@ internal fun PaymentMethodsScreen(
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
-        title = getStringOverride(OverridesKeys.TITLE_PAYMENT_METHODS),
+        title = if (actionType == SDKActionType.Verify)
+            getStringOverride(OverridesKeys.BUTTON_AUTHORIZE)
+        else
+            getStringOverride(OverridesKeys.TITLE_PAYMENT_METHODS),
         scrollableContent = {
             PaymentOverview()
             Spacer(modifier = Modifier.size(16.dp))

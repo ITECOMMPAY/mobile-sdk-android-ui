@@ -99,6 +99,12 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     ProcessRepository.paymentData.copy(actionType = EcmpActionType.Auth)
                 pushExternalIntent(SampleViewIntents.StartPaymentSDK)
             }
+            //Verify
+            is MainViewIntents.Verify -> {
+                ProcessRepository.paymentData =
+                    ProcessRepository.paymentData.copy(actionType = EcmpActionType.Verify)
+                pushExternalIntent(SampleViewIntents.StartPaymentSDK)
+            }
             //Tokenize
             is MainViewIntents.Tokenize -> {
                 ProcessRepository.paymentData =

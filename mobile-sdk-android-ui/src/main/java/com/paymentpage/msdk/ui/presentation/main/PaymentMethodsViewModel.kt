@@ -5,6 +5,7 @@ import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveDelegate
 import com.paymentpage.msdk.core.domain.interactors.card.remove.CardRemoveRequest
+import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.mvi.Reducer
 import com.paymentpage.msdk.ui.base.mvi.TimeMachine
 import com.paymentpage.msdk.ui.base.mvvm.BaseViewModel
@@ -43,10 +44,14 @@ internal class PaymentMethodsViewModel(
     }
 
     fun updatePaymentMethods(
+        actionType: SDKActionType,
         paymentMethods: List<PaymentMethod>?,
         savedAccounts: List<SavedAccount>?,
     ) {
-        sendEvent(PaymentMethodsUiEvent.SetPaymentMethods(paymentMethods?.mergeUIPaymentMethods(savedAccounts)))
+        sendEvent(PaymentMethodsUiEvent.SetPaymentMethods(paymentMethods?.mergeUIPaymentMethods(
+            actionType = actionType,
+            savedAccounts = savedAccounts
+        )))
     }
 
     fun deleteSavedCard(method: UIPaymentMethod.UISavedCardPayPaymentMethod) {
