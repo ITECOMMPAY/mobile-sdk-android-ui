@@ -17,7 +17,8 @@ internal fun CustomerFieldsButton(
     onClick: () -> Unit
 ) {
     when (actionType) {
-        SDKActionType.Sale -> {
+        SDKActionType.Sale,
+        SDKActionType.Auth -> {
             PayButton(
                 payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),

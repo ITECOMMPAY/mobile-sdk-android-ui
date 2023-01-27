@@ -14,4 +14,5 @@ sealed class MainHostScreens(
     object AdditionalFields : MainHostScreens("additionalFields")
     object ThreeDSecure : MainHostScreens("threeDSecure")
     object Recurrent : MainHostScreens("recurrent")
+    object Recipient : MainHostScreens("recipient")
 }

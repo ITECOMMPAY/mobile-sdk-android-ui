@@ -8,5 +8,5 @@ sealed interface RecurrentViewIntents : ViewIntents {
     object ChangeCheckbox: RecurrentViewIntents
     object Exit : RecurrentViewIntents
     object ResetData : RecurrentViewIntents
-    data class FillMockData(val mockData: RecurrentData): RecurrentViewIntents
+    object FillMockData : RecurrentViewIntents
 }

@@ -6,6 +6,7 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.core.domain.entities.payment.PaymentStatus
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePage
+import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.core.CardRemoveInteractorProxyMockImpl
 import com.paymentpage.msdk.ui.core.PayInteractorProxyMockImpl
 import com.paymentpage.msdk.ui.presentation.main.*
@@ -67,7 +68,11 @@ internal class MainViewModelTest {
         )
 
         //WHEN
-        mainViewModel.saleCard(method = method, needSendCustomerFields = false)
+        mainViewModel.payNewCard(
+            actionType = SDKActionType.Sale,
+            method = method,
+            needSendCustomerFields = false
+        )
         val actualCustomerFields = mainViewModel.state.value.customerFields
 
         //THEN
@@ -88,7 +93,11 @@ internal class MainViewModelTest {
         val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
 
         //WHEN
-        mainViewModel.saleCard(method = method, needSendCustomerFields = false)
+        mainViewModel.payNewCard(
+            actionType = SDKActionType.Sale,
+            method = method,
+            needSendCustomerFields = false
+        )
 
         //THEN
         with(mainViewModel.state.value) {
@@ -111,7 +120,11 @@ internal class MainViewModelTest {
         val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
 
         //WHEN
-        mainViewModel.saleCard(method = method, needSendCustomerFields = false)
+        mainViewModel.payNewCard(
+            actionType = SDKActionType.Sale,
+            method = method,
+            needSendCustomerFields = false
+        )
 
         //THEN
         with(mainViewModel.state.value) {
@@ -134,7 +147,11 @@ internal class MainViewModelTest {
         val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
 
         //WHEN
-        mainViewModel.saleCard(method = method, needSendCustomerFields = false)
+        mainViewModel.payNewCard(
+            actionType = SDKActionType.Sale,
+            method = method,
+            needSendCustomerFields = false
+        )
 
         //THEN
         with(mainViewModel.state.value) {
@@ -160,7 +177,11 @@ internal class MainViewModelTest {
         val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
 
         //WHEN
-        mainViewModel.saleCard(method = method, needSendCustomerFields = false)
+        mainViewModel.payNewCard(
+            actionType = SDKActionType.Sale,
+            method = method,
+            needSendCustomerFields = false
+        )
         mainViewModel.sendEvent(MainScreenUiEvent.TryAgain)
 
         //THEN
@@ -273,7 +294,11 @@ internal class MainViewModelTest {
         val method = mockk<UIPaymentMethod.UICardPayPaymentMethod>(relaxed = true)
 
         //WHEN
-        mainViewModel.saleCard(method = method, true)
+        mainViewModel.payNewCard(
+            actionType = SDKActionType.Sale,
+            method = method,
+            needSendCustomerFields = true
+        )
 
         //THEN
         val finalState = mainViewModel.state.value

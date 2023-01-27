@@ -16,10 +16,9 @@ import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
-import com.paymentpage.msdk.ui.presentation.main.saleSavedCard
+import com.paymentpage.msdk.ui.presentation.main.paySavedCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.presentation.main.tokenizeSavedCard
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
@@ -41,7 +40,8 @@ internal fun SavedCardItem(
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val state = mainViewModel.state.collectAsState().value
     val customerFields = remember { method.paymentMethod.customerFields }
-    val additionalFields = LocalPaymentOptions.current.additionalFields
+    val paymentOptions = LocalPaymentOptions.current
+    val additionalFields = paymentOptions.additionalFields
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
     val isDeleteCardLoading = state.isDeleteCardLoading ?: false
@@ -51,7 +51,7 @@ internal fun SavedCardItem(
         context.drawableResourceIdFromDrawableName(name)
     }
     var deleteCardAlertDialogState by remember { mutableStateOf(false) }
-    val isSaleWithToken = LocalPaymentOptions.current.paymentInfo.token != null
+    val token = paymentOptions.paymentInfo.token
     ExpandablePaymentMethodItem(
         method = method,
         isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
@@ -105,19 +105,16 @@ internal fun SavedCardItem(
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
                     paymentMethodsViewModel.setCurrentMethod(method)
-                    if (isSaleWithToken)
-                        mainViewModel.tokenizeSavedCard(
-                            method = method,
-                            needSendCustomerFields = customerFields.needSendWithSaleRequest()
-                        )
-                    else
-                        mainViewModel.saleSavedCard(
-                            method = method,
-                            needSendCustomerFields = customerFields.needSendWithSaleRequest()
-                        )
+                    mainViewModel.paySavedCard(
+                        actionType = paymentOptions.actionType,
+                        token = token,
+                        method = method,
+                        recipientInfo = paymentOptions.recipientInfo,
+                        needSendCustomerFields = customerFields.needSendWithSaleRequest()
+                    )
                 }
             )
-            if (!isSaleWithToken) {
+            if (token == null) {
                 Spacer(modifier = Modifier.size(15.dp))
                 if (!isDeleteCardLoading)
                     Text(

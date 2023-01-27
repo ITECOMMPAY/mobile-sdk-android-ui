@@ -93,6 +93,12 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     ProcessRepository.paymentData.copy(actionType = EcmpActionType.Sale)
                 pushExternalIntent(SampleViewIntents.StartPaymentSDK)
             }
+            //Auth
+            is MainViewIntents.Auth -> {
+                ProcessRepository.paymentData =
+                    ProcessRepository.paymentData.copy(actionType = EcmpActionType.Auth)
+                pushExternalIntent(SampleViewIntents.StartPaymentSDK)
+            }
             //Tokenize
             is MainViewIntents.Tokenize -> {
                 ProcessRepository.paymentData =
@@ -104,6 +110,9 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
             }
             is MainViewIntents.Recurrent -> {
                 pushExternalIntent(NavigationViewIntents.Navigate(to = MainHostScreens.Recurrent))
+            }
+            is MainViewIntents.Recipient -> {
+                pushExternalIntent(NavigationViewIntents.Navigate(to = MainHostScreens.Recipient))
             }
             is MainViewIntents.AdditionalFields -> {
                 pushExternalIntent(NavigationViewIntents.Navigate(to = MainHostScreens.AdditionalFields))

@@ -78,6 +78,10 @@ fun MainScreen(
             intentListener(MainViewIntents.Recurrent)
         }
         Spacer(Modifier.size(padding))
+        RecipientButton {
+            intentListener(MainViewIntents.Recipient)
+        }
+        Spacer(Modifier.size(padding))
         ThreeDSecureButton {
             intentListener(MainViewIntents.ThreeDSecure)
         }
@@ -148,6 +152,8 @@ fun MainScreen(
         }
         Spacer(Modifier.size(padding))
         SaleButton { intentListener(MainViewIntents.Sale) }
+        Spacer(Modifier.size(padding))
+        AuthButton { intentListener(MainViewIntents.Auth) }
         Spacer(Modifier.size(padding))
         TokenizeButton { intentListener(MainViewIntents.Tokenize) }
     }
