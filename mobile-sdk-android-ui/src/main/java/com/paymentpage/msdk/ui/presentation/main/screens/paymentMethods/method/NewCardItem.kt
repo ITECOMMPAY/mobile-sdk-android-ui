@@ -21,7 +21,6 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.U
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
-import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.button.CustomOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
@@ -164,7 +163,7 @@ internal fun NewCardItem(
                         actionType = paymentOptions.actionType,
                         method = method,
                         recipientInfo = paymentOptions.recipientInfo,
-                        needSendCustomerFields = customerFields.needSendWithSaleRequest()
+                        customerFields = customerFields
                     )
                 }
             )

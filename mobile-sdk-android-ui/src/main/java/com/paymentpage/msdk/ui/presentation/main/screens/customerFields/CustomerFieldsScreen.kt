@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.presentation.main.fillCustomerFields
 import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -23,6 +24,7 @@ internal fun CustomerFieldsScreen(
     onBack: () -> Unit,
 ) {
     val mainViewModel = LocalMainViewModel.current
+    val state = mainViewModel.lastState
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val method = paymentMethodsViewModel.lastState.currentMethod
     val customerFields = mainViewModel.lastState.customerFields
@@ -57,7 +59,16 @@ internal fun CustomerFieldsScreen(
                 actionType = actionType,
                 isEnabled = isCustomerFieldsValid
             ) {
-                mainViewModel.sendCustomerFields(method?.customerFieldValues ?: emptyList())
+                val customerFieldValues = method?.customerFieldValues ?: emptyList()
+                if (state.request == null)
+                    mainViewModel.sendCustomerFields(customerFieldValues)
+                else {
+                    mainViewModel.fillCustomerFields(
+                        customerFields = customerFieldValues,
+                        request = state.request
+                    )
+                }
+
             }
             Spacer(modifier = Modifier.size(16.dp))
             SDKFooter()

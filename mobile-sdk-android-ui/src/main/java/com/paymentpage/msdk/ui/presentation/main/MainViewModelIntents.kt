@@ -4,8 +4,10 @@ import com.paymentpage.msdk.core.domain.entities.CardDate
 import com.paymentpage.msdk.core.domain.entities.RecipientInfo
 import com.paymentpage.msdk.core.domain.entities.SdkExpiry
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
+import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
+import com.paymentpage.msdk.core.domain.interactors.pay.PayRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.aps.ApsSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.auth.CardAuthRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.auth.CardAuthTokenizeRequest
@@ -23,6 +25,7 @@ import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRe
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
 
 internal fun MainViewModel.payGoogle(
@@ -74,7 +77,7 @@ internal fun MainViewModel.paySavedCard(
     method: UIPaymentMethod.UISavedCardPayPaymentMethod,
     token: String? = null,
     recipientInfo: RecipientInfo? = null,
-    needSendCustomerFields: Boolean
+    customerFields: List<CustomerField>,
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     val isPayWithToken = token != null
@@ -104,9 +107,18 @@ internal fun MainViewModel.paySavedCard(
                     this.recipientInfo = recipientInfo
                 }
     }
-    if (needSendCustomerFields)
+    if (customerFields.needSendWithSaleRequest()) {
         request.customerFields = method.customerFieldValues
-    this.payInteractor.sendRequest(request)
+        this.payInteractor.sendRequest(request)
+    } else {
+        sendEvent(
+            MainScreenUiEvent.ShowCustomerFields(
+                customerFields = customerFields,
+                request = request
+            )
+        )
+    }
+
 }
 
 //pay with new card
@@ -114,7 +126,7 @@ internal fun MainViewModel.payNewCard(
     actionType: SDKActionType,
     method: UIPaymentMethod.UICardPayPaymentMethod,
     recipientInfo: RecipientInfo? = null,
-    needSendCustomerFields: Boolean,
+    customerFields: List<CustomerField> = emptyList(),
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     val expiry = SdkExpiry(method.expiry)
@@ -161,9 +173,17 @@ internal fun MainViewModel.payNewCard(
             cardHolder = method.cardHolder,
         )
     }
-    if (needSendCustomerFields)
+    if (customerFields.needSendWithSaleRequest()) {
         request.customerFields = method.customerFieldValues
-    payInteractor.sendRequest(request)
+        payInteractor.sendRequest(request)
+    } else {
+        sendEvent(
+            MainScreenUiEvent.ShowCustomerFields(
+                customerFields = customerFields,
+                request = request
+            )
+        )
+    }
 }
 
 internal fun MainViewModel.showAps(
@@ -195,6 +215,18 @@ internal fun MainViewModel.sendClarificationFields(clarificationFields: List<Cla
 //send when 3ds handled
 internal fun MainViewModel.threeDSecureRedirectHandle(url: String) {
     payInteractor.threeDSecureRedirectHandle(url)
+}
+
+internal fun MainViewModel.fillCustomerFields(
+    customerFields: List<CustomerFieldValue>,
+    request: PayRequest
+) {
+    sendEvent(MainScreenUiEvent.ShowLoading)
+    payInteractor.sendRequest(
+        request.apply {
+            this.customerFields = customerFields
+        }
+    )
 }
 
 //restore payment if it received via init
