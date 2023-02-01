@@ -14,9 +14,11 @@ import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.CardSaleTokeni
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.NewCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.sale.SavedCardSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.tokenize.CardTokenizeRequest
+import com.paymentpage.msdk.core.domain.interactors.pay.card.verify.CardVerifyRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayAuthRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePaySaleRequest
+import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayVerifyRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
@@ -43,7 +45,7 @@ internal fun MainViewModel.payGoogle(
                 this.recipientInfo = recipientInfo
             }
         }
-        else -> {
+        SDKActionType.Auth -> {
             GooglePayAuthRequest(
                 merchantId = merchantId,
                 token = token,
@@ -51,6 +53,14 @@ internal fun MainViewModel.payGoogle(
             ).apply {
                 this.recipientInfo = recipientInfo
             }
+        }
+        //Verify
+        else -> {
+            GooglePayVerifyRequest(
+                merchantId = merchantId,
+                token = token,
+                environment = environment
+            )
         }
     }
     if (needSendCustomerFields)
@@ -121,7 +131,6 @@ internal fun MainViewModel.payNewCard(
         ).apply {
             this.recipientInfo = recipientInfo
         }
-
         SDKActionType.Auth -> CardAuthRequest(
             cvv = method.cvv,
             pan = method.pan,
@@ -134,14 +143,22 @@ internal fun MainViewModel.payNewCard(
         ).apply {
             this.recipientInfo = recipientInfo
         }
-
-        else -> CardTokenizeRequest(
+        SDKActionType.Tokenize -> CardTokenizeRequest(
             pan = method.pan,
             expiryDate = CardDate(
                 month = expiry.month ?: 0,
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
             ),
             cardHolder = method.cardHolder
+        )
+        SDKActionType.Verify -> CardVerifyRequest(
+            cvv = method.cvv,
+            pan = method.pan,
+            expiryDate = CardDate(
+                month = expiry.month ?: 0,
+                year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
+            ),
+            cardHolder = method.cardHolder,
         )
     }
     if (needSendCustomerFields)

@@ -14,14 +14,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
-import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.FinalPaymentState
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultTableInfo
@@ -36,7 +36,8 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import kotlinx.coroutines.delay
 
 @Composable
-internal fun ResultDeclineSaleContent(
+internal fun ResultDeclineContent(
+    actionType: SDKActionType,
     onClose: (Payment) -> Unit,
     onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit,
@@ -45,8 +46,8 @@ internal fun ResultDeclineSaleContent(
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val payment =
         mainViewModel.payment ?: throw IllegalStateException("Not found payment in State")
-    val isTryAgain =
-        (mainViewModel.lastState.finalPaymentState as? FinalPaymentState.Decline)?.isTryAgain ?: false
+    val isTryAgain = (mainViewModel.lastState.finalPaymentState as? FinalPaymentState.Decline)?.isTryAgain
+            ?: false
     val visibleState = remember {
         MutableTransitionState(false).apply {
             // Start the animation immediately
@@ -119,7 +120,10 @@ internal fun ResultDeclineSaleContent(
                     ) {
                         Spacer(modifier = Modifier.size(15.dp))
                         Text(
-                            text = getStringOverride(OverridesKeys.TITLE_RESULT_ERROR_PAYMENT),
+                            text = if (actionType == SDKActionType.Verify)
+                                getStringOverride(OverridesKeys.TITLE_RESULT_ERROR_VERIFICATION)
+                            else
+                                getStringOverride(OverridesKeys.TITLE_RESULT_ERROR_PAYMENT),
                             style = SDKTheme.typography.s24Bold,
                             textAlign = TextAlign.Center
                         )
@@ -134,17 +138,22 @@ internal fun ResultDeclineSaleContent(
                     }
                 }
 
-                VerticalSlideFadeAnimation(
-                    visibleState = visibleState,
-                    delay = 1000,
-                    duration = 500,
-                    initialOffsetYRatio = 0.3f
-                ) {
-                    Column {
-                        Spacer(modifier = Modifier.size(15.dp))
-                        PaymentOverview(showPaymentDetailsButton = false)
+                //remove payment overview block if logo does not exist when verify
+                if (actionType != SDKActionType.Verify || LocalPaymentOptions.current.logoImage != null)
+                    VerticalSlideFadeAnimation(
+                        visibleState = visibleState,
+                        delay = 1000,
+                        duration = 500,
+                        initialOffsetYRatio = 0.3f
+                    ) {
+                        Column {
+                            Spacer(modifier = Modifier.size(15.dp))
+                            PaymentOverview(
+                                showPaymentId = false,
+                                showPaymentDetailsButton = false
+                            )
+                        }
                     }
-                }
 
                 VerticalSlideFadeAnimation(
                     visibleState = visibleState,

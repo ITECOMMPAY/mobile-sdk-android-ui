@@ -57,24 +57,12 @@ private fun setupStateListener(
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
 
     if (paymentMethods.isNotEmpty())
-        when (actionType) {
-            SDKActionType.Sale,
-            SDKActionType.Auth -> paymentMethodsViewModel
-                .setPaymentMethods(
-                    paymentMethods.mergeUIPaymentMethods(savedAccounts)
-                )
-            SDKActionType.Tokenize -> paymentMethodsViewModel
-                .setPaymentMethods(
-                    listOf(
-                        UIPaymentMethod.UITokenizeCardPayPaymentMethod(
-                            paymentMethod = paymentMethods.first { paymentMethod ->
-                                paymentMethod.paymentMethodType == PaymentMethodType.CARD
-                            }
-                        )
-                    )
-                )
-            else -> Unit
-        }
+        paymentMethodsViewModel.setPaymentMethods(
+            paymentMethods.mergeUIPaymentMethods(
+                actionType = actionType,
+                savedAccounts = savedAccounts
+            )
+        )
 
     LaunchedEffect(Unit) {
         initViewModel.loadInit()
@@ -130,6 +118,7 @@ private fun Content(
         title = when (actionType) {
             SDKActionType.Sale -> stringResource(R.string.sale_label)
             SDKActionType.Tokenize -> stringResource(R.string.tokenize_label)
+            SDKActionType.Verify -> stringResource(R.string.verify_label)
             else -> stringResource(R.string.sale_label)
         },
         notScrollableContent = {

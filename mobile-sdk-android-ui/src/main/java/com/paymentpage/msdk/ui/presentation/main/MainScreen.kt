@@ -69,7 +69,10 @@ internal fun MainScreen(
             )
         }
         composable(route = Route.ClarificationFields.getPath()) {
-            ClarificationFieldsScreen(onCancel = onCancel)
+            ClarificationFieldsScreen(
+                actionType = actionType,
+                onCancel = onCancel
+            )
         }
 
         //3DS
@@ -104,6 +107,7 @@ internal fun MainScreen(
         }
         composable(route = Route.PaymentMethods.getPath()) {
             PaymentMethodsScreen(
+                actionType = actionType,
                 onCancel = onCancel,
                 onError = onError
             )
@@ -126,6 +130,7 @@ private fun setupStateListener(
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
+    val paymentOptions = LocalPaymentOptions.current
     LaunchedEffect(Unit) {
         mainViewModel.state.onEach {
             when {
@@ -133,6 +138,7 @@ private fun setupStateListener(
                 it.isLoading == true -> mainScreenNavigator.navigateTo(Route.Loading)
                 it.isTryAgain == true -> {
                     paymentMethodsViewModel.updatePaymentMethods(
+                        actionType = paymentOptions.actionType,
                         paymentMethods = paymentMethods,
                         savedAccounts = savedAccounts
                     )

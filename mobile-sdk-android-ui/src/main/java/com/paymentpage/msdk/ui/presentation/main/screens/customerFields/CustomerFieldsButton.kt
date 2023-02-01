@@ -14,7 +14,7 @@ import com.paymentpage.msdk.ui.views.button.SDKButton
 internal fun CustomerFieldsButton(
     actionType: SDKActionType,
     isEnabled: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     when (actionType) {
         SDKActionType.Sale,
@@ -34,9 +34,9 @@ internal fun CustomerFieldsButton(
                 onClick = onClick
             )
         }
-        else -> {
+        SDKActionType.Verify -> {
             SDKButton(
-                label = getStringOverride(OverridesKeys.BUTTON_PROCEED),
+                label = getStringOverride(OverridesKeys.BUTTON_AUTHORIZE),
                 isEnabled = isEnabled,
                 onClick = onClick
             )

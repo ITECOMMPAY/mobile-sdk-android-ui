@@ -22,6 +22,8 @@ sealed interface MainViewIntents: ViewIntents {
     object Sale: MainViewIntents
     //Auth button
     object Auth: MainViewIntents
+    //Verify button
+    object Verify: MainViewIntents
     //Tokenize button
     object Tokenize: MainViewIntents
     object ThreeDSecure: MainViewIntents

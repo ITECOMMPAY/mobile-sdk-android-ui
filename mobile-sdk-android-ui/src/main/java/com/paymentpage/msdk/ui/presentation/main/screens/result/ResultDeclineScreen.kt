@@ -6,12 +6,12 @@ import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
-import com.paymentpage.msdk.ui.presentation.main.screens.result.views.decline.ResultDeclineSaleContent
+import com.paymentpage.msdk.ui.presentation.main.screens.result.views.decline.ResultDeclineContent
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.decline.ResultDeclineTokenizeContent
 
 @Composable
 internal fun ResultDeclineScreen(
-    actionType: SDKActionType? = null,
+    actionType: SDKActionType,
     onClose: (Payment) -> Unit,
     onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
@@ -24,7 +24,9 @@ internal fun ResultDeclineScreen(
 
     when (actionType) {
         SDKActionType.Sale,
-        SDKActionType.Auth -> ResultDeclineSaleContent(
+        SDKActionType.Auth,
+        SDKActionType.Verify -> ResultDeclineContent(
+            actionType = actionType,
             onClose = onClose,
             onCancel = onCancel,
             onError = onError,
@@ -33,7 +35,6 @@ internal fun ResultDeclineScreen(
             onClose = onClose,
             onError = onError
         )
-        else -> Unit
     }
 
 }

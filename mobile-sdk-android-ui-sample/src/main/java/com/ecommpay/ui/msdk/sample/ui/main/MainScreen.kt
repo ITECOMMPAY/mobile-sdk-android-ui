@@ -155,6 +155,8 @@ fun MainScreen(
         Spacer(Modifier.size(padding))
         AuthButton { intentListener(MainViewIntents.Auth) }
         Spacer(Modifier.size(padding))
+        VerifyButton { intentListener(MainViewIntents.Verify) }
+        Spacer(Modifier.size(padding))
         TokenizeButton { intentListener(MainViewIntents.Tokenize) }
     }
 }

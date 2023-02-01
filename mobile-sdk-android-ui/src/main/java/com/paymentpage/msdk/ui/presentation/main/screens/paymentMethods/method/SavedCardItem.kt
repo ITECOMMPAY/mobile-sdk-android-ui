@@ -25,7 +25,7 @@ import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
-import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
+import com.paymentpage.msdk.ui.views.button.CustomOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
 import com.paymentpage.msdk.ui.views.common.alertDialog.MessageAlertDialog
@@ -98,7 +98,8 @@ internal fun SavedCardItem(
                 )
             }
             Spacer(modifier = Modifier.size(22.dp))
-            PayOrConfirmButton(
+            CustomOrConfirmButton(
+                actionType = paymentOptions.actionType,
                 method = method,
                 customerFields = customerFields,
                 isValid = isCvvValid,

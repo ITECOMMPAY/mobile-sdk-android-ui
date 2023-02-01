@@ -6,7 +6,7 @@ import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
-import com.paymentpage.msdk.ui.presentation.main.screens.result.views.success.ResultSuccessSaleContent
+import com.paymentpage.msdk.ui.presentation.main.screens.result.views.success.ResultSuccessContent
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.success.ResultSuccessTokenizeContent
 
 @Composable
@@ -24,7 +24,9 @@ internal fun ResultSuccessScreen(
 
     when (actionType) {
         SDKActionType.Sale,
-        SDKActionType.Auth -> ResultSuccessSaleContent(
+        SDKActionType.Auth,
+        SDKActionType.Verify -> ResultSuccessContent(
+            actionType = actionType,
             onClose = onClose,
             onCancel = onCancel,
             onError = onError
@@ -33,7 +35,6 @@ internal fun ResultSuccessScreen(
             onClose = onClose,
             onError = onError
         )
-        else -> Unit
     }
 
 }
