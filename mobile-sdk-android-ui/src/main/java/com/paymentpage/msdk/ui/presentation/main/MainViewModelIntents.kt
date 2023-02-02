@@ -34,8 +34,7 @@ internal fun MainViewModel.payGoogle(
     merchantId: String,
     token: String,
     environment: GooglePayEnvironment,
-    recipientInfo: RecipientInfo? = null,
-    needSendCustomerFields: Boolean
+    recipientInfo: RecipientInfo? = null
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     val request = when (actionType) {
@@ -66,8 +65,7 @@ internal fun MainViewModel.payGoogle(
             )
         }
     }
-    if (needSendCustomerFields)
-        request.customerFields = method.customerFieldValues
+    request.customerFields = method.customerFieldValues
     this.payInteractor.sendRequest(request)
 }
 

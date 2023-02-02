@@ -30,7 +30,6 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.isAllCustomerFieldsHidden
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeHiddenFieldsToList
-import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.views.button.GooglePayButton
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
@@ -84,7 +83,6 @@ internal fun GooglePayItem(
                     token = it,
                     environment = paymentOptions.merchantEnvironment,
                     recipientInfo = paymentOptions.recipientInfo,
-                    needSendCustomerFields = customerFields.needSendWithSaleRequest()
                 )
             }
     }
