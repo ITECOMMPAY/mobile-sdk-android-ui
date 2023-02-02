@@ -9,6 +9,7 @@ internal class MainReducer(initial: MainScreenState) :
             is MainScreenUiEvent.ShowLoading -> setState(
                 oldState.copy(
                     customerFields = emptyList(),
+                    request = null,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
                     finalPaymentState = null,
@@ -21,6 +22,7 @@ internal class MainReducer(initial: MainScreenState) :
             is MainScreenUiEvent.ShowDeleteCardLoading -> setState(
                 oldState.copy(
                     customerFields = emptyList(),
+                    request = null,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
                     finalPaymentState = null,
@@ -33,6 +35,7 @@ internal class MainReducer(initial: MainScreenState) :
             is MainScreenUiEvent.ShowError -> setState(
                 oldState.copy(
                     customerFields = emptyList(),
+                    request = null,
                     isLoading = false,
                     threeDSecurePageState = null,
                     finalPaymentState = null,
@@ -46,6 +49,7 @@ internal class MainReducer(initial: MainScreenState) :
                 oldState.copy(
                     isLoading = event.customerFields.none { !it.isHidden },
                     customerFields = event.customerFields,
+                    request = event.request,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
                     finalPaymentState = null,
@@ -59,6 +63,7 @@ internal class MainReducer(initial: MainScreenState) :
                     isLoading = false,
                     customerFields = emptyList(),
                     clarificationFields = event.clarificationFields,
+                    request = null,
                     threeDSecurePageState = null,
                     finalPaymentState = null,
                     apsPageState = null,
@@ -70,6 +75,7 @@ internal class MainReducer(initial: MainScreenState) :
                 oldState.copy(
                     isLoading = false,
                     customerFields = emptyList(),
+                    request = null,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = ThreeDSecurePageState(
                         threeDSecurePage = event.threeDSecurePage,
@@ -85,6 +91,7 @@ internal class MainReducer(initial: MainScreenState) :
                 oldState.copy(
                     isLoading = false,
                     customerFields = emptyList(),
+                    request = null,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
                     finalPaymentState = FinalPaymentState.Success,
@@ -97,6 +104,7 @@ internal class MainReducer(initial: MainScreenState) :
                 oldState.copy(
                     isLoading = false,
                     customerFields = emptyList(),
+                    request = null,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
                     apsPageState = null,
@@ -112,6 +120,7 @@ internal class MainReducer(initial: MainScreenState) :
                 oldState.copy(
                     apsPageState = ApsPageState(apsMethod = event.apsMethod),
                     customerFields = emptyList(),
+                    request = null,
                     isTryAgain = null
                 )
             )
@@ -120,6 +129,7 @@ internal class MainReducer(initial: MainScreenState) :
                     isTryAgain = true,
                     isLoading = false,
                     customerFields = emptyList(),
+                    request = null,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
                     finalPaymentState = null,

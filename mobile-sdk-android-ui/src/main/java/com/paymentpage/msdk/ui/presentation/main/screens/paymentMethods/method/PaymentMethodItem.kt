@@ -19,14 +19,14 @@ internal fun PaymentMethodItem(
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
             )
         }
-        is UIPaymentMethod.UICardPayPaymentMethod -> {
-            NewCardItem(
+        is UIPaymentMethod.UITokenizeCardPayPaymentMethod -> {
+            TokenizeCardPayItem(
                 method = method,
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
             )
         }
-        is UIPaymentMethod.UITokenizeCardPayPaymentMethod -> {
-            TokenizeCardPayItem(
+        is UIPaymentMethod.UICardPayPaymentMethod -> {
+            NewCardItem(
                 method = method,
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
             )

@@ -20,7 +20,6 @@ import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.presentation.main.restoreAps
 import com.paymentpage.msdk.ui.presentation.main.restorePayment
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -37,6 +36,20 @@ internal fun InitScreen(
     onError: (ErrorResult, Boolean) -> Unit
 ) {
     BackHandler(true) { onCancel() }
+
+    setupStateListener(actionType = actionType, navigator = navigator, onError = onError)
+    Content(
+        actionType = actionType,
+        onCancel = onCancel
+    )
+}
+
+@Composable
+private fun setupStateListener(
+    actionType: SDKActionType,
+    navigator: Navigator,
+    onError: (ErrorResult, Boolean) -> Unit,
+) {
     val initViewModel = LocalInitViewModel.current
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
@@ -44,22 +57,12 @@ internal fun InitScreen(
     val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
 
     if (paymentMethods.isNotEmpty())
-        when (actionType) {
-            SDKActionType.Sale -> paymentMethodsViewModel.setPaymentMethods(
-                paymentMethods.mergeUIPaymentMethods(savedAccounts)
+        paymentMethodsViewModel.setPaymentMethods(
+            paymentMethods.mergeUIPaymentMethods(
+                actionType = actionType,
+                savedAccounts = savedAccounts
             )
-            SDKActionType.Tokenize ->
-                paymentMethodsViewModel.setPaymentMethods(
-                    listOf(
-                        UIPaymentMethod.UITokenizeCardPayPaymentMethod(
-                            paymentMethod = paymentMethods.first { paymentMethod ->
-                                paymentMethod.paymentMethodType == PaymentMethodType.CARD
-                            }
-                        )
-                    )
-                )
-            else -> Unit
-        }
+        )
 
     LaunchedEffect(Unit) {
         initViewModel.loadInit()
@@ -67,7 +70,8 @@ internal fun InitScreen(
             when {
                 it.error != null -> onError(it.error, true)
                 it.isInitLoaded -> when (PaymentActivity.paymentOptions.actionType) {
-                    SDKActionType.Sale -> navigator.navigateTo(Route.Main)
+                    SDKActionType.Sale,
+                    SDKActionType.Auth -> navigator.navigateTo(Route.Main)
                     SDKActionType.Tokenize -> navigator.navigateTo(Route.Tokenize)
                     else -> navigator.navigateTo(Route.Main)
                 }
@@ -102,10 +106,6 @@ internal fun InitScreen(
             }
         }.collect()
     }
-    Content(
-        actionType = actionType,
-        onCancel = onCancel
-    )
 }
 
 
@@ -118,6 +118,7 @@ private fun Content(
         title = when (actionType) {
             SDKActionType.Sale -> stringResource(R.string.sale_label)
             SDKActionType.Tokenize -> stringResource(R.string.tokenize_label)
+            SDKActionType.Verify -> stringResource(R.string.verify_label)
             else -> stringResource(R.string.sale_label)
         },
         notScrollableContent = {

@@ -13,20 +13,16 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
-import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
-import com.paymentpage.msdk.ui.presentation.main.saleCard
+import com.paymentpage.msdk.ui.presentation.main.payNewCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
-import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
-import com.paymentpage.msdk.ui.views.button.PayOrConfirmButton
+import com.paymentpage.msdk.ui.views.button.CustomOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
@@ -42,7 +38,8 @@ internal fun NewCardItem(
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
-    val additionalFields = LocalPaymentOptions.current.additionalFields
+    val paymentOptions = LocalPaymentOptions.current
+    val additionalFields = paymentOptions.additionalFields
     val savedState = remember { mutableStateOf(method.saveCard) }
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
@@ -154,16 +151,19 @@ internal fun NewCardItem(
                 }
             }
             Spacer(modifier = Modifier.size(15.dp))
-            PayOrConfirmButton(
+            CustomOrConfirmButton(
+                actionType = paymentOptions.actionType,
                 method = method,
                 customerFields = customerFields,
                 isValid = isCvvValid && isPanValid && isCardHolderValid && isExpiryValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
                     paymentMethodsViewModel.setCurrentMethod(method)
-                    mainViewModel.saleCard(
+                    mainViewModel.payNewCard(
+                        actionType = paymentOptions.actionType,
                         method = method,
-                        needSendCustomerFields = customerFields.needSendWithSaleRequest()
+                        recipientInfo = paymentOptions.recipientInfo,
+                        customerFields = customerFields
                     )
                 }
             )

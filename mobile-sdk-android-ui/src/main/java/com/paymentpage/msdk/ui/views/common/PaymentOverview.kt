@@ -25,27 +25,50 @@ import com.paymentpage.msdk.ui.views.button.SDKButton
 
 @Composable
 internal fun PaymentOverview(
+    showPaymentId: Boolean = true,
     showPaymentDetailsButton: Boolean = true
 ) {
+    val paymentOptions = LocalPaymentOptions.current
     var expandPaymentDetailsState by remember { mutableStateOf(false) }
+
+    val paymentIdLabel = getStringOverride(OverridesKeys.TITLE_PAYMENT_ID)
+    val paymentIdValue = LocalPaymentOptions.current.paymentInfo.paymentId
+
+    val paymentDescriptionValue = LocalPaymentOptions.current.paymentInfo.paymentDescription
+
+    val merchantAddressValue = null
+
     ExpandablePaymentOverview(
-        showPaymentDetailsButton = showPaymentDetailsButton,
+        actionType = paymentOptions.actionType,
+        paymentIdLabel = paymentIdLabel,
+        paymentIdValue = paymentIdValue,
+        showPaymentDetailsButton = (
+                paymentOptions.actionType != SDKActionType.Verify ||
+                        paymentDescriptionValue != null ||
+                        merchantAddressValue != null
+                ) && showPaymentDetailsButton,
+        showPaymentId = showPaymentId,
         isExpanded = expandPaymentDetailsState,
         onExpand = { expandPaymentDetailsState = !expandPaymentDetailsState }
     ) {
         PaymentDetailsContent(
-            paymentIdLabel = getStringOverride(OverridesKeys.TITLE_PAYMENT_ID),
-            paymentIdValue = LocalPaymentOptions.current.paymentInfo.paymentId,
+            actionType = paymentOptions.actionType,
+            paymentIdLabel = paymentIdLabel,
+            paymentIdValue = paymentIdValue,
             paymentDescriptionLabel = getStringOverride(OverridesKeys.TITLE_PAYMENT_INFORMATION_DESCRIPTION),
-            paymentDescriptionValue = LocalPaymentOptions.current.paymentInfo.paymentDescription,
+            paymentDescriptionValue = paymentDescriptionValue,
             merchantAddressLabel = "",
-            merchantAddressValue = null
+            merchantAddressValue = merchantAddressValue
         )
     }
 }
 
 @Composable
 internal fun ExpandablePaymentOverview(
+    actionType: SDKActionType,
+    paymentIdLabel: String,
+    paymentIdValue: String? = null,
+    showPaymentId: Boolean = true,
     showPaymentDetailsButton: Boolean = true,
     isExpanded: Boolean = false,
     onExpand: () -> Unit,
@@ -58,8 +81,8 @@ internal fun ExpandablePaymentOverview(
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
 
     val gradient = arrayOf(
-        0.0f to Color(0xFF0D5189),
-        1f to Color(0xFF2582CE),
+        0.0f to SDKTheme.colors.brand.copy(alpha = 0.95f),
+        1f to SDKTheme.colors.brand.copy(alpha = 0.80f),
     )
     Box(
         modifier = Modifier
@@ -84,40 +107,58 @@ internal fun ExpandablePaymentOverview(
                     contentScale = ContentScale.Fit,
                     modifier = Modifier.height(35.dp)
                 )
-                Spacer(modifier = Modifier.size(20.dp))
+                if (showPaymentId)
+                    Spacer(modifier = Modifier.size(20.dp))
             }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
-                    style = SDKTheme.typography.s28Bold.copy(color = Color.White)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = LocalPaymentOptions.current.paymentInfo.paymentCurrency,
-                    style = SDKTheme.typography.s16Normal.copy(color = Color.White)
-                )
-            }
-            Spacer(modifier = Modifier.size(6.dp))
-            Row {
-                Text(
-                    text = getStringOverride(OverridesKeys.TITLE_TOTAL_PRICE),
-                    style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
-                )
-                Text(text = " ")
-                if (currentMethod?.paymentMethod?.isVatInfo == true
-                    || paymentMethods.firstOrNull {
-                        if (payment != null)
-                            payment.method == it.code
-                        else false
-                    }?.isVatInfo == true
-                )
+            if (actionType != SDKActionType.Verify) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = getStringOverride(OverridesKeys.VAT_INCLUDED),
-                        style = SDKTheme.typography.s14Light.copy(color = Color.White),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        text = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
+                        style = SDKTheme.typography.s28Bold.copy(color = Color.White)
                     )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = LocalPaymentOptions.current.paymentInfo.paymentCurrency,
+                        style = SDKTheme.typography.s16Normal.copy(color = Color.White)
+                    )
+                }
+                Spacer(modifier = Modifier.size(6.dp))
+                Row {
+                    Text(
+                        text = getStringOverride(OverridesKeys.TITLE_TOTAL_PRICE),
+                        style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
+                    )
+                    Text(text = " ")
+                    if (currentMethod?.paymentMethod?.isVatInfo == true
+                        || paymentMethods.firstOrNull {
+                            if (payment != null)
+                                payment.method == it.code
+                            else false
+                        }?.isVatInfo == true
+                    )
+                        Text(
+                            text = getStringOverride(OverridesKeys.VAT_INCLUDED),
+                            style = SDKTheme.typography.s14Light.copy(color = Color.White),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                }
+            } else {
+                //Payment ID
+                if (paymentIdValue != null && showPaymentId)
+                    Column {
+                        Text(
+                            text = paymentIdLabel,
+                            style = SDKTheme.typography.s12Light.copy(color = Color.White.copy(alpha = 0.6f))
+                        )
+                        Spacer(modifier = Modifier.size(6.dp))
+                        Text(
+                            text = paymentIdValue,
+                            style = SDKTheme.typography.s14Bold.copy(color = Color.White)
+                        )
+                    }
             }
+
             if (showPaymentDetailsButton) {
                 Spacer(modifier = Modifier.size(20.dp))
                 if (isExpanded) {

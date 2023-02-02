@@ -12,6 +12,7 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
     SDKPaymentOptions(
         paymentInfo = paymentInfo,
         recurrentInfo = recurrentData,
+        recipientInfo = recipientInfo,
         actionType = SDKActionType.valueOf(actionType.name),
 
         logoImage = logoImage,

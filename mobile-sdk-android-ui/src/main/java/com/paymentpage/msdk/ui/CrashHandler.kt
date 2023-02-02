@@ -41,7 +41,6 @@ internal class CrashHandler(
                         device = Build.DEVICE,
                         model = Build.MODEL,
                         manufacturer = Build.MANUFACTURER,
-                        versionCode = "mSDK_Android_UI",
                         exceptionName = ex::class.java.simpleName,
                         exceptionDescription = stackTrace,
                         projectId = projectId,

@@ -13,12 +13,11 @@ import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.base.Constants
+import com.paymentpage.msdk.ui.presentation.main.payNewCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.presentation.main.tokenizeCard
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
-import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.button.SaveButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
@@ -33,6 +32,7 @@ internal fun TokenizeCardPayItem(
 ) {
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val paymentOptions = LocalPaymentOptions.current
     val tokenizeCustomerFields = remember {
         method.paymentMethod.customerFields.filter { it.isTokenize }
     }
@@ -105,9 +105,10 @@ internal fun TokenizeCardPayItem(
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
                     paymentMethodsViewModel.setCurrentMethod(method)
-                    mainViewModel.tokenizeCard(
+                    mainViewModel.payNewCard(
+                        actionType = paymentOptions.actionType,
                         method = method,
-                        needSendCustomerFields = tokenizeCustomerFields.needSendWithSaleRequest()
+                        customerFields = tokenizeCustomerFields
                     )
                 }
             )

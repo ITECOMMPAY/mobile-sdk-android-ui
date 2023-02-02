@@ -45,7 +45,8 @@ class SampleActivity : ComponentActivity() {
     fun startPaymentPage() {
         val repositoryPaymentData = ProcessRepository.paymentData
         val additionalFieldsToSend = ProcessRepository.additionalFields
-        val recurrentDataToSend = ProcessRepository.recurrentData.map()
+        val recurrentDataToSend = ProcessRepository.recurrentData?.map()
+        val recipientDataToSend = ProcessRepository.recipientData?.map()
         val threeDSecureInfoToSend = ProcessRepository.commonJson?.threeDSecureInfo?.map()
         val ecmpPaymentInfo = PaymentInfo(
             forcePaymentMethod = repositoryPaymentData.forcePaymentMethod,
@@ -72,6 +73,7 @@ class SampleActivity : ComponentActivity() {
             merchantId = repositoryPaymentData.merchantId
             merchantName = repositoryPaymentData.merchantName
             recurrentData = recurrentDataToSend
+            recipientInfo = recipientDataToSend
             additionalFields {
                 additionalFieldsToSend.map {
                     field {

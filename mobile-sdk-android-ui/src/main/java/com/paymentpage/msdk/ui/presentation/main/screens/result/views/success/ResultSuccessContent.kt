@@ -14,13 +14,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
-import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultTableInfo
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.animation.VerticalSlideFadeAnimation
@@ -33,10 +33,11 @@ import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import kotlinx.coroutines.delay
 
 @Composable
-internal fun ResultSuccessSaleContent(
+internal fun ResultSuccessContent(
+    actionType: SDKActionType,
     onClose: (Payment) -> Unit,
     onCancel: () -> Unit,
-    onError: (ErrorResult, Boolean) -> Unit
+    onError: (ErrorResult, Boolean) -> Unit,
 ) {
     val viewModel = LocalMainViewModel.current
     val payment =
@@ -113,24 +114,32 @@ internal fun ResultSuccessSaleContent(
                     ) {
                         Spacer(modifier = Modifier.size(15.dp))
                         Text(
-                            text = getStringOverride(OverridesKeys.TITLE_RESULT_SUCCES_PAYMENT),
+                            text = if (actionType == SDKActionType.Verify)
+                                getStringOverride(OverridesKeys.TITLE_RESULT_SUCCES_VERIFICATION)
+                            else
+                                getStringOverride(OverridesKeys.TITLE_RESULT_SUCCES_PAYMENT),
                             style = SDKTheme.typography.s24Bold,
                             textAlign = TextAlign.Center
                         )
                     }
                 }
 
-                VerticalSlideFadeAnimation(
-                    visibleState = visibleState,
-                    delay = 1000,
-                    duration = 500,
-                    initialOffsetYRatio = 0.3f
-                ) {
-                    Column {
-                        Spacer(modifier = Modifier.size(15.dp))
-                        PaymentOverview(showPaymentDetailsButton = false)
+                //remove payment overview block if logo does not exist when verify
+                if (actionType != SDKActionType.Verify || LocalPaymentOptions.current.logoImage != null)
+                    VerticalSlideFadeAnimation(
+                        visibleState = visibleState,
+                        delay = 1000,
+                        duration = 500,
+                        initialOffsetYRatio = 0.3f
+                    ) {
+                        Column {
+                            Spacer(modifier = Modifier.size(15.dp))
+                            PaymentOverview(
+                                showPaymentId = false,
+                                showPaymentDetailsButton = false
+                            )
+                        }
                     }
-                }
 
                 VerticalSlideFadeAnimation(
                     visibleState = visibleState,

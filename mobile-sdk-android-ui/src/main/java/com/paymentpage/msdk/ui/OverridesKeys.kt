@@ -17,6 +17,8 @@ internal object OverridesKeys {
     internal const val BUTTON_CLOSE = "button_close"
     internal const val BUTTON_HIDE_DETAILS = "button_hide_details"
     internal const val BUTTON_TRY_AGAIN = "button_try_again"
+    //Verify
+    internal const val BUTTON_AUTHORIZE = "button_authorize"
 
     //Loading screen
     internal const val TITLE_LOADING_SCREEN = "title_loading_screen"
@@ -32,6 +34,9 @@ internal object OverridesKeys {
     internal const val TITLE_RESULT_SUCCES_PAYMENT = "title_result_succes_payment"
     internal const val TITLE_CARD_WALLET = "title_card_wallet"
     internal const val TITLE_PAYMENT_DATE = "title_payment_date"
+    //Verify
+    internal const val TITLE_RESULT_SUCCES_VERIFICATION = "title_result_succes_verification"
+    internal const val TITLE_RESULT_ERROR_VERIFICATION = "title_result_error_verification"
 
     //Add new card
     internal const val BUTTON_ADD_NEW_CARD = "button_add_new_card"
