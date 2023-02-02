@@ -71,7 +71,7 @@ internal class MainViewModelTest {
         mainViewModel.payNewCard(
             actionType = SDKActionType.Sale,
             method = method,
-            needSendCustomerFields = false
+            customerFields = customerFields
         )
         val actualCustomerFields = mainViewModel.state.value.customerFields
 
@@ -96,7 +96,6 @@ internal class MainViewModelTest {
         mainViewModel.payNewCard(
             actionType = SDKActionType.Sale,
             method = method,
-            needSendCustomerFields = false
         )
 
         //THEN
@@ -123,7 +122,6 @@ internal class MainViewModelTest {
         mainViewModel.payNewCard(
             actionType = SDKActionType.Sale,
             method = method,
-            needSendCustomerFields = false
         )
 
         //THEN
@@ -150,7 +148,6 @@ internal class MainViewModelTest {
         mainViewModel.payNewCard(
             actionType = SDKActionType.Sale,
             method = method,
-            needSendCustomerFields = false
         )
 
         //THEN
@@ -180,7 +177,6 @@ internal class MainViewModelTest {
         mainViewModel.payNewCard(
             actionType = SDKActionType.Sale,
             method = method,
-            needSendCustomerFields = false
         )
         mainViewModel.sendEvent(MainScreenUiEvent.TryAgain)
 
@@ -297,7 +293,6 @@ internal class MainViewModelTest {
         mainViewModel.payNewCard(
             actionType = SDKActionType.Sale,
             method = method,
-            needSendCustomerFields = true
         )
 
         //THEN

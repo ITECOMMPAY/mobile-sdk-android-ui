@@ -18,7 +18,6 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.e
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
-import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.button.SaveButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
@@ -109,7 +108,7 @@ internal fun TokenizeCardPayItem(
                     mainViewModel.payNewCard(
                         actionType = paymentOptions.actionType,
                         method = method,
-                        needSendCustomerFields = tokenizeCustomerFields.needSendWithSaleRequest()
+                        customerFields = tokenizeCustomerFields
                     )
                 }
             )

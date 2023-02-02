@@ -5,6 +5,7 @@ import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFiel
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePage
+import com.paymentpage.msdk.core.domain.interactors.pay.PayRequest
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.base.mvi.UiEvent
 import com.paymentpage.msdk.ui.base.mvi.UiState
@@ -14,8 +15,10 @@ internal sealed interface MainScreenUiEvent : UiEvent {
     object ShowLoading : MainScreenUiEvent
     class ShowDeleteCardLoading(val isLoading: Boolean?) : MainScreenUiEvent
     class ShowError(val error: ErrorResult) : MainScreenUiEvent
-    class ShowCustomerFields(val customerFields: List<CustomerField>) :
-        MainScreenUiEvent
+    class ShowCustomerFields(
+        val customerFields: List<CustomerField>,
+        val request: PayRequest? = null
+    ) : MainScreenUiEvent
     object TryAgain : MainScreenUiEvent
     class ShowClarificationFields(val clarificationFields: List<ClarificationField>) :
         MainScreenUiEvent
@@ -36,6 +39,7 @@ internal data class MainScreenState(
     val isDeleteCardLoading: Boolean? = null,
     val isTryAgain: Boolean? = null,
     val customerFields: List<CustomerField> = emptyList(),
+    val request: PayRequest? = null,
     val clarificationFields: List<ClarificationField> = emptyList(),
     val threeDSecurePageState: ThreeDSecurePageState? = null,
     val apsPageState: ApsPageState? = null,
