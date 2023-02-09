@@ -5,11 +5,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 
 @Composable
 internal fun PaymentMethodItem(
     method: UIPaymentMethod,
+    actionType: SDKActionType,
     isOnlyOneMethodOnScreen: Boolean = false,
 ) {
     when (method) {
@@ -28,6 +30,7 @@ internal fun PaymentMethodItem(
         is UIPaymentMethod.UICardPayPaymentMethod -> {
             NewCardItem(
                 method = method,
+                actionType = actionType,
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
             )
         }

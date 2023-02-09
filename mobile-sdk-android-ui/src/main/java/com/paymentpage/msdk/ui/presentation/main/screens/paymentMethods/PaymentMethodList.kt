@@ -14,11 +14,15 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalMsdkSession
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
+import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.PaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 
 @Composable
-internal fun PaymentMethodList(uiPaymentMethods: List<UIPaymentMethod>) {
+internal fun PaymentMethodList(
+    actionType: SDKActionType,
+    uiPaymentMethods: List<UIPaymentMethod>
+) {
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
 
@@ -51,6 +55,7 @@ internal fun PaymentMethodList(uiPaymentMethods: List<UIPaymentMethod>) {
         filteredUIPaymentMethods.forEach { uiPaymentMethod ->
             PaymentMethodItem(
                 method = if (lastSelectedMethod?.index == uiPaymentMethod.index) lastSelectedMethod else uiPaymentMethod,
+                actionType = actionType,
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
             )
             Spacer(modifier = Modifier.size(10.dp))
