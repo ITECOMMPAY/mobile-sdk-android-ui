@@ -28,7 +28,6 @@ import kotlinx.coroutines.flow.onEach
 
 
 @OptIn(ExperimentalAnimationApi::class)
-@Suppress("UNUSED_PARAMETER")
 @Composable
 internal fun MainScreen(
     startRoute: Route,
@@ -36,13 +35,12 @@ internal fun MainScreen(
     mainScreenNavigator: Navigator,
     delegate: PaymentDelegate,
     onError: (ErrorResult, Boolean) -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
 ) {
     val lastRoute = mainScreenNavigator.lastRoute
 
     val navController = rememberAnimatedNavController()
     val focusManager = LocalFocusManager.current
-
 
     LaunchedEffect("mainScreenNavigation") {
         mainScreenNavigator.sharedFlow.onEach {
@@ -51,7 +49,11 @@ internal fun MainScreen(
         }.launchIn(this)
     }
 
-    setupStateListener(mainScreenNavigator = mainScreenNavigator, onError = onError)
+    setupStateListener(
+        mainScreenNavigator = mainScreenNavigator,
+        delegate = delegate,
+        onError = onError
+    )
 
     AnimatedNavHost(
         navController = navController,
@@ -124,6 +126,7 @@ internal fun MainScreen(
 @Composable
 private fun setupStateListener(
     mainScreenNavigator: Navigator,
+    delegate: PaymentDelegate,
     onError: (ErrorResult, Boolean) -> Unit,
 ) {
     val mainViewModel = LocalMainViewModel.current
@@ -145,9 +148,26 @@ private fun setupStateListener(
                     mainScreenNavigator.navigateTo(Route.PaymentMethods)
                 }
                 it.finalPaymentState != null -> {
+                    val payment =
+                        mainViewModel.payment
+                            ?: throw IllegalStateException("Not found payment in State")
+                    val screenDisplayModes = paymentOptions.screenDisplayModes
                     when (it.finalPaymentState) {
-                        is FinalPaymentState.Success -> mainScreenNavigator.navigateTo(Route.SuccessResult)
-                        is FinalPaymentState.Decline -> mainScreenNavigator.navigateTo(Route.DeclineResult)
+                        is FinalPaymentState.Success -> {
+                            if (screenDisplayModes.contains(SDKScreenDisplayMode.HIDE_SUCCESS_FINAL_SCREEN))
+                                delegate.onCompleteWithSuccess(payment)
+                            else
+                                mainScreenNavigator.navigateTo(Route.SuccessResult)
+                        }
+                        is FinalPaymentState.Decline -> {
+                            //when try again we should not hide decline resulting screen
+                            if (screenDisplayModes.contains(SDKScreenDisplayMode.HIDE_DECLINE_FINAL_SCREEN) &&
+                                !it.finalPaymentState.isTryAgain
+                            )
+                                delegate.onCompleteWithDecline(payment)
+                            else
+                                mainScreenNavigator.navigateTo(Route.DeclineResult)
+                        }
                     }
                 }
                 it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)

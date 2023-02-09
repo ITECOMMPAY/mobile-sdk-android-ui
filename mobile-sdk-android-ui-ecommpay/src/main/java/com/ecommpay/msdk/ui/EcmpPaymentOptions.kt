@@ -37,4 +37,12 @@ class EcmpPaymentOptions {
     fun additionalFields(block: EcmpAdditionalFields.() -> Unit) {
         _additionalFields.addAll(EcmpAdditionalFields().apply(block))
     }
+
+    private val _screenDisplayModes = mutableListOf<EcmpScreenDisplayMode>()
+    val screenDisplayModes: List<EcmpScreenDisplayMode>
+        get() = _screenDisplayModes.toList()
+
+    fun screenDisplayModes(block: EcmpScreenDisplayModes.() -> Unit) {
+        _screenDisplayModes.addAll(EcmpScreenDisplayModes().apply(block))
+    }
 }

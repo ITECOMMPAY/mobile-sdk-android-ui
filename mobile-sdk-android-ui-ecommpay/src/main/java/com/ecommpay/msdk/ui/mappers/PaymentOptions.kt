@@ -2,11 +2,9 @@ package com.ecommpay.msdk.ui.mappers
 
 import com.ecommpay.msdk.ui.EcmpAdditionalFieldType
 import com.ecommpay.msdk.ui.EcmpPaymentOptions
+import com.ecommpay.msdk.ui.EcmpScreenDisplayMode
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
-import com.paymentpage.msdk.ui.SDKActionType
-import com.paymentpage.msdk.ui.SDKAdditionalField
-import com.paymentpage.msdk.ui.SDKAdditionalFieldType
-import com.paymentpage.msdk.ui.SDKPaymentOptions
+import com.paymentpage.msdk.ui.*
 
 internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
     SDKPaymentOptions(
@@ -14,7 +12,7 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
         recurrentInfo = recurrentData,
         recipientInfo = recipientInfo,
         actionType = SDKActionType.valueOf(actionType.name),
-
+        screenDisplayModes = screenDisplayModes.map(),
         logoImage = logoImage,
         brandColor = brandColor,
 
@@ -32,3 +30,9 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
 
 internal fun EcmpAdditionalFieldType.map(): SDKAdditionalFieldType? =
     SDKAdditionalFieldType.values().find { it.value == value }
+
+internal fun EcmpScreenDisplayMode.map(): SDKScreenDisplayMode? =
+    SDKScreenDisplayMode.values().find { it.name == name }
+
+internal fun List<EcmpScreenDisplayMode>.map(): List<SDKScreenDisplayMode> =
+    mapNotNull { it.map() }

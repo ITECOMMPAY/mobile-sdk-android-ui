@@ -20,18 +20,17 @@ internal fun SelectMockMode(
     intentListener: (MainViewIntents) -> Unit,
 ) {
     EcmpPaymentSDK.EcmpMockModeType.values()
-        .forEachIndexed { index, mockModeType ->
+        .forEach { mockModeType ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
-                    selected = index == viewState.selectedMockModeTypeId,
+                    selected = mockModeType == viewState.selectedMockModeType,
                     onClick = {
                         intentListener(
                             MainViewIntents.SelectMockMode(
-                                id = index,
-                                paymentData = viewState.paymentData.copy(mockModeType = mockModeType)
+                                mockModeType = mockModeType
                             )
                         )
                     }
@@ -47,8 +46,7 @@ internal fun SelectMockMode(
         onClick = {
             intentListener(
                 MainViewIntents.SelectMockMode(
-                    id = 0,
-                    paymentData = viewState.paymentData.copy(mockModeType = EcmpPaymentSDK.EcmpMockModeType.DISABLED)
+                    mockModeType = EcmpPaymentSDK.EcmpMockModeType.DISABLED
                 )
             )
         }) {

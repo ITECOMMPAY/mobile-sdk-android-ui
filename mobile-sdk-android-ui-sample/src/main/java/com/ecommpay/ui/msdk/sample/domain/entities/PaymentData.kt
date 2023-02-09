@@ -1,8 +1,6 @@
 package com.ecommpay.ui.msdk.sample.domain.entities
 
 import android.graphics.Bitmap
-import com.ecommpay.msdk.ui.EcmpActionType
-import com.ecommpay.msdk.ui.EcmpPaymentSDK
 import com.ecommpay.ui.msdk.sample.BuildConfig
 import java.util.*
 
@@ -24,6 +22,4 @@ data class PaymentData(
     val wsApiHost: String = BuildConfig.WS_API_HOST,
     val merchantId: String = "BCR2DN6TZ75OBLTH",
     val merchantName: String = "Example Merchant",
-    val mockModeType: EcmpPaymentSDK.EcmpMockModeType = EcmpPaymentSDK.EcmpMockModeType.DISABLED,
-    val actionType: EcmpActionType = EcmpActionType.Sale
 )
