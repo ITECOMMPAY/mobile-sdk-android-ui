@@ -44,7 +44,10 @@ class SampleActivity : ComponentActivity() {
 
     fun startPaymentPage() {
         val repositoryPaymentData = ProcessRepository.paymentData
+        val mockModeType = ProcessRepository.mockModeType
+        val startActionType = ProcessRepository.actionType
         val additionalFieldsToSend = ProcessRepository.additionalFields
+        val screenDisplayModesToSend = ProcessRepository.screenDisplayModes
         val recurrentDataToSend = ProcessRepository.recurrentData?.map()
         val recipientDataToSend = ProcessRepository.recipientData?.map()
         val threeDSecureInfoToSend = ProcessRepository.commonJson?.threeDSecureInfo?.map()
@@ -67,13 +70,18 @@ class SampleActivity : ComponentActivity() {
             )
         val paymentOptions = paymentOptions {
             paymentInfo = ecmpPaymentInfo
-            actionType = repositoryPaymentData.actionType
+            actionType = startActionType
             logoImage = repositoryPaymentData.bitmap
             brandColor = repositoryPaymentData.brandColor
             merchantId = repositoryPaymentData.merchantId
             merchantName = repositoryPaymentData.merchantName
             recurrentData = recurrentDataToSend
             recipientInfo = recipientDataToSend
+            screenDisplayModes {
+                screenDisplayModesToSend.forEach {
+                    mode(it)
+                }
+            }
             additionalFields {
                 additionalFieldsToSend.map {
                     field {
@@ -87,7 +95,7 @@ class SampleActivity : ComponentActivity() {
         val sdk = EcmpPaymentSDK(
             context = this.applicationContext,
             paymentOptions = paymentOptions,
-            mockModeType = repositoryPaymentData.mockModeType,
+            mockModeType = mockModeType,
         )
 
         if (BuildConfig.DEBUG) {

@@ -52,7 +52,10 @@ internal fun PaymentMethodsScreen(
         scrollableContent = {
             PaymentOverview()
             Spacer(modifier = Modifier.size(16.dp))
-            PaymentMethodList(uiPaymentMethods = filteredUIPaymentMethods)
+            PaymentMethodList(
+                actionType = actionType,
+                uiPaymentMethods = filteredUIPaymentMethods
+            )
             Spacer(modifier = Modifier.size(6.dp))
             SDKFooter()
             Spacer(modifier = Modifier.size(25.dp))

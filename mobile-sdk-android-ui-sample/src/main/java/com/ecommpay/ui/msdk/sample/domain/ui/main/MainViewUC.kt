@@ -2,6 +2,7 @@ package com.ecommpay.ui.msdk.sample.domain.ui.main
 
 
 import com.ecommpay.msdk.ui.EcmpActionType
+import com.ecommpay.msdk.ui.EcmpScreenDisplayMode
 import com.ecommpay.ui.msdk.sample.data.ProcessRepository
 import com.ecommpay.ui.msdk.sample.domain.ui.base.BaseViewUC
 import com.ecommpay.ui.msdk.sample.domain.ui.navigation.MainHostScreens
@@ -64,11 +65,37 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                 )
             }
             is MainViewIntents.SelectMockMode -> {
-                ProcessRepository.paymentData = viewIntent.paymentData
+                ProcessRepository.mockModeType = viewIntent.mockModeType
                 updateState(
                     viewState.value.copy(
-                        selectedMockModeTypeId = viewIntent.id,
-                        paymentData = ProcessRepository.paymentData
+                        selectedMockModeType = ProcessRepository.mockModeType
+                    )
+                )
+            }
+            //custom screen display mode
+            is MainViewIntents.ChangeScreenDisplayModeCheckbox -> {
+                updateState(
+                    viewState.value.copy(
+                        isVisibleScreenDisplayMode = !(viewState.value.isVisibleScreenDisplayMode)
+                    )
+                )
+            }
+            is MainViewIntents.SelectScreenDisplayMode -> {
+                var changedList = viewState.value.selectedScreenDisplayModes.toMutableList()
+                if (viewState.value.selectedScreenDisplayModes.contains(viewIntent.screenDisplayMode) &&
+                    viewState.value.selectedScreenDisplayModes.size != 1
+                )
+                    changedList.remove(viewIntent.screenDisplayMode)
+                else if (viewIntent.screenDisplayMode == EcmpScreenDisplayMode.DEFAULT)
+                    changedList = mutableListOf(EcmpScreenDisplayMode.DEFAULT)
+                else if (!viewState.value.selectedScreenDisplayModes.contains(EcmpScreenDisplayMode.DEFAULT))
+                    changedList.add(viewIntent.screenDisplayMode)
+                else
+                    changedList = mutableListOf(viewIntent.screenDisplayMode)
+                ProcessRepository.screenDisplayModes = changedList
+                updateState(
+                    viewState.value.copy(
+                        selectedScreenDisplayModes = changedList.toList(),
                     )
                 )
             }
@@ -89,26 +116,22 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
             }
             //Sale
             is MainViewIntents.Sale -> {
-                ProcessRepository.paymentData =
-                    ProcessRepository.paymentData.copy(actionType = EcmpActionType.Sale)
+                ProcessRepository.actionType = EcmpActionType.Sale
                 pushExternalIntent(SampleViewIntents.StartPaymentSDK)
             }
             //Auth
             is MainViewIntents.Auth -> {
-                ProcessRepository.paymentData =
-                    ProcessRepository.paymentData.copy(actionType = EcmpActionType.Auth)
+                ProcessRepository.actionType = EcmpActionType.Auth
                 pushExternalIntent(SampleViewIntents.StartPaymentSDK)
             }
             //Verify
             is MainViewIntents.Verify -> {
-                ProcessRepository.paymentData =
-                    ProcessRepository.paymentData.copy(actionType = EcmpActionType.Verify)
+                ProcessRepository.actionType = EcmpActionType.Verify
                 pushExternalIntent(SampleViewIntents.StartPaymentSDK)
             }
             //Tokenize
             is MainViewIntents.Tokenize -> {
-                ProcessRepository.paymentData =
-                    ProcessRepository.paymentData.copy(actionType = EcmpActionType.Tokenize)
+                ProcessRepository.actionType = EcmpActionType.Tokenize
                 pushExternalIntent(SampleViewIntents.StartPaymentSDK)
             }
             is MainViewIntents.ThreeDSecure -> {

@@ -26,6 +26,8 @@ import com.ecommpay.ui.msdk.sample.ui.main.views.googlePay.GooglePayCheckbox
 import com.ecommpay.ui.msdk.sample.ui.main.views.googlePay.GooglePayFields
 import com.ecommpay.ui.msdk.sample.ui.main.views.mockMode.MockModeCheckbox
 import com.ecommpay.ui.msdk.sample.ui.main.views.mockMode.SelectMockMode
+import com.ecommpay.ui.msdk.sample.ui.main.views.screenDisplayMode.ScreenDisplayModeCheckbox
+import com.ecommpay.ui.msdk.sample.ui.main.views.screenDisplayMode.SelectScreenDisplayMode
 
 @Composable
 internal fun MainState(
@@ -146,6 +148,24 @@ fun MainScreen(
                 content = {
                     Spacer(modifier = Modifier.size(10.dp))
                     SelectMockMode(viewState, intentListener)
+                    Spacer(modifier = Modifier.size(10.dp))
+                }
+            )
+        }
+        Spacer(Modifier.size(padding))
+        ScreenDisplayModeCheckbox(isChecked = viewState.isVisibleScreenDisplayMode) {
+            intentListener(MainViewIntents.ChangeScreenDisplayModeCheckbox)
+        }
+        if (viewState.isVisibleScreenDisplayMode) {
+            Spacer(Modifier.size(10.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(width = 1.dp, color = Color.LightGray)
+                    .padding(horizontal = 10.dp),
+                content = {
+                    Spacer(modifier = Modifier.size(10.dp))
+                    SelectScreenDisplayMode(viewState, intentListener)
                     Spacer(modifier = Modifier.size(10.dp))
                 }
             )

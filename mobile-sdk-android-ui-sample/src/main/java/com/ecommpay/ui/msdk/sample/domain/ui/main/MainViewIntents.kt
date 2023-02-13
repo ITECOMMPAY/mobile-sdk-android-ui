@@ -1,6 +1,8 @@
 package com.ecommpay.ui.msdk.sample.domain.ui.main
 
 import android.net.Uri
+import com.ecommpay.msdk.ui.EcmpPaymentSDK
+import com.ecommpay.msdk.ui.EcmpScreenDisplayMode
 import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
 import com.ecommpay.ui.msdk.sample.domain.ui.base.ViewIntents
 
@@ -17,7 +19,10 @@ sealed interface MainViewIntents: ViewIntents {
     data class SelectForcePaymentMethod(val id: Int, val paymentData: PaymentData): MainViewIntents
     //Custom mock mode
     object ChangeMockModeCheckbox: MainViewIntents
-    data class SelectMockMode(val id: Int, val paymentData: PaymentData): MainViewIntents
+    data class SelectMockMode(val mockModeType: EcmpPaymentSDK.EcmpMockModeType): MainViewIntents
+    //Custom screen display mode
+    object ChangeScreenDisplayModeCheckbox: MainViewIntents
+    data class SelectScreenDisplayMode(val screenDisplayMode: EcmpScreenDisplayMode) : MainViewIntents
     //Sale button
     object Sale: MainViewIntents
     //Auth button
