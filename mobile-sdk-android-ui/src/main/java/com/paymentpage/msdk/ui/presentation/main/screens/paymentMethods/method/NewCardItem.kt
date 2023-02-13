@@ -33,11 +33,13 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 @Composable
 internal fun NewCardItem(
     method: UIPaymentMethod.UICardPayPaymentMethod,
+    actionType: SDKActionType,
     isOnlyOneMethodOnScreen: Boolean = false,
 ) {
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
+    val isShowSaveCardCheckbox = method.paymentMethod.walletModeAsk
     val paymentOptions = LocalPaymentOptions.current
     val additionalFields = paymentOptions.additionalFields
     val savedState = remember { mutableStateOf(method.saveCard) }
@@ -116,38 +118,42 @@ internal fun NewCardItem(
                     }
                 )
             }
-            Spacer(modifier = Modifier.size(22.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                    ) {
-                        savedState.value = !savedState.value
-                    },
-                verticalAlignment = Alignment.Top
-            ) {
-                Checkbox(
-                    modifier = Modifier.size(25.dp),
-                    checked = savedState.value,
-                    onCheckedChange = {
-                        savedState.value = it
-                        method.saveCard = it
-                    },
-                    colors = CheckboxDefaults.colors(checkedColor = SDKTheme.colors.brand)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Column {
-                    Text(
-                        getStringOverride(OverridesKeys.TITLE_SAVED_CARDS),
-                        color = SDKTheme.colors.primaryTextColor,
-                        fontSize = 16.sp,
+            //if action type is verify we should not show save card checkbox
+            //if walletModeAsk != true (ask customer before save) we should not show save card checkbox
+            if (actionType != SDKActionType.Verify && isShowSaveCardCheckbox) {
+                Spacer(modifier = Modifier.size(22.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        ) {
+                            savedState.value = !savedState.value
+                        },
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Checkbox(
+                        modifier = Modifier.size(25.dp),
+                        checked = savedState.value,
+                        onCheckedChange = {
+                            savedState.value = it
+                            method.saveCard = it
+                        },
+                        colors = CheckboxDefaults.colors(checkedColor = SDKTheme.colors.brand)
                     )
-                    SDKTextWithLink(
-                        overrideKey = OverridesKeys.COF_AGREEMENTS,
-                        style = SDKTheme.typography.s12Light
-                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column {
+                        Text(
+                            getStringOverride(OverridesKeys.TITLE_SAVED_CARDS),
+                            color = SDKTheme.colors.primaryTextColor,
+                            fontSize = 16.sp,
+                        )
+                        SDKTextWithLink(
+                            overrideKey = OverridesKeys.COF_AGREEMENTS,
+                            style = SDKTheme.typography.s12Light
+                        )
+                    }
                 }
             }
             Spacer(modifier = Modifier.size(15.dp))
