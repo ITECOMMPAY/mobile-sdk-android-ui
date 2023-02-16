@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -44,19 +43,24 @@ internal fun ExpandablePaymentMethodItem(
     isOnlyOneMethodOnScreen: Boolean = false,
     fallbackIcon: Painter,
     iconColor: ColorFilter? = null,
-    isLocalResourceIcon: Boolean = method.logoUrl.isNullOrEmpty() && method.paymentMethod.iconUrl.isNullOrEmpty(),
+    isLocalResourceIcon: Boolean = method.logoUrl.isNullOrEmpty() &&
+            method.paymentMethod.iconUrl.isNullOrEmpty(),
     prefixNameResourceIcon: String? = null,
     headerBackgroundColor: Color = SDKTheme.colors.backgroundColor,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val currentMethod = paymentMethodsViewModel.state.collectAsState().value.currentMethod
-    val rotationState by animateFloatAsState(if (currentMethod?.index == method.index) 180f else 0f)
+    val rotationState by animateFloatAsState(
+        if (currentMethod?.index == method.index) 180f else 0f
+    )
     Box(
         modifier = Modifier
             .background(
-                color = if (currentMethod?.index == method.index) SDKTheme.colors.backgroundColor else headerBackgroundColor,
+                color = if (currentMethod?.index == method.index)
+                    SDKTheme.colors.backgroundColor
+                else
+                    headerBackgroundColor,
                 shape = SDKTheme.shapes.radius6
             )
             .border(
@@ -80,7 +84,7 @@ internal fun ExpandablePaymentMethodItem(
                 modifier =
                 if (!isOnlyOneMethodOnScreen) Modifier
                     .clickable(
-                        indication = null, //отключаем анимацию при клике
+                        indication = null, //turned off animation
                         interactionSource = remember { MutableInteractionSource() },
                         onClick = {
                             if (currentMethod?.index != method.index)
@@ -98,7 +102,12 @@ internal fun ExpandablePaymentMethodItem(
                 if (!isLocalResourceIcon) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(if (!method.logoUrl.isNullOrEmpty()) method.logoUrl else method.paymentMethod.iconUrl)
+                            .data(
+                                if (!method.logoUrl.isNullOrEmpty())
+                                    method.logoUrl
+                                else
+                                    method.paymentMethod.iconUrl
+                            )
                             .crossfade(true)
                             .diskCachePolicy(CachePolicy.ENABLED)
                             .build(),
@@ -108,7 +117,8 @@ internal fun ExpandablePaymentMethodItem(
                         placeholder = fallbackIcon,
                         modifier = Modifier.size(height = 20.dp, width = 50.dp),
                         alignment = Alignment.CenterStart,
-                        colorFilter = iconColor // if we need to change icon color for icons which loading from backend
+                        // if we need to change icon color for icons which loading from backend
+                        colorFilter = iconColor
                     )
                 } else {
                     val name = "${prefixNameResourceIcon}_${method.paymentMethod.code}_logo"
@@ -117,7 +127,10 @@ internal fun ExpandablePaymentMethodItem(
                         context.drawableResourceIdFromDrawableName(name)
                     }
                     Image(
-                        painter = if (drawableId > 0) painterResource(id = drawableId) else fallbackIcon,
+                        painter = if (drawableId > 0)
+                            painterResource(id = drawableId)
+                        else
+                            fallbackIcon,
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
                         colorFilter =

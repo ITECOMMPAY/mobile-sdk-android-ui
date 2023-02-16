@@ -1,6 +1,6 @@
 package com.paymentpage.msdk.ui.base
 
-object Constants {
+internal object Constants {
     const val RESULT_SUCCESS = 1 //when payment completed successfully
     const val RESULT_DECLINE = 100 //when payment declined
     const val RESULT_CANCELLED = 200 //when user canceled payment flow
@@ -21,4 +21,18 @@ object Constants {
 
     internal const val AMEX_CARD_TYPE_NAME = "amex"
     internal const val DINERS_CLUB_CARD_TYPE_NAME = "diners_club"
+
+    //CardIO
+    //common configuration
+    internal const val SCAN_WITHOUT_CAMERA = false
+    //cardholder name configuration
+    internal const val REQUIRE_CARDHOLDER_NAME = true
+    //expiry configuration
+    internal const val SCAN_EXPIRY = true
+    internal const val REQUIRE_EXPIRY = true
+    //logo configuration
+    internal const val HIDE_CARDIO_LOGO = true
+    internal const val SHOW_PAYPAL_LOGO_ON_ACTION_BAR = false
+    //theme configuration
+    internal const val USE_THEME_APP = false
 }

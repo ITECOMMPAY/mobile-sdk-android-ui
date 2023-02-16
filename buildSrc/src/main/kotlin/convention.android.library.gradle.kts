@@ -110,7 +110,8 @@ android {
 }
 
 dependencies {
-
+    //CardIO (card scanning)
+    implementation(LibraryDependencies.CardIO.cardIO)
     //AndroidX
     implementation(LibraryDependencies.AndroidX.appCompat)
     //Coil
