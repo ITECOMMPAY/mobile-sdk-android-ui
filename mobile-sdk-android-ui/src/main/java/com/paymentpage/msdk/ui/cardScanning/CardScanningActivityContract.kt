@@ -9,6 +9,8 @@ import com.paymentpage.msdk.ui.base.Constants.REQUIRE_EXPIRY
 import com.paymentpage.msdk.ui.base.Constants.SCAN_EXPIRY
 import com.paymentpage.msdk.ui.base.Constants.SCAN_WITHOUT_CAMERA
 import com.paymentpage.msdk.ui.base.Constants.SHOW_PAYPAL_LOGO_ON_ACTION_BAR
+import com.paymentpage.msdk.ui.base.Constants.SUPPRESS_CONFIRMATION
+import com.paymentpage.msdk.ui.base.Constants.SUPPRESS_MANUAL_ENTRY
 import com.paymentpage.msdk.ui.base.Constants.USE_THEME_APP
 import com.paymentpage.msdk.ui.utils.extensions.core.fourDigitYearToTwoDigitYear
 import com.paymentpage.msdk.ui.utils.extensions.core.oneDigitMonthToTwoDigitMonth
@@ -24,9 +26,11 @@ internal class CardScanningActivityContract :
             putExtra(CardIOActivity.EXTRA_REQUIRE_CARDHOLDER_NAME, REQUIRE_CARDHOLDER_NAME)
             putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, SCAN_EXPIRY)
             putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, REQUIRE_EXPIRY)
-            putExtra(CardIOActivity.EXTRA_USE_CARDIO_LOGO, HIDE_CARDIO_LOGO)
+            putExtra(CardIOActivity.EXTRA_HIDE_CARDIO_LOGO, HIDE_CARDIO_LOGO)
             putExtra(CardIOActivity.EXTRA_USE_PAYPAL_ACTIONBAR_ICON, SHOW_PAYPAL_LOGO_ON_ACTION_BAR)
             putExtra(CardIOActivity.EXTRA_KEEP_APPLICATION_THEME, USE_THEME_APP)
+            putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, SUPPRESS_CONFIRMATION)
+            putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, SUPPRESS_MANUAL_ENTRY)
             putExtra(CardIOActivity.EXTRA_GUIDE_COLOR, input.brandColor)
         }
 

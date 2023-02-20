@@ -71,7 +71,6 @@ internal fun NewCardItem(
             PanField(
                 initialValue = method.pan,
                 scanningPan = scanningResult?.pan,
-                modifier = Modifier.fillMaxWidth(),
                 paymentMethod = method.paymentMethod,
                 onValueChanged = { value, isValid ->
                     isPanValid = isValid

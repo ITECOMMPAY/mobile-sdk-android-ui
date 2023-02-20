@@ -62,7 +62,6 @@ internal fun TokenizeCardPayItem(
         Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {
             PanField(
-                modifier = Modifier.fillMaxWidth(),
                 initialValue = method.pan,
                 scanningPan = scanningResult?.pan,
                 paymentMethod = method.paymentMethod,

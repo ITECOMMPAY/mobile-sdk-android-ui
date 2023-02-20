@@ -25,11 +25,13 @@ internal object Constants {
     //CardIO
     //common configuration
     internal const val SCAN_WITHOUT_CAMERA = false
+    internal const val SUPPRESS_CONFIRMATION = true
+    internal const val SUPPRESS_MANUAL_ENTRY = true
     //cardholder name configuration
     internal const val REQUIRE_CARDHOLDER_NAME = false
     //expiry configuration
     internal const val SCAN_EXPIRY = true
-    internal const val REQUIRE_EXPIRY = true
+    internal const val REQUIRE_EXPIRY = false
     //logo configuration
     internal const val HIDE_CARDIO_LOGO = true
     internal const val SHOW_PAYPAL_LOGO_ON_ACTION_BAR = false

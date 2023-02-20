@@ -30,6 +30,8 @@ internal fun CustomTextField(
     modifier: Modifier = Modifier,
     pastedValue: String? = null,
     initialValue: String? = null,
+    textStyle: TextStyle? = null,
+    singleLine: Boolean = false,
     onValueChanged: ((String, Boolean) -> Unit)?,
     onRequestValidatorMessage: ((String) -> String?)? = null,
     onFilterValueBefore: ((String) -> String)? = null,
@@ -176,11 +178,12 @@ internal fun CustomTextField(
                         fontSize = 14.sp
                     )
             },
-            textStyle = TextStyle(fontSize = 16.sp),
+            textStyle = textStyle ?: TextStyle(fontSize = 16.sp),
+            singleLine = singleLine,
             keyboardOptions = keyboardOptions,
             keyboardActions = KeyboardActions(
                 onNext = { nextFocus?.requestFocus() }
-            )
+            ),
         )
 
         if (errorMessage != null) {
