@@ -1,7 +1,7 @@
 package com.ecommpay.ui.msdk.sample.domain.ui.threeDSecure
 
 import com.ecommpay.ui.msdk.sample.data.ProcessRepository
-import com.ecommpay.ui.msdk.sample.data.entities.CommonJson
+import com.ecommpay.ui.msdk.sample.data.storage.entities.CommonJson
 import com.ecommpay.ui.msdk.sample.domain.ui.base.BaseViewUC
 import com.ecommpay.ui.msdk.sample.domain.ui.base.MessageUI
 import com.ecommpay.ui.msdk.sample.domain.ui.base.back
@@ -17,7 +17,8 @@ class ThreeDSecureViewUC : BaseViewUC<ThreeDSecureInfoViewIntents, ThreeDSecureV
 
     init {
         updateState(newState = ThreeDSecureViewState(
-            jsonThreeDSecureInfo = ProcessRepository.jsonThreeDSecureInfo ?: format.encodeToString(CommonJson.default),
+            jsonThreeDSecureInfo = ProcessRepository.jsonThreeDSecureInfo ?: format.encodeToString(
+                CommonJson.default),
             isEnabledThreeDSecure = ProcessRepository.isEnabledThreeDSecure
         ))
     }

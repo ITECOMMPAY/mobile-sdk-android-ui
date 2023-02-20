@@ -127,7 +127,7 @@ internal fun ResultDeclineContent(
                             Spacer(modifier = Modifier.size(5.dp))
                             Text(
                                 text = payment.paymentMassage!!,
-                                style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.errorTextColor),
+                                style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.red),
                                 textAlign = TextAlign.Center
                             )
                         }

@@ -1,6 +1,6 @@
-package com.ecommpay.ui.msdk.sample.data.entities
+package com.ecommpay.ui.msdk.sample.data.storage.entities
 
-import com.ecommpay.ui.msdk.sample.data.entities.threeDSecure.ThreeDSecureInfoModel
+import com.ecommpay.ui.msdk.sample.data.storage.entities.threeDSecure.ThreeDSecureInfoModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -28,7 +28,7 @@ class SampleActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewUseCase = viewUseCase("Sample", { SampleViewUC() })
+        viewUseCase = viewUseCase("Sample") { SampleViewUC() }
 
         setContent {
             MaterialTheme {
@@ -69,12 +69,9 @@ class SampleActivity : ComponentActivity() {
                 ecmpPaymentInfo.getParamsForSignature(), repositoryPaymentData.secretKey
             )
         val paymentOptions = paymentOptions {
+            //payment configuration
             paymentInfo = ecmpPaymentInfo
             actionType = startActionType
-            logoImage = repositoryPaymentData.bitmap
-            brandColor = repositoryPaymentData.brandColor
-            merchantId = repositoryPaymentData.merchantId
-            merchantName = repositoryPaymentData.merchantName
             recurrentData = recurrentDataToSend
             recipientInfo = recipientDataToSend
             screenDisplayModes {
@@ -90,6 +87,14 @@ class SampleActivity : ComponentActivity() {
                     }
                 }
             }
+            //google pay configuration
+            merchantId = repositoryPaymentData.merchantId
+            merchantName = repositoryPaymentData.merchantName
+            isTestEnvironment = true
+            //theme customization
+            logoImage = ProcessRepository.bitmap
+            brandColor = ProcessRepository.brandColor
+            isDarkTheme = ProcessRepository.isDarkTheme
         }
 
         val sdk = EcmpPaymentSDK(

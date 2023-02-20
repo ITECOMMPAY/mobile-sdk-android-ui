@@ -60,17 +60,17 @@ internal fun ApsPageView(
             modifier = Modifier
                 .height(LocalConfiguration.current.screenHeightDp.dp * 0.9f) //Height of bottom sheet
                 .fillMaxWidth()
-                .background(SDKTheme.colors.backgroundColor),
+                .background(SDKTheme.colors.background),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
-                color = SDKTheme.colors.brand
+                color = SDKTheme.colors.primary
             )
         }
     Column(modifier = Modifier.fillMaxSize()) {
         AndroidView(modifier = Modifier
             .weight(1f)
-            .background(SDKTheme.colors.backgroundColor),
+            .background(SDKTheme.colors.background),
             factory = {
                 WebView(it).apply {
                     layoutParams = ViewGroup.LayoutParams(

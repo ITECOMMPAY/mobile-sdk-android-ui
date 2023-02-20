@@ -23,10 +23,10 @@ import com.ecommpay.ui.msdk.sample.ui.base.ComposeViewState
 internal fun AdditionalFieldsState(
     route: MainHostScreens.AdditionalFields,
     viewUseCase: AdditionalFieldsViewUC = viewUseCase(
-        route.toString(),
-        {
-            AdditionalFieldsViewUC()
-        })
+        route.toString()
+    ) {
+        AdditionalFieldsViewUC()
+    }
 ) {
     ComposeViewState(
         viewUseCase = viewUseCase

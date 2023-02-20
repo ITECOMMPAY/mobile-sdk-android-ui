@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -12,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
@@ -23,12 +21,14 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
+import com.paymentpage.msdk.ui.utils.extensions.customColor
 import com.paymentpage.msdk.ui.views.button.CustomOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
 import com.paymentpage.msdk.ui.views.card.panField.PanField
 import com.paymentpage.msdk.ui.views.common.SDKTextWithLink
+import com.paymentpage.msdk.ui.views.common.checkbox.SDKCheckboxDefaults
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
 @Composable
@@ -62,9 +62,11 @@ internal fun NewCardItem(
     ExpandablePaymentMethodItem(
         method = method,
         isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
-        headerBackgroundColor = SDKTheme.colors.backgroundColor,
-        fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
-        iconColor = ColorFilter.tint(SDKTheme.colors.brand),
+        fallbackIcon = painterResource(id = SDKTheme.images.defaultCardLogo),
+        //default card icon color
+        iconColor = ColorFilter.tint(
+            color = customColor(paymentOptions.brandColor)
+        ),
     ) {
         Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {
@@ -157,14 +159,13 @@ internal fun NewCardItem(
                             savedState.value = it
                             method.saveCard = it
                         },
-                        colors = CheckboxDefaults.colors(checkedColor = SDKTheme.colors.brand)
+                        colors = SDKCheckboxDefaults.colors()
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Column {
                         Text(
-                            getStringOverride(OverridesKeys.TITLE_SAVED_CARDS),
-                            color = SDKTheme.colors.primaryTextColor,
-                            fontSize = 16.sp,
+                            text = getStringOverride(OverridesKeys.TITLE_SAVED_CARDS),
+                            style = SDKTheme.typography.s16Normal
                         )
                         SDKTextWithLink(
                             overrideKey = OverridesKeys.COF_AGREEMENTS,

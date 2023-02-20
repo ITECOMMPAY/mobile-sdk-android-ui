@@ -121,7 +121,6 @@ internal fun GooglePayItem(
             ExpandablePaymentMethodItem(
                 method = method,
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
-                headerBackgroundColor = SDKTheme.colors.backgroundColor,
                 fallbackIcon = painterResource(id = SDKTheme.images.googlePayMethodResId),
             ) {
                 Spacer(modifier = Modifier.size(10.dp))

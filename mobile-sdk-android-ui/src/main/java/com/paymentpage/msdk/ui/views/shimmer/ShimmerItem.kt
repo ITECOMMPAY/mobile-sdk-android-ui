@@ -24,9 +24,9 @@ internal fun ShimmerItem(
     borderRadius: Dp = 0.dp,
 ) {
     val brush = Brush.linearGradient(
-        0.0f to SDKTheme.colors.panelBackgroundColor,
-        0.5f to SDKTheme.colors.backgroundColor,
-        1.0f to SDKTheme.colors.panelBackgroundColor,
+        0.0f to SDKTheme.colors.inputField,
+        0.5f to SDKTheme.colors.background,
+        1.0f to SDKTheme.colors.inputField,
         start = Offset(x = xShimmer - gradientWidth, y = yShimmer - gradientWidth),
         end = Offset(x = xShimmer, y = yShimmer)
     )

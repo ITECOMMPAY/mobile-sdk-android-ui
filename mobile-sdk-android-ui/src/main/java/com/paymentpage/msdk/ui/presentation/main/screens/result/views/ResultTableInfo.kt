@@ -67,7 +67,10 @@ internal fun ResultTableInfo(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .background(
-                    color = SDKTheme.colors.panelBackgroundColor,
+                    color = if (!SDKTheme.colors.isDarkTheme)
+                        SDKTheme.colors.inputField
+                    else
+                        SDKTheme.colors.container,
                     shape = SDKTheme.shapes.radius12
                 )
                 .padding(top = 15.dp, start = 15.dp, end = 15.dp)
@@ -82,7 +85,7 @@ internal fun ResultTableInfo(
                         Column {
                             Text(
                                 text = key,
-                                style = SDKTheme.typography.s14Light.copy(color = SDKTheme.colors.secondaryTextColor),
+                                style = SDKTheme.typography.s14Light.copy(color = SDKTheme.colors.grey),
                                 overflow = TextOverflow.Ellipsis,
                                 maxLines = 1
                             )
@@ -122,7 +125,7 @@ internal fun ResultTableInfoPreview() {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .background(color = SDKTheme.colors.panelBackgroundColor)
+            .background(color = SDKTheme.colors.inputField)
             .padding(top = 15.dp, start = 15.dp, end = 15.dp)
     ) {
         titleKeyWithValueMap.forEach { (key, value) ->
@@ -130,7 +133,7 @@ internal fun ResultTableInfoPreview() {
                 Column {
                     Text(
                         text = key,
-                        style = SDKTheme.typography.s14Light.copy(color = SDKTheme.colors.secondaryTextColor),
+                        style = SDKTheme.typography.s14Light.copy(color = SDKTheme.colors.grey),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1
                     )

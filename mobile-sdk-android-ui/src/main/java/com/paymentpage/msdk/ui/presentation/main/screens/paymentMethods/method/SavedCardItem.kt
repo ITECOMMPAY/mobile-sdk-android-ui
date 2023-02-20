@@ -7,7 +7,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -23,7 +22,6 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
-import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
 import com.paymentpage.msdk.ui.views.button.CustomOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
@@ -44,18 +42,12 @@ internal fun SavedCardItem(
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
     val isDeleteCardLoading = state.isDeleteCardLoading ?: false
-    val context = LocalContext.current
-    val name = "card_type_${method.savedAccount.cardType?.lowercase()}"
-    val drawableId = remember(name) {
-        context.drawableResourceIdFromDrawableName(name)
-    }
     var deleteCardAlertDialogState by remember { mutableStateOf(false) }
     val token = paymentOptions.paymentInfo.token
     ExpandablePaymentMethodItem(
         method = method,
         isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
-        headerBackgroundColor = SDKTheme.colors.backgroundColor,
-        fallbackIcon = painterResource(id = if (drawableId > 0) drawableId else SDKTheme.images.cardLogoResId),
+        fallbackIcon = painterResource(SDKTheme.images.defaultCardLogo),
     ) {
         Spacer(modifier = Modifier.size(10.dp))
         Column(
@@ -123,25 +115,30 @@ internal fun SavedCardItem(
                         },
                         text = getStringOverride(OverridesKeys.BUTTON_DELETE),
                         style = SDKTheme.typography.s14Normal.copy(
-                            color = SDKTheme.colors.secondaryTextColor,
+                            color =
+                            if (!SDKTheme.colors.isDarkTheme)
+                                SDKTheme.colors.grey
+                            else
+                                SDKTheme.colors.link,
                             textDecoration = TextDecoration.Underline
                         )
                     )
                 else {
                     CircularProgressIndicator(
-                        color = SDKTheme.colors.brand
+                        color = SDKTheme.colors.primary
                     )
                 }
                 if (deleteCardAlertDialogState) {
                     MessageAlertDialog(
-                        message = { Text(text = getStringOverride(OverridesKeys.MESSAGE_DELETE_CARD_SINGLE)) },
+                        message = getStringOverride(OverridesKeys.MESSAGE_DELETE_CARD_SINGLE),
                         dismissButtonText = getStringOverride(OverridesKeys.BUTTON_CANCEL),
                         onConfirmButtonClick = {
                             deleteCardAlertDialogState = false
                             paymentMethodsViewModel.deleteSavedCard(method = method)
                         },
                         onDismissButtonClick = { deleteCardAlertDialogState = false },
-                        confirmButtonText = getStringOverride(OverridesKeys.BUTTON_DELETE)
+                        confirmButtonText = getStringOverride(OverridesKeys.BUTTON_DELETE),
+                        brandColor = paymentOptions.brandColor
                     )
                 }
             }

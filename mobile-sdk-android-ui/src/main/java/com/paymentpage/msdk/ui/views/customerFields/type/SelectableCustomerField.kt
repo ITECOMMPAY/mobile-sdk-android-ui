@@ -37,7 +37,7 @@ internal fun SelectableCustomerField(
                     dialogState = true
                 },
                 imageVector = Icons.Default.KeyboardArrowDown,
-                colorFilter = ColorFilter.tint(SDKTheme.colors.navigationIconColor),
+                colorFilter = ColorFilter.tint(SDKTheme.colors.neutral),
                 contentDescription = null,
             )
         },

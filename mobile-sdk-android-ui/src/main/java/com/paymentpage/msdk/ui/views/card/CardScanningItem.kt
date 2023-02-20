@@ -7,7 +7,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
@@ -35,6 +35,7 @@ internal fun CardScanningItem(
     onScanningResult: (CardScanningActivityContract.Result) -> Unit,
 ) {
     val context = LocalContext.current
+    val paymentOptions = LocalPaymentOptions.current
     //states
     var permissionRequestState by rememberCameraRequestPermissionsState(initRequest = false)
     val showState = CameraRequestPermissionState(initRequest = true)
@@ -45,7 +46,7 @@ internal fun CardScanningItem(
         rememberLauncherForActivityResult(contract = CardScanningActivityContract()) { result ->
             onScanningResult(result)
         }
-    val guideColor = SDKTheme.colors.brand
+    val guideColor = SDKTheme.colors.primary
     //check permission
     RequestPermission(
         context = context,
@@ -63,10 +64,10 @@ internal fun CardScanningItem(
     Box(
         modifier = modifier
             .clip(SDKTheme.shapes.radius6)
-            .background(SDKTheme.colors.panelBackgroundColor)
+            .background(SDKTheme.colors.inputField)
             .border(
                 width = 1.dp,
-                color = SDKTheme.colors.borderColor,
+                color = SDKTheme.colors.highlight,
                 shape = SDKTheme.shapes.radius6
             )
             .clickable {
@@ -77,13 +78,13 @@ internal fun CardScanningItem(
         Image(
             modifier = Modifier
                 .size(20.dp),
-            painter = painterResource(id = R.drawable.card_scanning_logo),
+            painter = painterResource(id = SDKTheme.images.cardScanningLogo),
             contentDescription = null,
             contentScale = ContentScale.Fit,
         )
         if (showPermanentlyDeniedAlertDialog)
             MessageAlertDialog(
-                message = { Text(text = stringResource(id = R.string.title_camera_permission_label)) },
+                message = stringResource(id = R.string.title_camera_permission_label),
                 onConfirmButtonClick = {
                     permissionRequestState = hideState
                     showPermanentlyDeniedAlertDialog = false
@@ -94,7 +95,8 @@ internal fun CardScanningItem(
                     showPermanentlyDeniedAlertDialog = false
                 },
                 dismissButtonText = getStringOverride(OverridesKeys.BUTTON_CANCEL),
-                confirmButtonText = stringResource(id = R.string.button_camera_permission_label)
+                confirmButtonText = stringResource(id = R.string.button_camera_permission_label),
+                brandColor = paymentOptions.brandColor
             )
 
     }

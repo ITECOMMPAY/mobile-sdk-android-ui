@@ -30,6 +30,12 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                 )
             }
             //Customization brand color and logo
+            is MainViewIntents.ChangeThemeCheckbox -> {
+                ProcessRepository.isDarkTheme = !(viewState.value.isDarkTheme)
+                updateState(
+                    viewState.value.copy(isDarkTheme = ProcessRepository.isDarkTheme)
+                )
+            }
             is MainViewIntents.ChangeCustomizationCheckbox -> {
                 updateState(
                     viewState.value.copy(
@@ -38,21 +44,29 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                 )
             }
             is MainViewIntents.SelectResourceImage -> {
-                ProcessRepository.paymentData = viewIntent.paymentData
+                ProcessRepository.bitmap = viewIntent.bitmap
                 updateState(
                     viewState.value.copy(
                         selectedResourceImageId = viewIntent.id,
-                        paymentData = ProcessRepository.paymentData
+                        bitmap = viewIntent.bitmap
                     )
                 )
             }
             is MainViewIntents.SelectLocalImage -> {
-                ProcessRepository.paymentData = viewIntent.paymentData
+                ProcessRepository.bitmap = viewIntent.bitmap
                 updateState(
                     viewState.value.copy(
                         localImageUri = viewIntent.uri,
-                        paymentData = ProcessRepository.paymentData,
-                        selectedResourceImageId = -1
+                        selectedResourceImageId = -1,
+                        bitmap = viewIntent.bitmap
+                    )
+                )
+            }
+            is MainViewIntents.ChangeBrandColor -> {
+                ProcessRepository.brandColor = viewIntent.brandColor
+                updateState(
+                    viewState.value.copy(
+                        brandColor = viewIntent.brandColor
                     )
                 )
             }

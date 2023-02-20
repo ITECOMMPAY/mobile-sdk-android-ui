@@ -36,7 +36,10 @@ internal fun MainContent(
     LaunchedEffect(Unit) {
         drawerState = BottomDrawerState(initialValue = BottomDrawerValue.Expanded)
     }
-    SDKTheme(brandColor = HexToJetpackColor.getColor(paymentOptions.brandColor)) {
+    SDKTheme(
+        isDarkTheme = paymentOptions.isDarkTheme,
+        brandColor = HexToJetpackColor.getColor(paymentOptions.brandColor)
+    ) {
         BottomDrawer(
             modifier = Modifier.wrapContentSize(),
             drawerContent = {
@@ -68,17 +71,18 @@ internal fun MainContent(
             when {
                 showDismissDialog -> {
                     MessageAlertDialog(
-                        message = { Text(text = stringResource(R.string.payment_dismiss_confirm_message)) },
+                        message = stringResource(R.string.payment_dismiss_confirm_message),
                         onConfirmButtonClick = { activity.onCancel() },
                         confirmButtonText = stringResource(R.string.ok_label),
                         onDismissButtonClick = { showDismissDialog = false },
-                        dismissButtonText = stringResource(R.string.cancel_label)
+                        dismissButtonText = stringResource(R.string.cancel_label),
+                        brandColor = paymentOptions.brandColor
                     )
                 }
                 errorResultState != null -> {
                     ErrorAlertDialog(
-                        title = { Text(text = stringResource(R.string.error_label)) },
-                        message = { Text(text = errorResultState?.message ?: "") },
+                        title = stringResource(R.string.error_label),
+                        message = errorResultState?.message ?: "",
                         onConfirmButtonClick = {
                             if (needCloseWhenError)
                                 activity.onError(
@@ -95,7 +99,9 @@ internal fun MainContent(
                                     errorResultState?.message
                                 )
                             errorResultState = null
-                        })
+                        },
+                        brandColor = paymentOptions.brandColor
+                    )
                 }
             }
         }

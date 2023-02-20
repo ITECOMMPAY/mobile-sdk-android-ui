@@ -1,4 +1,4 @@
-package com.ecommpay.ui.msdk.sample.data.entities.threeDSecure.customer
+package com.ecommpay.ui.msdk.sample.data.storage.entities.threeDSecure.customer
 
 import kotlinx.serialization.Serializable
 

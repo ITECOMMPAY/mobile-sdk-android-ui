@@ -12,23 +12,21 @@ import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvir
  * Payment configuration
  */
 class SDKPaymentOptions(
+    //payment configuration
     val paymentInfo: PaymentInfo,
-
     val recurrentInfo: RecurrentInfo? = null,
     val recipientInfo: RecipientInfo? = null,
     val actionType: SDKActionType = SDKActionType.Sale,
     //val bankId: Int? = null,
     val screenDisplayModes: List<SDKScreenDisplayMode> = listOf(SDKScreenDisplayMode.DEFAULT),
-
-    val logoImage: Bitmap? = null,
-    val brandColor: String? = null,
-
-    var footerImage: Bitmap? = null,
-    var footerLabel: String? = null,
-
     val merchantId: String = "",
     val merchantName: String = "",
     val merchantEnvironment: GooglePayEnvironment = GooglePayEnvironment.TEST,
-
     val additionalFields: List<SDKAdditionalField> = emptyList(),
+    //theme customization
+    val isDarkTheme: Boolean = false,
+    val logoImage: Bitmap? = null,
+    val brandColor: String? = null,
+    var footerImage: Bitmap? = null,
+    var footerLabel: String? = null,
 )

@@ -15,28 +15,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewIntents
-import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
+import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewState
 import com.ecommpay.ui.msdk.sample.utils.HexToJetpackColor
 import com.ecommpay.ui.msdk.sample.utils.extensions.toHexCode
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 
 @Composable
 internal fun BrandColorPicker(
-    paymentData: PaymentData,
+    viewState: MainViewState,
     intentListener: (MainViewIntents) -> Unit,
 ) {
     val dialogState = rememberMaterialDialogState()
 
-    Row(verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
         OutlinedTextField(
-            value = paymentData.brandColor?.uppercase() ?: "#",
+            value = if (viewState.brandColor.isNotEmpty())
+                viewState.brandColor.uppercase()
+            else "#",
             onValueChange = {
                 intentListener(
-                    MainViewIntents.ChangeField(
-                    paymentData.copy(brandColor = (if (it.length in 0..7) it else it.substring(0,
-                        7)).uppercase())
-                ))
+                    MainViewIntents.ChangeBrandColor(
+                        brandColor = (if (it.length in 0..7) it else it.substring(0, 7)).uppercase()
+                    )
+                )
             },
             modifier = Modifier.weight(1f),
             label = { Text(text = "Brand color") }
@@ -49,8 +53,9 @@ internal fun BrandColorPicker(
             Box(
                 modifier = Modifier
                     .size(50.dp)
-                    .background(HexToJetpackColor.getColor(paymentData.brandColor)
-                        ?: Color.White)
+                    .background(
+                        color = HexToJetpackColor.getColor(viewState.brandColor) ?: Color.White
+                    )
                     .clickable {
                         dialogState.show()
                     }
@@ -64,17 +69,19 @@ internal fun BrandColorPicker(
             .height(50.dp),
         onClick = {
             intentListener(
-                MainViewIntents.ChangeField(
-                paymentData = paymentData.copy(brandColor = PaymentData().brandColor)
-            ))
+                MainViewIntents.ChangeBrandColor(
+                    brandColor = "#00579E"
+                )
+            )
         }
     ) {
         Text(text = "Reset brand color to default", color = Color.White, fontSize = 18.sp)
     }
     ColorPickerDialog(dialogState = dialogState) {
         intentListener(
-            MainViewIntents.ChangeField(
-            paymentData = paymentData.copy(brandColor = it.toHexCode())
-        ))
+            MainViewIntents.ChangeBrandColor(
+                brandColor = it.toHexCode()
+            )
+        )
     }
 }

@@ -10,7 +10,7 @@ class AdditionalFieldsViewUC : BaseViewUC<AdditionalFieldsViewIntents, Additiona
     init {
         updateState(
             newState = AdditionalFieldsViewState(
-                additionalFields = com.ecommpay.ui.msdk.sample.data.ProcessRepository.additionalFields
+                additionalFields = ProcessRepository.additionalFields
             )
         )
     }
@@ -18,7 +18,7 @@ class AdditionalFieldsViewUC : BaseViewUC<AdditionalFieldsViewIntents, Additiona
     override suspend fun reduce(viewIntent: AdditionalFieldsViewIntents) {
         when (viewIntent) {
             is AdditionalFieldsViewIntents.ChangeField -> {
-                com.ecommpay.ui.msdk.sample.data.ProcessRepository.additionalFields = viewIntent.viewData.additionalFields
+                ProcessRepository.additionalFields = viewIntent.viewData.additionalFields
                 updateState(viewIntent.viewData)
             }
             is AdditionalFieldsViewIntents.Exit -> {

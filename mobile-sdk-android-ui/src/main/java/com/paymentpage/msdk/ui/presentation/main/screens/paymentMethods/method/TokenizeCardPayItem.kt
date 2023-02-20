@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
@@ -17,7 +15,6 @@ import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
 import com.paymentpage.msdk.ui.presentation.main.payNewCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.button.SaveButton
@@ -55,9 +52,6 @@ internal fun TokenizeCardPayItem(
     ExpandablePaymentMethodItem(
         method = method,
         isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
-        headerBackgroundColor = SDKTheme.colors.backgroundColor,
-        fallbackIcon = painterResource(id = SDKTheme.images.cardLogoResId),
-        iconColor = ColorFilter.tint(SDKTheme.colors.brand),
     ) {
         Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {
