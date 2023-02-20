@@ -128,7 +128,7 @@ dependencies {
     implementation(LibraryDependencies.Compose.activity)
     //Accompanist
     implementation(LibraryDependencies.Accompanist.navigation)
-
+    implementation(LibraryDependencies.Accompanist.permissions)
     //Testing
     testImplementation(LibraryDependencies.Compose.junit4)
     testImplementation("io.mockk:mockk:1.13.3")

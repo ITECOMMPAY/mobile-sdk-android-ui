@@ -35,6 +35,7 @@ object LibraryDependencies {
     object Accompanist {
         const val navigation =
             "com.google.accompanist:accompanist-navigation-animation:0.25.1"
+        const val permissions = "com.google.accompanist:accompanist-permissions:0.28.0"
     }
 
     object AndroidX {
