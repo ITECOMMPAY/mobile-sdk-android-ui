@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
@@ -82,7 +83,7 @@ internal fun CardScanningItem(
         )
         if (showPermanentlyDeniedAlertDialog)
             MessageAlertDialog(
-                message = { Text(text = "The camera is not available") },
+                message = { Text(text = stringResource(id = R.string.title_camera_permission_label)) },
                 onConfirmButtonClick = {
                     permissionRequestState = hideState
                     showPermanentlyDeniedAlertDialog = false
@@ -93,7 +94,7 @@ internal fun CardScanningItem(
                     showPermanentlyDeniedAlertDialog = false
                 },
                 dismissButtonText = getStringOverride(OverridesKeys.BUTTON_CANCEL),
-                confirmButtonText = "Open settings screen"
+                confirmButtonText = stringResource(id = R.string.button_camera_permission_label)
             )
 
     }
