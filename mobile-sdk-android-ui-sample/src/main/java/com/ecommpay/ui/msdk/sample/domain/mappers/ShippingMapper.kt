@@ -1,10 +1,10 @@
 package com.ecommpay.ui.msdk.sample.domain.mappers
 
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureShippingInfo
-import com.ecommpay.ui.msdk.sample.data.entities.threeDSecure.customer.Shipping
+import com.ecommpay.msdk.ui.threeDSecure.EcmpThreeDSecureShippingInfo
+import com.ecommpay.ui.msdk.sample.data.storage.entities.threeDSecure.customer.Shipping
 
-internal fun Shipping.map(): ThreeDSecureShippingInfo =
-    ThreeDSecureShippingInfo(
+internal fun Shipping.map(): EcmpThreeDSecureShippingInfo =
+    EcmpThreeDSecureShippingInfo(
         type = type,
         deliveryTime = deliveryTime,
         deliveryEmail = deliveryEmail,

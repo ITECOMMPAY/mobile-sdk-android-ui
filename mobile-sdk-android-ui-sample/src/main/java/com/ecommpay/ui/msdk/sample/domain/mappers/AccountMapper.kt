@@ -1,10 +1,10 @@
 package com.ecommpay.ui.msdk.sample.domain.mappers
 
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureAccountInfo
-import com.ecommpay.ui.msdk.sample.data.entities.threeDSecure.customer.Account
+import com.ecommpay.msdk.ui.threeDSecure.EcmpThreeDSecureAccountInfo
+import com.ecommpay.ui.msdk.sample.data.storage.entities.threeDSecure.customer.Account
 
-internal fun Account.map(): ThreeDSecureAccountInfo =
-    ThreeDSecureAccountInfo(
+internal fun Account.map(): EcmpThreeDSecureAccountInfo =
+    EcmpThreeDSecureAccountInfo(
         additional = additional,
         ageIndicator = ageIndicator,
         date = date,

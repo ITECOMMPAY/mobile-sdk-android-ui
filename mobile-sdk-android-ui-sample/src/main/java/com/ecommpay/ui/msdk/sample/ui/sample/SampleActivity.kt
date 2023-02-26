@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.ecommpay.msdk.ui.BuildConfig
+import com.ecommpay.msdk.ui.EcmpPaymentInfo
 import com.ecommpay.msdk.ui.EcmpPaymentSDK
 import com.ecommpay.msdk.ui.paymentOptions
 import com.ecommpay.ui.msdk.sample.data.ProcessRepository
@@ -18,7 +19,6 @@ import com.ecommpay.ui.msdk.sample.domain.ui.base.viewUseCase
 import com.ecommpay.ui.msdk.sample.domain.ui.sample.SampleViewIntents
 import com.ecommpay.ui.msdk.sample.domain.ui.sample.SampleViewUC
 import com.ecommpay.ui.msdk.sample.utils.SignatureGenerator
-import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -51,7 +51,7 @@ class SampleActivity : ComponentActivity() {
         val recurrentDataToSend = ProcessRepository.recurrentData?.map()
         val recipientDataToSend = ProcessRepository.recipientData?.map()
         val threeDSecureInfoToSend = ProcessRepository.commonJson?.threeDSecureInfo?.map()
-        val ecmpPaymentInfo = PaymentInfo(
+        val ecmpPaymentInfo = EcmpPaymentInfo(
             forcePaymentMethod = repositoryPaymentData.forcePaymentMethod,
             hideSavedWallets = repositoryPaymentData.hideSavedWallets,
             projectId = repositoryPaymentData.projectId,
@@ -62,7 +62,7 @@ class SampleActivity : ComponentActivity() {
             paymentDescription = repositoryPaymentData.paymentDescription,
             languageCode = repositoryPaymentData.languageCode,
             token = repositoryPaymentData.token,
-            threeDSecureInfo = threeDSecureInfoToSend
+            ecmpThreeDSecureInfo = threeDSecureInfoToSend
         )
         ecmpPaymentInfo.signature =
             SignatureGenerator.generateSignature(

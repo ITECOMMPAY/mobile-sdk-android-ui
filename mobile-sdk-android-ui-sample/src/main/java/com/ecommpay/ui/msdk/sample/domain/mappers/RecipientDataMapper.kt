@@ -1,9 +1,9 @@
 package com.ecommpay.ui.msdk.sample.domain.mappers
 
+import com.ecommpay.msdk.ui.EcmpRecipientInfo
 import com.ecommpay.ui.msdk.sample.domain.entities.RecipientData
-import com.paymentpage.msdk.core.domain.entities.RecipientInfo
 
-internal fun RecipientData.map(): RecipientInfo = RecipientInfo(
+internal fun RecipientData.map(): EcmpRecipientInfo = EcmpRecipientInfo(
     walletOwner = walletOwner,
     walletId = walletId,
     country = country,

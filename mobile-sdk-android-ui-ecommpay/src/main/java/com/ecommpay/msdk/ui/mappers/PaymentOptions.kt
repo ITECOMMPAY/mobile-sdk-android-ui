@@ -2,7 +2,9 @@ package com.ecommpay.msdk.ui.mappers
 
 import com.ecommpay.msdk.ui.EcmpAdditionalFieldType
 import com.ecommpay.msdk.ui.EcmpPaymentOptions
+import com.ecommpay.msdk.ui.EcmpRecipientInfo
 import com.ecommpay.msdk.ui.EcmpScreenDisplayMode
+import com.paymentpage.msdk.core.domain.entities.RecipientInfo
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.ui.*
 
@@ -10,7 +12,7 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
     SDKPaymentOptions(
         paymentInfo = paymentInfo,
         recurrentInfo = recurrentData,
-        recipientInfo = recipientInfo,
+        recipientInfo = recipientInfo?.map(),
         actionType = SDKActionType.valueOf(actionType.name),
         screenDisplayModes = screenDisplayModes.map(),
         logoImage = logoImage,
@@ -36,3 +38,17 @@ internal fun EcmpScreenDisplayMode.map(): SDKScreenDisplayMode? =
 
 internal fun List<EcmpScreenDisplayMode>.map(): List<SDKScreenDisplayMode> =
     mapNotNull { it.map() }
+
+internal fun EcmpRecipientInfo.map(): RecipientInfo =
+    RecipientInfo(
+        walletOwner = walletOwner,
+        walletId = walletId,
+        country = country,
+        pan = pan,
+        cardHolder = cardHolder,
+        address = address,
+        city = city,
+        stateCode = stateCode,
+        firstName = null,
+        lastName = null
+    )
