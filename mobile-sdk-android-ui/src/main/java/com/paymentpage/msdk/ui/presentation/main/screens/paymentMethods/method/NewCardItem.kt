@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
+import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
 import com.paymentpage.msdk.ui.presentation.main.payNewCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
@@ -43,6 +44,14 @@ internal fun NewCardItem(
     val paymentOptions = LocalPaymentOptions.current
     val additionalFields = paymentOptions.additionalFields
     val savedState = remember { mutableStateOf(method.saveCard) }
+
+    var scanningResult by remember {
+        mutableStateOf<CardScanningActivityContract.Result?>(
+            value = null,
+            policy = neverEqualPolicy()
+        )
+    }
+
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
     var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
     var isPanValid by remember { mutableStateOf(method.isValidPan) }
@@ -61,25 +70,31 @@ internal fun NewCardItem(
         Column(Modifier.fillMaxWidth()) {
             PanField(
                 initialValue = method.pan,
-                modifier = Modifier.fillMaxWidth(),
+                scanningPan = scanningResult?.pan,
                 paymentMethod = method.paymentMethod,
                 onValueChanged = { value, isValid ->
                     isPanValid = isValid
                     method.pan = value
                     method.isValidPan = isValid
+                    scanningResult = null
                 },
                 onPaymentMethodCardTypeChange = {
                     cardType = it
-                }
+                },
+                onScanningResult = { result ->
+                    scanningResult = result
+                },
             )
             Spacer(modifier = Modifier.size(10.dp))
             CardHolderField(
-                initialValue = method.cardHolder,
                 modifier = Modifier.fillMaxWidth(),
+                initialValue = method.cardHolder,
+                scanningCardHolder = scanningResult?.cardHolderName,
                 onValueChanged = { value, isValid ->
                     isCardHolderValid = isValid
                     method.cardHolder = value
                     method.isValidCardHolder = isValid
+                    scanningResult = null
                 }
             )
             Spacer(modifier = Modifier.size(10.dp))
@@ -87,10 +102,12 @@ internal fun NewCardItem(
                 ExpiryField(
                     modifier = Modifier.weight(1f),
                     initialValue = method.expiry,
+                    scanningExpiry = scanningResult?.expiry,
                     onValueChanged = { value, isValid ->
                         isExpiryValid = isValid
                         method.expiry = value
                         method.isValidExpiry = isValid
+                        scanningResult = null
                     }
                 )
                 Spacer(modifier = Modifier.size(10.dp))

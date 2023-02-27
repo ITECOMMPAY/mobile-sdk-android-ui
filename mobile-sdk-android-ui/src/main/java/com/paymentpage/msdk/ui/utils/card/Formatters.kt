@@ -95,7 +95,8 @@ internal fun formatOtherCardNumbers(text: AnnotatedString): TransformedText {
             if (offset <= 12) return offset - 2
             if (offset <= 16) return offset - 3
             if (offset <= 20) return offset - 4
-            return 20
+            if (offset <= 24) return offset - 4
+            return 24
         }
     }
 

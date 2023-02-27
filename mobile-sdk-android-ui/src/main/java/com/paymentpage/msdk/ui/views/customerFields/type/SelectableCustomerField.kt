@@ -24,8 +24,8 @@ internal fun SelectableCustomerField(
     var selectedText by remember { mutableStateOf(initialValue ?: "") }
     var dialogState by remember { mutableStateOf(false) }
     CustomTextField(
-        value = selectedText,
         initialValue = initialValue,
+        pastedValue = selectedText,
         onValueChanged = null,
         isEditable = false,
         label = customerField.label,

@@ -60,8 +60,12 @@ internal fun GooglePayItem(
         Wallet.getPaymentsClient(
             activity,
             Wallet.WalletOptions.Builder()
-                .setEnvironment(if (paymentOptions.merchantEnvironment == GooglePayEnvironment.TEST) WalletConstants.ENVIRONMENT_TEST else WalletConstants.ENVIRONMENT_PRODUCTION)//test
-                //.setTheme(WalletConstants.THEME_LIGHT)
+                .setEnvironment(
+                    if (paymentOptions.merchantEnvironment == GooglePayEnvironment.TEST)
+                        WalletConstants.ENVIRONMENT_TEST
+                    else
+                        WalletConstants.ENVIRONMENT_PRODUCTION
+                )
                 .build()
         )
     }

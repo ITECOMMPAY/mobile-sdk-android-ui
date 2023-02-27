@@ -3,7 +3,6 @@ package com.paymentpage.msdk.ui.googlePay
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
@@ -41,7 +40,6 @@ internal class GooglePayActivity : AppCompatActivity() {
                 this@GooglePayActivity,
                 Wallet.WalletOptions.Builder()
                     .setEnvironment(if (env == GooglePayEnvironment.TEST) WalletConstants.ENVIRONMENT_TEST else WalletConstants.ENVIRONMENT_PRODUCTION)//test
-                    //.setTheme(WalletConstants.THEME_LIGHT)
                     .build()
             )
             val request =
