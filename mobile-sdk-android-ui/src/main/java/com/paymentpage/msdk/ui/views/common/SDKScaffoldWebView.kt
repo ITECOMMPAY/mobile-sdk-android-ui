@@ -35,7 +35,7 @@ internal fun SDKScaffoldWebView(
         Column(
             modifier = Modifier
                 .background(
-                    color = SDKTheme.colors.backgroundColor,
+                    color = SDKTheme.colors.background,
                     shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                 )
                 .height(LocalConfiguration.current.screenHeightDp.dp * 0.9f) //Height of bottom sheet
@@ -55,7 +55,7 @@ internal fun SDKScaffoldWebView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(1.dp)
-                        .background(SDKTheme.colors.panelBackgroundColor)
+                        .background(SDKTheme.colors.inputField)
                 )
                 Column(
                     modifier = modifier

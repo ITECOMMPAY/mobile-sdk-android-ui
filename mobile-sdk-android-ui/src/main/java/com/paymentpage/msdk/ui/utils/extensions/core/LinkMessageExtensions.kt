@@ -23,7 +23,7 @@ internal fun LinkMessage.annotatedString(): AnnotatedString = buildAnnotatedStri
 
             addStyle(
                 style = SpanStyle(
-                    color = SDKTheme.colors.brand,
+                    color = SDKTheme.colors.primary,
                     textDecoration = TextDecoration.Underline
                 ),
                 start = startIndex,

@@ -1,9 +1,9 @@
-package com.ecommpay.ui.msdk.sample.data.entities.threeDSecure
+package com.ecommpay.ui.msdk.sample.data.storage.entities.threeDSecure
 
-import com.ecommpay.ui.msdk.sample.data.entities.threeDSecure.customer.CustomerAccountInfo
-import com.ecommpay.ui.msdk.sample.data.entities.threeDSecure.customer.CustomerMpiResult
-import com.ecommpay.ui.msdk.sample.data.entities.threeDSecure.customer.CustomerShipping
-import com.ecommpay.ui.msdk.sample.data.entities.threeDSecure.payment.PaymentMerchantRisk
+import com.ecommpay.ui.msdk.sample.data.storage.entities.threeDSecure.customer.CustomerAccountInfo
+import com.ecommpay.ui.msdk.sample.data.storage.entities.threeDSecure.customer.CustomerMpiResult
+import com.ecommpay.ui.msdk.sample.data.storage.entities.threeDSecure.customer.CustomerShipping
+import com.ecommpay.ui.msdk.sample.data.storage.entities.threeDSecure.payment.PaymentMerchantRisk
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

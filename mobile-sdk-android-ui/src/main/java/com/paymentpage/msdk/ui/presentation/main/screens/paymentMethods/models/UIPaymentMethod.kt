@@ -4,8 +4,6 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
-import com.paymentpage.msdk.ui.OverridesKeys
-import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 
 
 internal sealed class UIPaymentMethod(
@@ -51,7 +49,7 @@ internal sealed class UIPaymentMethod(
 
     class UITokenizeCardPayPaymentMethod(
         index: Int = 0,
-        title: String = getStringOverride(OverridesKeys.BUTTON_ADD_NEW_CARD),
+        title: String = "",
         paymentMethod: PaymentMethod
     ) : UICardPayPaymentMethod(index, title, paymentMethod)
 

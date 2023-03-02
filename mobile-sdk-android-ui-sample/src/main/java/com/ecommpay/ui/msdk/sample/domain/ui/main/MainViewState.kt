@@ -1,5 +1,6 @@
 package com.ecommpay.ui.msdk.sample.domain.ui.main
 
+import android.graphics.Bitmap
 import android.net.Uri
 import com.ecommpay.msdk.ui.EcmpPaymentSDK
 import com.ecommpay.msdk.ui.EcmpScreenDisplayMode
@@ -19,4 +20,7 @@ data class MainViewState(
     val selectedMockModeType: EcmpPaymentSDK.EcmpMockModeType = EcmpPaymentSDK.EcmpMockModeType.DISABLED,
     val selectedScreenDisplayModes: List<EcmpScreenDisplayMode> = listOf(EcmpScreenDisplayMode.DEFAULT),
     val localImageUri: Uri? = null,
+    val bitmap: Bitmap? = null,
+    val brandColor: String = "#00579E",
+    val isDarkTheme: Boolean = false
 ) : ViewState

@@ -21,7 +21,7 @@ import kotlinx.coroutines.delay
 fun DotsLoading(
     modifier: Modifier = Modifier,
     circleSize: Dp = 12.dp,
-    circleColor: Color = SDKTheme.colors.brand,
+    circleColor: Color = SDKTheme.colors.primary,
     spaceBetween: Dp = 10.dp,
     travelDistance: Dp = 24.dp
 ) {

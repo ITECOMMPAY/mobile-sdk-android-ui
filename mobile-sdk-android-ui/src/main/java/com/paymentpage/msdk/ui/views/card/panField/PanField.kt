@@ -19,9 +19,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCard
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.validators.custom.PanValidator
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
-import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -29,7 +30,8 @@ import com.paymentpage.msdk.ui.utils.card.formatAmex
 import com.paymentpage.msdk.ui.utils.card.formatDinnersClub
 import com.paymentpage.msdk.ui.utils.card.formatOtherCardNumbers
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
-import com.paymentpage.msdk.ui.utils.extensions.drawableResourceIdFromDrawableName
+import com.paymentpage.msdk.ui.utils.extensions.customColor
+import com.paymentpage.msdk.ui.utils.extensions.paymentMethodLogoId
 import com.paymentpage.msdk.ui.views.card.CardScanningItem
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 
@@ -44,7 +46,7 @@ internal fun PanField(
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     var card by remember { mutableStateOf<PaymentMethodCard?>(null) }
-
+    val paymentOptions = LocalPaymentOptions.current
     Row(modifier = Modifier.fillMaxWidth()) {
         BoxWithConstraints(
             modifier = Modifier
@@ -119,13 +121,17 @@ internal fun PanField(
                 },
                 label = getStringOverride(OverridesKeys.TITLE_CARD_NUMBER),
                 trailingIcon = {
+                    val isDarkTheme = SDKTheme.colors.isDarkTheme
                     val context = LocalContext.current
                     var startIndex by remember { mutableStateOf(0) }
                     when {
-                        !initialValue.isNullOrEmpty() -> {
-                            val name = "card_type_${card?.code ?: ""}"
-                            val drawableId = remember(name) {
-                                context.drawableResourceIdFromDrawableName(name)
+                        initialValue.isNotEmpty() -> {
+                            val drawableId = remember {
+                                context.paymentMethodLogoId(
+                                    paymentMethodType = PaymentMethodType.CARD,
+                                    paymentMethodName = card?.code ?: "",
+                                    isDarkTheme = isDarkTheme
+                                )
                             }
                             Image(
                                 modifier = Modifier
@@ -135,12 +141,14 @@ internal fun PanField(
                                     id = if (drawableId > 0)
                                         drawableId
                                     else
-                                        R.drawable.card_logo
+                                        SDKTheme.images.defaultCardLogo
                                 ),
                                 contentDescription = null,
                                 contentScale = ContentScale.Fit,
                                 colorFilter = if (drawableId == 0)
-                                    ColorFilter.tint(SDKTheme.colors.brand)
+                                    ColorFilter.tint(
+                                        color = customColor(paymentOptions.brandColor)
+                                    )
                                 else
                                     null
                             )
@@ -159,10 +167,12 @@ internal fun PanField(
                                     modifier = Modifier
                                         .padding(5.dp)
                                         .size(25.dp),
-                                    painter = painterResource(id = R.drawable.card_logo),
+                                    painter = painterResource(id = SDKTheme.images.defaultCardLogo),
                                     contentDescription = null,
                                     contentScale = ContentScale.Fit,
-                                    colorFilter = ColorFilter.tint(SDKTheme.colors.brand)
+                                    colorFilter = ColorFilter.tint(
+                                        color = customColor(paymentOptions.brandColor)
+                                    )
                                 )
                         }
                     }

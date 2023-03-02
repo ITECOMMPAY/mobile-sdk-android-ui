@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.dp
 
 internal data class Shapes(
     val radius6: RoundedCornerShape = RoundedCornerShape(6.dp),
+    val radius8: RoundedCornerShape = RoundedCornerShape(8.dp),
     val radius12: RoundedCornerShape = RoundedCornerShape(12.dp)
 )
 

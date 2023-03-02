@@ -20,7 +20,7 @@ internal fun CustomButton(
     content: @Composable (RowScope.() -> Unit),
     isEnabled: Boolean,
     shape: Shape = SDKTheme.shapes.radius6,
-    color: Color = SDKTheme.colors.brand,
+    color: Color = SDKTheme.colors.primary,
     onClick: () -> Unit,
 ) {
     OutlinedButton(
@@ -30,7 +30,7 @@ internal fun CustomButton(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = color,
-            disabledBackgroundColor = color.copy(alpha = 0.4f)
+            disabledBackgroundColor = color.copy(alpha = 0.3f)
         ),
         shape = shape,
         border = null,

@@ -10,23 +10,26 @@ import com.paymentpage.msdk.ui.*
 
 internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
     SDKPaymentOptions(
+        //payment configuration
         paymentInfo = paymentInfo,
         recurrentInfo = recurrentData,
         recipientInfo = recipientInfo?.map(),
         actionType = SDKActionType.valueOf(actionType.name),
         screenDisplayModes = screenDisplayModes.map(),
-        logoImage = logoImage,
-        brandColor = brandColor,
-
-        merchantId = merchantId,
-        merchantName = merchantName,
-        merchantEnvironment = if (isTestEnvironment) GooglePayEnvironment.TEST else GooglePayEnvironment.PROD,
         additionalFields = additionalFields.map { additionalField ->
             SDKAdditionalField(
                 type = additionalField.type?.map(),
                 value = additionalField.value
             )
-        }
+        },
+        //google pay configuration
+        merchantId = merchantId,
+        merchantName = merchantName,
+        merchantEnvironment = if (isTestEnvironment) GooglePayEnvironment.TEST else GooglePayEnvironment.PROD,
+        //theme customization
+        isDarkTheme = isDarkTheme,
+        logoImage = logoImage,
+        brandColor = brandColor,
     )
 
 

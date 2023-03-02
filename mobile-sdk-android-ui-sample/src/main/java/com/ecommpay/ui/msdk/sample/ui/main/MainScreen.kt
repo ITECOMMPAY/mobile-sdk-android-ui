@@ -32,9 +32,9 @@ import com.ecommpay.ui.msdk.sample.ui.main.views.screenDisplayMode.SelectScreenD
 @Composable
 internal fun MainState(
     route: MainHostScreens.MainScreen,
-    viewUseCase: MainViewUC = viewUseCase(route.toString(), {
+    viewUseCase: MainViewUC = viewUseCase(route.toString()) {
         MainViewUC()
-    })
+    }
 ) {
     ComposeViewState(
         viewUseCase = viewUseCase
@@ -108,7 +108,6 @@ fun MainScreen(
         if (viewState.isVisibleCustomizationFields) {
             CustomizationFields(
                 viewState = viewState,
-                paymentData = paymentData,
                 intentListener = intentListener
             )
         }

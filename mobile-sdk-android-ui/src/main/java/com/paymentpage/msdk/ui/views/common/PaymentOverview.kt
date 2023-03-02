@@ -81,8 +81,8 @@ internal fun ExpandablePaymentOverview(
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
 
     val gradient = arrayOf(
-        0.0f to SDKTheme.colors.brand.copy(alpha = 0.95f),
-        1f to SDKTheme.colors.brand.copy(alpha = 0.80f),
+        0.0f to SDKTheme.colors.primary.copy(alpha = 0.95f),
+        1f to SDKTheme.colors.primary.copy(alpha = 0.80f),
     )
     Box(
         modifier = Modifier
@@ -166,7 +166,7 @@ internal fun ExpandablePaymentOverview(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(1.dp)
-                            .background(SDKTheme.colors.panelBackgroundColor.copy(alpha = 0.1f))
+                            .background(Color.White.copy(alpha = 0.1f))
                     )
                 }
                 AnimatedVisibility(visible = isExpanded) {

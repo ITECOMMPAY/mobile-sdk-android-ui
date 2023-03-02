@@ -78,7 +78,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
                 result.add(
                     UIPaymentMethod.UITokenizeCardPayPaymentMethod(
                         index = position,
-                        title = getStringOverride(OverridesKeys.BUTTON_ADD_NEW_CARD),
+                        title = "",
                         paymentMethod = it,
                     )
                 )

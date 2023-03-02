@@ -52,7 +52,7 @@ internal class Typography(
         private set
 }
 
-//Default light typography
+//Light typography
 private val typographyLightS12Light = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Light,
@@ -126,6 +126,80 @@ private val typographyLightS28Bold: TextStyle = TextStyle(
     fontSize = 28.sp,
 )
 
+//Dark typography
+private val typographyDarkS12Light = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Light,
+    color = Color.White,
+    fontSize = 12.sp
+)
+private val typographyDarkS12Normal: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Normal,
+    color = Color.White,
+    fontSize = 12.sp
+)
+private val typographyDarkS14Light: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Light,
+    color = Color.White,
+    fontSize = 14.sp
+)
+private val typographyDarkS14Normal: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Normal,
+    color = Color.White,
+    fontSize = 14.sp
+)
+private val typographyDarkS14SemiBold: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.SemiBold,
+    color = Color.White,
+    fontSize = 14.sp
+)
+private val typographyDarkS14Bold: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    color = Color.White,
+    fontSize = 14.sp
+)
+private val typographyDarkS16Normal: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Normal,
+    color = Color.White,
+    fontSize = 16.sp
+)
+private val typographyDarkS16Bold: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    color = Color.White,
+    fontSize = 16.sp
+)
+private val typographyDarkS18Bold: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    color = Color.White,
+    fontSize = 18.sp
+)
+private val typographyDarkS22Bold: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    color = Color.White,
+    fontSize = 22.sp
+)
+private val typographyDarkS24Bold: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    color = Color.White,
+    fontSize = 24.sp
+)
+private val typographyDarkS28Bold: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    color = Color.White,
+    fontSize = 28.sp,
+)
+
 internal fun lightTypography(): Typography = Typography(
     s12Light = typographyLightS12Light,
     s12Normal = typographyLightS12Normal,
@@ -139,6 +213,21 @@ internal fun lightTypography(): Typography = Typography(
     s22Bold = typographyLightS22Bold,
     s24Bold = typographyLightS24Bold,
     s28Bold = typographyLightS28Bold
+)
+
+internal fun darkTypography(): Typography = Typography(
+    s12Light = typographyDarkS12Light,
+    s12Normal = typographyDarkS12Normal,
+    s14Light = typographyDarkS14Light,
+    s14Normal = typographyDarkS14Normal,
+    s14SemiBold = typographyDarkS14SemiBold,
+    s14Bold = typographyDarkS14Bold,
+    s16Normal = typographyDarkS16Normal,
+    s16Bold = typographyDarkS16Bold,
+    s18Bold = typographyDarkS18Bold,
+    s22Bold = typographyDarkS22Bold,
+    s24Bold = typographyDarkS24Bold,
+    s28Bold = typographyDarkS28Bold
 )
 
 internal val LocalTypography = staticCompositionLocalOf { lightTypography() }

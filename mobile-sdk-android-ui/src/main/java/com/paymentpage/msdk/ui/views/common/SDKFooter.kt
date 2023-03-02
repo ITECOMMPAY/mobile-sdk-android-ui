@@ -46,7 +46,12 @@ internal fun SDKFooter(
                 Box(
                     modifier = Modifier
                         .size(3.dp)
-                        .background(SDKTheme.colors.footerTextColor)
+                        .background(
+                            color = if (!SDKTheme.colors.isDarkTheme)
+                                SDKTheme.colors.mediumGrey
+                            else
+                                SDKTheme.colors.neutral
+                        )
                 )
             }
         }
@@ -70,7 +75,10 @@ internal fun SDKFooter(
             text = LocalPaymentOptions.current.footerLabel ?: "",
             style = SDKTheme.typography.s12Light
                 .copy(
-                    color = SDKTheme.colors.footerTextColor,
+                    color = if (!SDKTheme.colors.isDarkTheme)
+                        SDKTheme.colors.mediumGrey
+                    else
+                        SDKTheme.colors.neutral,
                     fontStyle = FontStyle.Italic
                 )
         )

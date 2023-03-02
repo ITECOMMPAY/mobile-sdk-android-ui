@@ -6,6 +6,7 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 
 internal fun Context.drawableResourceIdFromDrawableName(name: String): Int {
     return this.resources.getIdentifier(
@@ -13,6 +14,24 @@ internal fun Context.drawableResourceIdFromDrawableName(name: String): Int {
         "drawable",
         this.packageName
     )
+}
+
+internal fun Context.paymentMethodLogoId(
+    paymentMethodType: PaymentMethodType,
+    paymentMethodName: String,
+    isDarkTheme: Boolean,
+): Int {
+    val themePostfixes = mutableListOf("light")
+    if (isDarkTheme) themePostfixes.add(index = 0, element = "dark")
+    var id = 0
+    themePostfixes.forEach {
+        if (id > 0)
+            return@forEach
+        val name =
+            "${paymentMethodType.name.lowercase()}_${paymentMethodName.lowercase()}_$it"
+        id = drawableResourceIdFromDrawableName(name)
+    }
+    return id
 }
 
 internal fun Context.findActivity(): Activity {

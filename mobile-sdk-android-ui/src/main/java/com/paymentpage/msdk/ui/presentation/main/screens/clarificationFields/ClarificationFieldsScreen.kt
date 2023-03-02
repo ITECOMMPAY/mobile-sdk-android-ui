@@ -18,7 +18,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.button.PayButton
-import com.paymentpage.msdk.ui.views.button.VerifyButton
+import com.paymentpage.msdk.ui.views.button.SDKButton
 import com.paymentpage.msdk.ui.views.common.PaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -31,7 +31,9 @@ internal fun ClarificationFieldsScreen(
 ) {
     val viewModel = LocalMainViewModel.current
     val clarificationFields = viewModel.lastState.clarificationFields
-    var clarificationFieldValues by remember { mutableStateOf<List<ClarificationFieldValue>?>(null) }
+    var clarificationFieldValues by remember {
+        mutableStateOf<List<ClarificationFieldValue>>(emptyList())
+    }
     var isClarificationFieldsValid by remember { mutableStateOf(false) }
 
     BackHandler(true) { onCancel() }
@@ -57,7 +59,7 @@ internal fun ClarificationFieldsScreen(
                         label = it.defaultLabel ?: "",
                         errorMessage = it.defaultErrorMessage,
                         errorMessageKey = OverridesKeys.MESSAGE_GENERAL_INVALID,
-                        isRequired = true //clarification fields always are true
+                        isRequired = true //clarification fields always are require
                     )
                 },
                 onCustomerFieldsChanged = { fields, isValid ->
@@ -78,14 +80,14 @@ internal fun ClarificationFieldsScreen(
                     currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                     isEnabled = isClarificationFieldsValid
                 ) {
-                    viewModel.sendClarificationFields(clarificationFieldValues!!)
+                    viewModel.sendClarificationFields(clarificationFieldValues)
                 }
             else
-                VerifyButton(
-                    verifyLabel = getStringOverride(OverridesKeys.BUTTON_AUTHORIZE),
+                SDKButton(
+                    label = getStringOverride(OverridesKeys.BUTTON_AUTHORIZE),
                     isEnabled = isClarificationFieldsValid
                 ) {
-                    viewModel.sendClarificationFields(clarificationFieldValues!!)
+                    viewModel.sendClarificationFields(clarificationFieldValues)
                 }
             Spacer(modifier = Modifier.size(16.dp))
             SDKFooter()
