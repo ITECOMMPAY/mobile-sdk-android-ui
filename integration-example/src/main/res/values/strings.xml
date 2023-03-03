@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Integration Example</string>
+    <string name="title_activity_compose">ComposeActivity</string>
+    <string name="title_activity_xml">XmlActivity</string>
+    <string name="main_label">Ecommpay Integration Example</string>
+    <string name="button_compose_integration_label">Compose Integration</string>
+    <string name="button_xml_integration_label">XML Integration</string>
+    <string name="tv_xml_integration_example_label">XML Integration Example</string>
+    <string name="compose_integration_example_label">Compose Integration Example</string>
+</resources>
