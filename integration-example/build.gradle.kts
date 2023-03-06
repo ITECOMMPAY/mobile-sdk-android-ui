@@ -35,6 +35,26 @@ android {
                     "\"" + gPayMerchantId + "\""
                 )
             }
+
+            getByName("release") {
+                buildConfigField(
+                    "String",
+                    "PROJECT_SECRET_KEY",
+                    "\"" + projectSecretKey + "\""
+                )
+
+                buildConfigField(
+                    "int",
+                    "PROJECT_ID",
+                    projectId
+                )
+
+                buildConfigField(
+                    "String",
+                    "GPAY_MERCHANT_ID",
+                    "\"" + gPayMerchantId + "\""
+                )
+            }
         }
     }
 }
