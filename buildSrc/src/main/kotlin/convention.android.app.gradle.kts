@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id ("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -79,7 +80,8 @@ android {
 }
 
 dependencies {
-
+    //mSDK Core
+    implementation(LibraryDependencies.Msdk.core)
     //AndroidX
     implementation(LibraryDependencies.AndroidX.coreKtx)
 

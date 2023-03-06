@@ -15,18 +15,18 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ecommpay.ui.msdk.sample.R
 import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewIntents
-import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
+import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewState
 import com.ecommpay.ui.msdk.sample.utils.extensions.bitmapFromUri
 import com.ecommpay.ui.msdk.sample.utils.extensions.resIdByName
 import com.ecommpay.ui.msdk.sample.utils.extensions.uriFromResourceId
-import com.ecommpay.ui.msdk.sample.R
 
 
 @Composable
 internal fun SelectImagesList(
     selectedResourceImageId: Int,
-    paymentData: PaymentData,
+    viewState: MainViewState,
     intentListener: (MainViewIntents) -> Unit,
 ) {
     val context = LocalContext.current
@@ -47,8 +47,10 @@ internal fun SelectImagesList(
                     onClick = {
                         intentListener(
                             MainViewIntents.SelectResourceImage(
-                            id = index,
-                            paymentData = paymentData.copy(bitmap = bitmap)))
+                                id = index,
+                                bitmap = bitmap
+                            )
+                        )
                     }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -69,7 +71,7 @@ internal fun SelectImagesList(
     Spacer(modifier = Modifier.size(10.dp))
     Text(text = "Current logo:", color = Color.Black, fontSize = 18.sp)
     Spacer(modifier = Modifier.size(10.dp))
-    val bitmapFinalImage = paymentData.bitmap?.asImageBitmap()
+    val bitmapFinalImage = viewState.bitmap?.asImageBitmap()
     if (bitmapFinalImage != null) {
         Image(
             modifier = Modifier
@@ -77,7 +79,8 @@ internal fun SelectImagesList(
                 .height(50.dp)
                 .background(Color.LightGray),
             bitmap = bitmapFinalImage,
-            contentDescription = null)
+            contentDescription = null
+        )
     } else {
         Box(
             modifier = Modifier
@@ -88,10 +91,13 @@ internal fun SelectImagesList(
         )
     }
     Spacer(modifier = Modifier.size(10.dp))
-    SelectLocalImage {
+    SelectLocalImage { uri ->
         intentListener(
-            MainViewIntents.SelectLocalImage(it,
-            paymentData = paymentData.copy(bitmap = bitmapFromUri(it, context))))
+            MainViewIntents.SelectLocalImage(
+                uri = uri,
+                bitmap = bitmapFromUri(uri, context)
+            )
+        )
     }
     Spacer(modifier = Modifier.size(10.dp))
     Button(
@@ -101,9 +107,10 @@ internal fun SelectImagesList(
         onClick = {
             intentListener(
                 MainViewIntents.SelectResourceImage(
-                id = -1,
-                paymentData = paymentData.copy(bitmap = null)
-            ))
+                    id = -1,
+                    bitmap = null
+                )
+            )
         }
     ) {
         Text(text = "Reset logo", color = Color.White, fontSize = 18.sp)

@@ -21,9 +21,9 @@ import com.ecommpay.ui.msdk.sample.ui.threeDSecure.views.ThreeDSecureCheckbox
 @Composable
 internal fun ThreeDSecureState(
     route: MainHostScreens.ThreeDSecure,
-    viewUseCase: ThreeDSecureViewUC = viewUseCase(route.toString(), {
+    viewUseCase: ThreeDSecureViewUC = viewUseCase(route.toString()) {
         ThreeDSecureViewUC()
-    })
+    }
 ) {
     ComposeViewState(
         viewUseCase = viewUseCase

@@ -16,7 +16,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.customColor
 
 
 @Composable
@@ -25,15 +27,15 @@ internal fun SDKTopBar(
     title: String? = null,
     showCloseButton: Boolean = true,
     onClose: (() -> Unit)? = null,
-    onBack: (() -> Unit)? = null
+    onBack: (() -> Unit)? = null,
 ) {
+    val paymentOptions = LocalPaymentOptions.current
     Row(
         modifier
             .fillMaxWidth()
-            //.background(SDKTheme.colors.backgroundColor)
             .wrapContentSize(),
         verticalAlignment = Alignment.CenterVertically,
-        ) {
+    ) {
         Text(
             modifier = Modifier.weight(1f),
             maxLines = 1,
@@ -47,12 +49,14 @@ internal fun SDKTopBar(
                 modifier = Modifier
                     .size(25.dp)
                     .clickable(
-                        indication = null, //отключаем анимацию при клике
+                        indication = null, //turn off animation by click
                         interactionSource = remember { MutableInteractionSource() },
                         onClick = { onBack() }
                     ),
                 imageVector = Icons.Default.ArrowBack,
-                colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
+                colorFilter = ColorFilter.tint(
+                    color = customColor(brandColor = paymentOptions.brandColor)
+                ),
                 contentDescription = null,
             )
             Spacer(modifier = Modifier.width(10.dp))
@@ -68,7 +72,9 @@ internal fun SDKTopBar(
                         onClick = { onClose() }
                     ),
                 imageVector = Icons.Default.Close,
-                colorFilter = ColorFilter.tint(SDKTheme.colors.iconColor),
+                colorFilter = ColorFilter.tint(
+                    color = customColor(brandColor = paymentOptions.brandColor)
+                ),
                 contentDescription = null,
             )
     }

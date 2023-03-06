@@ -12,10 +12,18 @@ import com.paymentpage.msdk.ui.views.common.CustomButton
 @Composable
 internal fun PayButton(
     modifier: Modifier = Modifier,
+    isEnabled: Boolean,
+    textColor: Color = Color.White.copy(
+        alpha = when {
+            !SDKTheme.colors.isDarkTheme -> 1.0f
+            isEnabled -> 1.0f
+            //disabled && darkTheme
+            else -> 0.3f
+        }
+    ),
     payLabel: String,
     amount: String,
     currency: String,
-    isEnabled: Boolean,
     onClick: () -> Unit,
 ) {
     CustomButton(
@@ -24,13 +32,13 @@ internal fun PayButton(
         content = {
             Text(
                 text = payLabel,
-                style = SDKTheme.typography.s16Normal.copy(color = Color.White)
+                style = SDKTheme.typography.s16Normal.copy(color = textColor)
             )
             Text(text = " ")
             Text(
                 text = amount,
                 style = SDKTheme.typography.s16Normal.copy(
-                    color = Color.White,
+                    color = textColor,
                     fontWeight = FontWeight.Bold
                 )
             )
@@ -38,7 +46,7 @@ internal fun PayButton(
             Text(
                 text = currency,
                 style = SDKTheme.typography.s16Normal.copy(
-                    color = Color.White,
+                    color = textColor,
                     fontWeight = FontWeight.Bold
                 )
             )

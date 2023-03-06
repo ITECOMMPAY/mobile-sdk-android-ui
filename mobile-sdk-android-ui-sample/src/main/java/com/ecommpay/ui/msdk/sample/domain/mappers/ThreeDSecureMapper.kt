@@ -1,20 +1,20 @@
 package com.ecommpay.ui.msdk.sample.domain.mappers
 
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureCustomerInfo
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureInfo
-import com.ecommpay.ui.msdk.sample.data.entities.threeDSecure.ThreeDSecureInfoModel
+import com.ecommpay.msdk.ui.threeDSecure.EcmpThreeDSecureCustomerInfo
+import com.ecommpay.msdk.ui.threeDSecure.EcmpThreeDSecureInfo
+import com.ecommpay.ui.msdk.sample.data.storage.entities.threeDSecure.ThreeDSecureInfoModel
 
 
-internal fun ThreeDSecureInfoModel.map(): ThreeDSecureInfo =
-    ThreeDSecureInfo(
-        threeDSecureCustomerInfo = ThreeDSecureCustomerInfo(
+internal fun ThreeDSecureInfoModel.map(): EcmpThreeDSecureInfo =
+    EcmpThreeDSecureInfo(
+        ecmpThreeDSecureCustomerInfo = EcmpThreeDSecureCustomerInfo(
             addressMatch = addressMatch,
             homePhone = homePhone,
             workPhone = workPhone,
             billingRegionCode = billingRegionCode,
-            accountInfo = customerAccountInfo?.customer?.account?.map(),
-            shippingInfo = customerShipping?.customer?.shipping?.map(),
-            mpiResultInfo = customerMpiResult?.customer?.mpiResult?.map()
+            ecmpThreeDSecureAccountInfo = customerAccountInfo?.customer?.account?.map(),
+            ecmpThreeDSecureShippingInfo = customerShipping?.customer?.shipping?.map(),
+            ecmpThreeDSecureMpiResultInfo = customerMpiResult?.customer?.mpiResult?.map()
         ),
-        threeDSecurePaymentInfo = paymentMerchantRisk?.payment?.map()
+        ecmpThreeDSecurePaymentInfo = paymentMerchantRisk?.payment?.map()
     )

@@ -4,17 +4,19 @@ import androidx.compose.runtime.Composable
 
 @Composable
 internal fun ConfirmAlertDialog(
-    title: @Composable (() -> Unit)? = null,
-    message: @Composable (() -> Unit),
+    title: String? = null,
+    message: String,
     onConfirmButtonClick: (() -> Unit),
     onDismissRequest: (() -> Unit)? = null,
-    confirmButtonText: String
+    confirmButtonText: String,
+    brandColor: String? = null,
 ) {
     SDKAlertDialog(
         title = title,
         message = message,
         onConfirmButtonClick = onConfirmButtonClick,
         confirmButtonText = confirmButtonText,
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
+        brandColor = brandColor
     )
 }

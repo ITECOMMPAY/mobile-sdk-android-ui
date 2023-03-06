@@ -2,7 +2,6 @@
 
 package com.paymentpage.msdk.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -37,19 +36,31 @@ internal object SDKTheme {
 
 @Composable
 internal fun SDKTheme(
-    isDark: Boolean = isSystemInDarkTheme(),
+    isDarkTheme: Boolean = false,
     brandColor: Color? = null,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-//    val colors = if (isDark) DarkColorPalette else LightColorPalette
-//    val typography = if (isDark) darkTypography() else  lightTypography()
-//    val images = if (isDark) darkImages() else lightImages()
+    val colors = if (isDarkTheme)
+        darkColors(primaryColor = brandColor)
+    else
+        lightColors(primaryColor = brandColor)
+
+    val typography = if (isDarkTheme)
+        darkTypography()
+    else
+        lightTypography()
+
+    val images = if (isDarkTheme)
+        darkImages()
+    else
+        lightImages()
+
     CompositionLocalProvider(
-        LocalColors provides lightColors(brandColor = brandColor),
+        LocalColors provides colors,
         LocalDimensions provides SDKTheme.dimensions,
-        LocalTypography provides lightTypography(),
+        LocalTypography provides typography,
         LocalShapes provides SDKTheme.shapes,
-        LocalImages provides lightImages()
+        LocalImages provides images
     ) {
         content()
     }

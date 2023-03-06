@@ -1,6 +1,5 @@
 plugins {
     id("convention.android.app")
-    id ("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -13,6 +12,5 @@ android {
 }
 
 dependencies {
-    implementation(LibraryDependencies.Msdk.core)
     implementation(project(":mobile-sdk-android-ui-ecommpay"))
 }

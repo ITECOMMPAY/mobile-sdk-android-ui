@@ -1,8 +1,5 @@
 package com.ecommpay.ui.msdk.sample.domain.ui.base
 
-//import timber.log.Timber
-import kotlin.collections.HashMap
-
 object ViewUseCasesStore {
     private val mMap = HashMap<String, ViewUseCaseContract<*, *>>()
 
@@ -13,7 +10,7 @@ object ViewUseCasesStore {
     }
 
     fun <VUC : ViewUseCaseContract<*, *>> get(key: String, factory: () -> VUC): VUC =
-        (mMap.get(key) as VUC?) ?: put(key, factory()).also { print() }
+        (mMap.get(key) as VUC?) ?: put(key, factory())
 
     fun <VUC : ViewUseCaseContract<*, *>> getOrNull(key: String): VUC? = (mMap.get(key) as VUC?)
 
@@ -22,30 +19,11 @@ object ViewUseCasesStore {
             map.value.clear()
             mMap.remove(map.key)
         }
-        print()
-    }
-
-    fun clear() {
-        mMap.clear()
-        print()
-    }
-
-    fun print() {
-        //Timber.e("Usecases - [")
-        val lastIndex = mMap.keys.size - 1
-        mMap.keys.sortedBy { it.length }.forEachIndexed { index, key ->
-            //if(index != lastIndex) Timber.e("$key,")
-            //else Timber.e("$key]")
-        }
     }
 }
 
 inline fun <reified VUC : ViewUseCaseContract<*, *>> viewUseCase(
     key: String,
     noinline factory: () -> VUC,
-    viewUseCasesStore: ViewUseCasesStore = checkNotNull(ViewUseCasesStore) {
-        "No ViewModelStoreOwner was provided via LocalViewModelStoreOwner"
-    }
-
 ): VUC = ViewUseCasesStore.get(key, factory)
 

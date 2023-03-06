@@ -22,7 +22,10 @@ internal fun SDKTextWithLink(
         .getLinkMessageByKey(overrideKey)
 
     if (linkedMessage == null) {
-        Text(text = overrideKey)
+        Text(
+            text = overrideKey,
+            style = style
+        )
     } else {
         val linkedString = linkedMessage.annotatedString()
         val uriHandler = LocalUriHandler.current

@@ -2,15 +2,15 @@ package com.paymentpage.msdk.ui.views.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
-import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 import com.paymentpage.msdk.ui.views.common.alertDialog.ConfirmAlertDialog
@@ -23,6 +23,7 @@ internal fun CvvField(
     length: Int = if (cardType == "amex") 4 else 3,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
+    val paymentOptions = LocalPaymentOptions.current
     var cvvAlertDialogState by remember { mutableStateOf(false) }
     CustomTextField(
         initialValue = initialValue,
@@ -45,17 +46,19 @@ internal fun CvvField(
         trailingIcon = {
             Image(
                 modifier = Modifier.clickable(onClick = { cvvAlertDialogState = true }),
-                painter = painterResource(id = R.drawable.cvv_info_icon), contentDescription = null
+                painter = painterResource(id = SDKTheme.images.cvvInfoLogo),
+                contentDescription = null
             )
         }
     )
     if (cvvAlertDialogState) {
         ConfirmAlertDialog(
-            title = { Text(text = getStringOverride(OverridesKeys.TITLE_ABOUT_CVV)) },
-            message = { Text(text = getStringOverride(OverridesKeys.MESSAGE_ABOUT_CVV)) },
+            title = getStringOverride(OverridesKeys.TITLE_ABOUT_CVV),
+            message = getStringOverride(OverridesKeys.MESSAGE_ABOUT_CVV),
             onConfirmButtonClick = { cvvAlertDialogState = false },
             confirmButtonText = getStringOverride(OverridesKeys.BUTTON_OK),
-            onDismissRequest = { cvvAlertDialogState = false }
+            onDismissRequest = { cvvAlertDialogState = false },
+            brandColor = paymentOptions.brandColor
         )
     }
 }

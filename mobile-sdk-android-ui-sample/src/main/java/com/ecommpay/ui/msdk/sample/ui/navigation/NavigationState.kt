@@ -11,11 +11,11 @@ import com.ecommpay.ui.msdk.sample.ui.base.ComposeViewState
 fun NavigationState(
     startRoute: NavRoutes
 ) {
-    val viewUseCase: NavigationViewUC = viewUseCase("Navigation", {
+    val viewUseCase: NavigationViewUC = viewUseCase("Navigation") {
         NavigationViewUC(
             startRoute = startRoute
         )
-    })
+    }
 
     ComposeViewState(
         viewUseCase = viewUseCase,

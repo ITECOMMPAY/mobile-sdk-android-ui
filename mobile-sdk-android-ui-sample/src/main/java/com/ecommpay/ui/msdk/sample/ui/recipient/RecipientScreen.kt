@@ -22,9 +22,9 @@ import com.ecommpay.ui.msdk.sample.ui.recipient.views.RecipientTitle
 @Composable
 internal fun RecipientState(
     route: MainHostScreens.Recipient,
-    viewUseCase: RecipientViewUC = viewUseCase(route.toString(), {
+    viewUseCase: RecipientViewUC = viewUseCase(route.toString()) {
         RecipientViewUC()
-    }),
+    },
 ) {
     ComposeViewState(viewUseCase = viewUseCase) { viewState, intentListener ->
         RecipientScreen(

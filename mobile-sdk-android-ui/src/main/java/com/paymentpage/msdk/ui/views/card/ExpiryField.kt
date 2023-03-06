@@ -14,12 +14,14 @@ import com.paymentpage.msdk.ui.views.common.CustomTextField
 internal fun ExpiryField(
     modifier: Modifier,
     initialValue: String? = null,
+    scanningExpiry: String? = null,
     isDisabled: Boolean = false,
     showRedStarForRequiredFields: Boolean = true,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     CustomTextField(
         initialValue = initialValue?.replace("/", ""),
+        pastedValue = scanningExpiry?.replace("/", ""),
         modifier = modifier,
         onFilterValueBefore = { text -> text.filter { it.isDigit() } },
         onRequestValidatorMessage = {

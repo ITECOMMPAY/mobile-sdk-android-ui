@@ -24,8 +24,8 @@ internal fun SelectableCustomerField(
     var selectedText by remember { mutableStateOf(initialValue ?: "") }
     var dialogState by remember { mutableStateOf(false) }
     CustomTextField(
-        value = selectedText,
         initialValue = initialValue,
+        pastedValue = selectedText,
         onValueChanged = null,
         isEditable = false,
         label = customerField.label,
@@ -37,7 +37,7 @@ internal fun SelectableCustomerField(
                     dialogState = true
                 },
                 imageVector = Icons.Default.KeyboardArrowDown,
-                colorFilter = ColorFilter.tint(SDKTheme.colors.navigationIconColor),
+                colorFilter = ColorFilter.tint(SDKTheme.colors.neutral),
                 contentDescription = null,
             )
         },

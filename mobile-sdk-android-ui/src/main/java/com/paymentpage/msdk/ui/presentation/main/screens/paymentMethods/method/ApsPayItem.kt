@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -20,6 +21,7 @@ import com.paymentpage.msdk.ui.presentation.main.showAps
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
+import com.paymentpage.msdk.ui.utils.extensions.customColor
 import com.paymentpage.msdk.ui.views.button.PayButton
 
 @Composable
@@ -29,20 +31,21 @@ internal fun ApsPayItem(
 ) {
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
-
+    val paymentOptions = LocalPaymentOptions.current
     ExpandablePaymentMethodItem(
         method = method,
         isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
-        headerBackgroundColor = SDKTheme.colors.backgroundColor,
         fallbackIcon = painterResource(id = SDKTheme.images.apsDefaultLogoResId),
-        prefixNameResourceIcon = "aps",
+        //default aps icon color
+        iconColor = ColorFilter.tint(
+            color = customColor(paymentOptions.brandColor)
+        ),
     ) {
         Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = getStringOverride(OverridesKeys.APS_PAYMENT_DISCLAIMER),
-                color = SDKTheme.colors.primaryTextColor,
                 style = SDKTheme.typography.s14Light,
                 textAlign = TextAlign.Start
             )
@@ -56,14 +59,6 @@ internal fun ApsPayItem(
                 paymentMethodsViewModel.setCurrentMethod(method)
                 mainViewModel.showAps(method = method)
             }
-//            Spacer(modifier = Modifier.size(10.dp))
-//            Text(
-//                modifier = Modifier.fillMaxWidth(),
-//                text = getStringOverride("aps_vat_disclaimer"),
-//                color = SDKTheme.colors.primaryTextColor,
-//                style = SDKTheme.typography.s12Light,
-//                textAlign = TextAlign.Center
-//            )
         }
     }
 }

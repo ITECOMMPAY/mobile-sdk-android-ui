@@ -26,9 +26,9 @@ import com.ecommpay.ui.msdk.sample.ui.recurrent.views.RecurrentTitle
 @Composable
 internal fun RecurrentState(
     route: MainHostScreens.Recurrent,
-    viewUseCase: RecurrentViewUC = viewUseCase(route.toString(), {
+    viewUseCase: RecurrentViewUC = viewUseCase(route.toString()) {
         RecurrentViewUC()
-    })
+    }
 ) {
     ComposeViewState(
         viewUseCase = viewUseCase) { viewState, intentListener ->

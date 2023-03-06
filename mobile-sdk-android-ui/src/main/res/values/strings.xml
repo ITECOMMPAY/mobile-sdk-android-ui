@@ -3,4 +3,6 @@
     <string name="cancel_label">Cancel</string>
     <string name="error_label">Error</string>
     <string name="acs_mock_mode_toast_label">Acs page will be closed automatically after 2 seconds </string>
+    <string name="title_camera_permission_label">Camera lets you scan your bank card. To enable this, click App Settings</string>
+    <string name="button_camera_permission_label">App Settings</string>
 </resources>

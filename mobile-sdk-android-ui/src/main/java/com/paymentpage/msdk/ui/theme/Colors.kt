@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.paymentpage.msdk.ui.theme
 
 import androidx.compose.runtime.getValue
@@ -9,92 +7,122 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 internal class Colors(
+    isDarkTheme: Boolean,
     //Brand color
-    brand: Color,
-    backgroundTextFieldColor: Color,
-    navigationIconColor: Color,
-    primaryTextColor: Color,
-    secondaryTextColor: Color,
-    disabledTextColor: Color,
-    successTextColor: Color,
-    errorTextColor: Color,
-    backgroundColor: Color,
-    panelBackgroundColor: Color,
-    panelBackgroundErrorColor: Color,
-    borderColor: Color,
-    borderErrorColor: Color,
-    iconColor: Color,
-    footerTextColor: Color,
+    primary: Color,
+    background: Color,
+    containerRed: Color,
+    red: Color,
+    containerGreen: Color,
+    green: Color,
+    mediumGrey: Color,
+    highlight: Color,
+    inputField: Color,
+    grey: Color,
+    neutral: Color,
+    link: Color,
+    container: Color,
+    accent: Color,
 ) {
-    var brand by mutableStateOf(brand)
+    var isDarkTheme by mutableStateOf(isDarkTheme)
         private set
-    var backgroundTextFieldColor by mutableStateOf(backgroundTextFieldColor)
+    var primary by mutableStateOf(primary)
         private set
-    var navigationIconColor by mutableStateOf(navigationIconColor)
+    var background by mutableStateOf(background)
         private set
-    var primaryTextColor by mutableStateOf(primaryTextColor)
+    var containerRed by mutableStateOf(containerRed)
         private set
-    var secondaryTextColor by mutableStateOf(secondaryTextColor)
+    var red by mutableStateOf(red)
         private set
-    var disabledTextColor by mutableStateOf(disabledTextColor)
+    var containerGreen by mutableStateOf(containerGreen)
         private set
-    var successTextColor by mutableStateOf(successTextColor)
+    var green by mutableStateOf(green)
         private set
-    var errorTextColor by mutableStateOf(errorTextColor)
+    var highlight by mutableStateOf(highlight)
         private set
-    var backgroundColor by mutableStateOf(backgroundColor)
+    var inputField by mutableStateOf(inputField)
         private set
-    var panelBackgroundColor by mutableStateOf(panelBackgroundColor)
+    var grey by mutableStateOf(grey)
         private set
-    var borderColor by mutableStateOf(borderColor)
+    var mediumGrey by mutableStateOf(mediumGrey)
         private set
-    var footerTextColor by mutableStateOf(footerTextColor)
+    var neutral by mutableStateOf(neutral)
         private set
-    var panelBackgroundErrorColor by mutableStateOf(panelBackgroundErrorColor)
+    var link by mutableStateOf(link)
         private set
-    var borderErrorColor by mutableStateOf(borderErrorColor)
+    var container by mutableStateOf(container)
         private set
-    var iconColor by mutableStateOf(iconColor)
+    var accent by mutableStateOf(accent)
         private set
 }
 
-val BrandLight = Color(0xFF00579E)
+//Light theme
+private val lightThemePrimary = Color(0xFF00579E)
+private val lightThemeBackground = Color(0xFFFFFFFF)
+private val lightThemeContainerRed = Color(0xFFF8EAEA)
+private val lightThemeRed = Color(0xFFC03230)
+private val lightThemeContainerGreen = Color(0xFFEBFBEE)
+private val lightThemeGreen = Color(0xFF00CC24)
+private val lightThemeHighlight = Color(0xFFEBEBEE)
+private val lightThemeInputField = Color(0xFFF6F7F9)
+private val lightThemeGrey = Color(0xFF666666)
+private val lightThemeMediumGrey = Color(0xFFBCBDBE)
+private val lightThemeNeutral = Color(0xFF000000)
+private val lightThemeLink = Color(0xFF00579E)
+private val lightThemeContainer = Color(0xFFE0E0E0)
+private val lightThemeAccent = Color(0xFFF2F6FA)
 
-private val colorBlack = Color(0xFF000000)
-private val colorWhite = Color(0xFFFFFFFF)
+//Dark Theme
+private val darkThemePrimary = Color(0xFF054BA0)
+private val darkThemeBackground = Color(0xFF181826)
+private val darkThemeContainerRed = Color(0xFF4F1B21)
+private val darkThemeRed = Color(0xFFDB1F35)
+private val darkThemeContainerGreen = Color(0xFF003B0A)
+private val darkThemeGreen = Color(0xFF00CC24)
+private val darkThemeHighlight = Color(0xFF3C3F5C)
+private val darkThemeInputField = Color(0xFF34374D)
+private val darkThemeGrey = Color(0xFFA3A3A3)
+private val darkThemeMediumGrey = Color(0xFF666980)
+private val darkThemeNeutral = Color(0xFFFFFFFF)
+private val darkThemeLink = Color(0xFF4299FF)
+private val darkThemeContainer = Color(0xFF27293D)
+private val darkThemeAccent = Color(0xFF323757)
 
-//Default Light theme
-private val lightThemeBrandColor = Color(0xFF00579E)
-private val lightThemeBackgroundTextFieldColor = lightThemeBrandColor.copy(alpha = 0.05f)
-
-private val lightThemeLightGrayColor = Color(0xFFF6F7F9)
-private val lightThemeMediumGrayColor = Color(0xFFBCBDBE)
-private val lightThemeDarkGrayColor = Color(0xFF666666)
-private val lightThemeGrayColor = Color(0xFFEBEBEE)
-
-private val lightThemeGreenColor = Color(0xFF00CC24)
-private val lightThemeRedColor = Color(0xFFC03230)
-private val lightThemeLightRedColor = Color(0xFFF8EAEA)
-
-
-internal fun lightColors(brandColor: Color? = lightThemeBrandColor): Colors = Colors(
-    brand = brandColor ?: lightThemeBrandColor,
-    backgroundTextFieldColor = brandColor?.copy(alpha = 0.05f) ?: lightThemeBackgroundTextFieldColor,
-    navigationIconColor = colorBlack,
-    primaryTextColor = colorBlack,
-    secondaryTextColor = lightThemeDarkGrayColor,
-    disabledTextColor = lightThemeMediumGrayColor,
-    successTextColor = lightThemeGreenColor,
-    errorTextColor = lightThemeRedColor,
-    backgroundColor = colorWhite,
-    iconColor = brandColor ?: lightThemeBrandColor,
-    panelBackgroundColor = lightThemeLightGrayColor,
-    borderColor = lightThemeGrayColor,
-    footerTextColor = lightThemeMediumGrayColor,
-    panelBackgroundErrorColor = lightThemeLightRedColor,
-    borderErrorColor = lightThemeRedColor
+internal fun lightColors(primaryColor: Color? = null): Colors = Colors(
+    isDarkTheme = false,
+    primary = primaryColor ?: lightThemePrimary,
+    background = lightThemeBackground,
+    containerRed = lightThemeContainerRed,
+    red = lightThemeRed,
+    containerGreen = lightThemeContainerGreen,
+    green = lightThemeGreen,
+    highlight = lightThemeHighlight,
+    inputField = lightThemeInputField,
+    grey = lightThemeGrey,
+    mediumGrey = lightThemeMediumGrey,
+    neutral = lightThemeNeutral,
+    link = lightThemeLink,
+    container = lightThemeContainer,
+    accent = lightThemeAccent
 )
 
+internal fun darkColors(primaryColor: Color? = null): Colors = Colors(
+    isDarkTheme = true,
+    primary = primaryColor ?: darkThemePrimary,
+    background = darkThemeBackground,
+    containerRed = darkThemeContainerRed,
+    red = darkThemeRed,
+    containerGreen = darkThemeContainerGreen,
+    green = darkThemeGreen,
+    highlight = darkThemeHighlight,
+    inputField = darkThemeInputField,
+    grey = darkThemeGrey,
+    mediumGrey = darkThemeMediumGrey,
+    neutral = darkThemeNeutral,
+    link = darkThemeLink,
+    container = darkThemeContainer,
+    accent = darkThemeAccent
+)
 
 internal val LocalColors = staticCompositionLocalOf { lightColors() }
 

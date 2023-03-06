@@ -22,7 +22,7 @@ internal fun SelectItemsDialog(
     items: Map<String?, String?>,
     dialogShape: Shape = SDKTheme.shapes.radius12,
     itemShape: Shape = RectangleShape,
-    backgroundColor: Color = SDKTheme.colors.backgroundColor,
+    backgroundColor: Color = SDKTheme.colors.background,
     onDismissRequest: () -> Unit,
     onClickItem: (String) -> Unit,
 ) {
@@ -62,7 +62,7 @@ internal fun SelectItemsDialog(
                                     .fillMaxWidth()
                                     .height(1.dp)
                                     .background(
-                                        color = SDKTheme.colors.borderColor
+                                        color = SDKTheme.colors.highlight
                                     )
                             )
                         }

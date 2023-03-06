@@ -1,10 +1,10 @@
 package com.ecommpay.ui.msdk.sample.domain.mappers
 
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecureGiftCardInfo
-import com.ecommpay.ui.msdk.sample.data.entities.threeDSecure.payment.GiftCard
+import com.ecommpay.msdk.ui.threeDSecure.EcmpThreeDSecureGiftCardInfo
+import com.ecommpay.ui.msdk.sample.data.storage.entities.threeDSecure.payment.GiftCard
 
-internal fun GiftCard.map(): ThreeDSecureGiftCardInfo =
-    ThreeDSecureGiftCardInfo(
+internal fun GiftCard.map(): EcmpThreeDSecureGiftCardInfo =
+    EcmpThreeDSecureGiftCardInfo(
         amount = amount,
         currency = currency,
         count = count

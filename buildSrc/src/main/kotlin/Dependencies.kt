@@ -2,7 +2,7 @@
 
 object Library {
     const val artifactId = "msdk-ui"
-    const val version = "2.4.0"
+    const val version = "3.0.0"
     const val group = "com.ecommpay"
 }
 
@@ -15,6 +15,10 @@ object Versions {
 }
 
 object LibraryDependencies {
+    object CardIO {
+        const val cardIO= "io.card:android-sdk:5.5.1"
+    }
+
     object Compose {
         const val ui = "androidx.compose.ui:ui:${Versions.compose}"
         const val material = "androidx.compose.material:material:${Versions.compose}"
@@ -31,6 +35,7 @@ object LibraryDependencies {
     object Accompanist {
         const val navigation =
             "com.google.accompanist:accompanist-navigation-animation:0.25.1"
+        const val permissions = "com.google.accompanist:accompanist-permissions:0.25.1"
     }
 
     object AndroidX {

@@ -13,9 +13,18 @@ import com.paymentpage.msdk.ui.views.common.CustomButton
 internal fun SDKButton(
     modifier: Modifier = Modifier,
     label: String,
-    textStyle: TextStyle = SDKTheme.typography.s16Normal.copy(color = Color.White),
     isEnabled: Boolean,
-    color: Color = SDKTheme.colors.brand,
+    textStyle: TextStyle = SDKTheme.typography.s16Normal.copy(
+        color = Color.White.copy(
+            alpha = when {
+                !SDKTheme.colors.isDarkTheme -> 1.0f
+                isEnabled -> 1.0f
+                //disabled && darkTheme
+                else -> 0.3f
+            }
+        ),
+    ),
+    color: Color = SDKTheme.colors.primary,
     onClick: () -> Unit,
 ) {
     CustomButton(

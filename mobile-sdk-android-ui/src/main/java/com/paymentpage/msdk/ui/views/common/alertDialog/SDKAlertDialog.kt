@@ -6,31 +6,48 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.DialogProperties
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.customColor
 
 @Composable
 internal fun SDKAlertDialog(
-    title: @Composable (() -> Unit)? = null,
-    message: @Composable (() -> Unit),
+    title: String? = null,
+    message: String,
     onDismissButtonClick: (() -> Unit)? = null,
     dismissButtonText: String? = null,
     onConfirmButtonClick: (() -> Unit),
     confirmButtonText: String,
-    onDismissRequest: (() -> Unit)? = onDismissButtonClick
+    onDismissRequest: (() -> Unit)? = onDismissButtonClick,
+    brandColor: String? = null,
 ) {
     AlertDialog(
-        title = title,
-        text = message,
+        title = if (title != null) {
+            {
+                Text(
+                    text = title,
+                    color = SDKTheme.colors.neutral
+                )
+            }
+        } else {
+            null
+        },
+        text = {
+            Text(
+                text = message,
+                color = SDKTheme.colors.neutral
+            )
+        },
         onDismissRequest = {
             if (onDismissRequest != null) {
                 onDismissRequest()
             }
         },
+
         dismissButton = {
             if (onDismissButtonClick != null) {
                 TextButton(onClick = onDismissButtonClick) {
                     Text(
                         text = dismissButtonText ?: "",
-                        color = SDKTheme.colors.brand
+                        color = customColor(brandColor)
                     )
                 }
             }
@@ -39,13 +56,14 @@ internal fun SDKAlertDialog(
             TextButton(onClick = onConfirmButtonClick) {
                 Text(
                     text = confirmButtonText,
-                    color = SDKTheme.colors.brand
+                    color = customColor(brandColor)
                 )
             }
         },
         properties = DialogProperties(
             dismissOnBackPress = (onDismissRequest != null),
             dismissOnClickOutside = (onDismissRequest != null)
-        )
+        ),
+        backgroundColor = SDKTheme.colors.background
     )
 }
