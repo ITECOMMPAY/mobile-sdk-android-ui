@@ -250,4 +250,4 @@ To integrate the web service with the [Ecommpay](https://ecommpay.com/)  payment
 
 If you have any questions about working with SDK UI for Android, contact the  ecommpay  technical support specialists ([support@ecommpay.com](mailto:support@ecommpay.com)).
 
-For more detail information see [docs](https://developers.ecommpay.com/en/en_sdk_ui_and_core_android.html#en_sdk_ui_and_core_android).
+For more detailed information see [docs](https://developers.ecommpay.com/en/en_sdk_ui_and_core_android.html#en_sdk_ui_and_core_android).
