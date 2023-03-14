@@ -14,6 +14,7 @@ object ProcessRepository {
     var actionType: EcmpActionType = EcmpActionType.Sale
     var screenDisplayModes: List<EcmpScreenDisplayMode> = listOf(EcmpScreenDisplayMode.DEFAULT)
     var paymentData: PaymentData = PaymentData()
+    var hideScanningCards: Boolean = false
     //Recurrent
     var recurrentData: RecurrentData? = null
     var isEnabledRecurrent: Boolean = false

@@ -121,6 +121,14 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     )
                 )
             }
+            is MainViewIntents.ChangeHideScanningCardsCheckbox -> {
+                ProcessRepository.hideScanningCards = !(viewState.value.hideScanningCards)
+                updateState(
+                    viewState.value.copy(
+                        hideScanningCards = ProcessRepository.hideScanningCards
+                    )
+                )
+            }
             is MainViewIntents.ChangeGooglePayCheckBox -> {
                 updateState(
                     viewState.value.copy(
