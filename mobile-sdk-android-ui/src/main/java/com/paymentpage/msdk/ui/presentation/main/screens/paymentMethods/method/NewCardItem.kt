@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.core.domain.entities.init.WalletSaveMode
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
@@ -40,7 +41,7 @@ internal fun NewCardItem(
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
-    val isShowSaveCardCheckbox = method.paymentMethod.walletModeAsk
+    val walletSaveMode = method.paymentMethod.walletSaveMode
     val paymentOptions = LocalPaymentOptions.current
     val additionalFields = paymentOptions.additionalFields
     val savedState = remember { mutableStateOf(method.saveCard) }
@@ -138,8 +139,14 @@ internal fun NewCardItem(
                 )
             }
             //if action type is verify we should not show save card checkbox
-            //if walletModeAsk != true (ask customer before save) we should not show save card checkbox
-            if (actionType != SDKActionType.Verify && isShowSaveCardCheckbox) {
+
+            /*
+            if walletSaveMode != WalletSaveMode.ASK_CUSTOMER_BEFORE_SAVE
+            we should not SHOW save card checkbox
+            */
+            if (actionType != SDKActionType.Verify
+                && walletSaveMode == WalletSaveMode.ASK_CUSTOMER_BEFORE_SAVE
+            ) {
                 Spacer(modifier = Modifier.size(22.dp))
                 Row(
                     modifier = Modifier
