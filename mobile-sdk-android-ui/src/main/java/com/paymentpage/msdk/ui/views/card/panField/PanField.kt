@@ -126,7 +126,7 @@ internal fun PanField(
                     var startIndex by remember { mutableStateOf(0) }
                     when {
                         initialValue.isNotEmpty() -> {
-                            val drawableId = remember {
+                            val drawableId = remember(initialValue) {
                                 context.paymentMethodLogoId(
                                     paymentMethodType = PaymentMethodType.CARD,
                                     paymentMethodName = card?.code ?: "",
