@@ -22,6 +22,7 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
                 value = additionalField.value
             )
         },
+        hideScanningCards = hideScanningCards,
         //google pay configuration
         merchantId = merchantId,
         merchantName = merchantName,

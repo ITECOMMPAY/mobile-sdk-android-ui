@@ -14,6 +14,7 @@ sealed interface MainViewIntents : ViewIntents {
     //Checkboxes
     object ChangeGooglePayCheckBox : MainViewIntents
     object ChangeApiHostCheckBox : MainViewIntents
+    object ChangeHideScanningCardsCheckbox : MainViewIntents
 
     //Customization brand color and logo
     object ChangeThemeCheckbox : MainViewIntents

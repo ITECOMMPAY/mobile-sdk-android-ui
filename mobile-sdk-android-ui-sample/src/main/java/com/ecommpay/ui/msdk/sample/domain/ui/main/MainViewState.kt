@@ -4,11 +4,12 @@ import android.graphics.Bitmap
 import android.net.Uri
 import com.ecommpay.msdk.ui.EcmpPaymentSDK
 import com.ecommpay.msdk.ui.EcmpScreenDisplayMode
-import com.ecommpay.ui.msdk.sample.domain.ui.base.ViewState
 import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
+import com.ecommpay.ui.msdk.sample.domain.ui.base.ViewState
 
 data class MainViewState(
     val paymentData: PaymentData = PaymentData(),
+    val hideScanningCards: Boolean = false,
     val isVisibleForcePaymentMethodFields: Boolean = false,
     val isVisibleApiHostFields: Boolean = false,
     val isVisibleGooglePayFields: Boolean = false,

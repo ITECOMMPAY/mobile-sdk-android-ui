@@ -179,12 +179,14 @@ internal fun PanField(
                 }
             )
         }
-        Spacer(modifier = Modifier.size(10.dp))
-        CardScanningItem(
-            modifier = Modifier
-                .width(TextFieldDefaults.MinHeight)
-                .height(TextFieldDefaults.MinHeight),
-            onScanningResult = onScanningResult
-        )
+        if (!paymentOptions.hideScanningCards) {
+            Spacer(modifier = Modifier.size(10.dp))
+            CardScanningItem(
+                modifier = Modifier
+                    .width(TextFieldDefaults.MinHeight)
+                    .height(TextFieldDefaults.MinHeight),
+                onScanningResult = onScanningResult
+            )
+        }
     }
 }

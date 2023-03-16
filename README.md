@@ -117,6 +117,9 @@ val paymentOptions = paymentOptions {
     recurrentData = EcmpRecurrentData()
     recipientInfo = EcmpRecipientInfo()
 
+    //Parameter to enable hiding or displaying scanning cards feature
+    hideScanningCard = false,
+
     //Custom theme
     isDarkTheme = false
     brandColor = "#000000" //#RRGGBB

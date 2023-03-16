@@ -31,6 +31,7 @@ class EcmpPaymentOptions {
     fun screenDisplayModes(block: EcmpScreenDisplayModes.() -> Unit) {
         _screenDisplayModes.addAll(EcmpScreenDisplayModes().apply(block))
     }
+    var hideScanningCards: Boolean = false
     //google pay configuration
     var merchantId: String = ""
     var merchantName: String = ""
