@@ -126,7 +126,7 @@ internal fun PanField(
                     var startIndex by remember { mutableStateOf(0) }
                     when {
                         initialValue.isNotEmpty() -> {
-                            val drawableId = remember {
+                            val drawableId = remember(initialValue) {
                                 context.paymentMethodLogoId(
                                     paymentMethodType = PaymentMethodType.CARD,
                                     paymentMethodName = card?.code ?: "",
@@ -179,12 +179,14 @@ internal fun PanField(
                 }
             )
         }
-        Spacer(modifier = Modifier.size(10.dp))
-        CardScanningItem(
-            modifier = Modifier
-                .width(TextFieldDefaults.MinHeight)
-                .height(TextFieldDefaults.MinHeight),
-            onScanningResult = onScanningResult
-        )
+        if (!paymentOptions.hideScanningCards) {
+            Spacer(modifier = Modifier.size(10.dp))
+            CardScanningItem(
+                modifier = Modifier
+                    .width(TextFieldDefaults.MinHeight)
+                    .height(TextFieldDefaults.MinHeight),
+                onScanningResult = onScanningResult
+            )
+        }
     }
 }

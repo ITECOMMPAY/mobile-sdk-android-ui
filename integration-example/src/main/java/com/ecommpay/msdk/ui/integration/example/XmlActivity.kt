@@ -76,6 +76,9 @@ class XmlActivity : AppCompatActivity() {
             recurrentData = EcmpRecurrentData()
             recipientInfo = EcmpRecipientInfo()
 
+            //Parameter to enable hiding or displaying scanning cards feature
+            hideScanningCards = false
+
             //Custom theme
             isDarkTheme = false
             brandColor = "#000000" //#RRGGBB

@@ -13,6 +13,7 @@ import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewState
 import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewUC
 import com.ecommpay.ui.msdk.sample.domain.ui.navigation.MainHostScreens
 import com.ecommpay.ui.msdk.sample.ui.base.ComposeViewState
+import com.ecommpay.ui.msdk.sample.ui.components.SDKCheckbox
 import com.ecommpay.ui.msdk.sample.ui.main.views.HideSavedWalletsCheckbox
 import com.ecommpay.ui.msdk.sample.ui.main.views.PaymentFields
 import com.ecommpay.ui.msdk.sample.ui.main.views.ProjectSettings
@@ -99,6 +100,14 @@ fun MainScreen(
                 )
             )
         }
+        Spacer(Modifier.size(padding))
+        SDKCheckbox(
+            text = "Hide scanning cards",
+            isChecked = viewState.hideScanningCards,
+            onCheckedChange = {
+                intentListener(MainViewIntents.ChangeHideScanningCardsCheckbox)
+            }
+        )
         Spacer(Modifier.size(padding))
         CustomizationCheckbox(
             isChecked = viewState.isVisibleCustomizationFields

@@ -23,6 +23,7 @@ class SDKPaymentOptions(
     val merchantName: String = "",
     val merchantEnvironment: GooglePayEnvironment = GooglePayEnvironment.TEST,
     val additionalFields: List<SDKAdditionalField> = emptyList(),
+    val hideScanningCards: Boolean = false,
     //theme customization
     val isDarkTheme: Boolean = false,
     val logoImage: Bitmap? = null,

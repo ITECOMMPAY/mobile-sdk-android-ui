@@ -87,6 +87,8 @@ class SampleActivity : ComponentActivity() {
                     }
                 }
             }
+            //hide scanning cards icon in the payment form
+            hideScanningCards = ProcessRepository.hideScanningCards
             //google pay configuration
             merchantId = repositoryPaymentData.merchantId
             merchantName = repositoryPaymentData.merchantName
