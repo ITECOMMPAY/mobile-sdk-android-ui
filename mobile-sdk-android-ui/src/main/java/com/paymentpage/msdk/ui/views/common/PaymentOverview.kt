@@ -9,11 +9,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.invisibleToUser
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.*
@@ -26,7 +31,7 @@ import com.paymentpage.msdk.ui.views.button.SDKButton
 @Composable
 internal fun PaymentOverview(
     showPaymentId: Boolean = true,
-    showPaymentDetailsButton: Boolean = true
+    showPaymentDetailsButton: Boolean = true,
 ) {
     val paymentOptions = LocalPaymentOptions.current
     var expandPaymentDetailsState by remember { mutableStateOf(false) }
@@ -63,6 +68,7 @@ internal fun PaymentOverview(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ExpandablePaymentOverview(
     actionType: SDKActionType,
@@ -84,6 +90,14 @@ internal fun ExpandablePaymentOverview(
         0.0f to SDKTheme.colors.primary.copy(alpha = 0.95f),
         1f to SDKTheme.colors.primary.copy(alpha = 0.80f),
     )
+
+    val isShowVatInfoLabel = currentMethod?.paymentMethod?.isVatInfo == true
+            || paymentMethods.firstOrNull {
+        if (payment != null)
+            payment.method == it.code
+        else false
+    }?.isVatInfo == true
+
     Box(
         modifier = Modifier
             .background(
@@ -111,48 +125,82 @@ internal fun ExpandablePaymentOverview(
                     Spacer(modifier = Modifier.size(20.dp))
             }
             if (actionType != SDKActionType.Verify) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
-                        style = SDKTheme.typography.s28Bold.copy(color = Color.White)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = LocalPaymentOptions.current.paymentInfo.paymentCurrency,
-                        style = SDKTheme.typography.s16Normal.copy(color = Color.White)
-                    )
+                val coinsText =
+                    LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins()
+                val currencyText = LocalPaymentOptions.current.paymentInfo.paymentCurrency
+                Box(
+                    modifier = Modifier
+                        .semantics {
+                            contentDescription = "$coinsText $currencyText"
+                        }
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            modifier = Modifier
+                                .testTag(TestTagsConstants.COINS_VALUE_TEXT),
+                            text = coinsText,
+                            style = SDKTheme.typography.s28Bold.copy(color = Color.White)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            modifier = Modifier
+                                .testTag(TestTagsConstants.CURRENCY_VALUE_TEXT),
+                            text = currencyText,
+                            style = SDKTheme.typography.s16Normal.copy(color = Color.White)
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.size(6.dp))
-                Row {
-                    Text(
-                        text = getStringOverride(OverridesKeys.TITLE_TOTAL_PRICE),
-                        style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
-                    )
-                    Text(text = " ")
-                    if (currentMethod?.paymentMethod?.isVatInfo == true
-                        || paymentMethods.firstOrNull {
-                            if (payment != null)
-                                payment.method == it.code
-                            else false
-                        }?.isVatInfo == true
-                    )
+                val totalPriceTitle = getStringOverride(OverridesKeys.TITLE_TOTAL_PRICE)
+                val vatIncludedLabel = getStringOverride(OverridesKeys.VAT_INCLUDED)
+                Box(
+                    modifier = Modifier
+                        .semantics {
+                            contentDescription = if (isShowVatInfoLabel)
+                                "$totalPriceTitle $vatIncludedLabel"
+                            else
+                                totalPriceTitle
+                        }
+                ) {
+                    Row {
                         Text(
-                            text = getStringOverride(OverridesKeys.VAT_INCLUDED),
-                            style = SDKTheme.typography.s14Light.copy(color = Color.White),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            modifier = Modifier
+                                .testTag(TestTagsConstants.TOTAL_PRICE_TITLE_TEXT),
+                            text = totalPriceTitle,
+                            style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
                         )
+                        Text(
+                            modifier = Modifier
+                                .semantics {
+                                    invisibleToUser()
+                                },
+                            text = " "
+                        )
+                        if (isShowVatInfoLabel)
+                            Text(
+                                modifier = Modifier
+                                    .testTag(TestTagsConstants.VAT_INCLUDED_LABEL_TEXT),
+                                text = vatIncludedLabel,
+                                style = SDKTheme.typography.s14Light.copy(color = Color.White),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                    }
                 }
             } else {
                 //Payment ID
                 if (paymentIdValue != null && showPaymentId)
                     Column {
                         Text(
+                            modifier = Modifier
+                                .testTag(TestTagsConstants.PAYMENT_ID_LABEL_TEXT),
                             text = paymentIdLabel,
                             style = SDKTheme.typography.s12Light.copy(color = Color.White.copy(alpha = 0.6f))
                         )
                         Spacer(modifier = Modifier.size(6.dp))
                         Text(
+                            modifier = Modifier
+                                .testTag(TestTagsConstants.PAYMENT_ID_VALUE_TEXT),
                             text = paymentIdValue,
                             style = SDKTheme.typography.s14Bold.copy(color = Color.White)
                         )
@@ -178,7 +226,9 @@ internal fun ExpandablePaymentOverview(
                     )
                 }
                 SDKButton(
-                    modifier = Modifier.height(33.dp),
+                    modifier = Modifier
+                        .height(33.dp)
+                        .testTag(TestTagsConstants.PAYMENT_DETAILS_BUTTON),
                     color = Color.White.copy(alpha = 0.1f),
                     textStyle = SDKTheme.typography.s14Normal.copy(color = Color.White),
                     label = if (!isExpanded)

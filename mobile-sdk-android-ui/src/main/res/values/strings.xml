@@ -2,7 +2,31 @@
     <string name="ok_label">OK</string>
     <string name="cancel_label">Cancel</string>
     <string name="error_label">Error</string>
-    <string name="acs_mock_mode_toast_label">Acs page will be closed automatically after 2 seconds </string>
-    <string name="title_camera_permission_label">Camera lets you scan your bank card. To enable this, click App Settings</string>
-    <string name="button_camera_permission_label">App Settings</string>
+
+    <string name="acs_mock_mode_toast_label">
+        Acs page will be closed automatically after 2 seconds
+    </string>
+
+    <!-- Permission strings -->
+    <string name="title_camera_permission_label">
+        Camera lets you scan your bank card. To enable this, click App Settings
+    </string>
+    <string name="button_camera_permission_label">
+        App Settings
+    </string>
+
+    <!-- Accessibility strings -->
+    <string name="icon_close_content_description">Close</string>
+    <string name="icon_back_content_description">Back</string>
+    <string name="icon_google_pay_content_description">
+        Google Pay
+    </string>
+    <string name="required_field_content_description">Required field</string>
+    <string name="section_role_content_description">Section</string>
+    <string name="link_role_content_description">Link</string>
+    <string name="expanded_state_content_description">Expanded</string>
+    <string name="collapsed_state_content_description">Collapsed</string>
+    <string name="checked_state_content_description">Checked</string>
+    <string name="not_checked_state_content_description">Not checked</string>
+
 </resources>

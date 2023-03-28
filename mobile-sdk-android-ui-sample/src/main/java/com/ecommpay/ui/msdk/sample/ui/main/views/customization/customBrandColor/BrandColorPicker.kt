@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewIntents
@@ -26,12 +27,14 @@ internal fun BrandColorPicker(
     intentListener: (MainViewIntents) -> Unit,
 ) {
     val dialogState = rememberMaterialDialogState()
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
+            modifier = Modifier
+                .weight(1f)
+                .testTag("brandColorTextField"),
             value = if (viewState.brandColor.isNotEmpty())
                 viewState.brandColor.uppercase()
             else "#",
@@ -42,7 +45,6 @@ internal fun BrandColorPicker(
                     )
                 )
             },
-            modifier = Modifier.weight(1f),
             label = { Text(text = "Brand color") }
         )
         Spacer(modifier = Modifier.width(10.dp))
@@ -66,7 +68,8 @@ internal fun BrandColorPicker(
     Button(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp),
+            .height(50.dp)
+            .testTag("resetBrandColorButton"),
         onClick = {
             intentListener(
                 MainViewIntents.ChangeBrandColor(

@@ -12,11 +12,12 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 internal fun SDKButton(
+    modifier: Modifier = Modifier,
     text: String,
     listener: () -> Unit
 ) {
     Button(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
         onClick = listener

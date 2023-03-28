@@ -25,13 +25,20 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
+import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.paymentMethodLogoId
@@ -52,6 +59,12 @@ internal fun ExpandablePaymentMethodItem(
         if (currentMethod?.index == method.index) 180f else 0f
     )
     val topContentIsEmpty = method.title.isEmpty() && fallbackIcon == null
+    val isExpanded = currentMethod?.index == method.index
+
+    val sectionRoleContentDescription = stringResource(id = R.string.section_role_content_description)
+    val expandedStateContentDescription = stringResource(id = R.string.expanded_state_content_description)
+    val collapsedStateContentDescription = stringResource(id = R.string.collapsed_state_content_description)
+
     Box(
         modifier = Modifier
             .background(
@@ -98,11 +111,20 @@ internal fun ExpandablePaymentMethodItem(
                             )
                             .height(50.dp)
                             .padding(15.dp)
+                            .semantics {
+                                contentDescription = sectionRoleContentDescription
+                                stateDescription = if (isExpanded)
+                                    expandedStateContentDescription
+                                else
+                                    collapsedStateContentDescription
+                            }
+                            .testTag(TestTagsConstants.PAYMENT_METHOD_ITEM_SECTION)
                     else
                         Modifier
                             .height(50.dp)
                             .padding(15.dp),
-                    verticalAlignment = Alignment.CenterVertically) {
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     if (!isLocalResourceIcon) {
                         AsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
@@ -154,8 +176,9 @@ internal fun ExpandablePaymentMethodItem(
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-
                         Text(
+                            modifier = Modifier
+                                .testTag(TestTagsConstants.PAYMENT_METHOD_ITEM_TITLE),
                             text = method.title,
                             textAlign = TextAlign.Center,
                             style = SDKTheme.typography.s14Normal
@@ -172,7 +195,7 @@ internal fun ExpandablePaymentMethodItem(
                         }
                     }
                 }
-            AnimatedVisibility(visible = currentMethod?.index == method.index) {
+            AnimatedVisibility(visible = isExpanded) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()

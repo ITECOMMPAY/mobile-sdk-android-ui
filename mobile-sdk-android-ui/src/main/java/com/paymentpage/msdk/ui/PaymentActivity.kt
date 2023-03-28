@@ -16,7 +16,7 @@ import com.paymentpage.msdk.core.utils.Duration
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.presentation.MainContent
 
-internal class PaymentActivity : ComponentActivity(), PaymentDelegate {
+class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

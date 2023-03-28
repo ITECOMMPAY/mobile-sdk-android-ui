@@ -4,12 +4,17 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.CustomTextField
@@ -45,11 +50,16 @@ internal fun CvvField(
         isRequired = true,
         trailingIcon = {
             Image(
-                modifier = Modifier.clickable(onClick = { cvvAlertDialogState = true }),
+                modifier = Modifier
+                    .clickable(onClick = { cvvAlertDialogState = true })
+                    .semantics {
+                        role = Role.Button
+                    }
+                    .testTag(TestTagsConstants.CVV_INFO_BUTTON),
                 painter = painterResource(id = SDKTheme.images.cvvInfoLogo),
-                contentDescription = null
+                contentDescription = getStringOverride(OverridesKeys.TITLE_ABOUT_CVV)
             )
-        }
+        },
     )
     if (cvvAlertDialogState) {
         ConfirmAlertDialog(

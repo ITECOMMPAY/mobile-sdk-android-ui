@@ -13,13 +13,14 @@ import androidx.compose.ui.Modifier
 
 @Composable
 internal fun SDKCheckbox(
+    modifier: Modifier = Modifier,
     text: String,
     isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     onClickRow: (() -> Unit) = { onCheckedChange.invoke(!isChecked) },
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

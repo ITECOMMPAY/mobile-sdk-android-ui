@@ -7,9 +7,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.semantics.invisibleToUser
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -19,6 +22,7 @@ import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun SDKFooter(
     isVisiblePrivacyPolicy: Boolean = true,
@@ -68,10 +72,15 @@ internal fun SDKFooter(
     if (isVisibleCookiePolicy || isVisiblePrivacyPolicy)
         Spacer(modifier = Modifier.size(15.dp))
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
+            modifier = Modifier
+                .semantics {
+                    invisibleToUser()
+                },
             text = LocalPaymentOptions.current.footerLabel ?: "",
             style = SDKTheme.typography.s12Light
                 .copy(
@@ -82,9 +91,19 @@ internal fun SDKFooter(
                     fontStyle = FontStyle.Italic
                 )
         )
-        Text(text = " ")
+        Text(
+            modifier = Modifier
+                .semantics {
+                    invisibleToUser()
+                },
+            text = " "
+        )
         LocalPaymentOptions.current.footerImage?.let {
             Image(
+                modifier = Modifier
+                    .semantics {
+                        invisibleToUser()
+                    },
                 bitmap = it.asImageBitmap(),
                 contentDescription = null,
             )

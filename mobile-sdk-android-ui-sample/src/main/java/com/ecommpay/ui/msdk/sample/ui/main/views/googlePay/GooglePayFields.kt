@@ -8,10 +8,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewIntents
 import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
+import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewIntents
 
 @Composable
 internal fun GooglePayFields(
@@ -25,31 +26,36 @@ internal fun GooglePayFields(
     ) {
         Spacer(modifier = Modifier.size(10.dp))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("merchantIdTextField"),
             value = paymentData.merchantId,
             onValueChange = {
                 intentListener(
                     MainViewIntents.ChangeField(
                     paymentData = paymentData.copy(merchantId = it)))
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Merchant Id") }
         )
         Spacer(modifier = Modifier.size(10.dp))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("merchantNameTextField"),
             value = paymentData.merchantName,
             onValueChange = {
                 intentListener(
                     MainViewIntents.ChangeField(
                     paymentData = paymentData.copy(merchantName = it)))
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Merchant Name") }
         )
         Spacer(modifier = Modifier.size(10.dp))
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp),
+                .height(50.dp)
+                .testTag("resetGooglePaySettingsButton"),
             onClick = {
                 intentListener(
                     MainViewIntents.ChangeField(

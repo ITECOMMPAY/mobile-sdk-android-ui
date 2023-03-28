@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,19 +20,19 @@ import com.ecommpay.ui.msdk.sample.domain.ui.recurrent.RecurrentViewIntents
 import com.ecommpay.ui.msdk.sample.domain.ui.recurrent.RecurrentViewState
 import com.ecommpay.ui.msdk.sample.domain.ui.recurrent.RecurrentViewUC
 import com.ecommpay.ui.msdk.sample.ui.base.ComposeViewState
-import com.ecommpay.ui.msdk.sample.ui.recurrent.views.RecurrentCheckbox
+import com.ecommpay.ui.msdk.sample.ui.components.SDKCheckbox
 import com.ecommpay.ui.msdk.sample.ui.recurrent.views.RecurrentSchedule
-import com.ecommpay.ui.msdk.sample.ui.recurrent.views.RecurrentTitle
 
 @Composable
 internal fun RecurrentState(
     route: MainHostScreens.Recurrent,
     viewUseCase: RecurrentViewUC = viewUseCase(route.toString()) {
         RecurrentViewUC()
-    }
+    },
 ) {
     ComposeViewState(
-        viewUseCase = viewUseCase) { viewState, intentListener ->
+        viewUseCase = viewUseCase
+    ) { viewState, intentListener ->
         RecurrentScreen(
             viewState = viewState,
             intentListener = intentListener
@@ -52,117 +53,154 @@ internal fun RecurrentScreen(
         modifier = Modifier.padding(20.dp),
         horizontalAlignment = Alignment.Start
     ) {
-        RecurrentTitle()
+        Row {
+            Text(
+                modifier = Modifier
+                    .testTag("RecurrentScreenTitleText"),
+                text = "Recurrent Data"
+            )
+        }
         Spacer(modifier = Modifier.size(padding))
-        Text(text = "register: ${recurrentData.register}")
+        Text(
+            modifier = Modifier
+                .testTag("recurrentRegisterText"),
+            text = "register: ${recurrentData.register}"
+        )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentTypeTextField"),
             value = recurrentData.type ?: "",
             onValueChange = {
                 intentListener(
                     RecurrentViewIntents.ChangeField(
-                    recurrentData = recurrentData.copy(type = it))
+                        recurrentData = recurrentData.copy(type = it)
+                    )
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Type") }
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentExpiryDayTextField"),
             value = recurrentData.expiryDay ?: "",
             onValueChange = {
                 intentListener(
                     RecurrentViewIntents.ChangeField(
-                    recurrentData = recurrentData.copy(expiryDay = it))
+                        recurrentData = recurrentData.copy(expiryDay = it)
+                    )
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Expiry day") }
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentExpiryMonthTextField"),
             value = recurrentData.expiryMonth ?: "",
             onValueChange = {
                 intentListener(
                     RecurrentViewIntents.ChangeField(
-                    recurrentData = recurrentData.copy(expiryMonth = it))
+                        recurrentData = recurrentData.copy(expiryMonth = it)
+                    )
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Expiry month") }
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentExpiryYearTextField"),
             value = recurrentData.expiryYear ?: "",
             onValueChange = {
                 intentListener(
                     RecurrentViewIntents.ChangeField(
-                    recurrentData = recurrentData.copy(expiryYear = it))
+                        recurrentData = recurrentData.copy(expiryYear = it)
+                    )
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Expiry year") }
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentPeriodTextField"),
             value = recurrentData.period ?: "",
             onValueChange = {
                 intentListener(
                     RecurrentViewIntents.ChangeField(
-                    recurrentData = recurrentData.copy(period = it))
+                        recurrentData = recurrentData.copy(period = it)
+                    )
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Period") }
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentTimeTextField"),
             value = recurrentData.time ?: "",
             onValueChange = {
                 intentListener(
                     RecurrentViewIntents.ChangeField(
-                    recurrentData = recurrentData.copy(time = it))
+                        recurrentData = recurrentData.copy(time = it)
+                    )
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Time") }
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentStartDateTextField"),
             value = recurrentData.startDate ?: "",
             onValueChange = {
                 intentListener(
                     RecurrentViewIntents.ChangeField(
-                    recurrentData = recurrentData.copy(startDate = it))
+                        recurrentData = recurrentData.copy(startDate = it)
+                    )
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Start time") }
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentSchedulePaymentIdTextField"),
             value = recurrentData.scheduledPaymentID ?: "",
             onValueChange = {
                 intentListener(
                     RecurrentViewIntents.ChangeField(
-                    recurrentData = recurrentData.copy(
-                        scheduledPaymentID = it))
+                        recurrentData = recurrentData.copy(
+                            scheduledPaymentID = it
+                        )
+                    )
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Schedule payment ID") }
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentAmountTextField"),
             value = recurrentData.amount?.toString() ?: "",
             onValueChange = {
                 intentListener(
                     RecurrentViewIntents.ChangeField(
-                    recurrentData = recurrentData.copy(amount = it.filter { char -> char.isDigit() }
-                        .toLongOrNull())
+                        recurrentData = recurrentData.copy(amount = it.filter { char -> char.isDigit() }
+                            .toLongOrNull())
                     ))
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Amount") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
@@ -171,61 +209,100 @@ internal fun RecurrentScreen(
             RecurrentSchedule(
                 viewState = viewState,
                 listener = intentListener,
-                title = "Schedule №${index + 1}",
+                title = "Schedule №",
                 index = index,
                 date = schedule.date,
                 amount = schedule.amount
             )
             Spacer(modifier = Modifier.size(padding))
         }
-        RecurrentCheckbox(
+
+        SDKCheckbox(
+            modifier = Modifier
+                .testTag("recurrentEnabledCheckbox"),
+            text = "Submit Recurrent Info",
             isChecked = viewState.isEnabledRecurrent,
-            listener = intentListener
+            onCheckedChange = {
+                intentListener(RecurrentViewIntents.ChangeCheckbox)
+            }
         )
+
         Spacer(modifier = Modifier.size(padding))
         Button(modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp),
+            .height(50.dp)
+            .testTag("recurrentAddScheduleButton"),
             onClick = {
                 val changed = viewState.recurrentData.schedule?.toMutableList() ?: mutableListOf()
                 changed.add(RecurrentDataSchedule())
                 intentListener(
                     RecurrentViewIntents.ChangeField(
-                    recurrentData = recurrentData.copy(schedule = changed)
-                ))
+                        recurrentData = recurrentData.copy(schedule = changed)
+                    )
+                )
             }
         ) {
-            Text(text = "Add schedule", color = Color.White, fontSize = 18.sp)
+            Text(
+                modifier = Modifier
+                    .testTag("recurrentAddScheduleText"),
+                text = "Add schedule",
+                color = Color.White,
+                fontSize = 18.sp
+            )
         }
         Spacer(modifier = Modifier.size(padding))
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .testTag("recurrentFillMockDataButton"),
             onClick = {
                 intentListener(RecurrentViewIntents.FillMockData)
             }
         ) {
-            Text(text = "Fill mock data", color = Color.White, fontSize = 18.sp)
+            Text(
+                modifier = Modifier
+                    .testTag("recurrentFillMockDataText"),
+                text = "Fill mock data",
+                color = Color.White,
+                fontSize = 18.sp
+            )
         }
         Spacer(modifier = Modifier.size(padding))
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .testTag("recurrentResetDataButton"),
             onClick = {
                 intentListener(RecurrentViewIntents.ResetData)
             }
         ) {
-            Text(text = "Reset data", color = Color.White, fontSize = 18.sp)
+            Text(
+                modifier = Modifier
+                    .testTag("recurrentResetDataText"),
+                text = "Reset data",
+                color = Color.White,
+                fontSize = 18.sp
+            )
         }
         Spacer(modifier = Modifier.size(padding))
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .testTag("recurrentBackButton"),
             onClick = {
                 intentListener(RecurrentViewIntents.Exit)
             }
         ) {
-            Text(text = "Back", color = Color.White, fontSize = 18.sp)
+            Text(
+                modifier = Modifier
+                    .testTag("recurrentBackText"),
+                text = "Back",
+                color = Color.White,
+                fontSize = 18.sp
+            )
         }
     }
 }

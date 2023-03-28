@@ -13,10 +13,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.customColor
 
@@ -37,7 +45,12 @@ internal fun SDKTopBar(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .semantics {
+                    heading()
+                }
+                .testTag(TestTagsConstants.SCREEN_TITLE_TEXT),
             maxLines = 1,
             style = SDKTheme.typography.s22Bold,
             text = title ?: "",
@@ -52,12 +65,16 @@ internal fun SDKTopBar(
                         indication = null, //turn off animation by click
                         interactionSource = remember { MutableInteractionSource() },
                         onClick = { onBack() }
-                    ),
+                    )
+                    .semantics {
+                        role = Role.Button
+                    }
+                    .testTag(TestTagsConstants.SCREEN_BACK_BUTTON),
                 imageVector = Icons.Default.ArrowBack,
                 colorFilter = ColorFilter.tint(
                     color = customColor(brandColor = paymentOptions.brandColor)
                 ),
-                contentDescription = null,
+                contentDescription = stringResource(id = R.string.icon_back_content_description),
             )
             Spacer(modifier = Modifier.width(10.dp))
         }
@@ -70,12 +87,16 @@ internal fun SDKTopBar(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() },
                         onClick = { onClose() }
-                    ),
+                    )
+                    .semantics {
+                        role = Role.Button
+                    }
+                    .testTag(TestTagsConstants.SCREEN_CLOSE_BUTTON),
                 imageVector = Icons.Default.Close,
                 colorFilter = ColorFilter.tint(
                     color = customColor(brandColor = paymentOptions.brandColor)
                 ),
-                contentDescription = null,
+                contentDescription = stringResource(id = R.string.icon_close_content_description),
             )
     }
 

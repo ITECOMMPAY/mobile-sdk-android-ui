@@ -9,10 +9,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.init.WalletSaveMode
 import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
 import com.paymentpage.msdk.ui.presentation.main.payNewCard
@@ -44,7 +50,7 @@ internal fun NewCardItem(
     val walletSaveMode = method.paymentMethod.walletSaveMode
     val paymentOptions = LocalPaymentOptions.current
     val additionalFields = paymentOptions.additionalFields
-    val savedState = remember { mutableStateOf(method.saveCard) }
+    var savedState by remember { mutableStateOf(method.saveCard) }
 
     var scanningResult by remember {
         mutableStateOf<CardScanningActivityContract.Result?>(
@@ -59,6 +65,11 @@ internal fun NewCardItem(
     var isCardHolderValid by remember { mutableStateOf(method.isValidCardHolder) }
     var isExpiryValid by remember { mutableStateOf(method.isValidExpiry) }
     var cardType by remember { mutableStateOf<String?>(null) }
+
+    val checkedStateContentDescription =
+        stringResource(id = R.string.checked_state_content_description)
+    val notCheckedStateContentDescription =
+        stringResource(id = R.string.not_checked_state_content_description)
 
     ExpandablePaymentMethodItem(
         method = method,
@@ -103,7 +114,15 @@ internal fun NewCardItem(
             Spacer(modifier = Modifier.size(10.dp))
             Row {
                 ExpiryField(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag(
+                            "${
+                                TestTagsConstants.PREFIX_NEW_CARD
+                            }${
+                                TestTagsConstants.EXPIRY_TEXT_FIELD
+                            }"
+                        ),
                     initialValue = method.expiry,
                     scanningExpiry = scanningResult?.expiry,
                     onValueChanged = { value, isValid ->
@@ -115,18 +134,29 @@ internal fun NewCardItem(
                 )
                 Spacer(modifier = Modifier.size(10.dp))
                 CvvField(
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag(
+                            "${
+                                TestTagsConstants.PREFIX_NEW_CARD
+                            }${
+                                TestTagsConstants.CVV_TEXT_FIELD
+                            }"
+                        ),
                     initialValue = method.cvv,
-                    modifier = Modifier.weight(1f),
                     cardType = cardType,
                     onValueChanged = { value, isValid ->
                         isCvvValid = isValid
                         method.cvv = value
                         method.isValidCvv = isValid
-                    }
+                    },
                 )
             }
 
-            if (customerFields.hasVisibleCustomerFields() && customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
+            if (
+                customerFields.hasVisibleCustomerFields() &&
+                customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS
+            ) {
                 CustomerFields(
                     customerFields = customerFields,
                     additionalFields = additionalFields,
@@ -152,20 +182,27 @@ internal fun NewCardItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable(
+                            role = Role.Checkbox,
+                            onClick = {
+                                savedState = !savedState
+                                method.saveCard = savedState
+                            },
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
-                        ) {
-                            savedState.value = !savedState.value
+                        )
+                        .semantics(mergeDescendants = true) {
+                            stateDescription = if (savedState)
+                                checkedStateContentDescription
+                            else
+                                notCheckedStateContentDescription
                         },
                     verticalAlignment = Alignment.Top
                 ) {
                     Checkbox(
                         modifier = Modifier.size(25.dp),
-                        checked = savedState.value,
-                        onCheckedChange = {
-                            savedState.value = it
-                            method.saveCard = it
-                        },
+                        checked = savedState,
+                        //Parent composable fun controls checked state of this checkbox
+                        onCheckedChange = null,
                         colors = SDKCheckboxDefaults.colors()
                     )
                     Spacer(modifier = Modifier.width(10.dp))

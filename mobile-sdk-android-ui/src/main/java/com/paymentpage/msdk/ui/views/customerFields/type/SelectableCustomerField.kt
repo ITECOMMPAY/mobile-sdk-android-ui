@@ -8,8 +8,10 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 import com.paymentpage.msdk.ui.views.common.SelectItemsDialog
@@ -22,8 +24,18 @@ internal fun SelectableCustomerField(
     customerField: CustomerField,
 ) {
     var selectedText by remember { mutableStateOf(initialValue ?: "") }
+    var contentDescriptionValue by remember { mutableStateOf(initialValue ?: "") }
+
     var dialogState by remember { mutableStateOf(false) }
     CustomTextField(
+        modifier = Modifier
+            .testTag(
+                "${
+                    customerField.label.uppercase()
+                }${
+                    TestTagsConstants.POSTFIX_CUSTOMER_FIELD
+                }"
+            ),
         initialValue = initialValue,
         pastedValue = selectedText,
         onValueChanged = null,
@@ -33,14 +45,16 @@ internal fun SelectableCustomerField(
         isRequired = customerField.isRequired,
         trailingIcon = {
             Image(
-                modifier = Modifier.clickable {
-                    dialogState = true
-                },
+                modifier = Modifier
+                    .clickable {
+                        dialogState = true
+                    },
                 imageVector = Icons.Default.KeyboardArrowDown,
                 colorFilter = ColorFilter.tint(SDKTheme.colors.neutral),
-                contentDescription = null,
+                contentDescription = items.keys.first(),
             )
         },
+        contentDescriptionValue = contentDescriptionValue
     )
     if (dialogState)
         SelectItemsDialog(
@@ -48,6 +62,7 @@ internal fun SelectableCustomerField(
             items = items,
             onDismissRequest = { dialogState = false }
         ) { key ->
+            contentDescriptionValue = if (!items[key].isNullOrEmpty()) key else ""
             selectedText = items[key] ?: ""
             onValueChanged(
                 customerField,
