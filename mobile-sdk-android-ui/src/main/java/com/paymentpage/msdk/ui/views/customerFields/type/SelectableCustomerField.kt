@@ -24,7 +24,6 @@ internal fun SelectableCustomerField(
     customerField: CustomerField,
 ) {
     var selectedText by remember { mutableStateOf(initialValue ?: "") }
-    var contentDescriptionValue by remember { mutableStateOf(initialValue ?: "") }
 
     var dialogState by remember { mutableStateOf(false) }
     CustomTextField(
@@ -54,19 +53,18 @@ internal fun SelectableCustomerField(
                 contentDescription = items.keys.first(),
             )
         },
-        contentDescriptionValue = contentDescriptionValue
     )
     if (dialogState)
         SelectItemsDialog(
             modifier = Modifier.size(width = 400.dp, height = 300.dp),
             items = items,
             onDismissRequest = { dialogState = false }
-        ) { key ->
-            contentDescriptionValue = if (!items[key].isNullOrEmpty()) key else ""
-            selectedText = items[key] ?: ""
+        ) { countryName ->
+            selectedText = if (!items[countryName].isNullOrEmpty()) countryName else ""
             onValueChanged(
                 customerField,
-                selectedText,
+                //Country code
+                items[countryName] ?: "",
 
                 //validation
                 if (customerField.isRequired)
