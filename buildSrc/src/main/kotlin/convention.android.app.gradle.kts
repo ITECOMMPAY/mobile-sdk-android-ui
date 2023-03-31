@@ -100,6 +100,9 @@ dependencies {
     implementation(LibraryDependencies.MsdkSample.colorPicker)
 
     //Testing
+    androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.compose}")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:${Versions.compose}")
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.test.ext:junit:1.1.3")
     testImplementation("androidx.test.espresso:espresso-core:3.4.0")

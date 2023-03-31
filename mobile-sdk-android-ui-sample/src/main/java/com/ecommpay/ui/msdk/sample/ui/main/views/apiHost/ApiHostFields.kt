@@ -8,10 +8,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewIntents
 import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
+import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewIntents
 
 @Composable
 internal fun ApiHostFields(
@@ -25,31 +26,36 @@ internal fun ApiHostFields(
     ) {
         Spacer(modifier = Modifier.size(10.dp))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("apiHostTextField"),
             value = paymentData.apiHost,
             onValueChange = {
                 intentListener(
                     MainViewIntents.ChangeField(
                     paymentData = paymentData.copy(apiHost = it)))
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Api Host") }
         )
         Spacer(modifier = Modifier.size(10.dp))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("wsApiHostTextField"),
             value = paymentData.wsApiHost,
             onValueChange = {
                 intentListener(
                     MainViewIntents.ChangeField(
                     paymentData = paymentData.copy(wsApiHost = it)))
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Ws Api Host") }
         )
         Spacer(modifier = Modifier.size(10.dp))
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp),
+                .height(50.dp)
+                .testTag("resetApiSettingButton"),
             onClick = {
                 intentListener(
                     MainViewIntents.ChangeField(

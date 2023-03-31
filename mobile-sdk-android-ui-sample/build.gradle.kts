@@ -13,4 +13,5 @@ android {
 
 dependencies {
     implementation(project(":mobile-sdk-android-ui-ecommpay"))
+    implementation(project(":mobile-sdk-android-ui"))
 }

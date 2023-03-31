@@ -7,13 +7,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
-import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.paySavedCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
@@ -56,7 +54,15 @@ internal fun SavedCardItem(
         ) {
             Row {
                 ExpiryField(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag(
+                            "${
+                                TestTagsConstants.PREFIX_SAVE_CARD
+                            }${
+                                TestTagsConstants.EXPIRY_TEXT_FIELD
+                            }"
+                        ),
                     initialValue = method.savedAccount.cardExpiry?.stringValue ?: "",
                     isDisabled = true,
                     showRedStarForRequiredFields = false,
@@ -66,17 +72,28 @@ internal fun SavedCardItem(
                 )
                 Spacer(modifier = Modifier.size(10.dp))
                 CvvField(
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag(
+                            "${
+                                TestTagsConstants.PREFIX_SAVE_CARD
+                            }${
+                                TestTagsConstants.CVV_TEXT_FIELD
+                            }"
+                        ),
                     initialValue = method.cvv,
-                    modifier = Modifier.weight(1f),
                     onValueChanged = { value, isValid ->
                         isCvvValid = isValid
                         method.cvv = value
                         method.isValidCvv = isValid
                     },
-                    cardType = method.savedAccount.cardType
+                    cardType = method.savedAccount.cardType,
                 )
             }
-            if (customerFields.hasVisibleCustomerFields() && customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
+            if (
+                customerFields.hasVisibleCustomerFields() &&
+                customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS
+            ) {
                 CustomerFields(
                     customerFields = customerFields,
                     additionalFields = additionalFields,
@@ -110,9 +127,11 @@ internal fun SavedCardItem(
                 Spacer(modifier = Modifier.size(15.dp))
                 if (!isDeleteCardLoading)
                     Text(
-                        modifier = Modifier.clickable {
-                            deleteCardAlertDialogState = true
-                        },
+                        modifier = Modifier
+                            .clickable {
+                                deleteCardAlertDialogState = true
+                            }
+                            .testTag(TestTagsConstants.DELETE_CARD_BUTTON),
                         text = getStringOverride(OverridesKeys.BUTTON_DELETE),
                         style = SDKTheme.typography.s14Normal.copy(
                             color =

@@ -13,11 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.ecommpay.ui.msdk.sample.domain.entities.RecurrentData
 import com.ecommpay.ui.msdk.sample.domain.ui.recurrent.RecurrentViewIntents
 import com.ecommpay.ui.msdk.sample.domain.ui.recurrent.RecurrentViewState
-import com.ecommpay.ui.msdk.sample.domain.entities.RecurrentData
 
 @Composable
 internal fun RecurrentSchedule(
@@ -41,10 +42,14 @@ internal fun RecurrentSchedule(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                modifier = Modifier.weight(1f),
-                text = title
+                modifier = Modifier
+                    .weight(1f)
+                    .testTag("recurrentScheduleTitle${index}Text"),
+                text = "${title}${index + 1}"
             )
             IconButton(
+                modifier = Modifier
+                    .testTag("recurrentDeleteSchedule${index}Button"),
                 onClick = {
                     val changed = viewState.recurrentData.schedule?.toMutableList()
                     changed?.removeAt(index)
@@ -61,6 +66,9 @@ internal fun RecurrentSchedule(
             }
         }
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentScheduleDate${index}TextField"),
             value = date ?: "",
             onValueChange = {
                 val changed = viewState.recurrentData.schedule?.toMutableList()
@@ -71,11 +79,13 @@ internal fun RecurrentSchedule(
                     recurrentData = RecurrentData(schedule = changed)
                 ))
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Date") }
         )
         Spacer(modifier = Modifier.size(20.dp))
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentScheduleAmount${index}TextField"),
             value = amount?.toString() ?: "",
             onValueChange = {
                 val changed = viewState.recurrentData.schedule?.toMutableList()
@@ -86,7 +96,6 @@ internal fun RecurrentSchedule(
                     recurrentData = RecurrentData(schedule = changed)
                 ))
             },
-            modifier = Modifier.fillMaxWidth(),
             label = { Text(text = "Amount") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )

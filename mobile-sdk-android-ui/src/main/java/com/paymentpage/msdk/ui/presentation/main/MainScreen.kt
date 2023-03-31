@@ -76,7 +76,6 @@ internal fun MainScreen(
                 onCancel = onCancel
             )
         }
-
         //3DS
         composable(route = Route.ThreeDSecurePage.getPath()) {
             ThreeDSecureScreen(onCancel = onCancel)
@@ -84,7 +83,6 @@ internal fun MainScreen(
         composable(route = Route.ThreeDSecureLoadingPage.getPath()) {
             ThreeDSecureScreen(onCancel = onCancel)
         }
-
         composable(route = Route.ApsPage.getPath()) {
             ApsScreen(onCancel = onCancel)
         }

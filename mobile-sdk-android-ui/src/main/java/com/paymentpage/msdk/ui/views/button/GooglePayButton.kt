@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.LocalDimensions
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomButton
@@ -22,8 +24,9 @@ internal fun GooglePayButton(
         isEnabled = isEnabled,
         content = {
             Image(
+                modifier = Modifier,
                 painter = painterResource(id = SDKTheme.images.googlePayLogo),
-                contentDescription = null
+                contentDescription = stringResource(id = R.string.icon_google_pay_content_description)
             )
         },
         color = SDKTheme.colors.neutral,

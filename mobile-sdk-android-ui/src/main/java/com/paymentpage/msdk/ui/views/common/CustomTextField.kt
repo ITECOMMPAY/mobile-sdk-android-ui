@@ -9,10 +9,15 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.invisibleToUser
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -22,9 +27,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun CustomTextField(
     modifier: Modifier = Modifier,
@@ -47,6 +54,7 @@ internal fun CustomTextField(
     showRedStarForRequiredFields: Boolean = true,
     trailingIcon: @Composable (() -> Unit)? = null,
     maxLength: Int? = null,
+    contentDescriptionValue: String? = null,
 ) {
 
     var textValue by remember { mutableStateOf(initialValue ?: "") }
@@ -57,7 +65,8 @@ internal fun CustomTextField(
         keyboardType = keyboardType,
         imeAction = if (nextFocus != null) ImeAction.Next else ImeAction.Done
     )
-
+    val requiredFieldContentDescription =
+        stringResource(id = R.string.required_field_content_description)
     val onValueChange: (String) -> Unit = {
         var text =
             if (maxLength != null && it.length > maxLength)
@@ -75,7 +84,7 @@ internal fun CustomTextField(
         }
     }
 
-    if (!pastedValue.isNullOrEmpty())
+    if (pastedValue != null)
         LaunchedEffect(key1 = pastedValue) {
             //if you want paste value by yourself
             textValue = pastedValue
@@ -152,6 +161,16 @@ internal fun CustomTextField(
                     if (onFocusChanged != null) {
                         onFocusChanged(isFocused)
                     }
+                }
+                .semantics {
+                    contentDescription =
+                        "${
+                            if (!contentDescriptionValue.isNullOrEmpty())
+                                contentDescriptionValue
+                            else ""
+                        }${
+                            if (isRequired && showRedStarForRequiredFields) " $requiredFieldContentDescription" else ""
+                        }"
                 },
             label = {
                 Row {
@@ -174,6 +193,10 @@ internal fun CustomTextField(
                     )
                     if (isRequired && showRedStarForRequiredFields) {
                         Text(
+                            modifier = Modifier
+                                .semantics {
+                                    invisibleToUser()
+                                },
                             text = "*",
                             color = SDKTheme.colors.red,
                             maxLines = 1

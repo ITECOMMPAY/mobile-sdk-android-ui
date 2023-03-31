@@ -20,9 +20,9 @@ internal fun ExpiryField(
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     CustomTextField(
+        modifier = modifier,
         initialValue = initialValue?.replace("/", ""),
         pastedValue = scanningExpiry?.replace("/", ""),
-        modifier = modifier,
         onFilterValueBefore = { text -> text.filter { it.isDigit() } },
         onRequestValidatorMessage = {
             val expiryDate = SdkExpiry(it)

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ecommpay.msdk.ui.EcmpPaymentSDK
@@ -26,6 +27,8 @@ internal fun SelectMockMode(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
+                    modifier = Modifier
+                        .testTag("${mockModeType.name.lowercase()}MockModeRadioButton"),
                     selected = mockModeType == viewState.selectedMockModeType,
                     onClick = {
                         intentListener(
@@ -40,9 +43,11 @@ internal fun SelectMockMode(
             }
         }
     Spacer(modifier = Modifier.size(10.dp))
-    Button(modifier = Modifier
-        .fillMaxWidth()
-        .height(50.dp),
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .testTag("resetMockModeButton"),
         onClick = {
             intentListener(
                 MainViewIntents.SelectMockMode(

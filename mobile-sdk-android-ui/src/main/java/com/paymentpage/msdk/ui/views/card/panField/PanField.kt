@@ -4,12 +4,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.invisibleToUser
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.ParagraphIntrinsics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.createFontFamilyResolver
@@ -23,6 +27,7 @@ import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.validators.custom.PanValidator
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -35,6 +40,7 @@ import com.paymentpage.msdk.ui.utils.extensions.paymentMethodLogoId
 import com.paymentpage.msdk.ui.views.card.CardScanningItem
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun PanField(
     modifier: Modifier = Modifier,
@@ -76,7 +82,8 @@ internal fun PanField(
             }
 
             CustomTextField(
-                modifier = modifier,
+                modifier = modifier
+                    .testTag(TestTagsConstants.PAN_TEXT_FIELD),
                 initialValue = initialValue,
                 pastedValue = scanningPan,
                 isRequired = true,
@@ -184,7 +191,11 @@ internal fun PanField(
             CardScanningItem(
                 modifier = Modifier
                     .width(TextFieldDefaults.MinHeight)
-                    .height(TextFieldDefaults.MinHeight),
+                    .height(TextFieldDefaults.MinHeight)
+                    .semantics {
+                        invisibleToUser()
+                    }
+                    .testTag(TestTagsConstants.CARD_SCANNING_BUTTON),
                 onScanningResult = onScanningResult
             )
         }
