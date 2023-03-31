@@ -7,12 +7,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.semantics.invisibleToUser
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun SDKScaffoldWebView(
     modifier: Modifier = Modifier,
@@ -31,6 +35,9 @@ internal fun SDKScaffoldWebView(
                     interactionSource = remember { MutableInteractionSource() },
                     onClick = onClose
                 )
+                .semantics {
+                    invisibleToUser()
+                }
         )
         Column(
             modifier = Modifier

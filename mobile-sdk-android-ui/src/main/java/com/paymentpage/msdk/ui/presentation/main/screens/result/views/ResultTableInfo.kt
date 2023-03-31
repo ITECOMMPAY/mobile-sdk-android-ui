@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.End
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.invisibleToUser
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +25,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.paymentDateToPatternDate
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ResultTableInfo(
     onError: (ErrorResult, Boolean) -> Unit,
@@ -29,26 +34,29 @@ internal fun ResultTableInfo(
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val payment = mainViewModel.payment
     if (payment != null) {
-        val valueTitleCardWallet = when (val method = paymentMethodsViewModel.lastState.currentMethod) {
-            is UIPaymentMethod.UICardPayPaymentMethod, is UIPaymentMethod.UISavedCardPayPaymentMethod -> {
-                "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number}"
-            }
-            is UIPaymentMethod.UIApsPaymentMethod -> {
-                method.paymentMethod.name
-                    ?: getStringOverride(
+        val valueTitleCardWallet =
+            when (val method = paymentMethodsViewModel.lastState.currentMethod) {
+                is UIPaymentMethod.UICardPayPaymentMethod,
+                is UIPaymentMethod.UISavedCardPayPaymentMethod -> {
+                    "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number}"
+                }
+                is UIPaymentMethod.UIApsPaymentMethod -> {
+                    method.paymentMethod.name ?: getStringOverride(
                         method.paymentMethod.translations[OverridesKeys.TITLE] ?: ""
                     )
+                }
+                is UIPaymentMethod.UIGooglePayPaymentMethod -> {
+                    method.paymentMethod.name ?: getStringOverride(
+                        OverridesKeys.GOOGLE_PAY_HOST_TITLE
+                    )
+                }
+                else -> {
+                    if (payment.paymentMethodType == PaymentMethodType.CARD)
+                        "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number}"
+                    else
+                        "${payment.methodName}"
+                }
             }
-            is UIPaymentMethod.UIGooglePayPaymentMethod -> {
-                method.paymentMethod.name ?: getStringOverride(OverridesKeys.GOOGLE_PAY_HOST_TITLE)
-            }
-            else -> {
-                if (payment.paymentMethodType == PaymentMethodType.CARD)
-                    "${payment.account?.type?.uppercase() ?: ""} ${payment.account?.number}"
-                else
-                    "${payment.methodName}"
-            }
-        }
         val completeFields = payment.completeFields?.associate { field ->
             val translation =
                 field.name?.let { getStringOverride(it) }
@@ -84,13 +92,25 @@ internal fun ResultTableInfo(
                     Row {
                         Column {
                             Text(
+                                modifier = Modifier
+                                    .semantics {
+                                        heading()
+                                    },
                                 text = key,
-                                style = SDKTheme.typography.s14Light.copy(color = SDKTheme.colors.grey),
+                                style = SDKTheme.typography.s14Light.copy(
+                                    color = SDKTheme.colors.grey
+                                ),
                                 overflow = TextOverflow.Ellipsis,
                                 maxLines = 1
                             )
                         }
-                        Text(text = " ")
+                        Text(
+                            modifier = Modifier
+                                .semantics {
+                                    invisibleToUser()
+                                },
+                            text = " "
+                        )
                         Column(modifier = Modifier.weight(1f), horizontalAlignment = End) {
                             Text(
                                 text = value,

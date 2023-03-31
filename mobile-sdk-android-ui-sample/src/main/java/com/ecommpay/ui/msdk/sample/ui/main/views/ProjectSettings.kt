@@ -8,6 +8,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
@@ -19,6 +20,9 @@ internal fun ProjectSettings(
     intentListener: (MainViewIntents) -> Unit
 ) {
     OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("projectIdTextField"),
         value = if (paymentData.projectId.toString() == "-1")
             ""
         else
@@ -35,11 +39,13 @@ internal fun ProjectSettings(
             )
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Project Id") }
     )
     Spacer(modifier = Modifier.height(10.dp))
     OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("secretKeyTextField"),
         value = paymentData.secretKey,
         onValueChange = {
             intentListener(
@@ -48,7 +54,6 @@ internal fun ProjectSettings(
                 )
             )
         },
-        modifier = Modifier.fillMaxWidth(),
         label = { Text(text = "Secret Key") }
     )
 }

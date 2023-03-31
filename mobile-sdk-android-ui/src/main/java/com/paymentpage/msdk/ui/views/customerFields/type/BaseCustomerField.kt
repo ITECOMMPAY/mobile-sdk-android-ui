@@ -2,9 +2,11 @@ package com.paymentpage.msdk.ui.views.customerFields.type
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.utils.extensions.core.validate
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 
@@ -20,7 +22,14 @@ internal fun BaseCustomerTextField(
     maxLength: Int? = null
 ) {
     CustomTextField(
-        modifier = Modifier,
+        modifier = Modifier
+            .testTag(
+                "${
+                    customerField.label.uppercase()
+                }${
+                    TestTagsConstants.POSTFIX_CUSTOMER_FIELD
+                }"
+            ),
         maxLength = maxLength,
         initialValue = initialValue,
         onRequestValidatorMessage = {
@@ -29,7 +38,10 @@ internal fun BaseCustomerTextField(
         onValueChanged = { text, isValid ->
             var isResultValid = isValid
             if (text.isNotEmpty()) //if field not empty - need validate text
-                isResultValid = isResultValid && (customerField.validate(text, onTransformValueBeforeValidate) == null)
+                isResultValid = isResultValid && (customerField.validate(
+                    text,
+                    onTransformValueBeforeValidate
+                ) == null)
             onValueChanged(customerField, text, isResultValid)
         },
         label = customerField.label,

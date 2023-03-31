@@ -1,11 +1,17 @@
 package com.paymentpage.msdk.ui.presentation
 
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.*
+import androidx.compose.material.BottomDrawer
+import androidx.compose.material.BottomDrawerState
+import androidx.compose.material.BottomDrawerValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.base.ErrorCode
@@ -22,7 +28,7 @@ import com.paymentpage.msdk.ui.views.common.alertDialog.ErrorAlertDialog
 import com.paymentpage.msdk.ui.views.common.alertDialog.MessageAlertDialog
 
 @Composable
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 internal fun MainContent(
     activity: PaymentActivity,
     paymentOptions: SDKPaymentOptions,
@@ -41,7 +47,11 @@ internal fun MainContent(
         brandColor = HexToJetpackColor.getColor(paymentOptions.brandColor)
     ) {
         BottomDrawer(
-            modifier = Modifier.wrapContentSize(),
+            modifier = Modifier
+                .wrapContentSize()
+                .semantics {
+                    testTagsAsResourceId = true
+                },
             drawerContent = {
                 SDKCommonProvider(
                     paymentOptions = paymentOptions,

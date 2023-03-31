@@ -7,7 +7,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import com.ecommpay.msdk.ui.BuildConfig
 import com.ecommpay.msdk.ui.EcmpPaymentInfo
 import com.ecommpay.msdk.ui.EcmpPaymentSDK
@@ -25,15 +28,21 @@ import kotlinx.serialization.json.Json
 
 class SampleActivity : ComponentActivity() {
     private lateinit var viewUseCase: SampleViewUC
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewUseCase = viewUseCase("Sample") { SampleViewUC() }
 
+        @OptIn(ExperimentalComposeUiApi::class)
         setContent {
             MaterialTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .semantics {
+                            testTagsAsResourceId = true
+                        },
                     color = MaterialTheme.colors.background
                 ) {
                     SampleState(viewUseCase = viewUseCase)
@@ -106,7 +115,10 @@ class SampleActivity : ComponentActivity() {
         )
 
         if (BuildConfig.DEBUG) {
-            sdk.intent.putExtra(EcmpPaymentSDK.EXTRA_API_HOST, ProcessRepository.paymentData.apiHost)
+            sdk.intent.putExtra(
+                EcmpPaymentSDK.EXTRA_API_HOST,
+                ProcessRepository.paymentData.apiHost
+            )
             sdk.intent.putExtra(
                 EcmpPaymentSDK.EXTRA_WS_API_HOST,
                 ProcessRepository.paymentData.wsApiHost

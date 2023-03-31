@@ -1,6 +1,8 @@
 package com.ecommpay.ui.msdk.sample.ui.main.views
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import com.ecommpay.ui.msdk.sample.ui.components.SDKCheckbox
 
 @Composable
@@ -9,6 +11,8 @@ internal fun HideSavedWalletsCheckbox(
     onCheckedChange: (Boolean) -> Unit,
 ) {
     SDKCheckbox(
+        modifier = Modifier
+            .testTag(""),
         text = "Hide saved wallets",
         isChecked = isChecked,
         onCheckedChange = onCheckedChange

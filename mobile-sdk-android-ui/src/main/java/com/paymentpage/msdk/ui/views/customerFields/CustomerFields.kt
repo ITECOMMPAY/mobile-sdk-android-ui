@@ -149,9 +149,18 @@ internal fun CustomerFields(
                     )
                 }
                 else -> {
-                    if (options.isNotEmpty())
+                    if (options.isNotEmpty()) {
+                        val items = options.associate { it.name to it.value }
+                        //First value in the list is item with empty value
+                        val sortedItems = items.toSortedMap(
+                            compareBy<String?> {
+                                items[it]?.length
+                            }.thenBy {
+                                it
+                            }
+                        )
                         SelectableCustomerField(
-                            items = options.associate { it.name to it.value },
+                            items = sortedItems,
                             initialValue = changedFieldsMap[field.name]?.value,
                             onValueChanged = { customerField, value, isValid ->
                                 fieldChanged(
@@ -162,6 +171,7 @@ internal fun CustomerFields(
                             },
                             customerField = field
                         )
+                    }
                     else
                         TextCustomerTextField(
                             value = changedFieldsMap[field.name]?.value,

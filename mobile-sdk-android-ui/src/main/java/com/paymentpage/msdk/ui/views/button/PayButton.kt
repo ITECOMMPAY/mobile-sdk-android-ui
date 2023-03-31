@@ -1,14 +1,21 @@
 package com.paymentpage.msdk.ui.views.button
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.invisibleToUser
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomButton
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun PayButton(
     modifier: Modifier = Modifier,
@@ -27,29 +34,50 @@ internal fun PayButton(
     onClick: () -> Unit,
 ) {
     CustomButton(
-        modifier = modifier,
+        modifier = modifier.semantics(mergeDescendants = true) {},
         isEnabled = isEnabled,
         content = {
             Text(
                 text = payLabel,
                 style = SDKTheme.typography.s16Normal.copy(color = textColor)
             )
-            Text(text = " ")
             Text(
-                text = amount,
-                style = SDKTheme.typography.s16Normal.copy(
-                    color = textColor,
-                    fontWeight = FontWeight.Bold
-                )
+                modifier = Modifier
+                    .semantics {
+                        invisibleToUser()
+                    },
+                text = " "
             )
-            Text(text = " ")
-            Text(
-                text = currency,
-                style = SDKTheme.typography.s16Normal.copy(
-                    color = textColor,
-                    fontWeight = FontWeight.Bold
-                )
-            )
+            Box(
+                modifier = Modifier
+                    .semantics {
+                        contentDescription = "$amount $currency"
+                    }
+            ) {
+                Row {
+                    Text(
+                        text = amount,
+                        style = SDKTheme.typography.s16Normal.copy(
+                            color = textColor,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    Text(
+                        modifier = Modifier
+                            .semantics {
+                                invisibleToUser()
+                            },
+                        text = " "
+                    )
+                    Text(
+                        text = currency,
+                        style = SDKTheme.typography.s16Normal.copy(
+                            color = textColor,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
         },
         onClick = onClick
     )

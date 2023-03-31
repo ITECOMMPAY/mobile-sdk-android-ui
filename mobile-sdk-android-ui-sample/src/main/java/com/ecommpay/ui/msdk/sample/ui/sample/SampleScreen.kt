@@ -42,7 +42,6 @@ fun SampleScreen(
     viewState: SampleViewState,
     intentListener: (SampleViewIntents) -> Unit,
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()

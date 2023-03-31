@@ -13,6 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -68,6 +72,12 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                     delay = 500
                 ) {
                     Text(
+                        modifier = Modifier
+                            .semantics {
+                                contentDescription =
+                                    getStringOverride(OverridesKeys.TITLE_LOADING_SCREEN)
+                                liveRegion = LiveRegionMode.Polite
+                            },
                         text = if (isPreview)
                             "Just a moment"
                         else
@@ -84,6 +94,13 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                     initialOffsetYRatio = 0.5f
                 ) {
                     Text(
+                        modifier = Modifier
+                            .semantics {
+                                contentDescription =
+                                    getStringOverride(OverridesKeys.SUB_TITLE_LOADING_SCREEN)
+                                        .replace(".", "")
+                                liveRegion = LiveRegionMode.Polite
+                            },
                         text = if (isPreview)
                             "Checking your operation status..."
                         else
