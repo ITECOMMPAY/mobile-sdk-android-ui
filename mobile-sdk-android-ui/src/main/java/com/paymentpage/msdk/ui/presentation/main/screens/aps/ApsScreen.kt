@@ -68,11 +68,13 @@ internal fun ApsPageView(
             )
         }
     Column(modifier = Modifier.fillMaxSize()) {
-        AndroidView(modifier = Modifier
-            .weight(1f)
-            .background(SDKTheme.colors.background),
+        AndroidView(
+            modifier = Modifier
+                .weight(1f)
+                .background(SDKTheme.colors.background),
             factory = {
                 WebView(it).apply {
+                    clipToOutline = true
                     layoutParams = ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
