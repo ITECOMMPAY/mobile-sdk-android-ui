@@ -49,6 +49,7 @@ internal fun PanField(
     paymentMethod: PaymentMethod,
     onScanningResult: (CardScanningActivityContract.Result) -> Unit,
     onPaymentMethodCardTypeChange: ((String?) -> Unit)? = null,
+    testTag: String? = null,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     var card by remember { mutableStateOf<PaymentMethodCard?>(null) }
@@ -82,8 +83,7 @@ internal fun PanField(
             }
 
             CustomTextField(
-                modifier = modifier
-                    .testTag(TestTagsConstants.PAN_TEXT_FIELD),
+                modifier = modifier,
                 initialValue = initialValue,
                 pastedValue = scanningPan,
                 isRequired = true,
@@ -183,7 +183,8 @@ internal fun PanField(
                                 )
                         }
                     }
-                }
+                },
+                testTag = testTag
             )
         }
         if (!paymentOptions.hideScanningCards) {

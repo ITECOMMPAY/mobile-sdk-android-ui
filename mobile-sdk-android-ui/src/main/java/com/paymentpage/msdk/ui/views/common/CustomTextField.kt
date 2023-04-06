@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.invisibleToUser
@@ -55,6 +56,7 @@ internal fun CustomTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     maxLength: Int? = null,
     contentDescriptionValue: String? = null,
+    testTag: String? = null
 ) {
 
     var textValue by remember { mutableStateOf(initialValue ?: "") }
@@ -171,7 +173,8 @@ internal fun CustomTextField(
                         }${
                             if (isRequired && showRedStarForRequiredFields) " $requiredFieldContentDescription" else ""
                         }"
-                },
+                }
+                .testTag(testTag ?: ""),
             label = {
                 Row {
                     Text(

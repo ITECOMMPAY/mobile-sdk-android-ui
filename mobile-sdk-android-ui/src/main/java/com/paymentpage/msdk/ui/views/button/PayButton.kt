@@ -7,11 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.invisibleToUser
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomButton
 
@@ -38,6 +40,8 @@ internal fun PayButton(
         isEnabled = isEnabled,
         content = {
             Text(
+                modifier = Modifier
+                    .testTag(TestTagsConstants.BUTTON_LABEL_TEXT),
                 text = payLabel,
                 style = SDKTheme.typography.s16Normal.copy(color = textColor)
             )
@@ -56,6 +60,8 @@ internal fun PayButton(
             ) {
                 Row {
                     Text(
+                        modifier = Modifier
+                            .testTag(TestTagsConstants.BUTTON_AMOUNT_TEXT),
                         text = amount,
                         style = SDKTheme.typography.s16Normal.copy(
                             color = textColor,
@@ -70,6 +76,8 @@ internal fun PayButton(
                         text = " "
                     )
                     Text(
+                        modifier = Modifier
+                            .testTag(TestTagsConstants.BUTTON_CURRENCY_TEXT),
                         text = currency,
                         style = SDKTheme.typography.s16Normal.copy(
                             color = textColor,

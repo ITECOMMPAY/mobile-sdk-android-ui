@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
 import com.paymentpage.msdk.ui.presentation.main.payNewCard
@@ -70,11 +72,13 @@ internal fun TokenizeCardPayItem(
                 },
                 onScanningResult = { result ->
                     scanningResult = result
-                }
+                },
+                testTag = TestTagsConstants.PAN_TEXT_FIELD
             )
             Spacer(modifier = Modifier.size(10.dp))
             CardHolderField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 initialValue = method.cardHolder,
                 scanningCardHolder = scanningResult?.cardHolderName,
                 onValueChanged = { value, isValid ->
@@ -82,11 +86,13 @@ internal fun TokenizeCardPayItem(
                     method.cardHolder = value
                     method.isValidCardHolder = isValid
                     scanningResult = null
-                }
+                },
+                testTag = TestTagsConstants.CARDHOLDER_TEXT_FIELD
             )
             Spacer(modifier = Modifier.size(10.dp))
             ExpiryField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 initialValue = method.expiry,
                 scanningExpiry = scanningResult?.expiry,
                 onValueChanged = { value, isValid ->
@@ -94,9 +100,14 @@ internal fun TokenizeCardPayItem(
                     method.expiry = value
                     method.isValidExpiry = isValid
                     scanningResult = null
-                }
+                },
+                testTag = TestTagsConstants.EXPIRY_TEXT_FIELD
             )
-            if (tokenizeCustomerFields.hasVisibleCustomerFields() && tokenizeCustomerFields.visibleCustomerFields().size <= Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS) {
+            if (
+                tokenizeCustomerFields.hasVisibleCustomerFields() &&
+                tokenizeCustomerFields.visibleCustomerFields().size <=
+                Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
+            ) {
                 CustomerFields(
                     customerFields = tokenizeCustomerFields,
                     additionalFields = additionalFields,
@@ -110,6 +121,8 @@ internal fun TokenizeCardPayItem(
             }
             Spacer(modifier = Modifier.size(15.dp))
             SaveButton(
+                modifier = Modifier
+                    .testTag(TestTagsConstants.SAVE_BUTTON),
                 method = method,
                 customerFields = tokenizeCustomerFields,
                 isValid = isPanValid && isCardHolderValid && isExpiryValid,

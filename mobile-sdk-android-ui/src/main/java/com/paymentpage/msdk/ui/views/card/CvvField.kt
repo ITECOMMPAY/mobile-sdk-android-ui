@@ -26,6 +26,7 @@ internal fun CvvField(
     modifier: Modifier,
     cardType: String? = null,
     length: Int = if (cardType == "amex") 4 else 3,
+    testTag: String? = null,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     val paymentOptions = LocalPaymentOptions.current
@@ -60,6 +61,7 @@ internal fun CvvField(
                 contentDescription = getStringOverride(OverridesKeys.TITLE_ABOUT_CVV)
             )
         },
+        testTag = testTag
     )
     if (cvvAlertDialogState) {
         ConfirmAlertDialog(

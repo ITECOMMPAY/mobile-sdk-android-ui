@@ -1,8 +1,6 @@
 package com.paymentpage.msdk.ui.views.customerFields.type
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
@@ -22,14 +20,6 @@ internal fun BaseCustomerTextField(
     maxLength: Int? = null
 ) {
     CustomTextField(
-        modifier = Modifier
-            .testTag(
-                "${
-                    customerField.label.uppercase()
-                }${
-                    TestTagsConstants.POSTFIX_CUSTOMER_FIELD
-                }"
-            ),
         maxLength = maxLength,
         initialValue = initialValue,
         onRequestValidatorMessage = {
@@ -49,6 +39,11 @@ internal fun BaseCustomerTextField(
         isRequired = customerField.isRequired,
         onFilterValueBefore = onFilterValueBefore,
         visualTransformation = visualTransformation,
-        keyboardType = keyboardType
+        keyboardType = keyboardType,
+        testTag = "${
+            customerField.label.uppercase()
+        }${
+            TestTagsConstants.POSTFIX_CUSTOMER_FIELD
+        }"
     )
 }

@@ -11,6 +11,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.invisibleToUser
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontStyle
@@ -20,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -80,7 +82,8 @@ internal fun SDKFooter(
             modifier = Modifier
                 .semantics {
                     invisibleToUser()
-                },
+                }
+                .testTag(TestTagsConstants.FOOTER_LABEL_TEXT),
             text = LocalPaymentOptions.current.footerLabel ?: "",
             style = SDKTheme.typography.s12Light
                 .copy(
@@ -103,7 +106,8 @@ internal fun SDKFooter(
                 modifier = Modifier
                     .semantics {
                         invisibleToUser()
-                    },
+                    }
+                    .testTag(TestTagsConstants.FOOTER_IMAGE),
                 bitmap = it.asImageBitmap(),
                 contentDescription = null,
             )

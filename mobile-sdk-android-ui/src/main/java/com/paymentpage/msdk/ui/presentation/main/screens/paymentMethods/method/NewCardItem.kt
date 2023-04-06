@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -98,10 +97,16 @@ internal fun NewCardItem(
                 onScanningResult = { result ->
                     scanningResult = result
                 },
+                testTag = "${
+                    TestTagsConstants.PREFIX_NEW_CARD
+                }${
+                    TestTagsConstants.PAN_TEXT_FIELD
+                }"
             )
             Spacer(modifier = Modifier.size(10.dp))
             CardHolderField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 initialValue = method.cardHolder,
                 scanningCardHolder = scanningResult?.cardHolderName,
                 onValueChanged = { value, isValid ->
@@ -109,20 +114,18 @@ internal fun NewCardItem(
                     method.cardHolder = value
                     method.isValidCardHolder = isValid
                     scanningResult = null
-                }
+                },
+                testTag = "${
+                    TestTagsConstants.PREFIX_NEW_CARD
+                }${
+                    TestTagsConstants.CARDHOLDER_TEXT_FIELD
+                }"
             )
             Spacer(modifier = Modifier.size(10.dp))
             Row {
                 ExpiryField(
                     modifier = Modifier
-                        .weight(1f)
-                        .testTag(
-                            "${
-                                TestTagsConstants.PREFIX_NEW_CARD
-                            }${
-                                TestTagsConstants.EXPIRY_TEXT_FIELD
-                            }"
-                        ),
+                        .weight(1f),
                     initialValue = method.expiry,
                     scanningExpiry = scanningResult?.expiry,
                     onValueChanged = { value, isValid ->
@@ -130,19 +133,17 @@ internal fun NewCardItem(
                         method.expiry = value
                         method.isValidExpiry = isValid
                         scanningResult = null
-                    }
+                    },
+                    testTag = "${
+                        TestTagsConstants.PREFIX_NEW_CARD
+                    }${
+                        TestTagsConstants.EXPIRY_TEXT_FIELD
+                    }"
                 )
                 Spacer(modifier = Modifier.size(10.dp))
                 CvvField(
                     modifier = Modifier
-                        .weight(1f)
-                        .testTag(
-                            "${
-                                TestTagsConstants.PREFIX_NEW_CARD
-                            }${
-                                TestTagsConstants.CVV_TEXT_FIELD
-                            }"
-                        ),
+                        .weight(1f),
                     initialValue = method.cvv,
                     cardType = cardType,
                     onValueChanged = { value, isValid ->
@@ -150,6 +151,11 @@ internal fun NewCardItem(
                         method.cvv = value
                         method.isValidCvv = isValid
                     },
+                    testTag = "${
+                        TestTagsConstants.PREFIX_NEW_CARD
+                    }${
+                        TestTagsConstants.CVV_TEXT_FIELD
+                    }"
                 )
             }
 
@@ -221,6 +227,7 @@ internal fun NewCardItem(
             Spacer(modifier = Modifier.size(15.dp))
             CustomOrConfirmButton(
                 actionType = paymentOptions.actionType,
+                testTagPrefix = TestTagsConstants.PREFIX_NEW_CARD,
                 method = method,
                 customerFields = customerFields,
                 isValid = isCvvValid && isPanValid && isCardHolderValid && isExpiryValid,

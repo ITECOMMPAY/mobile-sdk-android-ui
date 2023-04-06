@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.ui.TestTagsConstants
@@ -27,14 +26,6 @@ internal fun SelectableCustomerField(
 
     var dialogState by remember { mutableStateOf(false) }
     CustomTextField(
-        modifier = Modifier
-            .testTag(
-                "${
-                    customerField.label.uppercase()
-                }${
-                    TestTagsConstants.POSTFIX_CUSTOMER_FIELD
-                }"
-            ),
         initialValue = initialValue,
         pastedValue = selectedText,
         onValueChanged = null,
@@ -53,6 +44,11 @@ internal fun SelectableCustomerField(
                 contentDescription = items.keys.first(),
             )
         },
+        testTag = "${
+            customerField.label.uppercase()
+        }${
+            TestTagsConstants.POSTFIX_CUSTOMER_FIELD
+        }"
     )
     if (dialogState)
         SelectItemsDialog(

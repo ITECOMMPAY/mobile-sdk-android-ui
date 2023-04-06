@@ -55,32 +55,23 @@ internal fun SavedCardItem(
             Row {
                 ExpiryField(
                     modifier = Modifier
-                        .weight(1f)
-                        .testTag(
-                            "${
-                                TestTagsConstants.PREFIX_SAVE_CARD
-                            }${
-                                TestTagsConstants.EXPIRY_TEXT_FIELD
-                            }"
-                        ),
+                        .weight(1f),
                     initialValue = method.savedAccount.cardExpiry?.stringValue ?: "",
                     isDisabled = true,
                     showRedStarForRequiredFields = false,
                     onValueChanged = { _, _ ->
                         //we can't change value and isValid always equals true
-                    }
+                    },
+                    testTag = "${
+                        TestTagsConstants.PREFIX_SAVE_CARD
+                    }${
+                        TestTagsConstants.EXPIRY_TEXT_FIELD
+                    }"
                 )
                 Spacer(modifier = Modifier.size(10.dp))
                 CvvField(
                     modifier = Modifier
-                        .weight(1f)
-                        .testTag(
-                            "${
-                                TestTagsConstants.PREFIX_SAVE_CARD
-                            }${
-                                TestTagsConstants.CVV_TEXT_FIELD
-                            }"
-                        ),
+                        .weight(1f),
                     initialValue = method.cvv,
                     onValueChanged = { value, isValid ->
                         isCvvValid = isValid
@@ -88,6 +79,11 @@ internal fun SavedCardItem(
                         method.isValidCvv = isValid
                     },
                     cardType = method.savedAccount.cardType,
+                    testTag = "${
+                        TestTagsConstants.PREFIX_SAVE_CARD
+                    }${
+                        TestTagsConstants.CVV_TEXT_FIELD
+                    }"
                 )
             }
             if (
@@ -108,6 +104,7 @@ internal fun SavedCardItem(
             Spacer(modifier = Modifier.size(22.dp))
             CustomOrConfirmButton(
                 actionType = paymentOptions.actionType,
+                testTagPrefix = TestTagsConstants.PREFIX_SAVE_CARD,
                 method = method,
                 customerFields = customerFields,
                 isValid = isCvvValid,

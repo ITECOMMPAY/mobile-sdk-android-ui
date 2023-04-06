@@ -8,13 +8,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
-import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.showAps
@@ -44,13 +42,17 @@ internal fun ApsPayItem(
         Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {
             Text(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag(TestTagsConstants.APS_PAYMENT_DISCLAIMER_TEXT),
                 text = getStringOverride(OverridesKeys.APS_PAYMENT_DISCLAIMER),
                 style = SDKTheme.typography.s14Light,
                 textAlign = TextAlign.Start
             )
             Spacer(modifier = Modifier.size(20.dp))
             PayButton(
+                modifier = Modifier
+                    .testTag(TestTagsConstants.PAY_BUTTON),
                 payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
                 amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),

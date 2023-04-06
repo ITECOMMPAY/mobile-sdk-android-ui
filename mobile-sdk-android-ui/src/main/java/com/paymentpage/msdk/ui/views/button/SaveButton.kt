@@ -1,6 +1,7 @@
 package com.paymentpage.msdk.ui.views.button
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.ui.LocalPaymentOptions
@@ -11,6 +12,7 @@ import com.paymentpage.msdk.ui.utils.extensions.core.*
 
 @Composable
 internal fun SaveButton(
+    modifier: Modifier = Modifier,
     method: UIPaymentMethod.UITokenizeCardPayPaymentMethod,
     customerFields: List<CustomerField>,
     isValid: Boolean = false,
@@ -23,6 +25,7 @@ internal fun SaveButton(
     when {
         condition -> {
             SDKButton(
+                modifier = modifier,
                 label = getStringOverride(OverridesKeys.BUTTON_TOKENIZE),
                 isEnabled = isValid && isValidCustomerFields
             ) {
@@ -31,6 +34,7 @@ internal fun SaveButton(
         }
         customerFields.isAllCustomerFieldsHidden() -> {
             SDKButton(
+                modifier = modifier,
                 label = getStringOverride(OverridesKeys.BUTTON_TOKENIZE),
                 isEnabled = isValid
             ) {
@@ -48,6 +52,7 @@ internal fun SaveButton(
         }
         else -> {
             SDKButton(
+                modifier = modifier,
                 label = getStringOverride(OverridesKeys.BUTTON_TOKENIZE),
                 isEnabled = isValid
             ) {
