@@ -213,7 +213,7 @@ fun MainScreen(
             modifier = Modifier
                 .testTag("screenDisplayModeCheckbox"),
             text = "Screen display mode",
-            isChecked = viewState.isVisibleMockModeType,
+            isChecked = viewState.isVisibleScreenDisplayMode,
             onCheckedChange = {
                 intentListener(MainViewIntents.ChangeScreenDisplayModeCheckbox)
             }
