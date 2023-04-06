@@ -14,6 +14,7 @@ internal fun CardHolderField(
     initialValue: String? = null,
     scanningCardHolder: String? = null,
     isDisabled: Boolean = false,
+    testTag: String? = null,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     CustomTextField(
@@ -37,6 +38,7 @@ internal fun CardHolderField(
         visualTransformation = VisualTransformation.None,
         label = getStringOverride(OverridesKeys.TITLE_HOLDER_NAME),
         isDisabled = isDisabled,
-        isRequired = true
+        isRequired = true,
+        testTag = testTag
     )
 }

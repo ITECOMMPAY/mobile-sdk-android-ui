@@ -13,10 +13,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.invisibleToUser
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 
@@ -46,6 +48,7 @@ internal fun SDKScaffold(
                 .semantics {
                     invisibleToUser()
                 }
+                .testTag(TestTagsConstants.FREE_SPACE_CLOSE_PAYMENT_BUTTON)
         )
         Column(
             modifier = Modifier

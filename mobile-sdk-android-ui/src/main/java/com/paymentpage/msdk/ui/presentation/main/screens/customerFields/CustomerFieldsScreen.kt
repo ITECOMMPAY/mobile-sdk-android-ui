@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.presentation.main.fillCustomerFields
@@ -39,6 +40,8 @@ internal fun CustomerFieldsScreen(
                 PaymentOverview()
                 Spacer(modifier = Modifier.size(15.dp))
                 Text(
+                    modifier = Modifier
+                        .testTag(TestTagsConstants.ADDITIONAL_DATA_DISCLAIMER_TEXT),
                     text = getStringOverride(OverridesKeys.TITLE_PAYMENT_ADDITIONAL_DATA_DISCLAIMER),
                     style = SDKTheme.typography.s14Normal
                 )

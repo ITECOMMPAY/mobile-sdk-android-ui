@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.theme.LocalDimensions
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomButton
@@ -20,7 +22,8 @@ internal fun GooglePayButton(
     CustomButton(
         modifier = Modifier
             .height(LocalDimensions.current.googlePayButtonHeight)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .testTag(TestTagsConstants.GOOGLE_PAY_BUTTON),
         isEnabled = isEnabled,
         content = {
             Image(

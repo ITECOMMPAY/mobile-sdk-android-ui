@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.animation.VerticalSlideFadeAnimation
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -77,7 +79,8 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                                 contentDescription =
                                     getStringOverride(OverridesKeys.TITLE_LOADING_SCREEN)
                                 liveRegion = LiveRegionMode.Polite
-                            },
+                            }
+                            .testTag(TestTagsConstants.LOADING_TITLE_TEXT),
                         text = if (isPreview)
                             "Just a moment"
                         else
@@ -100,7 +103,8 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                                     getStringOverride(OverridesKeys.SUB_TITLE_LOADING_SCREEN)
                                         .replace(".", "")
                                 liveRegion = LiveRegionMode.Polite
-                            },
+                            }
+                            .testTag(TestTagsConstants.LOADING_SUB_TITLE_TEXT),
                         text = if (isPreview)
                             "Checking your operation status..."
                         else
@@ -120,6 +124,8 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                     )
                 ) {
                     ClickableText(
+                        modifier = Modifier
+                            .testTag(TestTagsConstants.CANCEL_PAYMENT_BUTTON),
                         style = SDKTheme.typography.s14Normal.copy(
                             color = SDKTheme.colors.mediumGrey,
                             textAlign = TextAlign.Center,
