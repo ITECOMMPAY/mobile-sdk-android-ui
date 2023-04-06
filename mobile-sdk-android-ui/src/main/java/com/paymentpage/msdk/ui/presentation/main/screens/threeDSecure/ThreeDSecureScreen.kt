@@ -68,6 +68,7 @@ private fun ThreeDSecurePageView(
                 .background(SDKTheme.colors.background),
             factory = {
                 WebView(it).apply {
+                    clipToOutline = true
                     layoutParams = ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
