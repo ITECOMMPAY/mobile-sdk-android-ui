@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.invisibleToUser
 import androidx.compose.ui.semantics.semantics
@@ -19,6 +20,7 @@ import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -95,7 +97,16 @@ internal fun ResultTableInfo(
                                 modifier = Modifier
                                     .semantics {
                                         heading()
-                                    },
+                                    }
+                                    .testTag(
+                                        "${
+                                            key.uppercase()
+                                        }${
+                                            TestTagsConstants.POSTFIX_LABEL
+                                        }${
+                                            TestTagsConstants.POSTFIX_TEXT
+                                        }"
+                                    ),
                                 text = key,
                                 style = SDKTheme.typography.s14Light.copy(
                                     color = SDKTheme.colors.grey
@@ -113,6 +124,16 @@ internal fun ResultTableInfo(
                         )
                         Column(modifier = Modifier.weight(1f), horizontalAlignment = End) {
                             Text(
+                                modifier = Modifier
+                                    .testTag(
+                                        "${
+                                            value.uppercase()
+                                        }${
+                                            TestTagsConstants.POSTFIX_VALUE
+                                        }${
+                                            TestTagsConstants.POSTFIX_TEXT
+                                        }"
+                                    ),
                                 text = value,
                                 style = SDKTheme.typography.s14Normal,
                                 textAlign = TextAlign.End

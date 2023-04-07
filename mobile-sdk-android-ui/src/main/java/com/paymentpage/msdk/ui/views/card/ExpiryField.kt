@@ -17,6 +17,7 @@ internal fun ExpiryField(
     scanningExpiry: String? = null,
     isDisabled: Boolean = false,
     showRedStarForRequiredFields: Boolean = true,
+    testTag: String? = null,
     onValueChanged: (String, Boolean) -> Unit,
 ) {
     CustomTextField(
@@ -45,7 +46,8 @@ internal fun ExpiryField(
         keyboardType = KeyboardType.Number,
         maxLength = 4,
         isRequired = true,
-        showRedStarForRequiredFields = showRedStarForRequiredFields
+        showRedStarForRequiredFields = showRedStarForRequiredFields,
+        testTag = testTag
     )
 }
 

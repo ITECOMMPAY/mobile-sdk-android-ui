@@ -60,10 +60,41 @@ internal fun ExpandablePaymentMethodItem(
     )
     val topContentIsEmpty = method.title.isEmpty() && fallbackIcon == null
     val isExpanded = currentMethod?.index == method.index
+    val isDarkTheme = SDKTheme.colors.isDarkTheme
 
     val sectionRoleContentDescription = stringResource(id = R.string.section_role_content_description)
     val expandedStateContentDescription = stringResource(id = R.string.expanded_state_content_description)
     val collapsedStateContentDescription = stringResource(id = R.string.collapsed_state_content_description)
+
+    val context = LocalContext.current
+    val drawableId = remember {
+        context.paymentMethodLogoId(
+            paymentMethodType = method.paymentMethod.paymentMethodType,
+            paymentMethodName = if (method is UIPaymentMethod.UISavedCardPayPaymentMethod)
+                method.savedAccount.cardType ?: ""
+            else
+                method.paymentMethod.code,
+            isDarkTheme = isDarkTheme
+        )
+    }
+
+    val imageTestTag = "${
+        when(method) {
+            is UIPaymentMethod.UITokenizeCardPayPaymentMethod -> TestTagsConstants.PREFIX_TOKENIZE
+            is UIPaymentMethod.UICardPayPaymentMethod -> TestTagsConstants.PREFIX_NEW_CARD
+            is UIPaymentMethod.UISavedCardPayPaymentMethod -> TestTagsConstants.PREFIX_SAVE_CARD
+            is UIPaymentMethod.UIGooglePayPaymentMethod -> TestTagsConstants.PREFIX_GOOGLE_PAY
+            is UIPaymentMethod.UIApsPaymentMethod -> TestTagsConstants.PREFIX_APS
+        }
+    }${
+        if (isDarkTheme) TestTagsConstants.DARK_THEME else TestTagsConstants.LIGHT_THEME
+    }${
+        if (isLocalResourceIcon) TestTagsConstants.POSTFIX_LOCAL else TestTagsConstants.POSTFIX_REMOTE
+    }${
+        if (drawableId == 0) TestTagsConstants.POSTFIX_DEFAULT else ""
+    }${
+        TestTagsConstants.POSTFIX_ICON
+    }"
 
     Box(
         modifier = Modifier
@@ -127,6 +158,9 @@ internal fun ExpandablePaymentMethodItem(
                 ) {
                     if (!isLocalResourceIcon) {
                         AsyncImage(
+                            modifier = Modifier
+                                .size(height = 20.dp, width = 50.dp)
+                                .testTag(imageTestTag),
                             model = ImageRequest.Builder(LocalContext.current)
                                 .data(
                                     if (!method.logoUrl.isNullOrEmpty())
@@ -141,24 +175,13 @@ internal fun ExpandablePaymentMethodItem(
                             contentDescription = null,
                             contentScale = ContentScale.Inside,
                             placeholder = fallbackIcon,
-                            modifier = Modifier.size(height = 20.dp, width = 50.dp),
                             alignment = Alignment.CenterStart,
                         )
                     } else {
-                        val context = LocalContext.current
-                        val isDarkTheme = SDKTheme.colors.isDarkTheme
-                        val drawableId = remember {
-                            context.paymentMethodLogoId(
-                                paymentMethodType = method.paymentMethod.paymentMethodType,
-                                paymentMethodName = if (method is UIPaymentMethod.UISavedCardPayPaymentMethod)
-                                    method.savedAccount.cardType ?: ""
-                                else
-                                    method.paymentMethod.code,
-                                isDarkTheme = isDarkTheme
-                            )
-                        }
                         if (fallbackIcon != null)
                             Image(
+                                modifier = Modifier
+                                    .testTag(imageTestTag),
                                 painter = if (drawableId > 0)
                                     painterResource(id = drawableId)
                                 else
@@ -178,7 +201,7 @@ internal fun ExpandablePaymentMethodItem(
                     ) {
                         Text(
                             modifier = Modifier
-                                .testTag(TestTagsConstants.PAYMENT_METHOD_ITEM_TITLE),
+                                .testTag(TestTagsConstants.PAYMENT_METHOD_ITEM_TITLE_TEXT),
                             text = method.title,
                             textAlign = TextAlign.Center,
                             style = SDKTheme.typography.s14Normal

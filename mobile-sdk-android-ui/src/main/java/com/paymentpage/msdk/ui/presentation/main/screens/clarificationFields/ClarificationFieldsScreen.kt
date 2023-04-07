@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.clarification.ClarificationFieldValue
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.OverridesKeys
-import com.paymentpage.msdk.ui.SDKActionType
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.presentation.main.sendClarificationFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
@@ -44,6 +42,8 @@ internal fun ClarificationFieldsScreen(
             PaymentOverview()
             Spacer(modifier = Modifier.size(15.dp))
             Text(
+                modifier = Modifier
+                    .testTag(TestTagsConstants.ADDITIONAL_DATA_DISCLAIMER_TEXT),
                 text = getStringOverride(OverridesKeys.TITLE_PAYMENT_ADDITIONAL_DATA_DISCLAIMER),
                 style = SDKTheme.typography.s14Normal
             )
@@ -75,6 +75,8 @@ internal fun ClarificationFieldsScreen(
             Spacer(modifier = Modifier.size(16.dp))
             if (actionType != SDKActionType.Verify)
                 PayButton(
+                    modifier = Modifier
+                        .testTag(TestTagsConstants.PAY_BUTTON),
                     payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
                     amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
                     currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
@@ -84,6 +86,8 @@ internal fun ClarificationFieldsScreen(
                 }
             else
                 SDKButton(
+                    modifier = Modifier
+                        .testTag(TestTagsConstants.AUTHORIZE_BUTTON),
                     label = getStringOverride(OverridesKeys.BUTTON_AUTHORIZE),
                     isEnabled = isClarificationFieldsValid
                 ) {

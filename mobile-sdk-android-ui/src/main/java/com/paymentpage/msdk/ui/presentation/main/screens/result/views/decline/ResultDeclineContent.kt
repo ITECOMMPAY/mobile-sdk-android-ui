@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -173,11 +174,15 @@ internal fun ResultDeclineContent(
                         Spacer(modifier = Modifier.size(15.dp))
                         if (!isTryAgain)
                             SDKButton(
+                                modifier = Modifier
+                                    .testTag(TestTagsConstants.CLOSE_BUTTON),
                                 label = getStringOverride(OverridesKeys.BUTTON_CLOSE),
                                 isEnabled = true
                             ) { onClose(payment) }
                         else
                             SDKButton(
+                                modifier = Modifier
+                                    .testTag(TestTagsConstants.TRY_AGAIN_BUTTON),
                                 label = getStringOverride(OverridesKeys.BUTTON_TRY_AGAIN),
                                 isEnabled = true
                             ) {

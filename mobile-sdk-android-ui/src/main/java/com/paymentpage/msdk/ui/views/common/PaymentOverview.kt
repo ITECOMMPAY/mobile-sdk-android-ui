@@ -115,11 +115,13 @@ internal fun ExpandablePaymentOverview(
         ) {
             LocalPaymentOptions.current.logoImage?.let {
                 Image(
+                    modifier = Modifier
+                        .height(35.dp)
+                        .testTag(TestTagsConstants.LOGO_IMAGE),
                     alignment = Alignment.TopStart,
                     bitmap = it.asImageBitmap(),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier.height(35.dp)
                 )
                 if (showPaymentId)
                     Spacer(modifier = Modifier.size(20.dp))

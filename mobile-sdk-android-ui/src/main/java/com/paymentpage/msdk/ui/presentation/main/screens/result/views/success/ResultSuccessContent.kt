@@ -13,14 +13,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentOptions
-import com.paymentpage.msdk.ui.OverridesKeys
-import com.paymentpage.msdk.ui.SDKActionType
+import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultTableInfo
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.animation.VerticalSlideFadeAnimation
@@ -162,6 +160,8 @@ internal fun ResultSuccessContent(
                     Column {
                         Spacer(modifier = Modifier.size(15.dp))
                         SDKButton(
+                            modifier = Modifier
+                                .testTag(TestTagsConstants.DONE_BUTTON),
                             label = getStringOverride(OverridesKeys.BUTTON_DONE),
                             isEnabled = true
                         ) { onClose(payment) }
