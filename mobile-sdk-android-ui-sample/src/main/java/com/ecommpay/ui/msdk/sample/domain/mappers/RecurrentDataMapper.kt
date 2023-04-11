@@ -10,6 +10,7 @@ internal fun RecurrentData.map(): EcmpRecurrentData = EcmpRecurrentData(
     expiryMonth = expiryMonth,
     expiryYear = expiryYear,
     period = period,
+    interval = interval,
     time = time,
     startDate = startDate,
     scheduledPaymentID = scheduledPaymentID,
