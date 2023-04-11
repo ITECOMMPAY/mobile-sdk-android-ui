@@ -9,6 +9,7 @@ data class RecurrentData(
     val expiryMonth: String? = null,
     val expiryYear: String? = null,
     val period: String? = null,
+    val interval: Int? = null,
     val time: String? = null,
     val startDate: String? = null,
     val scheduledPaymentID: String? = null,
@@ -23,6 +24,7 @@ data class RecurrentData(
             expiryMonth = "11",
             expiryYear = "2026",
             period = "M",
+            interval = 3,
             time = "12:00:00",
             startDate = "10-08-20${(24..99).random()}",
             scheduledPaymentID = "sdk_recurrent_${

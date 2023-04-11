@@ -61,10 +61,20 @@ internal fun RecurrentScreen(
             )
         }
         Spacer(modifier = Modifier.size(padding))
-        Text(
+        SDKCheckbox(
             modifier = Modifier
-                .testTag("recurrentRegisterText"),
-            text = "register: ${recurrentData.register}"
+                .testTag("recurrentRegisterCheckbox"),
+            text = "register: ${recurrentData.register}",
+            isChecked = recurrentData.register,
+            onCheckedChange = {
+                intentListener(
+                    RecurrentViewIntents.ChangeField(
+                        recurrentData = recurrentData.copy(
+                            register = it
+                        )
+                    )
+                )
+            }
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
@@ -140,6 +150,22 @@ internal fun RecurrentScreen(
                 )
             },
             label = { Text(text = "Period") }
+        )
+        Spacer(modifier = Modifier.size(padding))
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("recurrentIntervalTextField"),
+            value = recurrentData.interval?.toString() ?: "",
+            onValueChange = {
+                intentListener(
+                    RecurrentViewIntents.ChangeField(
+                        recurrentData = recurrentData.copy(interval = it.filter { char -> char.isDigit() }
+                            .toIntOrNull())
+                    ))
+            },
+            label = { Text(text = "Interval") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(

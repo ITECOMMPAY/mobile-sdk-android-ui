@@ -26,6 +26,11 @@ class EcmpRecurrentData(
      */
     period: String? = null,
     /**
+     *  Interval of payment: 1-100
+     *  (For example: period = W and interval = 3 - payment is every three weeks)
+     */
+    interval: Int? = null,
+    /**
      * Time of recurrent payment to charge
      */
     time: String? = null,
@@ -52,6 +57,7 @@ class EcmpRecurrentData(
     expiryMonth = expiryMonth,
     expiryYear = expiryYear,
     period = period,
+    interval = interval,
     time = time,
     startDate = startDate,
     scheduledPaymentID = scheduledPaymentID,
