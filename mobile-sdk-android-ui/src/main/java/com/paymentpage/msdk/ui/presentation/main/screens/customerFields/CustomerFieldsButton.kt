@@ -11,6 +11,7 @@ import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.button.SDKButton
+import com.paymentpage.msdk.ui.views.recurring.RecurringAgreements
 
 
 @Composable
@@ -49,6 +50,7 @@ internal fun CustomerFieldsButton(
                 isEnabled = isEnabled,
                 onClick = onClick
             )
+            RecurringAgreements()
         }
     }
 }

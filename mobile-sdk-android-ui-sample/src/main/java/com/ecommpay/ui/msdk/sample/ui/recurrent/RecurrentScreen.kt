@@ -195,7 +195,7 @@ internal fun RecurrentScreen(
                     )
                 )
             },
-            label = { Text(text = "Start time") }
+            label = { Text(text = "Start date") }
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(

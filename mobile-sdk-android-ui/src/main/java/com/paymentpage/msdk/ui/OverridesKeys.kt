@@ -70,6 +70,28 @@ internal object OverridesKeys {
     //Footer
     internal const val COF_AGREEMENTS = "cof_agreements"
 
+    //Recurring
+    //Type
+    internal const val RECURRING_TYPE_EXPIRY_DATE = "recurring_type_expiry_date"
+    internal const val RECURRING_TYPE_EXPRESS = "recurring_type_express"
+    internal const val RECURRING_TYPE_REGULAR = "recurring_type_regular"
+    //Period
+    internal const val RECURRING_PERIOD_LABEL = "recurring_period_label"
+    internal const val RECURRING_PERIOD_DAILY = "recurring_period_daily"
+    internal const val RECURRING_PERIOD_WEEKLY = "recurring_period_weekly"
+    internal const val RECURRING_PERIOD_MONTHLY = "recurring_period_monthly"
+    internal const val RECURRING_PERIOD_QUARTERLY = "recurring_period_quarterly"
+    internal const val RECURRING_PERIOD_ANNUALLY = "recurring_period_annually"
+    //Start date
+    internal const val RECURRING_START_DATE = "recurring_start_date"
+    //Amount
+    internal const val RECURRING_AMOUNT = "recurring_amount"
+    //Fail
+    internal const val RECURRING_FAIL = "recurring_fail"
+    //Charged right now
+    internal const val RECURRING_CHARGED_RIGHT_NOW = "recurring_charged_right_now"
+
+
     //Google pay
     internal const val GOOGLE_PAY_HOST_TITLE = "google_pay_host_title"
 
