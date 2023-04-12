@@ -13,7 +13,7 @@ import com.paymentpage.msdk.ui.presentation.main.fillCustomerFields
 import com.paymentpage.msdk.ui.presentation.main.sendCustomerFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
-import com.paymentpage.msdk.ui.views.common.PaymentOverview
+import com.paymentpage.msdk.ui.views.common.ExpandablePaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
@@ -37,7 +37,10 @@ internal fun CustomerFieldsScreen(
         title = getStringOverride(OverridesKeys.TITLE_PAYMENT_ADDITIONAL_DATA),
         scrollableContent = {
             if (actionType == SDKActionType.Sale) {
-                PaymentOverview()
+                ExpandablePaymentOverview(
+                    actionType = actionType,
+                    expandable = true
+                )
                 Spacer(modifier = Modifier.size(15.dp))
                 Text(
                     modifier = Modifier

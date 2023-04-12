@@ -13,6 +13,7 @@ import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.*
+import com.paymentpage.msdk.ui.views.recurring.RecurringAgreements
 
 @Composable
 internal fun CustomOrConfirmButton(
@@ -30,7 +31,7 @@ internal fun CustomOrConfirmButton(
                 customerFields.visibleCustomerFields().size <= COUNT_OF_VISIBLE_CUSTOMER_FIELDS
     when {
         condition -> {
-            if (actionType == SDKActionType.Verify)
+            if (actionType == SDKActionType.Verify) {
                 SDKButton(
                     modifier = Modifier
                         .testTag("$testTagPrefix${TestTagsConstants.AUTHORIZE_BUTTON}"),
@@ -39,6 +40,8 @@ internal fun CustomOrConfirmButton(
                 ) {
                     onClickButton()
                 }
+                RecurringAgreements()
+            }
             else
                 PayButton(
                     modifier = Modifier
@@ -52,7 +55,7 @@ internal fun CustomOrConfirmButton(
                 }
         }
         customerFields.isAllCustomerFieldsHidden() -> {
-            if (actionType == SDKActionType.Verify)
+            if (actionType == SDKActionType.Verify) {
                 SDKButton(
                     modifier = Modifier
                         .testTag("$testTagPrefix${TestTagsConstants.AUTHORIZE_BUTTON}"),
@@ -70,6 +73,8 @@ internal fun CustomOrConfirmButton(
                     }
                     onClickButton()
                 }
+                RecurringAgreements()
+            }
             else
                 PayButton(
                     modifier = Modifier

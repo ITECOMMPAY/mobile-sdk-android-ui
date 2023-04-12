@@ -17,10 +17,11 @@ import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.button.SDKButton
-import com.paymentpage.msdk.ui.views.common.PaymentOverview
+import com.paymentpage.msdk.ui.views.common.ExpandablePaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
+import com.paymentpage.msdk.ui.views.recurring.RecurringAgreements
 
 @Composable
 internal fun ClarificationFieldsScreen(
@@ -39,7 +40,10 @@ internal fun ClarificationFieldsScreen(
     SDKScaffold(
         title = getStringOverride(OverridesKeys.TITLE_PAYMENT_ADDITIONAL_DATA),
         scrollableContent = {
-            PaymentOverview()
+            ExpandablePaymentOverview(
+                actionType = actionType,
+                expandable = true
+            )
             Spacer(modifier = Modifier.size(15.dp))
             Text(
                 modifier = Modifier
@@ -84,7 +88,7 @@ internal fun ClarificationFieldsScreen(
                 ) {
                     viewModel.sendClarificationFields(clarificationFieldValues)
                 }
-            else
+            else {
                 SDKButton(
                     modifier = Modifier
                         .testTag(TestTagsConstants.AUTHORIZE_BUTTON),
@@ -93,6 +97,8 @@ internal fun ClarificationFieldsScreen(
                 ) {
                     viewModel.sendClarificationFields(clarificationFieldValues)
                 }
+                RecurringAgreements()
+            }
             Spacer(modifier = Modifier.size(16.dp))
             SDKFooter()
         },
