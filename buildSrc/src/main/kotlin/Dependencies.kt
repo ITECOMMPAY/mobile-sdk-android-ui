@@ -10,7 +10,7 @@ object Versions {
     const val compose = "1.4.0"
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
-    const val msdkCore = "0.8.6"
+    const val msdkCore = "0.9.0"
     const val cyclonedx = "1.7.2"
 }
 
