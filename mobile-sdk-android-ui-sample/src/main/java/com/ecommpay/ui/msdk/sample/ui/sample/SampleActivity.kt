@@ -70,6 +70,7 @@ class SampleActivity : ComponentActivity() {
             customerId = repositoryPaymentData.customerId,
             paymentDescription = repositoryPaymentData.paymentDescription,
             languageCode = repositoryPaymentData.languageCode,
+            regionCode = repositoryPaymentData.regionCode,
             token = repositoryPaymentData.token,
             ecmpThreeDSecureInfo = threeDSecureInfoToSend
         )

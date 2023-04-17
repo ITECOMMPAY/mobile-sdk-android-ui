@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Locale
 
 internal fun Long?.amountToCoins() = String.format(Locale.US, "%.2f", (this ?: 0) / 100.0)
 
@@ -26,13 +26,14 @@ internal fun String.paymentDateToPatternDate(pattern: String): String {
 
 internal fun String.patternDateToPatternDate(
     inPattern: String,
-    outPattern: String
+    outPattern: String,
+    locale: Locale?
 ): String? {
     val isDateValid = DateValidator().isValid(this)
     if (!isDateValid)
         return null
-    val inputFormat = SimpleDateFormat(inPattern, Locale.getDefault())
-    val outputFormat = SimpleDateFormat(outPattern, Locale.getDefault())
+    val inputFormat = SimpleDateFormat(inPattern, locale ?: Locale.getDefault())
+    val outputFormat = SimpleDateFormat(outPattern, locale ?: Locale.getDefault())
     return try {
         val parse = inputFormat.parse(this) ?: null
         if (parse != null)

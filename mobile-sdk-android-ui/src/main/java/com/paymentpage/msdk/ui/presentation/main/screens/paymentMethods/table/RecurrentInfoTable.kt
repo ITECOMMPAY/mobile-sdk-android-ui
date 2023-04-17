@@ -7,8 +7,14 @@ import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.SDKActionType
-import com.paymentpage.msdk.ui.utils.extensions.core.*
+import com.paymentpage.msdk.ui.utils.extensions.core.amountUI
+import com.paymentpage.msdk.ui.utils.extensions.core.chargedAmountUI
+import com.paymentpage.msdk.ui.utils.extensions.core.expiryDateUI
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
+import com.paymentpage.msdk.ui.utils.extensions.core.periodUI
+import com.paymentpage.msdk.ui.utils.extensions.core.startDateUI
 import com.paymentpage.msdk.ui.views.common.SDKTable
+import java.util.Locale
 
 @Composable
 internal fun RecurrentInfoTable(
@@ -20,6 +26,15 @@ internal fun RecurrentInfoTable(
     spaceBetweenItems: Dp,
     isTableEmptyCallback: ((Boolean) -> Unit)? = null
 ) {
+
+    val languageCode = paymentInfo.languageCode
+    val regionCode = paymentInfo.regionCode
+
+    val locale = when {
+        !languageCode.isNullOrEmpty() && !regionCode.isNullOrEmpty() -> Locale(languageCode, regionCode)
+        !languageCode.isNullOrEmpty() -> Locale(languageCode)
+        else -> null
+    }
 
     //recurring charged right now
     val recurringChargedRightNowLabel = getStringOverride(OverridesKeys.RECURRING_CHARGED_RIGHT_NOW)
@@ -34,7 +49,7 @@ internal fun RecurrentInfoTable(
 
     //recurring start date
     val recurringStartDateLabel = getStringOverride(OverridesKeys.RECURRING_START_DATE)
-    val recurringStartDateValue = recurrentInfo.startDateUI()
+    val recurringStartDateValue = recurrentInfo.startDateUI(locale = locale)
 
     //recurring amount
     val recurringAmountLabel = getStringOverride(OverridesKeys.RECURRING_AMOUNT)
@@ -42,7 +57,7 @@ internal fun RecurrentInfoTable(
 
     //recurring expiry date
     val recurringExpiryDateLabel = getStringOverride(OverridesKeys.RECURRING_TYPE_EXPIRY_DATE)
-    val recurringExpiryDateValue = recurrentInfo.expiryDateUI()
+    val recurringExpiryDateValue = recurrentInfo.expiryDateUI(locale = locale)
 
     val labelWithValueMap: Map<String?, String?> = mapOf(
         recurringChargedRightNowLabel to recurringChargedRightNowValue,
