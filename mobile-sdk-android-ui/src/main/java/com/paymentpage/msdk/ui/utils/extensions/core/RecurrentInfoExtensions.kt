@@ -6,6 +6,7 @@ import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.patternDateToPatternDate
+import java.util.Locale
 
 private fun RecurrentInfo.period(): RecurrentPeriod? =
     when (this.period) {
@@ -58,7 +59,9 @@ internal fun RecurrentInfo.typeUI(): RecurrentTypeUI? =
         else -> null //Incorrect type
     }
 
-internal fun RecurrentInfo.expiryDateUI(): String? {
+internal fun RecurrentInfo.expiryDateUI(
+    locale: Locale?
+): String? {
     return if (
         this.expiryDay != null &&
         this.expiryMonth != null &&
@@ -67,17 +70,21 @@ internal fun RecurrentInfo.expiryDateUI(): String? {
         "${this.expiryDay}-${this.expiryMonth}-${this.expiryYear}"
             .patternDateToPatternDate(
                 inPattern = "dd-MM-yyyy",
-                outPattern = "MMMM dd, yyyy"
+                outPattern = "MMMM dd, yyyy",
+                locale = locale
             )
     } else return null
 }
 
-internal fun RecurrentInfo.startDateUI(): String? {
+internal fun RecurrentInfo.startDateUI(
+    locale: Locale?
+): String? {
     val startDate = this.startDate
     return if (startDate != null) {
         startDate.patternDateToPatternDate(
             inPattern = "dd-MM-yyyy",
-            outPattern = "MMMM dd, yyyy"
+            outPattern = "MMMM dd, yyyy",
+            locale = locale
         )
     } else return null
 }
