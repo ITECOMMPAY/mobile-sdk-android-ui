@@ -33,7 +33,9 @@ internal class InitViewModel(
         initInteractor.execute(
             request = InitRequest(
                 paymentInfo = paymentOptions.paymentInfo,
-                recurrentInfo = paymentOptions.recurrentInfo,
+                recurrentInfo = paymentOptions.recurrentInfo?.let { recurrentInfo ->
+                    if (recurrentInfo.register) recurrentInfo else null
+                },
                 additionalFields = paymentOptions.additionalFields.map {
                     CustomerFieldValue.fromNameWithValue(
                         name = it.type?.value ?: "",
