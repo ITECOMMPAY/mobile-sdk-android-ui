@@ -2,6 +2,7 @@ package com.paymentpage.msdk.ui.presentation.main.screens.result.views.table
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.OverridesKeys
@@ -16,6 +17,7 @@ import com.paymentpage.msdk.ui.views.common.SDKTable
 internal fun PaymentInfoTable(
     actionType: SDKActionType,
     method: UIPaymentMethod?,
+    paymentInfo: PaymentInfo,
     payment: Payment,
 ) {
     val valueTitleCardWallet = when (method) {
@@ -52,7 +54,7 @@ internal fun PaymentInfoTable(
 
     val paymentDescription =
         getStringOverride(OverridesKeys.TITLE_PAYMENT_INFORMATION_DESCRIPTION) to
-                if (actionType == SDKActionType.Verify) payment.description else null
+                if (actionType == SDKActionType.Verify) paymentInfo.paymentDescription else null
 
     val resultTableMap: Map<String?, String?> = mapOf(
         cardWallet,

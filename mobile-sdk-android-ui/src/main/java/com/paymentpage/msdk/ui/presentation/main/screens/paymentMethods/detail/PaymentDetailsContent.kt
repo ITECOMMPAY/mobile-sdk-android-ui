@@ -11,23 +11,19 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 @Composable
 fun PaymentDetailsContent(
-    actionType: SDKActionType,
     paymentIdLabel: String,
-    paymentIdValue: String,
+    paymentIdValue: String?,
     paymentDescriptionLabel: String,
     paymentDescriptionValue: String?,
-    merchantAddressLabel: String,
-    merchantAddressValue: String?
 ) {
     Column {
         //Payment ID
-        if (actionType != SDKActionType.Verify) {
+        if (paymentIdValue != null) {
             Spacer(modifier = Modifier.size(20.dp))
             Text(
                 modifier = Modifier
@@ -63,26 +59,6 @@ fun PaymentDetailsContent(
                 modifier = Modifier
                     .testTag(TestTagsConstants.PAYMENT_DESCRIPTION_VALUE_TEXT),
                 text = paymentDescriptionValue,
-                style = SDKTheme.typography.s14Light.copy(color = Color.White)
-            )
-        }
-        //Address
-        if (merchantAddressValue != null) {
-            Spacer(modifier = Modifier.size(20.dp))
-            Text(
-                modifier = Modifier
-                    .testTag(TestTagsConstants.ADDRESS_LABEL_TEXT)
-                    .semantics {
-                        heading()
-                    },
-                text = merchantAddressLabel,
-                style = SDKTheme.typography.s12Light.copy(color = Color.White.copy(alpha = 0.6f))
-            )
-            Spacer(modifier = Modifier.size(6.dp))
-            Text(
-                modifier = Modifier
-                    .testTag(TestTagsConstants.ADDRESS_VALUE_TEXT),
-                text = merchantAddressValue,
                 style = SDKTheme.typography.s14Light.copy(color = Color.White)
             )
         }
