@@ -2,6 +2,7 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -32,6 +33,7 @@ import com.paymentpage.msdk.ui.utils.extensions.core.isAllCustomerFieldsHidden
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeHiddenFieldsToList
 import com.paymentpage.msdk.ui.views.button.GooglePayButton
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
+import com.paymentpage.msdk.ui.views.recurring.RecurringAgreements
 
 
 @Composable
@@ -134,11 +136,12 @@ internal fun GooglePayItem(
                         method.isCustomerFieldsValid = isValid
                     }
                 )
-                Spacer(modifier = Modifier.size(22.dp))
+                Spacer(modifier = Modifier.height(22.dp))
                 GooglePayButton(
                     isEnabled = isCustomerFieldsValid && isGooglePayAvailable && !isGooglePayOpened,
                     onClick = launchGooglePaySheet
                 )
+                RecurringAgreements()
             }
         }
         customerFields.isAllCustomerFieldsHidden() && (isForcePaymentMethod || isTryAgain) -> {

@@ -21,13 +21,13 @@ import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.FinalPaymentState
-import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultTableInfo
+import com.paymentpage.msdk.ui.presentation.main.screens.result.views.ResultContent
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.animation.VerticalSlideFadeAnimation
 import com.paymentpage.msdk.ui.presentation.main.tryAgain
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.button.SDKButton
-import com.paymentpage.msdk.ui.views.common.PaymentOverview
+import com.paymentpage.msdk.ui.views.common.ExpandablePaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import kotlinx.coroutines.delay
@@ -145,9 +145,9 @@ internal fun ResultDeclineContent(
                     ) {
                         Column {
                             Spacer(modifier = Modifier.size(15.dp))
-                            PaymentOverview(
-                                showPaymentId = false,
-                                showPaymentDetailsButton = false
+                            ExpandablePaymentOverview(
+                                actionType = actionType,
+                                expandable = false
                             )
                         }
                     }
@@ -160,7 +160,7 @@ internal fun ResultDeclineContent(
                 ) {
                     Column {
                         Spacer(modifier = Modifier.size(15.dp))
-                        ResultTableInfo(onError)
+                        ResultContent(onError)
                     }
                 }
 
