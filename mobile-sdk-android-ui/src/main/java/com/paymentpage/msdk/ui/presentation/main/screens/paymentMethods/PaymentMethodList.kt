@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_PARAMETER")
-
 package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods
 
 import androidx.compose.foundation.layout.Column
