@@ -5,7 +5,7 @@ import com.ecommpay.ui.msdk.sample.domain.entities.RecurrentData
 import com.ecommpay.ui.msdk.sample.domain.entities.RecurrentDataSchedule
 import com.ecommpay.ui.msdk.sample.domain.ui.base.BaseViewUC
 import com.ecommpay.ui.msdk.sample.domain.ui.base.back
-import java.util.*
+import java.util.UUID
 
 class RecurrentViewUC : BaseViewUC<RecurrentViewIntents, RecurrentViewState>(RecurrentViewState()) {
 
@@ -26,10 +26,7 @@ class RecurrentViewUC : BaseViewUC<RecurrentViewIntents, RecurrentViewState>(Rec
             }
             is RecurrentViewIntents.Exit -> {
                 ProcessRepository.recurrentData =
-                    if (
-                        ProcessRepository.isEnabledRecurrent ||
-                        ProcessRepository.recurrentData?.register == false
-                    )
+                    if (ProcessRepository.isEnabledRecurrent)
                         viewState.value.recurrentData
                     else
                         null
@@ -38,11 +35,9 @@ class RecurrentViewUC : BaseViewUC<RecurrentViewIntents, RecurrentViewState>(Rec
             is RecurrentViewIntents.ChangeCheckbox -> {
                 val newValue = !(viewState.value.isEnabledRecurrent)
                 ProcessRepository.isEnabledRecurrent = newValue
-                ProcessRepository.recurrentData = viewState.value.recurrentData.copy(register = newValue)
                 updateState(
                     viewState.value.copy(
                         isEnabledRecurrent = newValue,
-                        recurrentData = viewState.value.recurrentData.copy(register = newValue)
                     )
                 )
             }
