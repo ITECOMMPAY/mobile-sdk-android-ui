@@ -7,7 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
+import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -21,14 +25,14 @@ internal fun PaymentMethodsScreen(
     onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
 ) {
-
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
 
     val lastState = mainViewModel.lastState
     val isTryAgain = lastState.isTryAgain ?: false
     val isSaleWithToken = LocalPaymentOptions.current.paymentInfo.token != null
-    val uiPaymentMethods = paymentMethodsViewModel.state.collectAsState().value.paymentMethods ?: throw IllegalStateException("Not found paymentMethods in State")
+    val uiPaymentMethods = paymentMethodsViewModel.state.collectAsState().value.paymentMethods
+        ?: throw IllegalStateException("Not found paymentMethods in State")
 
     val filteredUIPaymentMethods = with(uiPaymentMethods) {
         if (isSaleWithToken)
