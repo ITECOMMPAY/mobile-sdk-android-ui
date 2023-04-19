@@ -1,9 +1,9 @@
 package com.ecommpay.ui.msdk.sample.domain.entities
 
-import java.util.*
+import java.util.UUID
 
 data class RecurrentData(
-    val register: Boolean = true,
+    val register: Boolean = false,
     val type: String? = null,
     val expiryDay: String? = null,
     val expiryMonth: String? = null,
