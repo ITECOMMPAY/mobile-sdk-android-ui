@@ -33,6 +33,7 @@ internal fun PayButton(
     payLabel: String,
     amount: String,
     currency: String,
+    showRecurringAgreement: Boolean = true,
     onClick: () -> Unit,
 ) {
     CustomButton(
@@ -89,7 +90,8 @@ internal fun PayButton(
         },
         onClick = onClick
     )
-    RecurringAgreements()
+    if (showRecurringAgreement)
+        RecurringAgreements()
 }
 
 @Composable
