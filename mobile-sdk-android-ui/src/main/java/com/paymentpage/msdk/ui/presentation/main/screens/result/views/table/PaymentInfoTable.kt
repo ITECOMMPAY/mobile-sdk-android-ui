@@ -54,7 +54,7 @@ internal fun PaymentInfoTable(
 
     val paymentDescription =
         getStringOverride(OverridesKeys.TITLE_PAYMENT_INFORMATION_DESCRIPTION) to
-                if (actionType == SDKActionType.Verify) paymentInfo.paymentDescription else null
+                if (actionType != SDKActionType.Tokenize) paymentInfo.paymentDescription else null
 
     val resultTableMap: Map<String?, String?> = mapOf(
         cardWallet,
