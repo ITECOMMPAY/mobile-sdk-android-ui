@@ -2,13 +2,12 @@
 
 object Library {
     const val artifactId = "msdk-ui"
-    const val version = "3.3.0"
+    const val version = "3.3.1"
     const val group = "com.ecommpay"
 }
 
 object Versions {
-    const val compose = "1.4.0"
-    const val serialization = "1.3.3"
+    const val compose = "1.4.2"
     const val detekt = "1.20.0"
     const val msdkCore = "0.9.0"
     const val cyclonedx = "1.7.2"
@@ -28,7 +27,6 @@ object LibraryDependencies {
         const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
         const val junit4 = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
         const val navigation = "androidx.navigation:navigation-compose:2.5.3"
-        const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1"
         const val activity = "androidx.activity:activity-compose:1.7.0"
     }
 
@@ -39,23 +37,17 @@ object LibraryDependencies {
     }
 
     object AndroidX {
-        const val appCompat = "androidx.appcompat:appcompat:1.6.0"
-        const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.1"
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
-        const val customView = "androidx.customview:customview:1.2.0-alpha01"
-        const val customViewPoolingContainer =
-            "androidx.customview:customview-poolingcontainer:1.0.0-rc01"
-        const val coreKtx = "androidx.core:core-ktx:1.8.0"
-        const val activityKtx = "androidx.activity:activity-ktx:1.6.0-alpha05"
+        const val appCompat = "androidx.appcompat:appcompat:1.7.0-alpha02"
+        const val coreKtx = "androidx.core:core-ktx:1.10.0"
+        const val activityKtx = "androidx.activity:activity-ktx:1.7.1"
     }
 
     object KotlinX {
-        const val serialization =
-            "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serialization}"
+        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
     }
 
     object Coil {
-        const val compose = "io.coil-kt:coil-compose:2.0.0-rc03"
+        const val compose = "io.coil-kt:coil-compose:2.3.0"
     }
 
     object Google {

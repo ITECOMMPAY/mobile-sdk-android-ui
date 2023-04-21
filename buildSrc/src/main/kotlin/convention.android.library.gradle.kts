@@ -8,7 +8,9 @@ version = System.getenv("SDK_VERSION_NAME") ?: Library.version
 
 android {
     compileSdk = 33
-
+    buildFeatures {
+        buildConfig = true
+    }
     defaultConfig {
         minSdk = 21
         targetSdk = 33
@@ -76,11 +78,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_19
+        targetCompatibility = JavaVersion.VERSION_19
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_19.toString()
     }
     buildFeatures {
         compose = true
@@ -88,7 +90,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.compose
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }

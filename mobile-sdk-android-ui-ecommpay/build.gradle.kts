@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":mobile-sdk-android-ui"))
 
     android {
+        namespace = "com.ecommpay.msdk.ui"
         defaultConfig {
             vectorDrawables.useSupportLibrary = true
         }
