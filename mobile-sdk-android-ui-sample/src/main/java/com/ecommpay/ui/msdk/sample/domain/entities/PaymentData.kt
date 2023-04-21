@@ -1,7 +1,7 @@
 package com.ecommpay.ui.msdk.sample.domain.entities
 
 import com.ecommpay.ui.msdk.sample.BuildConfig
-import java.util.*
+import java.util.UUID
 
 data class PaymentData(
     val projectId: Int = 111781,
@@ -11,6 +11,7 @@ data class PaymentData(
     val customerId: String? = "12",
     val paymentDescription: String? = "Test payment",
     val languageCode: String? = null,
+    val regionCode: String? = null,
     val forcePaymentMethod: String? = null,
     val token: String? = null,
     val hideSavedWallets: Boolean = false,

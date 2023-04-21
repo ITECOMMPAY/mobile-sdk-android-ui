@@ -5,6 +5,7 @@ import com.ecommpay.ui.msdk.sample.domain.entities.RecurrentData
 import com.ecommpay.ui.msdk.sample.domain.entities.RecurrentDataSchedule
 import com.ecommpay.ui.msdk.sample.domain.ui.base.BaseViewUC
 import com.ecommpay.ui.msdk.sample.domain.ui.base.back
+import java.util.UUID
 
 class RecurrentViewUC : BaseViewUC<RecurrentViewIntents, RecurrentViewState>(RecurrentViewState()) {
 
@@ -24,17 +25,19 @@ class RecurrentViewUC : BaseViewUC<RecurrentViewIntents, RecurrentViewState>(Rec
                 updateState(viewState.value.copy(recurrentData = viewIntent.recurrentData))
             }
             is RecurrentViewIntents.Exit -> {
-                ProcessRepository.recurrentData = if (ProcessRepository.isEnabledRecurrent) viewState.value.recurrentData else null
+                ProcessRepository.recurrentData =
+                    if (ProcessRepository.isEnabledRecurrent)
+                        viewState.value.recurrentData
+                    else
+                        null
                 back()
             }
             is RecurrentViewIntents.ChangeCheckbox -> {
                 val newValue = !(viewState.value.isEnabledRecurrent)
                 ProcessRepository.isEnabledRecurrent = newValue
-                ProcessRepository.recurrentData = viewState.value.recurrentData.copy(register = newValue)
                 updateState(
                     viewState.value.copy(
                         isEnabledRecurrent = newValue,
-                        recurrentData = viewState.value.recurrentData.copy(register = newValue)
                     )
                 )
             }
@@ -43,12 +46,14 @@ class RecurrentViewUC : BaseViewUC<RecurrentViewIntents, RecurrentViewState>(Rec
                 ProcessRepository.recurrentData = RecurrentData()
                 updateState(
                     RecurrentViewState(
-                        recurrentData = RecurrentData(),
+                        recurrentData = RecurrentData().copy(register = false),
                         isEnabledRecurrent =  false
                     )
                 )
             }
             is RecurrentViewIntents.FillMockData -> {
+                val randomExpiryYear = "20${(24..30).random()}"
+                val randomStartYear = (randomExpiryYear.toInt() + 1).toString()
                 val mockSchedule = RecurrentDataSchedule().copy(
                     date = "10-08-202${(0..9).random()}",
                     amount = (1000..2000).random().toLong()
@@ -68,7 +73,14 @@ class RecurrentViewUC : BaseViewUC<RecurrentViewIntents, RecurrentViewState>(Rec
                                 mockSchedule
                             } ?: listOf(
                                 mockSchedule
-                            )
+                            ),
+                            scheduledPaymentID = "sdk_recurrent_${
+                                UUID.randomUUID().toString().take(8)
+                            }",
+                            expiryMonth = "0${(1..9).random()}",
+                            expiryYear = randomExpiryYear,
+                            startDate = "10-08-$randomStartYear",
+                            amount = (1L..1000L).random(),
                         ),
                         isEnabledRecurrent = true
                     )

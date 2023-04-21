@@ -1,7 +1,6 @@
 package com.paymentpage.msdk.ui.views.button
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -16,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.CustomButton
+import com.paymentpage.msdk.ui.views.recurring.RecurringAgreements
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -33,6 +33,7 @@ internal fun PayButton(
     payLabel: String,
     amount: String,
     currency: String,
+    showRecurringAgreement: Boolean = true,
     onClick: () -> Unit,
 ) {
     CustomButton(
@@ -89,6 +90,8 @@ internal fun PayButton(
         },
         onClick = onClick
     )
+    if (showRecurringAgreement)
+        RecurringAgreements()
 }
 
 @Composable

@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
 import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewIntents
-import java.util.*
+import java.util.UUID
 
 @Composable
 internal fun PaymentFields(
@@ -171,6 +171,23 @@ internal fun PaymentFields(
             )
         },
         label = { Text(text = "Language code") }
+    )
+    Spacer(modifier = Modifier.size(padding))
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("regionCodeTextField"),
+        value = paymentData.regionCode ?: "",
+        onValueChange = { changingString ->
+            intentListener(
+                MainViewIntents.ChangeField(
+                    paymentData = paymentData.copy(
+                        regionCode = changingString.ifBlank { null }
+                    )
+                )
+            )
+        },
+        label = { Text(text = "Region code") }
     )
     Spacer(modifier = Modifier.size(padding))
     OutlinedTextField(
