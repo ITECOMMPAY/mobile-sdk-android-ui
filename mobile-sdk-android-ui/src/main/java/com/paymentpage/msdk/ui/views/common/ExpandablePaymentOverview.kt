@@ -23,73 +23,45 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsContent
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.table.RecurrentInfoTable
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
+import com.paymentpage.msdk.ui.utils.extensions.core.RecurrentTypeUI
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
+import com.paymentpage.msdk.ui.utils.extensions.core.isShowRecurringUI
+import com.paymentpage.msdk.ui.utils.extensions.core.typeUI
 import com.paymentpage.msdk.ui.views.button.SDKButton
 
-@Composable
-internal fun PaymentOverview(
-    showPaymentId: Boolean = true,
-    showPaymentDetailsButton: Boolean = true,
-) {
-    val paymentOptions = LocalPaymentOptions.current
-    var expandPaymentDetailsState by remember { mutableStateOf(false) }
-
-    val paymentIdLabel = getStringOverride(OverridesKeys.TITLE_PAYMENT_ID)
-    val paymentIdValue = LocalPaymentOptions.current.paymentInfo.paymentId
-
-    val paymentDescriptionValue = LocalPaymentOptions.current.paymentInfo.paymentDescription
-
-    val merchantAddressValue = null
-
-    ExpandablePaymentOverview(
-        actionType = paymentOptions.actionType,
-        paymentIdLabel = paymentIdLabel,
-        paymentIdValue = paymentIdValue,
-        showPaymentDetailsButton = (
-                paymentOptions.actionType != SDKActionType.Verify ||
-                        paymentDescriptionValue != null ||
-                        merchantAddressValue != null
-                ) && showPaymentDetailsButton,
-        showPaymentId = showPaymentId,
-        isExpanded = expandPaymentDetailsState,
-        onExpand = { expandPaymentDetailsState = !expandPaymentDetailsState }
-    ) {
-        PaymentDetailsContent(
-            actionType = paymentOptions.actionType,
-            paymentIdLabel = paymentIdLabel,
-            paymentIdValue = paymentIdValue,
-            paymentDescriptionLabel = getStringOverride(OverridesKeys.TITLE_PAYMENT_INFORMATION_DESCRIPTION),
-            paymentDescriptionValue = paymentDescriptionValue,
-            merchantAddressLabel = "",
-            merchantAddressValue = merchantAddressValue
-        )
-    }
-}
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ExpandablePaymentOverview(
     actionType: SDKActionType,
-    paymentIdLabel: String,
-    paymentIdValue: String? = null,
-    showPaymentId: Boolean = true,
-    showPaymentDetailsButton: Boolean = true,
-    isExpanded: Boolean = false,
-    onExpand: () -> Unit,
-    expandableContent: @Composable ColumnScope.() -> Unit,
+    expandable: Boolean,
 ) {
+    val paymentOptions = LocalPaymentOptions.current
+
     val mainViewModel = LocalMainViewModel.current
+    val mainScreenState = mainViewModel.state.collectAsState().value
+
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
-    val currentMethod = paymentMethodsViewModel.state.collectAsState().value.currentMethod
+    val paymentMethodsState = paymentMethodsViewModel.state.collectAsState().value
+
+    val currentMethod = paymentMethodsState.currentMethod
     val payment = mainViewModel.payment
     val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
 
-    val gradient = arrayOf(
-        0.0f to SDKTheme.colors.primary.copy(alpha = 0.95f),
-        1f to SDKTheme.colors.primary.copy(alpha = 0.80f),
-    )
+    val paymentIdLabel = getStringOverride(OverridesKeys.TITLE_PAYMENT_ID)
+    val paymentIdValue = if (actionType != SDKActionType.Verify)
+        paymentOptions.paymentInfo.paymentId else null
+
+    val paymentDescriptionLabel =
+        getStringOverride(OverridesKeys.TITLE_PAYMENT_INFORMATION_DESCRIPTION)
+    val paymentDescriptionValue = paymentOptions.paymentInfo.paymentDescription
+
+    val showExpandableContent =
+        expandable && (paymentIdValue != null || paymentDescriptionValue != null)
+    var isDividerVisible by remember { mutableStateOf(true) }
 
     val isShowVatInfoLabel = currentMethod?.paymentMethod?.isVatInfo == true
             || paymentMethods.firstOrNull {
@@ -98,13 +70,19 @@ internal fun ExpandablePaymentOverview(
         else false
     }?.isVatInfo == true
 
+    //background
+    val gradient = arrayOf(
+        0.0f to SDKTheme.colors.primary.copy(alpha = 0.95f),
+        1f to SDKTheme.colors.primary.copy(alpha = 0.80f),
+    )
+    //expand state
+    var isExpanded by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .background(
                 brush = Brush.linearGradient(
                     colorStops = gradient
-                ),
-                shape = SDKTheme.shapes.radius12
+                ), shape = SDKTheme.shapes.radius12
             )
             .fillMaxWidth()
     ) {
@@ -113,23 +91,47 @@ internal fun ExpandablePaymentOverview(
                 .animateContentSize(SnapSpec())
                 .padding(20.dp),
         ) {
-            LocalPaymentOptions.current.logoImage?.let {
+            paymentOptions.logoImage?.let { logo ->
                 Image(
                     modifier = Modifier
                         .height(35.dp)
                         .testTag(TestTagsConstants.LOGO_IMAGE),
                     alignment = Alignment.TopStart,
-                    bitmap = it.asImageBitmap(),
+                    bitmap = logo.asImageBitmap(),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                 )
-                if (showPaymentId)
+                if (actionType != SDKActionType.Verify ||
+                    mainScreenState.finalPaymentState == null
+                )
                     Spacer(modifier = Modifier.size(20.dp))
             }
+
+            if (
+                paymentOptions.recurrentInfo != null &&
+                paymentOptions.recurrentInfo.typeUI() == RecurrentTypeUI.REGULAR &&
+                mainScreenState.finalPaymentState == null &&
+                paymentOptions.recurrentInfo.isShowRecurringUI()
+            ) {
+                RecurrentInfoTable(
+                    actionType = actionType,
+                    paymentInfo = paymentOptions.paymentInfo,
+                    recurrentInfo = paymentOptions.recurrentInfo,
+                    labelTextStyle = SDKTheme.typography.s14Light.copy(color = Color.White),
+                    spaceBetweenItems = 12.dp,
+                    isTableEmptyCallback = { isDividerVisible = !it }
+                )
+                if (isDividerVisible) {
+                    Spacer(modifier = Modifier.size(20.dp))
+                    SDKDivider()
+                    Spacer(modifier = Modifier.size(20.dp))
+                }
+            }
+
             if (actionType != SDKActionType.Verify) {
                 val coinsText =
                     LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins()
-                val currencyText = LocalPaymentOptions.current.paymentInfo.paymentCurrency
+                val currencyText = paymentOptions.paymentInfo.paymentCurrency
                 Box(
                     modifier = Modifier
                         .semantics {
@@ -191,41 +193,43 @@ internal fun ExpandablePaymentOverview(
                 }
             } else {
                 //Payment ID
-                if (paymentIdValue != null && showPaymentId)
+                if (mainScreenState.finalPaymentState == null) {
+                    val paymentIdValueFinal = paymentOptions.paymentInfo.paymentId
                     Column {
                         Text(
                             modifier = Modifier
                                 .testTag(TestTagsConstants.PAYMENT_ID_LABEL_TEXT),
                             text = paymentIdLabel,
-                            style = SDKTheme.typography.s12Light.copy(color = Color.White.copy(alpha = 0.6f))
+                            style = SDKTheme.typography.s12Light.copy(
+                                color = Color.White.copy(
+                                    alpha = 0.6f
+                                )
+                            )
                         )
                         Spacer(modifier = Modifier.size(6.dp))
                         Text(
                             modifier = Modifier
                                 .testTag(TestTagsConstants.PAYMENT_ID_VALUE_TEXT),
-                            text = paymentIdValue,
+                            text = paymentIdValueFinal,
                             style = SDKTheme.typography.s14Bold.copy(color = Color.White)
                         )
                     }
-            }
-
-            if (showPaymentDetailsButton) {
-                Spacer(modifier = Modifier.size(20.dp))
-                if (isExpanded) {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(1.dp)
-                            .background(Color.White.copy(alpha = 0.1f))
-                    )
                 }
+            }
+            if (showExpandableContent) {
+                Spacer(modifier = Modifier.size(20.dp))
+                if (isExpanded)
+                    SDKDivider()
                 AnimatedVisibility(visible = isExpanded) {
-                    Column(
-                        content = {
-                            expandableContent()
-                            Spacer(modifier = Modifier.size(20.dp))
-                        }
-                    )
+                    Column {
+                        PaymentDetailsContent(
+                            paymentIdLabel = paymentIdLabel,
+                            paymentIdValue = paymentIdValue,
+                            paymentDescriptionLabel = paymentDescriptionLabel,
+                            paymentDescriptionValue = paymentDescriptionValue,
+                        )
+                        Spacer(modifier = Modifier.size(20.dp))
+                    }
                 }
                 SDKButton(
                     modifier = Modifier
@@ -238,7 +242,9 @@ internal fun ExpandablePaymentOverview(
                     else
                         getStringOverride(OverridesKeys.BUTTON_HIDE_DETAILS),
                     isEnabled = true,
-                    onClick = onExpand
+                    onClick = {
+                        isExpanded = !isExpanded
+                    }
                 )
             }
         }

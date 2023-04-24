@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_PARAMETER")
-
 package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods
 
 import androidx.compose.foundation.layout.Column
@@ -11,7 +9,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalMsdkSession
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.SDKActionType
@@ -23,7 +20,6 @@ internal fun PaymentMethodList(
     actionType: SDKActionType,
     uiPaymentMethods: List<UIPaymentMethod>
 ) {
-    val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
 
     val lastSelectedMethod = paymentMethodsViewModel.state.collectAsState().value.currentMethod

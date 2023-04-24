@@ -66,7 +66,12 @@ internal fun MainScreen(
         composable(route = Route.CustomerFields.getPath()) {
             CustomerFieldsScreen(
                 actionType = actionType,
-                onBack = { mainScreenNavigator.navigateTo(Route.PaymentMethods) },
+                onBack = {
+                    if (actionType != SDKActionType.Tokenize)
+                        mainScreenNavigator.navigateTo(Route.PaymentMethods)
+                    else
+                        mainScreenNavigator.navigateTo(Route.Tokenize)
+                },
                 onCancel = onCancel
             )
         }
@@ -145,6 +150,7 @@ private fun setupStateListener(
                     )
                     mainScreenNavigator.navigateTo(Route.PaymentMethods)
                 }
+
                 it.finalPaymentState != null -> {
                     val payment =
                         mainViewModel.payment
@@ -157,6 +163,7 @@ private fun setupStateListener(
                             else
                                 mainScreenNavigator.navigateTo(Route.SuccessResult)
                         }
+
                         is FinalPaymentState.Decline -> {
                             //when try again we should not hide decline resulting screen
                             if (screenDisplayModes.contains(SDKScreenDisplayMode.HIDE_DECLINE_FINAL_SCREEN) &&
@@ -168,13 +175,16 @@ private fun setupStateListener(
                         }
                     }
                 }
+
                 it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.ClarificationFields)
                 it.threeDSecurePageState != null -> when (it.threeDSecurePageState.threeDSecurePage?.type) {
                     ThreeDSecurePageType.THREE_DS_2_FRICTIONLESS ->
                         mainScreenNavigator.navigateTo(Route.ThreeDSecureLoadingPage)
+
                     else -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)
                 }
+
                 it.apsPageState != null -> mainScreenNavigator.navigateTo(Route.ApsPage)
             }
         }.collect()
