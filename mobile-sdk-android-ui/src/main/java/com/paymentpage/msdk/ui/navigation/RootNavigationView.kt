@@ -67,16 +67,6 @@ internal fun RootNavigationView(
                 onError = onError
             )
         }
-        composable(route = Route.Tokenize.getPath()) { //RootNavigationView <-MainScreen <- inner AnimatedNavHost
-            MainScreen(
-                startRoute = Route.Tokenize,
-                actionType = actionType,
-                mainScreenNavigator = mainScreenNavigator,
-                delegate = delegate,
-                onCancel = onCancel,
-                onError = onError
-            )
-        }
         composable(route = Route.Restore.getPath()) { //RootNavigationView <-MainScreen <- inner AnimatedNavHost
             MainScreen(
                 startRoute = Route.Loading,
