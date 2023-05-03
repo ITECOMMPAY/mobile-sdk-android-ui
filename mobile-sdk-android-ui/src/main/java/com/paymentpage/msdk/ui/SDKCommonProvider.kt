@@ -3,6 +3,7 @@ package com.paymentpage.msdk.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.ui.core.CardRemoveInteractorProxyImpl
@@ -13,7 +14,7 @@ import com.paymentpage.msdk.ui.presentation.main.PaymentMethodsViewModel
 import com.paymentpage.msdk.ui.utils.viewModelFactory
 
 internal val LocalPaymentOptions =
-    compositionLocalOf<SDKPaymentOptions> { error("No PaymentOptions found!") }
+    staticCompositionLocalOf<SDKPaymentOptions> { error("No PaymentOptions found!") }
 
 internal val LocalMsdkSession =
     compositionLocalOf<MSDKCoreSession> { error("No MSDKCoreSession found!") }

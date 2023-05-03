@@ -7,11 +7,9 @@ object TestTagsConstants {
     const val PREFIX_GOOGLE_PAY = "GOOGLE_PAY_"
     const val PREFIX_APS = "APS_"
 
-    const val PREFIX_TOKENIZE = "TOKENIZE_"
-
     const val POSTFIX_CUSTOMER_FIELD = "_CUSTOMER_FIELD"
-    const val POSTFIX_REGULAR = "_REGULAR"
-    const val POSTFIX_EXPRESS = "_EXPRESS"
+    private const val POSTFIX_REGULAR = "_REGULAR"
+    private const val POSTFIX_EXPRESS = "_EXPRESS"
     const val POSTFIX_LINK = "_LINK"
     const val POSTFIX_ICON = "_ICON"
     const val POSTFIX_DEFAULT = "_DEFAULT"
@@ -19,8 +17,8 @@ object TestTagsConstants {
     const val POSTFIX_REMOTE = "_REMOTE"
 
     const val POSTFIX_TEXT = "_TEXT"
-    const val POSTFIX_BUTTON = "_BUTTON"
-    const val POSTFIX_TEXT_FIELD = "_TEXT_FIELD"
+    private const val POSTFIX_BUTTON = "_BUTTON"
+    private const val POSTFIX_TEXT_FIELD = "_TEXT_FIELD"
 
     const val POSTFIX_LABEL = "_LABEL"
     const val POSTFIX_VALUE = "_VALUE"

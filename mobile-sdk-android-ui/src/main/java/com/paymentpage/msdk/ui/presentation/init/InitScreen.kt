@@ -13,7 +13,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
-import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.LocalInitViewModel
+import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalMsdkSession
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
+import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
@@ -69,12 +74,7 @@ private fun setupStateListener(
         initViewModel.state.onEach {
             when {
                 it.error != null -> onError(it.error, true)
-                it.isInitLoaded -> when (PaymentActivity.paymentOptions.actionType) {
-                    SDKActionType.Sale,
-                    SDKActionType.Auth -> navigator.navigateTo(Route.Main)
-                    SDKActionType.Tokenize -> navigator.navigateTo(Route.Tokenize)
-                    else -> navigator.navigateTo(Route.Main)
-                }
+                it.isInitLoaded -> navigator.navigateTo(Route.Main)
                 it.payment != null -> {
                     val paymentMethod =
                         it.paymentMethods?.find { paymentMethod -> paymentMethod.code == it.payment.method }
@@ -114,13 +114,15 @@ private fun Content(
     actionType: SDKActionType,
     onCancel: () -> Unit
 ) {
+    val screenTitleResourceId = when (actionType) {
+        SDKActionType.Sale -> R.string.sale_label
+        SDKActionType.Tokenize -> R.string.tokenize_label
+        SDKActionType.Verify -> R.string.verify_label
+        SDKActionType.Auth -> R.string.sale_label
+    }
+
     SDKScaffold(
-        title = when (actionType) {
-            SDKActionType.Sale -> stringResource(R.string.sale_label)
-            SDKActionType.Tokenize -> stringResource(R.string.tokenize_label)
-            SDKActionType.Verify -> stringResource(R.string.verify_label)
-            else -> stringResource(R.string.sale_label)
-        },
+        title = stringResource(id = screenTitleResourceId),
         notScrollableContent = {
             Loading()
             Spacer(modifier = Modifier.size(5.dp))

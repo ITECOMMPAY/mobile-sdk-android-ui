@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_PARAMETER")
-
 package com.paymentpage.msdk.ui.theme
 
 import androidx.compose.runtime.Composable

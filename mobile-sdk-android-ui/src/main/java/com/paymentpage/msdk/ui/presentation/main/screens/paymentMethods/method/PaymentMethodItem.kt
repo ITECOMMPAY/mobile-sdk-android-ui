@@ -21,19 +21,21 @@ internal fun PaymentMethodItem(
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
             )
         }
-        is UIPaymentMethod.UITokenizeCardPayPaymentMethod -> {
-            TokenizeCardPayItem(
-                method = method,
-                isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
-            )
-        }
+
         is UIPaymentMethod.UICardPayPaymentMethod -> {
-            NewCardItem(
-                method = method,
-                actionType = actionType,
-                isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
-            )
+            if (actionType != SDKActionType.Tokenize)
+                NewCardItem(
+                    method = method,
+                    actionType = actionType,
+                    isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
+                )
+            else
+                TokenizeCardPayItem(
+                    method = method,
+                    isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
+                )
         }
+
         is UIPaymentMethod.UIGooglePayPaymentMethod -> {
             GooglePayItem(
                 method = method,
@@ -41,6 +43,7 @@ internal fun PaymentMethodItem(
             )
             Spacer(modifier = Modifier.size(6.dp))
         }
+
         is UIPaymentMethod.UIApsPaymentMethod -> {
             ApsPayItem(
                 method = method,

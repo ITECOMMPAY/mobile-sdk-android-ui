@@ -76,7 +76,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
             //get card payment method
             cardPayMethod?.let {
                 result.add(
-                    UIPaymentMethod.UITokenizeCardPayPaymentMethod(
+                    UIPaymentMethod.UICardPayPaymentMethod(
                         index = position,
                         title = "",
                         paymentMethod = it,

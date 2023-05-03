@@ -8,12 +8,16 @@ import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.utils.extensions.core.*
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
+import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
+import com.paymentpage.msdk.ui.utils.extensions.core.isAllCustomerFieldsHidden
+import com.paymentpage.msdk.ui.utils.extensions.core.mergeHiddenFieldsToList
+import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 
 @Composable
 internal fun SaveButton(
     modifier: Modifier = Modifier,
-    method: UIPaymentMethod.UITokenizeCardPayPaymentMethod,
+    method: UIPaymentMethod,
     customerFields: List<CustomerField>,
     isValid: Boolean = false,
     isValidCustomerFields: Boolean = false,
