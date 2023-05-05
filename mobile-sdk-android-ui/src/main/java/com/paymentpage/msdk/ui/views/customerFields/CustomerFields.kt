@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_PARAMETER")
-
 package com.paymentpage.msdk.ui.views.customerFields
 
 import androidx.compose.foundation.layout.Column
@@ -18,7 +16,13 @@ import com.paymentpage.msdk.ui.SDKAdditionalField
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeVisibleFieldsToList
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.customerFields.model.UICustomerFieldValue
-import com.paymentpage.msdk.ui.views.customerFields.type.*
+import com.paymentpage.msdk.ui.views.customerFields.type.DateCustomerTextField
+import com.paymentpage.msdk.ui.views.customerFields.type.EmailCustomerTextField
+import com.paymentpage.msdk.ui.views.customerFields.type.NumberCustomerTextField
+import com.paymentpage.msdk.ui.views.customerFields.type.PasswordCustomerTextField
+import com.paymentpage.msdk.ui.views.customerFields.type.SelectableCustomerField
+import com.paymentpage.msdk.ui.views.customerFields.type.TelCustomerTextField
+import com.paymentpage.msdk.ui.views.customerFields.type.TextCustomerTextField
 
 @Composable
 internal fun CustomerFields(

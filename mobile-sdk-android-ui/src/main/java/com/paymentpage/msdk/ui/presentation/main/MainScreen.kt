@@ -8,7 +8,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePageType
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
@@ -21,7 +20,6 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.PaymentM
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultDeclineScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultSuccessScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.threeDSecure.ThreeDSecureScreen
-import com.paymentpage.msdk.ui.presentation.main.screens.tokenize.TokenizeScreen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -66,12 +64,7 @@ internal fun MainScreen(
         composable(route = Route.CustomerFields.getPath()) {
             CustomerFieldsScreen(
                 actionType = actionType,
-                onBack = {
-                    if (actionType != SDKActionType.Tokenize)
-                        mainScreenNavigator.navigateTo(Route.PaymentMethods)
-                    else
-                        mainScreenNavigator.navigateTo(Route.Tokenize)
-                },
+                onBack = { mainScreenNavigator.navigateTo(Route.PaymentMethods) },
                 onCancel = onCancel
             )
         }
@@ -85,12 +78,11 @@ internal fun MainScreen(
         composable(route = Route.ThreeDSecurePage.getPath()) {
             ThreeDSecureScreen(onCancel = onCancel)
         }
-        composable(route = Route.ThreeDSecureLoadingPage.getPath()) {
-            ThreeDSecureScreen(onCancel = onCancel)
-        }
+        //APS
         composable(route = Route.ApsPage.getPath()) {
             ApsScreen(onCancel = onCancel)
         }
+        //Result screens
         composable(route = Route.SuccessResult.getPath()) {
             ResultSuccessScreen(
                 actionType = actionType,
@@ -107,18 +99,14 @@ internal fun MainScreen(
                 onError = onError,
             )
         }
+        //Loading
         composable(route = Route.Loading.getPath()) {
             LoadingScreen(onCancel = onCancel)
         }
+        //Payment methods screen
         composable(route = Route.PaymentMethods.getPath()) {
             PaymentMethodsScreen(
                 actionType = actionType,
-                onCancel = onCancel,
-                onError = onError
-            )
-        }
-        composable(route = Route.Tokenize.getPath()) {
-            TokenizeScreen(
                 onCancel = onCancel,
                 onError = onError
             )
@@ -150,7 +138,6 @@ private fun setupStateListener(
                     )
                     mainScreenNavigator.navigateTo(Route.PaymentMethods)
                 }
-
                 it.finalPaymentState != null -> {
                     val payment =
                         mainViewModel.payment
@@ -175,16 +162,9 @@ private fun setupStateListener(
                         }
                     }
                 }
-
                 it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.ClarificationFields)
-                it.threeDSecurePageState != null -> when (it.threeDSecurePageState.threeDSecurePage?.type) {
-                    ThreeDSecurePageType.THREE_DS_2_FRICTIONLESS ->
-                        mainScreenNavigator.navigateTo(Route.ThreeDSecureLoadingPage)
-
-                    else -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)
-                }
-
+                it.threeDSecurePageState != null -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)
                 it.apsPageState != null -> mainScreenNavigator.navigateTo(Route.ApsPage)
             }
         }.collect()

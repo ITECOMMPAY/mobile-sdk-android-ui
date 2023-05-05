@@ -47,12 +47,6 @@ internal sealed class UIPaymentMethod(
         var isValidCardHolder: Boolean = false
     }
 
-    class UITokenizeCardPayPaymentMethod(
-        index: Int = 0,
-        title: String = "",
-        paymentMethod: PaymentMethod
-    ) : UICardPayPaymentMethod(index, title, paymentMethod)
-
     class UIApsPaymentMethod(
         index: Int,
         title: String,

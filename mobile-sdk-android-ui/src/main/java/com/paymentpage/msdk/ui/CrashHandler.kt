@@ -6,10 +6,10 @@ import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.interactors.analytics.error.ErrorEventDelegate
 import com.paymentpage.msdk.core.domain.interactors.analytics.error.ErrorEventInteractor
 import com.paymentpage.msdk.core.domain.interactors.analytics.error.ErrorEventRequest
+import kotlinx.coroutines.DelicateCoroutinesApi
 import java.lang.ref.WeakReference
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
-
 
 internal class CrashHandler(
     private val projectId: Long? = null,
@@ -20,7 +20,6 @@ internal class CrashHandler(
 ) : Thread.UncaughtExceptionHandler {
     private var weakContext: WeakReference<Context>? = null
     private var defaultHandler: Thread.UncaughtExceptionHandler? = null
-    private var infos: HashMap<String?, String?> = HashMap()
 
     fun start(context: Context?) {
         this.weakContext = WeakReference(context)
@@ -28,6 +27,7 @@ internal class CrashHandler(
         Thread.setDefaultUncaughtExceptionHandler(this@CrashHandler)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun uncaughtException(thread: Thread, ex: Throwable) {
 
         val isDone: BlockingQueue<Boolean> = ArrayBlockingQueue(1)

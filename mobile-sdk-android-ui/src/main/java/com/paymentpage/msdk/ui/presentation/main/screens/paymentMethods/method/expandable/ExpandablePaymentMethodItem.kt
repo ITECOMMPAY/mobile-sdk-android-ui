@@ -89,7 +89,6 @@ internal fun ExpandablePaymentMethodItem(
 
     val imageTestTag = "${
         when(method) {
-            is UIPaymentMethod.UITokenizeCardPayPaymentMethod -> TestTagsConstants.PREFIX_TOKENIZE
             is UIPaymentMethod.UICardPayPaymentMethod -> TestTagsConstants.PREFIX_NEW_CARD
             is UIPaymentMethod.UISavedCardPayPaymentMethod -> TestTagsConstants.PREFIX_SAVE_CARD
             is UIPaymentMethod.UIGooglePayPaymentMethod -> TestTagsConstants.PREFIX_GOOGLE_PAY

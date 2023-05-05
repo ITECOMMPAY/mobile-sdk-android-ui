@@ -31,12 +31,15 @@ internal fun PaymentMethodsScreen(
     val lastState = mainViewModel.lastState
     val isTryAgain = lastState.isTryAgain ?: false
     val isSaleWithToken = LocalPaymentOptions.current.paymentInfo.token != null
+    val isTokenize = actionType == SDKActionType.Tokenize
     val uiPaymentMethods = paymentMethodsViewModel.state.collectAsState().value.paymentMethods
         ?: throw IllegalStateException("Not found paymentMethods in State")
 
     val filteredUIPaymentMethods = with(uiPaymentMethods) {
         if (isSaleWithToken)
             filterIsInstance<UIPaymentMethod.UISavedCardPayPaymentMethod>()
+        else if (isTokenize)
+            listOf(this.first())
         else if (isTryAgain)
             filter { it.paymentMethod.code == mainViewModel.payment?.method }
         else this
@@ -45,15 +48,18 @@ internal fun PaymentMethodsScreen(
     BackHandler(true) { onCancel() }
 
     SDKScaffold(
-        title = if (actionType == SDKActionType.Verify)
-            getStringOverride(OverridesKeys.BUTTON_AUTHORIZE)
-        else
-            getStringOverride(OverridesKeys.TITLE_PAYMENT_METHODS),
+        title = when (actionType) {
+            SDKActionType.Sale,
+            SDKActionType.Auth -> getStringOverride(OverridesKeys.TITLE_PAYMENT_METHODS)
+            SDKActionType.Verify -> getStringOverride(OverridesKeys.BUTTON_AUTHORIZE)
+            SDKActionType.Tokenize -> getStringOverride(OverridesKeys.BUTTON_TOKENIZE)
+        },
         scrollableContent = {
-            ExpandablePaymentOverview(
-                actionType = actionType,
-                expandable = true
-            )
+            if (!isTokenize)
+                ExpandablePaymentOverview(
+                    actionType = actionType,
+                    expandable = true
+                )
             Spacer(modifier = Modifier.size(16.dp))
             PaymentMethodList(
                 actionType = actionType,
