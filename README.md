@@ -98,16 +98,12 @@ val paymentOptions = paymentOptions {
 
     additionalFields {
         field {
-            EcmpAdditionalField(
-                EcmpAdditionalFieldType.CUSTOMER_EMAIL,
-                "mail@mail.com"
-            )
+            type = EcmpAdditionalFieldType.CUSTOMER_EMAIL,
+            value = "mail@mail.com"
         }
         field {
-            EcmpAdditionalField(
-                EcmpAdditionalFieldType.CUSTOMER_FIRST_NAME,
-                "firstName"
-            )
+            type = EcmpAdditionalFieldType.CUSTOMER_FIRST_NAME,
+            value = "firstName"
         }
     }
     screenDisplayModes {
