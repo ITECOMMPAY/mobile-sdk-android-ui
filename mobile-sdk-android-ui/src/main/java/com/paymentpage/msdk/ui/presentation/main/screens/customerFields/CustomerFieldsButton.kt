@@ -36,8 +36,8 @@ internal fun CustomerFieldsButton(
         SDKActionType.Tokenize -> {
             SDKButton(
                 modifier = Modifier
-                    .testTag(TestTagsConstants.PROCEED_BUTTON),
-                label = getStringOverride(OverridesKeys.BUTTON_PROCEED),
+                    .testTag(TestTagsConstants.SAVE_BUTTON),
+                label = getStringOverride(OverridesKeys.BUTTON_TOKENIZE),
                 isEnabled = isEnabled,
                 onClick = onClick
             )

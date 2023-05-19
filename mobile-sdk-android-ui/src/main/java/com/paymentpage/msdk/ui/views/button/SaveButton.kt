@@ -57,7 +57,7 @@ internal fun SaveButton(
         else -> {
             SDKButton(
                 modifier = modifier,
-                label = getStringOverride(OverridesKeys.BUTTON_TOKENIZE),
+                label = getStringOverride(OverridesKeys.BUTTON_CONFIRMATION),
                 isEnabled = isValid
             ) {
                 onClickButton()
