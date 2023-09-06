@@ -1,6 +1,0 @@
-<resources>
-    <string name="sale_label" translatable="false">Payment Methods</string>
-    <string name="tokenize_label" translatable="false">Save Card</string>
-    <string name="verify_label" translatable="false">Authorize Card</string>
-    <string name="payment_dismiss_confirm_message" translatable="false">Your payment is being processed, are you sure you want to close the payment page?</string>
-</resources>

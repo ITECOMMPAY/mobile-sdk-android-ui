@@ -44,16 +44,16 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             )
         msdkSession = MSDKCoreSession(config)
 
-        if (!BuildConfig.DEBUG)
-            with(paymentOptions.paymentInfo) {
-                CrashHandler(
-                    projectId = projectId.toLong(),
-                    paymentId = paymentId,
-                    customerId = customerId,
-                    signature = signature,
-                    errorInteractor = msdkSession.getErrorEventInteractor()
-                )
-            }.start(context = this@PaymentActivity)
+//        if (!BuildConfig.DEBUG)
+//            with(paymentOptions.paymentInfo) {
+//                CrashHandler(
+//                    projectId = projectId.toLong(),
+//                    paymentId = paymentId,
+//                    customerId = customerId,
+//                    signature = signature,
+//                    errorInteractor = msdkSession.getErrorEventInteractor()
+//                )
+//            }.start(context = this@PaymentActivity)
 
         setContent {
             MainContent(

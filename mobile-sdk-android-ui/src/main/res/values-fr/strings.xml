@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sale_label">Mode de paiement</string>
+    <string name="tokenize_label">Enregistrer la carte</string>
+    <string name="verify_label">Vérifier la carte</string>
+    <string name="payment_dismiss_confirm_message">Le paiement est en cours. Êtes-vous sûr de vouloir fermer la page?</string>
+    <string name="cancel_label">Annuler</string>
+    <string name="error_label">Erreur</string>
+    <string name="title_camera_permission_label">
+        Activez votre caméra pour scanner votre carte bancaire. Pour ce faire, allez dans les Paramètres de l\'application
+    </string>
+    <string name="button_camera_permission_label">
+        Paramètres de l\'application
+    </string>
+</resources>

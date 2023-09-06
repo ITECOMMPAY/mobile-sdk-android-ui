@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sale_label">Zahlungsmethode auswählen</string>
+    <string name="tokenize_label">Karte speichern</string>
+    <string name="verify_label">Karte verifizieren</string>
+    <string name="payment_dismiss_confirm_message">Zahlung läuft. Sind Sie sicher, dass Sie die Seite schließen möchten?</string>
+    <string name="cancel_label">Abbrechen</string>
+    <string name="error_label">Fehler</string>
+    <string name="title_camera_permission_label">
+        Aktivieren Sie Ihre Kamera, um Ihre Bankkarte zu scannen. Gehen Sie dazu zu den App-Einstellungen.
+    </string>
+    <string name="button_camera_permission_label">
+        App-Einstellungen
+    </string>
+</resources>

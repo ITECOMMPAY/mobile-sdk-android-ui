@@ -16,6 +16,35 @@ internal fun Context.drawableResourceIdFromDrawableName(name: String): Int {
     )
 }
 
+internal fun Context.stringResourceIdFromStringName(name: String, locale: String?): Int {
+    if (locale != null) {
+        val result = this.resources.getIdentifier(
+            "${name}_${locale
+                .replaceAfter("_", "")
+                .replace("_", "")
+                .lowercase()
+            }",
+            "string",
+            this.packageName
+        )
+        return if (result <= 0)
+            this.resources.getIdentifier(
+                name,
+                "string",
+                this.packageName
+            )
+        else
+            result
+    }
+    else {
+        return this.resources.getIdentifier(
+            name,
+            "string",
+            this.packageName
+        )
+    }
+}
+
 internal fun Context.paymentMethodLogoId(
     paymentMethodType: PaymentMethodType,
     paymentMethodName: String,
