@@ -19,13 +19,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
-import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.RequestPermission
 import com.paymentpage.msdk.ui.utils.RequestPermissionState.CameraRequestPermissionState
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.navigateToAppSettings
+import com.paymentpage.msdk.ui.utils.extensions.stringResourceIdFromStringName
 import com.paymentpage.msdk.ui.utils.rememberCameraRequestPermissionsState
 import com.paymentpage.msdk.ui.views.common.alertDialog.MessageAlertDialog
 
@@ -36,6 +36,7 @@ internal fun CardScanningItem(
 ) {
     val context = LocalContext.current
     val paymentOptions = LocalPaymentOptions.current
+    val languageCode = paymentOptions.paymentInfo.languageCode
     //states
     var permissionRequestState by rememberCameraRequestPermissionsState(initRequest = false)
     val showState = CameraRequestPermissionState(initRequest = true)
@@ -84,7 +85,12 @@ internal fun CardScanningItem(
         )
         if (showPermanentlyDeniedAlertDialog)
             MessageAlertDialog(
-                message = stringResource(id = R.string.title_camera_permission_label),
+                message = stringResource(
+                    id = context.stringResourceIdFromStringName(
+                        name = "title_camera_permission_label",
+                        locale = languageCode
+                    )
+                ),
                 onConfirmButtonClick = {
                     permissionRequestState = hideState
                     showPermanentlyDeniedAlertDialog = false
@@ -95,7 +101,12 @@ internal fun CardScanningItem(
                     showPermanentlyDeniedAlertDialog = false
                 },
                 dismissButtonText = getStringOverride(OverridesKeys.BUTTON_CANCEL),
-                confirmButtonText = stringResource(id = R.string.button_camera_permission_label),
+                confirmButtonText = stringResource(
+                    id = context.stringResourceIdFromStringName(
+                        name = "button_camera_permission_label",
+                        locale = languageCode
+                    )
+                ),
                 brandColor = paymentOptions.brandColor
             )
 

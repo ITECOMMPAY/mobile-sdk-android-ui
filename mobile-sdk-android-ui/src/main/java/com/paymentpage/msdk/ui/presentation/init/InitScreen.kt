@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,7 +18,7 @@ import com.paymentpage.msdk.ui.LocalInitViewModel
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalMsdkSession
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
-import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
@@ -26,6 +27,7 @@ import com.paymentpage.msdk.ui.presentation.main.restoreAps
 import com.paymentpage.msdk.ui.presentation.main.restorePayment
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
+import com.paymentpage.msdk.ui.utils.extensions.stringResourceIdFromStringName
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.shimmer.ShimmerAnimatedItem
@@ -114,11 +116,15 @@ private fun Content(
     actionType: SDKActionType,
     onCancel: () -> Unit
 ) {
+    val context = LocalContext.current
+    val paymentOptions = LocalPaymentOptions.current
+    val languageCode = paymentOptions.paymentInfo.languageCode
+
     val screenTitleResourceId = when (actionType) {
-        SDKActionType.Sale -> R.string.sale_label
-        SDKActionType.Tokenize -> R.string.tokenize_label
-        SDKActionType.Verify -> R.string.verify_label
-        SDKActionType.Auth -> R.string.sale_label
+        SDKActionType.Sale -> context.stringResourceIdFromStringName("sale_label", languageCode)
+        SDKActionType.Tokenize -> context.stringResourceIdFromStringName("tokenize_label", languageCode)
+        SDKActionType.Verify -> context.stringResourceIdFromStringName("verify_label", languageCode)
+        SDKActionType.Auth -> context.stringResourceIdFromStringName("sale_label", languageCode)
     }
 
     SDKScaffold(

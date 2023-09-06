@@ -7,6 +7,8 @@ import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.RecipientInfo
 import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
+import com.paymentpage.msdk.ui.base.PaymentOptionsDsl
+
 
 /**
  * Payment configuration
@@ -27,7 +29,7 @@ class SDKPaymentOptions(
     //theme customization
     val isDarkTheme: Boolean = false,
     val logoImage: Bitmap? = null,
-    val brandColor: String? = null,
+    var brandColor: String? = null,
     var footerImage: Bitmap? = null,
     var footerLabel: String? = null,
 )
