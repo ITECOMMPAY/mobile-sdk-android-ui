@@ -1,5 +1,7 @@
 package com.paymentpage.msdk.ui.presentation
 
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.BottomDrawer
 import androidx.compose.material.BottomDrawerState
@@ -59,6 +61,8 @@ internal fun MainContent(
         BottomDrawer(
             modifier = Modifier
                 .wrapContentSize()
+                .imePadding()
+                .navigationBarsPadding()
                 .semantics {
                     testTagsAsResourceId = true
                 },

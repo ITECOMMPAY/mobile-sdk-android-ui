@@ -7,7 +7,7 @@ val projectSecretKey = "123"
 val gPayMerchantId = "BCR2DN6TZ75OBLTH"
 
 android {
-
+    namespace = "com.ecommpay.msdk.ui.integration.example"
     defaultConfig {
         applicationId = "com.ecommpay.msdk.ui.integration.example"
         versionName = System.getenv("SDK_VERSION_NAME") ?: Library.version

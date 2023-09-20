@@ -7,6 +7,7 @@ plugins {
 group = System.getenv("SDK_GROUP") ?: Library.group
 
 android {
+    namespace = "com.paymentpage.msdk.ui"
     buildTypes {
         release {
             buildConfigField(

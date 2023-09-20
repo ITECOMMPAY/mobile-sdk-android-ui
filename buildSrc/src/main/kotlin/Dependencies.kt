@@ -2,12 +2,12 @@
 
 object Library {
     const val artifactId = "msdk-ui"
-    const val version = "3.3.5"
+    const val version = "3.3.8"
     const val group = "com.ecommpay"
 }
 
 object Versions {
-    const val compose = "1.4.2"
+    const val compose = "1.5.1"
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
     const val msdkCore = "0.9.2"
@@ -34,8 +34,8 @@ object LibraryDependencies {
 
     object Accompanist {
         const val navigation =
-            "com.google.accompanist:accompanist-navigation-animation:0.31.0-alpha"
-        const val permissions = "com.google.accompanist:accompanist-permissions:0.25.1"
+            "com.google.accompanist:accompanist-navigation-animation:0.32.0"
+        const val permissions = "com.google.accompanist:accompanist-permissions:0.32.0"
     }
 
     object AndroidX {

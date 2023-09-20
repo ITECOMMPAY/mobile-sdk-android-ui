@@ -23,4 +23,3 @@ include ':mobile-sdk-android-ui-ecommpay'
 include ':mobile-sdk-android-ui-sample'
 include ':integration-example'
 
-enableFeaturePreview("VERSION_CATALOGS")
