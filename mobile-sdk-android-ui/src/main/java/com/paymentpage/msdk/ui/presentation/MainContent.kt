@@ -61,8 +61,6 @@ internal fun MainContent(
         BottomDrawer(
             modifier = Modifier
                 .wrapContentSize()
-                .imePadding()
-                .navigationBarsPadding()
                 .semantics {
                     testTagsAsResourceId = true
                 },
