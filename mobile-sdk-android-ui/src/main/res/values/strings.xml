@@ -79,6 +79,19 @@
         Impostazioni dell\'app
     </string>
 
+    <string name="sale_label_hu" translatable="false">Fizetési módot választ</string>
+    <string name="tokenize_label_hu" translatable="false">Kártya mentése</string>
+    <string name="verify_label_hu" translatable="false">Kártya ellenőrzése</string>
+    <string name="payment_dismiss_confirm_message_hu" translatable="false">Fizetés folyamatban. Biztosan be szeretné zárni az oldalt?</string>
+    <string name="cancel_label_hu" translatable="false">Mégse</string>
+    <string name="error_label_hu" translatable="false">Hiba</string>
+    <string name="title_camera_permission_label_hu" translatable="false">
+        Engedélyezze a kamerát a bankkártya beolvasásához. Ezt az Alkalmazás beállításokban teheti meg.
+    </string>
+    <string name="button_camera_permission_label_hu" translatable="false">
+        Alkalmazás beállítások
+    </string>
+
     <string name="acs_mock_mode_toast_label" translatable="false">
         Acs page will be closed automatically after 2 seconds
     </string>
