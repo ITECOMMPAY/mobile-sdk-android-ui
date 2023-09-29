@@ -5,9 +5,9 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalFocusManager
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
@@ -37,7 +37,7 @@ internal fun MainScreen(
 ) {
     val lastRoute = mainScreenNavigator.lastRoute
 
-    val navController = rememberAnimatedNavController()
+    val navController = rememberNavController()
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect("mainScreenNavigation") {
@@ -53,7 +53,7 @@ internal fun MainScreen(
         onError = onError
     )
 
-    AnimatedNavHost(
+    NavHost(
         navController = navController,
         startDestination = lastRoute?.getPath() ?: startRoute.getPath(),
         enterTransition = { EnterTransition.None },

@@ -21,6 +21,7 @@ internal class Typography(
     s14Bold: TextStyle,
     s16Normal: TextStyle,
     s16Bold: TextStyle,
+    s18Normal: TextStyle,
     s18Bold: TextStyle,
     s22Bold: TextStyle,
     s24Bold: TextStyle,
@@ -43,6 +44,8 @@ internal class Typography(
     var s16Bold by mutableStateOf(s16Bold)
         private set
     var s18Bold by mutableStateOf(s18Bold)
+        private set
+    var s18Normal by mutableStateOf(s18Normal)
         private set
     var s22Bold by mutableStateOf(s22Bold)
         private set
@@ -107,6 +110,12 @@ private val typographyLightS18Bold: TextStyle = TextStyle(
     color = Color.Black,
     fontSize = 18.sp
 )
+private val typographyLightS18Normal: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Normal,
+    color = Color.Black,
+    fontSize = 18.sp
+)
 private val typographyLightS22Bold: TextStyle = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Bold,
@@ -119,6 +128,7 @@ private val typographyLightS24Bold: TextStyle = TextStyle(
     color = Color.Black,
     fontSize = 24.sp
 )
+
 private val typographyLightS28Bold: TextStyle = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Bold,
@@ -181,6 +191,12 @@ private val typographyDarkS18Bold: TextStyle = TextStyle(
     color = Color.White,
     fontSize = 18.sp
 )
+private val typographyDarkS18Normal: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Normal,
+    color = Color.White,
+    fontSize = 18.sp
+)
 private val typographyDarkS22Bold: TextStyle = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Bold,
@@ -212,7 +228,8 @@ internal fun lightTypography(): Typography = Typography(
     s18Bold = typographyLightS18Bold,
     s22Bold = typographyLightS22Bold,
     s24Bold = typographyLightS24Bold,
-    s28Bold = typographyLightS28Bold
+    s28Bold = typographyLightS28Bold,
+    s18Normal = typographyLightS18Normal,
 )
 
 internal fun darkTypography(): Typography = Typography(
@@ -225,6 +242,7 @@ internal fun darkTypography(): Typography = Typography(
     s16Normal = typographyDarkS16Normal,
     s16Bold = typographyDarkS16Bold,
     s18Bold = typographyDarkS18Bold,
+    s18Normal = typographyDarkS18Normal,
     s22Bold = typographyDarkS22Bold,
     s24Bold = typographyDarkS24Bold,
     s28Bold = typographyDarkS28Bold
