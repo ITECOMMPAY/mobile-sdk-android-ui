@@ -63,14 +63,11 @@ internal fun MainContent(
             when (event) {
                 Lifecycle.Event.ON_RESUME -> {
                     scope.launch {
-                        delay(50)
+                        delay(100)
                         drawerState.expand()
                     }
                 }
-                Lifecycle.Event.ON_PAUSE -> {
-                    scope.launch { drawerState.close() }
-                }
-                else -> {}
+                else -> { scope.launch { drawerState.close() }}
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
