@@ -33,8 +33,6 @@ object LibraryDependencies {
     }
 
     object Accompanist {
-        const val navigation =
-            "com.google.accompanist:accompanist-navigation-animation:0.32.0"
         const val permissions = "com.google.accompanist:accompanist-permissions:0.32.0"
     }
 

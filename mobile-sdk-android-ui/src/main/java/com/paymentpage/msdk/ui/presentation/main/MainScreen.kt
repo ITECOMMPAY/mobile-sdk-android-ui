@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun MainScreen(
     startRoute: Route,
@@ -56,10 +55,6 @@ internal fun MainScreen(
     NavHost(
         navController = navController,
         startDestination = lastRoute?.getPath() ?: startRoute.getPath(),
-        enterTransition = { EnterTransition.None },
-        exitTransition = { ExitTransition.None },
-        popEnterTransition = { EnterTransition.None },
-        popExitTransition = { ExitTransition.None }
     ) {
         composable(route = Route.CustomerFields.getPath()) {
             CustomerFieldsScreen(

@@ -126,7 +126,6 @@ dependencies {
     implementation(LibraryDependencies.Compose.navigation)
     implementation(LibraryDependencies.Compose.activity)
     //Accompanist
-    implementation(LibraryDependencies.Accompanist.navigation)
     implementation(LibraryDependencies.Accompanist.permissions)
     //Testing
     testImplementation(LibraryDependencies.Compose.junit4)

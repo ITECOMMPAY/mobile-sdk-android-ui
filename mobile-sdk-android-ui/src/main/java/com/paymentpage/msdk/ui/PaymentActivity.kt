@@ -24,7 +24,6 @@ import com.paymentpage.msdk.ui.presentation.MainContent
 class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
         mockModeType =
@@ -53,16 +52,16 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             )
         msdkSession = MSDKCoreSession(config)
 
-//        if (!BuildConfig.DEBUG)
-//            with(paymentOptions.paymentInfo) {
-//                CrashHandler(
-//                    projectId = projectId.toLong(),
-//                    paymentId = paymentId,
-//                    customerId = customerId,
-//                    signature = signature,
-//                    errorInteractor = msdkSession.getErrorEventInteractor()
-//                )
-//            }.start(context = this@PaymentActivity)
+        if (!BuildConfig.DEBUG)
+            with(paymentOptions.paymentInfo) {
+                CrashHandler(
+                    projectId = projectId.toLong(),
+                    paymentId = paymentId,
+                    customerId = customerId,
+                    signature = signature,
+                    errorInteractor = msdkSession.getErrorEventInteractor()
+                )
+            }.start(context = this@PaymentActivity)
 
         setContent {
             Box(
@@ -119,11 +118,6 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         val dataIntent = Intent()
         setResult(Constants.RESULT_CANCELLED, dataIntent)
         finish()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        overridePendingTransition(0, 0)
     }
 
     companion object {

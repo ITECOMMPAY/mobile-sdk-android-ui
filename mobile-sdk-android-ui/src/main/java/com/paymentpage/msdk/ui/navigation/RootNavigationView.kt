@@ -1,18 +1,14 @@
-@file:OptIn(ExperimentalAnimationApi::class)
-
 package com.paymentpage.msdk.ui.navigation
 
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalFocusManager
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
@@ -22,7 +18,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun RootNavigationView(
     actionType: SDKActionType,
@@ -31,7 +26,7 @@ internal fun RootNavigationView(
     onCancel: () -> Unit,
     onError: (ErrorResult, Boolean) -> Unit
 ) {
-    val navController = rememberAnimatedNavController()
+    val navController = rememberNavController()
     val focusManager = LocalFocusManager.current
     val mainScreenNavigator = remember { Navigator() }
 
@@ -42,20 +37,17 @@ internal fun RootNavigationView(
         }.launchIn(this)
     }
 
-    AnimatedNavHost(
+    NavHost(
         navController = navController,
         startDestination = Route.Init.getPath(),
-        enterTransition = { EnterTransition.None },
-        exitTransition = { ExitTransition.None },
-        popEnterTransition = { EnterTransition.None },
-        popExitTransition = { ExitTransition.None }
     ) {
         composable(route = Route.Init.getPath()) {//RootNavigationView <-InitScreen
             InitScreen(
                 actionType = actionType,
                 navigator = navigator,
                 onCancel = onCancel,
-                onError = onError)
+                onError = onError
+            )
         }
         composable(route = Route.Main.getPath()) { //RootNavigationView <-MainScreen <- inner AnimatedNavHost
             MainScreen(
