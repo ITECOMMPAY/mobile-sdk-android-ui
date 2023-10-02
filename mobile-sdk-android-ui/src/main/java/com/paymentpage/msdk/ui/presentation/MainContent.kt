@@ -63,7 +63,7 @@ internal fun MainContent(
             when (event) {
                 Lifecycle.Event.ON_RESUME -> {
                     scope.launch {
-                        delay(100)
+                        delay(500)
                         drawerState.expand()
                     }
                 }
