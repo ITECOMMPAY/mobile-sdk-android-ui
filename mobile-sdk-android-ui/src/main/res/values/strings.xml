@@ -1,32 +1,113 @@
 <resources>
-    <string name="ok_label">OK</string>
+    <string name="ok_label" translatable="false">Ok</string>
+
+    <string name="sale_label">Select Payment Method</string>
+    <string name="tokenize_label">Save Card</string>
+    <string name="verify_label">Verify Card</string>
+    <string name="payment_dismiss_confirm_message">Payment is in progress. Are you sure you want to close the page?</string>
     <string name="cancel_label">Cancel</string>
     <string name="error_label">Error</string>
-
-    <string name="acs_mock_mode_toast_label">
-        Acs page will be closed automatically after 2 seconds
-    </string>
-
-    <!-- Permission strings -->
     <string name="title_camera_permission_label">
-        Camera lets you scan your bank card. To enable this, click App Settings
+        Enable your camera to scan your bank card. To do this, go to App Settings.
     </string>
     <string name="button_camera_permission_label">
         App Settings
     </string>
 
+    <string name="sale_label_en" translatable="false">Select Payment Method</string>
+    <string name="tokenize_label_en" translatable="false">Save Card</string>
+    <string name="verify_label_en" translatable="false">Verify Card</string>
+    <string name="payment_dismiss_confirm_message_en" translatable="false">Payment is in progress. Are you sure you want to close the page?</string>
+    <string name="cancel_label_en" translatable="false">Cancel</string>
+    <string name="error_label_en" translatable="false">Error</string>
+    <string name="title_camera_permission_label_en" translatable="false">
+        Enable your camera to scan your bank card. To do this, go to App Settings.
+    </string>
+    <string name="button_camera_permission_label_en" translatable="false">
+        App Settings
+    </string>
+
+    <string name="sale_label_es" translatable="false">Seleccionar Método de Pago</string>
+    <string name="tokenize_label_es" translatable="false">Guardar Tarjeta</string>
+    <string name="verify_label_es" translatable="false">Verificar Tarjeta</string>
+    <string name="payment_dismiss_confirm_message_es" translatable="false">El pago está en proceso. ¿Estás seguro de que quieres cerrar la página?</string>
+    <string name="cancel_label_es" translatable="false">Cancelar</string>
+    <string name="error_label_es" translatable="false">Error</string>
+    <string name="title_camera_permission_label_es" translatable="false">
+        Habilita tu cámara para escanear tu tarjeta bancaria. Para hacerlo, ve a Configuración de la aplicación
+    </string>
+    <string name="button_camera_permission_label_es" translatable="false">
+        Configuración de la aplicación
+    </string>
+
+    <string name="sale_label_de" translatable="false">Zahlungsmethode auswählen</string>
+    <string name="tokenize_label_de" translatable="false">Karte speichern</string>
+    <string name="verify_label_de" translatable="false">Karte verifizieren</string>
+    <string name="payment_dismiss_confirm_message_de" translatable="false">Zahlung läuft. Sind Sie sicher, dass Sie die Seite schließen möchten?</string>
+    <string name="cancel_label_de" translatable="false">Abbrechen</string>
+    <string name="error_label_de" translatable="false">Fehler</string>
+    <string name="title_camera_permission_label_de" translatable="false">
+        Aktivieren Sie Ihre Kamera, um Ihre Bankkarte zu scannen. Gehen Sie dazu zu den App-Einstellungen
+    </string>
+    <string name="button_camera_permission_label_de" translatable="false">
+        App-Einstellungen
+    </string>
+
+    <string name="sale_label_fr" translatable="false">Mode de paiement</string>
+    <string name="tokenize_label_fr" translatable="false">Enregistrer la carte</string>
+    <string name="verify_label_fr" translatable="false">Vérifier la carte</string>
+    <string name="payment_dismiss_confirm_message_fr" translatable="false">Le paiement est en cours. Êtes-vous sûr de vouloir fermer la page?</string>
+    <string name="cancel_label_fr" translatable="false">Annuler</string>
+    <string name="error_label_fr" translatable="false">Erreur</string>
+    <string name="title_camera_permission_label_fr" translatable="false">
+        Activez votre caméra pour scanner votre carte bancaire. Pour ce faire, allez dans les Paramètres de l\'application
+    </string>
+    <string name="button_camera_permission_label_fr" translatable="false">
+        Paramètres de l\'application
+    </string>
+
+    <string name="sale_label_it" translatable="false">Metodo di Pagamento</string>
+    <string name="tokenize_label_it" translatable="false">Salva Carta</string>
+    <string name="verify_label_it" translatable="false">Verifica Carta</string>
+    <string name="payment_dismiss_confirm_message_it" translatable="false">Il pagamento è in corso. Sei sicuro di voler chiudere la pagina?</string>
+    <string name="cancel_label_it" translatable="false">Annulla</string>
+    <string name="error_label_it" translatable="false">Errore</string>
+    <string name="title_camera_permission_label_it" translatable="false">
+        Abilita la tua fotocamera per scansionare la tua carta bancaria. Per farlo, vai alle Impostazioni dell\'app
+    </string>
+    <string name="button_camera_permission_label_it" translatable="false">
+        Impostazioni dell\'app
+    </string>
+
+    <string name="sale_label_hu" translatable="false">Fizetési módot választ</string>
+    <string name="tokenize_label_hu" translatable="false">Kártya mentése</string>
+    <string name="verify_label_hu" translatable="false">Kártya ellenőrzése</string>
+    <string name="payment_dismiss_confirm_message_hu" translatable="false">Fizetés folyamatban. Biztosan be szeretné zárni az oldalt?</string>
+    <string name="cancel_label_hu" translatable="false">Mégse</string>
+    <string name="error_label_hu" translatable="false">Hiba</string>
+    <string name="title_camera_permission_label_hu" translatable="false">
+        Engedélyezze a kamerát a bankkártya beolvasásához. Ezt az Alkalmazás beállításokban teheti meg.
+    </string>
+    <string name="button_camera_permission_label_hu" translatable="false">
+        Alkalmazás beállítások
+    </string>
+
+    <string name="acs_mock_mode_toast_label" translatable="false">
+        Acs page will be closed automatically after 2 seconds
+    </string>
+
     <!-- Accessibility strings -->
-    <string name="icon_close_content_description">Close</string>
-    <string name="icon_back_content_description">Back</string>
-    <string name="icon_google_pay_content_description">
+    <string name="icon_close_content_description" translatable="false">Close</string>
+    <string name="icon_back_content_description" translatable="false">Back</string>
+    <string name="icon_google_pay_content_description" translatable="false">
         Google Pay
     </string>
-    <string name="required_field_content_description">Required field</string>
-    <string name="section_role_content_description">Section</string>
-    <string name="link_role_content_description">Link</string>
-    <string name="expanded_state_content_description">Expanded</string>
-    <string name="collapsed_state_content_description">Collapsed</string>
-    <string name="checked_state_content_description">Checked</string>
-    <string name="not_checked_state_content_description">Not checked</string>
+    <string name="required_field_content_description" translatable="false">Required field</string>
+    <string name="section_role_content_description" translatable="false">Section</string>
+    <string name="link_role_content_description" translatable="false">Link</string>
+    <string name="expanded_state_content_description" translatable="false">Expanded</string>
+    <string name="collapsed_state_content_description" translatable="false">Collapsed</string>
+    <string name="checked_state_content_description" translatable="false">Checked</string>
+    <string name="not_checked_state_content_description" translatable="false">Not checked</string>
 
 </resources>

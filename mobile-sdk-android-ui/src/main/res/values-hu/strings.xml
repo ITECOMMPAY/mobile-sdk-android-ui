@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sale_label">Fizetési módot választ</string>
+    <string name="tokenize_label">Kártya mentése</string>
+    <string name="verify_label">Kártya ellenőrzése</string>
+    <string name="payment_dismiss_confirm_message">Fizetés folyamatban. Biztosan be szeretné zárni az oldalt?</string>
+    <string name="cancel_label">Mégse</string>
+    <string name="error_label">Hiba</string>
+    <string name="title_camera_permission_label">
+        Engedélyezze a kamerát a bankkártya beolvasásához. Ezt az Alkalmazás beállításokban teheti meg.
+    </string>
+    <string name="button_camera_permission_label">
+        Alkalmazás beállítások
+    </string>
+</resources>

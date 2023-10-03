@@ -1,7 +1,7 @@
 pluginManagement {
     repositories {
-        mavenCentral()
         mavenLocal()
+        mavenCentral()
         gradlePluginPortal()
         google()
     }
@@ -9,8 +9,8 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        mavenCentral()
         mavenLocal()
+        mavenCentral()
         google()
     }
 }
@@ -23,4 +23,3 @@ include ':mobile-sdk-android-ui-ecommpay'
 include ':mobile-sdk-android-ui-sample'
 include ':integration-example'
 
-enableFeaturePreview("VERSION_CATALOGS")

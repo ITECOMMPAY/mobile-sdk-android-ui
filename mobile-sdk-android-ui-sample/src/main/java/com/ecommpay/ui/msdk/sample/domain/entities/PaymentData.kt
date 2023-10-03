@@ -4,9 +4,9 @@ import com.ecommpay.ui.msdk.sample.BuildConfig
 import java.util.UUID
 
 data class PaymentData(
-    val projectId: Int = 111781,
+    val projectId: Int = 185541,
     val paymentId: String = "sdk_sample_ui_${UUID.randomUUID().toString().take(8)}",
-    val paymentAmount: Long = 123,
+    val paymentAmount: Long =  11001,
     val paymentCurrency: String = "USD",
     val customerId: String? = "12",
     val paymentDescription: String? = "Test payment",

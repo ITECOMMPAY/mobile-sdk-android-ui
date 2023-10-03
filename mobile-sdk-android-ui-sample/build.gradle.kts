@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-
+    namespace = "com.ecommpay.ui.msdk.sample"
     defaultConfig {
         applicationId = "com.ecommpay.ui.msdk.sample"
         versionName = System.getenv("SDK_VERSION_NAME") ?: Library.version

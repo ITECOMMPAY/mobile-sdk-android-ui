@@ -110,4 +110,8 @@ internal class MainViewModel(
             )
         )
     }
+
+    override fun onThreeDSecureRedirectComplete() {
+        sendEvent(MainScreenUiEvent.ShowLoading)
+    }
 }

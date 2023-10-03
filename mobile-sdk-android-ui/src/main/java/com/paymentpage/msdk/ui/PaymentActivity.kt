@@ -5,6 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import com.paymentpage.msdk.core.ApplicationInfo
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
@@ -27,13 +32,16 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             mockModeType == SDKMockModeType.SUCCESS -> MSDKCoreSessionConfig.mockFullSuccessFlow(
                 duration = Duration.millis(Constants.THREE_D_SECURE_REDIRECT_DURATION)
             )
+
             mockModeType == SDKMockModeType.DECLINE -> MSDKCoreSessionConfig.mockFullDeclineFlow(
                 duration = Duration.millis(Constants.THREE_D_SECURE_REDIRECT_DURATION)
             )
+
             BuildConfig.DEBUG -> MSDKCoreSessionConfig.debug(
                 apiHost = intent.getStringExtra(Constants.EXTRA_API_HOST) ?: apiHost,
                 wsApiHost = intent.getStringExtra(Constants.EXTRA_WS_API_HOST) ?: wsApiHost
             )
+
             else -> MSDKCoreSessionConfig.release(apiHost = apiHost, wsApiHost = wsApiHost)
         }
         config.userAgentData =
@@ -56,11 +64,17 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             }.start(context = this@PaymentActivity)
 
         setContent {
-            MainContent(
-                activity = this@PaymentActivity,
-                paymentOptions = paymentOptions,
-                msdkSession = msdkSession,
-            )
+            Box(
+                Modifier
+                    .imePadding()
+                    .navigationBarsPadding()
+            ) {
+                MainContent(
+                    activity = this@PaymentActivity,
+                    paymentOptions = paymentOptions,
+                    msdkSession = msdkSession,
+                )
+            }
         }
     }
 
@@ -104,11 +118,6 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         val dataIntent = Intent()
         setResult(Constants.RESULT_CANCELLED, dataIntent)
         finish()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        overridePendingTransition(0, 0)
     }
 
     companion object {
