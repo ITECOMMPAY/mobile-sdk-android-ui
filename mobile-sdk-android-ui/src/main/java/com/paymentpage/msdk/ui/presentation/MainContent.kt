@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+
 package com.paymentpage.msdk.ui.presentation
 
 import androidx.compose.foundation.layout.wrapContentSize
@@ -7,7 +9,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +43,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 internal fun MainContent(
     activity: PaymentActivity,
     paymentOptions: SDKPaymentOptions,
@@ -67,7 +67,10 @@ internal fun MainContent(
                         drawerState.expand()
                     }
                 }
-                else -> { scope.launch { drawerState.close() }}
+
+                else -> {
+                    scope.launch { drawerState.close() }
+                }
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)

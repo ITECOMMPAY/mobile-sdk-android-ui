@@ -2,7 +2,7 @@
 
 object Library {
     const val artifactId = "msdk-ui"
-    const val version = "3.4.0"
+    const val version = "3.4.1"
     const val group = "com.ecommpay"
 }
 
@@ -33,6 +33,7 @@ object LibraryDependencies {
     }
 
     object Accompanist {
+        const val navigation = "com.google.accompanist:accompanist-navigation-animation:0.32.0"
         const val permissions = "com.google.accompanist:accompanist-permissions:0.32.0"
     }
 

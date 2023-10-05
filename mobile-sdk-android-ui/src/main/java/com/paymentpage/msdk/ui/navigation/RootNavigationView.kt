@@ -1,14 +1,19 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+@file:Suppress("DEPRECATION")
+
 package com.paymentpage.msdk.ui.navigation
 
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.paymentpage.msdk.ui.PaymentDelegate
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.base.ErrorResult
@@ -37,9 +42,11 @@ internal fun RootNavigationView(
         }.launchIn(this)
     }
 
-    NavHost(
+    AnimatedNavHost(
         navController = navController,
         startDestination = Route.Init.getPath(),
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
     ) {
         composable(route = Route.Init.getPath()) {//RootNavigationView <-InitScreen
             InitScreen(
