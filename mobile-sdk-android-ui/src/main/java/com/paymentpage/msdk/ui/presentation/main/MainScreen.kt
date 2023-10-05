@@ -1,3 +1,6 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+@file:Suppress("DEPRECATION")
+
 package com.paymentpage.msdk.ui.presentation.main
 
 import androidx.compose.animation.EnterTransition
@@ -8,6 +11,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
@@ -52,9 +56,11 @@ internal fun MainScreen(
         onError = onError
     )
 
-    NavHost(
+    AnimatedNavHost(
         navController = navController,
         startDestination = lastRoute?.getPath() ?: startRoute.getPath(),
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
     ) {
         composable(route = Route.CustomerFields.getPath()) {
             CustomerFieldsScreen(
