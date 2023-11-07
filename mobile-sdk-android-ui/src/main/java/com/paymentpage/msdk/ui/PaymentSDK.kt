@@ -10,16 +10,12 @@ import com.paymentpage.msdk.ui.base.Constants
 
 class PaymentSDK(
     context: Context,
-    apiHost: String,
-    wsApiHost: String,
     paymentOptions: SDKPaymentOptions,
     mockModeType: SDKMockModeType = SDKMockModeType.DISABLED
 ) {
 
     val intent = PaymentActivity.buildPaymentIntent(
         context = context,
-        apiHost = apiHost,
-        wsApiHost = wsApiHost,
         paymentOptions = paymentOptions,
         mockModeType = mockModeType
     )

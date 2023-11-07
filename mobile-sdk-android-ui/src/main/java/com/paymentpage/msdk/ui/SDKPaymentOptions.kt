@@ -8,6 +8,7 @@ import com.paymentpage.msdk.core.domain.entities.RecipientInfo
 import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.ui.base.PaymentOptionsDsl
+import kotlinx.android.parcel.Parcelize
 
 
 /**

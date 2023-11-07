@@ -17,8 +17,6 @@ class EcmpPaymentSDK(
 
     private val paymentSDK = PaymentSDK(
         context = context,
-        apiHost = BuildConfig.API_HOST,
-        wsApiHost = BuildConfig.WS_API_HOST,
         paymentOptions = paymentOptions.map().also {
             it.footerImage = context.getBitmapFromVectorDrawable(R.drawable.sdk_logo)
             it.footerLabel = context.getString(R.string.powered_by_label)
