@@ -23,7 +23,6 @@ import com.ecommpay.ui.msdk.sample.domain.ui.sample.SampleViewIntents
 import com.ecommpay.ui.msdk.sample.domain.ui.sample.SampleViewUC
 import com.ecommpay.ui.msdk.sample.utils.SignatureGenerator
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 class SampleActivity : ComponentActivity() {
@@ -107,6 +106,8 @@ class SampleActivity : ComponentActivity() {
             logoImage = ProcessRepository.bitmap
             brandColor = ProcessRepository.brandColor
             isDarkTheme = ProcessRepository.isDarkTheme
+            //stored card type
+            storedCardType = ProcessRepository.storedCardType
         }
 
         val sdk = EcmpPaymentSDK(
@@ -147,6 +148,7 @@ class SampleActivity : ComponentActivity() {
                                 )
                             )
                         }
+
                         else -> {
                             viewUseCase.pushIntent(
                                 SampleViewIntents.ShowMessage(
@@ -158,6 +160,7 @@ class SampleActivity : ComponentActivity() {
                         }
                     }
                 }
+
                 EcmpPaymentSDK.RESULT_CANCELLED -> {
                     viewUseCase.pushIntent(
                         SampleViewIntents.ShowMessage(
@@ -167,6 +170,7 @@ class SampleActivity : ComponentActivity() {
                         )
                     )
                 }
+
                 EcmpPaymentSDK.RESULT_DECLINE -> {
                     viewUseCase.pushIntent(
                         SampleViewIntents.ShowMessage(
@@ -176,6 +180,7 @@ class SampleActivity : ComponentActivity() {
                         )
                     )
                 }
+
                 EcmpPaymentSDK.RESULT_ERROR -> {
                     val errorCode = data?.getStringExtra(EcmpPaymentSDK.EXTRA_ERROR_CODE)
                     val message = data?.getStringExtra(EcmpPaymentSDK.EXTRA_ERROR_MESSAGE)

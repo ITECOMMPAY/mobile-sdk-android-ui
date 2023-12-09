@@ -47,6 +47,7 @@ internal fun MainViewModel.payGoogle(
                 this.recipientInfo = recipientInfo
             }
         }
+
         SDKActionType.Auth -> {
             GooglePayAuthRequest(
                 merchantId = merchantId,
@@ -92,6 +93,7 @@ internal fun MainViewModel.paySavedCard(
                 ).apply {
                     this.recipientInfo = recipientInfo
                 }
+
         else ->
             if (isPayWithToken)
                 CardAuthTokenizeRequest(cvv = method.cvv).apply {
@@ -125,6 +127,7 @@ internal fun MainViewModel.payNewCard(
     method: UIPaymentMethod.UICardPayPaymentMethod,
     recipientInfo: RecipientInfo? = null,
     customerFields: List<CustomerField> = emptyList(),
+    storedCardType: Int? = null
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     val expiry = SdkExpiry(method.expiry)
@@ -137,10 +140,12 @@ internal fun MainViewModel.payNewCard(
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
             ),
             cardHolder = method.cardHolder,
-            saveCard = method.saveCard
+            saveCard = method.saveCard,
+            storedCardType = storedCardType
         ).apply {
             this.recipientInfo = recipientInfo
         }
+
         SDKActionType.Auth -> CardAuthRequest(
             cvv = method.cvv,
             pan = method.pan,
@@ -149,10 +154,12 @@ internal fun MainViewModel.payNewCard(
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
             ),
             cardHolder = method.cardHolder,
-            saveCard = method.saveCard
+            saveCard = method.saveCard,
+            storedCardType = storedCardType
         ).apply {
             this.recipientInfo = recipientInfo
         }
+
         SDKActionType.Tokenize -> CardTokenizeRequest(
             pan = method.pan,
             expiryDate = CardDate(
@@ -161,6 +168,7 @@ internal fun MainViewModel.payNewCard(
             ),
             cardHolder = method.cardHolder
         )
+
         SDKActionType.Verify -> CardVerifyRequest(
             cvv = method.cvv,
             pan = method.pan,
@@ -169,6 +177,7 @@ internal fun MainViewModel.payNewCard(
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
             ),
             cardHolder = method.cardHolder,
+            storedCardType = storedCardType
         )
     }
     if (customerFields.needSendWithSaleRequest()) {

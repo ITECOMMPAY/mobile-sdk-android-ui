@@ -40,4 +40,6 @@ class EcmpPaymentOptions {
     var isDarkTheme: Boolean = false
     var logoImage: Bitmap? = null
     var brandColor: String? = null
+
+    var storedCardType: Int? = null
 }
