@@ -178,7 +178,7 @@ internal fun MainViewModel.payNewCard(
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
             ),
             cardHolder = method.cardHolder,
-            storedCardType = storedCardType
+            storedCardType = StoredCardType.from(storedCardType)
         )
     }
     if (customerFields.needSendWithSaleRequest()) {
