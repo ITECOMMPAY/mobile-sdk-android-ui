@@ -9,6 +9,7 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.interactors.pay.PayRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.aps.ApsSaleRequest
+import com.paymentpage.msdk.core.domain.interactors.pay.card.StoredCardType
 import com.paymentpage.msdk.core.domain.interactors.pay.card.auth.CardAuthRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.auth.CardAuthTokenizeRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.auth.SavedCardAuthRequest
@@ -141,7 +142,7 @@ internal fun MainViewModel.payNewCard(
             ),
             cardHolder = method.cardHolder,
             saveCard = method.saveCard,
-            storedCardType = storedCardType
+            storedCardType = StoredCardType.from(storedCardType)
         ).apply {
             this.recipientInfo = recipientInfo
         }
@@ -155,7 +156,7 @@ internal fun MainViewModel.payNewCard(
             ),
             cardHolder = method.cardHolder,
             saveCard = method.saveCard,
-            storedCardType = storedCardType
+            storedCardType = StoredCardType.from(storedCardType)
         ).apply {
             this.recipientInfo = recipientInfo
         }
