@@ -18,6 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.DeviceFontFamilyName
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.R
@@ -54,7 +57,8 @@ internal fun GooglePayButton(
                             Color.White
                         else
                             Color(0xFF1F1F1F)
-                    )
+                    ),
+                    fontFamily = FontFamily(Font(DeviceFontFamilyName("sans-serif"))),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Image(
@@ -64,7 +68,7 @@ internal fun GooglePayButton(
                 )
             }
         },
-        color =  if (SDKTheme.colors.isDarkTheme)
+        color = if (SDKTheme.colors.isDarkTheme)
             Color.White
         else
             Color(0xFF1F1F1F),
