@@ -18,11 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.DeviceFontFamilyName
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.theme.LocalDimensions
@@ -50,17 +50,19 @@ internal fun GooglePayButton(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    modifier = Modifier.padding(bottom = 5.dp),
+                    modifier = Modifier.padding(bottom = 3.dp),
                     text = "Pay with",
                     style = SDKTheme.typography.s16Normal.copy(
                         color = if (!SDKTheme.colors.isDarkTheme)
                             Color.White
                         else
-                            Color(0xFF1F1F1F)
+                            Color(0xFF1F1F1F),
+                        fontSize = 17.sp,
+                        fontFamily = FontFamily(Font(R.font.productsans)),
                     ),
-                    fontFamily = FontFamily(Font(DeviceFontFamilyName("sans-serif"))),
+                    fontFamily = FontFamily(Font(R.font.productsans)),
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(5.dp))
                 Image(
                     modifier = Modifier,
                     painter = painterResource(id = SDKTheme.images.googlePayLogo),
