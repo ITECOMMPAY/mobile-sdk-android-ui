@@ -1,3 +1,5 @@
+import gradle.kotlin.dsl.accessors._47545ee4044af277c92cdb30c1d58315.implementation
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -110,6 +112,7 @@ android {
 }
 
 dependencies {
+    api(LibraryDependencies.Msdk.core)
     //CardIO (card scanning)
     implementation(LibraryDependencies.CardIO.cardIO)
     //AndroidX

@@ -68,8 +68,6 @@ android {
 }
 
 dependencies {
-    //mSDK Core
-    implementation(LibraryDependencies.Msdk.core)
     //AndroidX
     implementation(LibraryDependencies.AndroidX.coreKtx)
 
