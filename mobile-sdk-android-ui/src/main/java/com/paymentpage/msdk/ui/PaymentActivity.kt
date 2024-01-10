@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.Modifier
+<<<<<<< HEAD
 import androidx.core.view.WindowCompat
+=======
+>>>>>>> dev
 import com.paymentpage.msdk.core.ApplicationInfo
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
@@ -26,6 +29,11 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (paymentOptions == null) {
+            onError(code = ErrorCode.ILLEGAL_STATE, message = "Payment options is empty")
+            return
+        }
+
         mockModeType =
             intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
         val config = when {
@@ -38,11 +46,21 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             )
 
             BuildConfig.DEBUG -> MSDKCoreSessionConfig.debug(
-                apiHost = intent.getStringExtra(Constants.EXTRA_API_HOST) ?: apiHost,
-                wsApiHost = intent.getStringExtra(Constants.EXTRA_WS_API_HOST) ?: wsApiHost
+                apiHost = intent.getStringExtra(Constants.EXTRA_API_HOST)
+                    ?: BuildConfig.API_HOST,
+                wsApiHost = intent.getStringExtra(Constants.EXTRA_WS_API_HOST)
+                    ?: BuildConfig.WS_API_HOST
             )
 
+            else -> MSDKCoreSessionConfig.release(
+                apiHost = BuildConfig.API_HOST,
+                wsApiHost = BuildConfig.WS_API_HOST
+            )
+<<<<<<< HEAD
+
             else -> MSDKCoreSessionConfig.release(apiHost = apiHost, wsApiHost = wsApiHost)
+=======
+>>>>>>> dev
         }
         config.userAgentData =
             UserAgentData(
@@ -53,7 +71,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
         msdkSession = MSDKCoreSession(config)
 
         if (!BuildConfig.DEBUG)
-            with(paymentOptions.paymentInfo) {
+            with(paymentOptions!!.paymentInfo) {
                 CrashHandler(
                     projectId = projectId.toLong(),
                     paymentId = paymentId,
@@ -71,7 +89,11 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             ) {
                 MainContent(
                     activity = this@PaymentActivity,
+<<<<<<< HEAD
                     paymentOptions = paymentOptions,
+=======
+                    paymentOptions = paymentOptions!!,
+>>>>>>> dev
                     msdkSession = msdkSession,
                 )
             }
@@ -122,10 +144,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     companion object {
 
-        internal lateinit var paymentOptions: SDKPaymentOptions
-
-        internal lateinit var apiHost: String
-        internal lateinit var wsApiHost: String
+        internal var paymentOptions: SDKPaymentOptions? = null
 
         var mockModeType = SDKMockModeType.DISABLED
 
@@ -135,14 +154,10 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         fun buildPaymentIntent(
             context: Context,
-            apiHost: String,
-            wsApiHost: String,
             paymentOptions: SDKPaymentOptions,
             mockModeType: SDKMockModeType,
         ) = Intent(context, PaymentActivity::class.java).apply {
             this@Companion.paymentOptions = paymentOptions
-            this@Companion.apiHost = apiHost
-            this@Companion.wsApiHost = wsApiHost
             addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             putExtra(Constants.EXTRA_MOCK_MODE_TYPE, mockModeType)
         }

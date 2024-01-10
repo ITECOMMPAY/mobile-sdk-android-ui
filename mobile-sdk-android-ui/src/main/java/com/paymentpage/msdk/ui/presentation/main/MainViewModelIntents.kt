@@ -9,6 +9,7 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.interactors.pay.PayRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.aps.ApsSaleRequest
+import com.paymentpage.msdk.core.domain.interactors.pay.card.StoredCardType
 import com.paymentpage.msdk.core.domain.interactors.pay.card.auth.CardAuthRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.auth.CardAuthTokenizeRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.auth.SavedCardAuthRequest
@@ -47,6 +48,7 @@ internal fun MainViewModel.payGoogle(
                 this.recipientInfo = recipientInfo
             }
         }
+
         SDKActionType.Auth -> {
             GooglePayAuthRequest(
                 merchantId = merchantId,
@@ -92,6 +94,7 @@ internal fun MainViewModel.paySavedCard(
                 ).apply {
                     this.recipientInfo = recipientInfo
                 }
+
         else ->
             if (isPayWithToken)
                 CardAuthTokenizeRequest(cvv = method.cvv).apply {
@@ -125,6 +128,7 @@ internal fun MainViewModel.payNewCard(
     method: UIPaymentMethod.UICardPayPaymentMethod,
     recipientInfo: RecipientInfo? = null,
     customerFields: List<CustomerField> = emptyList(),
+    storedCardType: Int? = null
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
     val expiry = SdkExpiry(method.expiry)
@@ -137,10 +141,12 @@ internal fun MainViewModel.payNewCard(
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
             ),
             cardHolder = method.cardHolder,
-            saveCard = method.saveCard
+            saveCard = method.saveCard,
+            storedCardType = StoredCardType.from(storedCardType)
         ).apply {
             this.recipientInfo = recipientInfo
         }
+
         SDKActionType.Auth -> CardAuthRequest(
             cvv = method.cvv,
             pan = method.pan,
@@ -149,10 +155,12 @@ internal fun MainViewModel.payNewCard(
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
             ),
             cardHolder = method.cardHolder,
-            saveCard = method.saveCard
+            saveCard = method.saveCard,
+            storedCardType = StoredCardType.from(storedCardType)
         ).apply {
             this.recipientInfo = recipientInfo
         }
+
         SDKActionType.Tokenize -> CardTokenizeRequest(
             pan = method.pan,
             expiryDate = CardDate(
@@ -161,6 +169,7 @@ internal fun MainViewModel.payNewCard(
             ),
             cardHolder = method.cardHolder
         )
+
         SDKActionType.Verify -> CardVerifyRequest(
             cvv = method.cvv,
             pan = method.pan,
@@ -169,6 +178,7 @@ internal fun MainViewModel.payNewCard(
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
             ),
             cardHolder = method.cardHolder,
+            storedCardType = StoredCardType.from(storedCardType)
         )
     }
     if (customerFields.needSendWithSaleRequest()) {

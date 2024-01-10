@@ -14,6 +14,7 @@ internal object Constants {
     const val EXTRA_API_HOST = "api_host"
     const val EXTRA_WS_API_HOST = "ws_api_host"
     const val EXTRA_MOCK_MODE_TYPE = "mock_mode_type"
+    const val EXTRA_PAYMENT_OPTIONS = "payment_options"
     const val THREE_D_SECURE_REDIRECT_DURATION = 2000L
 
     internal const val COUNT_OF_VISIBLE_CUSTOMER_FIELDS = 3

@@ -10,6 +10,7 @@ import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvir
 import com.paymentpage.msdk.ui.base.PaymentOptionsDsl
 
 
+
 /**
  * Payment configuration
  */
@@ -32,4 +33,6 @@ class SDKPaymentOptions(
     var brandColor: String? = null,
     var footerImage: Bitmap? = null,
     var footerLabel: String? = null,
+    //stored card type
+    var storedCardType: Int? = null
 )

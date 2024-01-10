@@ -23,5 +23,6 @@ data class MainViewState(
     val localImageUri: Uri? = null,
     val bitmap: Bitmap? = null,
     val brandColor: String = "#00579E",
-    val isDarkTheme: Boolean = false
+    val isDarkTheme: Boolean = false,
+    val storedCardType: Int? = null
 ) : ViewState

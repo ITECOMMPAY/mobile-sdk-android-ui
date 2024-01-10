@@ -24,6 +24,9 @@ sealed interface MainViewIntents : ViewIntents {
     data class ChangeBrandColor(val brandColor: String) : MainViewIntents
     data class SelectForcePaymentMethod(val id: Int, val paymentData: PaymentData) : MainViewIntents
 
+    //Stored card type
+    data class ChangeStoredCardType(val storedCardType: String) : MainViewIntents
+
     //Custom mock mode
     object ChangeMockModeCheckbox : MainViewIntents
     data class SelectMockMode(val mockModeType: EcmpPaymentSDK.EcmpMockModeType) : MainViewIntents

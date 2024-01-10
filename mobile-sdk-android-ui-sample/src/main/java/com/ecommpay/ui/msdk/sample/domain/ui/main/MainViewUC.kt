@@ -20,6 +20,7 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     )
                 )
             }
+
             is MainViewIntents.SelectForcePaymentMethod -> {
                 ProcessRepository.paymentData = viewIntent.paymentData
                 updateState(
@@ -36,6 +37,7 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     viewState.value.copy(isDarkTheme = ProcessRepository.isDarkTheme)
                 )
             }
+
             is MainViewIntents.ChangeCustomizationCheckbox -> {
                 updateState(
                     viewState.value.copy(
@@ -43,6 +45,7 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     )
                 )
             }
+
             is MainViewIntents.SelectResourceImage -> {
                 ProcessRepository.bitmap = viewIntent.bitmap
                 updateState(
@@ -52,6 +55,7 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     )
                 )
             }
+
             is MainViewIntents.SelectLocalImage -> {
                 ProcessRepository.bitmap = viewIntent.bitmap
                 updateState(
@@ -62,6 +66,7 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     )
                 )
             }
+
             is MainViewIntents.ChangeBrandColor -> {
                 ProcessRepository.brandColor = viewIntent.brandColor
                 updateState(
@@ -78,6 +83,7 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     )
                 )
             }
+
             is MainViewIntents.SelectMockMode -> {
                 ProcessRepository.mockModeType = viewIntent.mockModeType
                 updateState(
@@ -94,6 +100,7 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     )
                 )
             }
+
             is MainViewIntents.SelectScreenDisplayMode -> {
                 var changedList = viewState.value.selectedScreenDisplayModes.toMutableList()
                 if (viewState.value.selectedScreenDisplayModes.contains(viewIntent.screenDisplayMode) &&
@@ -121,6 +128,7 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     )
                 )
             }
+
             is MainViewIntents.ChangeHideScanningCardsCheckbox -> {
                 ProcessRepository.hideScanningCards = !(viewState.value.hideScanningCards)
                 updateState(
@@ -129,6 +137,7 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                     )
                 )
             }
+
             is MainViewIntents.ChangeGooglePayCheckBox -> {
                 updateState(
                     viewState.value.copy(
@@ -156,17 +165,43 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
                 ProcessRepository.actionType = EcmpActionType.Tokenize
                 pushExternalIntent(SampleViewIntents.StartPaymentSDK)
             }
+
             is MainViewIntents.ThreeDSecure -> {
                 pushExternalIntent(NavigationViewIntents.Navigate(to = MainHostScreens.ThreeDSecure))
             }
+
             is MainViewIntents.Recurrent -> {
                 pushExternalIntent(NavigationViewIntents.Navigate(to = MainHostScreens.Recurrent))
             }
+
             is MainViewIntents.Recipient -> {
                 pushExternalIntent(NavigationViewIntents.Navigate(to = MainHostScreens.Recipient))
             }
+
             is MainViewIntents.AdditionalFields -> {
                 pushExternalIntent(NavigationViewIntents.Navigate(to = MainHostScreens.AdditionalFields))
+            }
+
+            is MainViewIntents.ChangeStoredCardType -> {
+                val stringValue = viewIntent.storedCardType
+                val intValue = if (stringValue.length == 1 &&
+                    stringValue.all { it.isDigit() } &&
+                    stringValue.toInt() in 0..6
+                ) {
+                    try {
+                        stringValue.toInt()
+                    } catch (ex: Exception) {
+                        null
+                    }
+                } else {
+                    null
+                }
+                ProcessRepository.storedCardType = intValue
+                updateState(
+                    viewState.value.copy(
+                        storedCardType = intValue
+                    )
+                )
             }
         }
     }

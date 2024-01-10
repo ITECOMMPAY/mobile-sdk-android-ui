@@ -6,7 +6,11 @@ import com.ecommpay.msdk.ui.EcmpRecipientInfo
 import com.ecommpay.msdk.ui.EcmpScreenDisplayMode
 import com.paymentpage.msdk.core.domain.entities.RecipientInfo
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
-import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.SDKActionType
+import com.paymentpage.msdk.ui.SDKAdditionalField
+import com.paymentpage.msdk.ui.SDKAdditionalFieldType
+import com.paymentpage.msdk.ui.SDKPaymentOptions
+import com.paymentpage.msdk.ui.SDKScreenDisplayMode
 
 internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
     SDKPaymentOptions(
@@ -31,6 +35,8 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
         isDarkTheme = isDarkTheme,
         logoImage = logoImage,
         brandColor = brandColor,
+        //stored card type
+        storedCardType = storedCardType
     )
 
 
