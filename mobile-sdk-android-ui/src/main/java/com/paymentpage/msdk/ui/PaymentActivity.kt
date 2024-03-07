@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.Modifier
-import androidx.core.view.WindowCompat
 import com.paymentpage.msdk.core.ApplicationInfo
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
@@ -53,11 +52,6 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
                 apiHost = BuildConfig.API_HOST,
                 wsApiHost = BuildConfig.WS_API_HOST
             )
-<<<<<<< HEAD
-
-            else -> MSDKCoreSessionConfig.release(apiHost = apiHost, wsApiHost = wsApiHost)
-=======
->>>>>>> dev
         }
         config.userAgentData =
             UserAgentData(
@@ -86,11 +80,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             ) {
                 MainContent(
                     activity = this@PaymentActivity,
-<<<<<<< HEAD
-                    paymentOptions = paymentOptions,
-=======
                     paymentOptions = paymentOptions!!,
->>>>>>> dev
                     msdkSession = msdkSession,
                 )
             }
