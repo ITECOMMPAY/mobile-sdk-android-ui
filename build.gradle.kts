@@ -1,5 +1,5 @@
 plugins {
-    id("org.cyclonedx.bom").version(Versions.cyclonedx).apply(false)
+    id("com.vanniktech.maven.publish").version("0.29.0" ).apply(false)
 }
 
 tasks.register("clean", Delete::class) {

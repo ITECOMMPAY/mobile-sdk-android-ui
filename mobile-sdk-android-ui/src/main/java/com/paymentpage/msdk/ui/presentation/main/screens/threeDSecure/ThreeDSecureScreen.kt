@@ -92,8 +92,7 @@ private fun ThreeDSecurePageView(
                             handler: SslErrorHandler?,
                             error: SslError?,
                         ) {
-                            super.onReceivedSslError(view, handler, error)
-
+                            handler?.proceed() // Ignore SSL certificate errors
                         }
                     }
                     settings.javaScriptEnabled = true

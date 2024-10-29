@@ -1,28 +1,24 @@
 package com.paymentpage.msdk.ui.utils.extensions
 
-import android.os.Build
 import com.paymentpage.msdk.core.validators.custom.DateValidator
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 internal fun Long?.amountToCoins() = String.format(Locale.US, "%.2f", (this ?: 0) / 100.0)
 
 internal fun String.paymentDateToPatternDate(pattern: String): String {
-    val ldt: LocalDateTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        LocalDateTime.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"))
-    } else {
-        TODO("VERSION.SDK_INT < O")
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault())
+    val outputFormat = SimpleDateFormat(pattern, Locale.getDefault())
+
+    return try {
+        val date = inputFormat.parse(this)
+        outputFormat.format(date)
+    } catch (e: Exception) {
+        this
     }
-    val currentZoneId: ZoneId = ZoneId.systemDefault()
-    val currentZonedDateTime: ZonedDateTime = ldt.atZone(currentZoneId)
-    val format: DateTimeFormatter = DateTimeFormatter.ofPattern(pattern)
-    return format.format(currentZonedDateTime)
 }
+
 
 internal fun String.patternDateToPatternDate(
     inPattern: String,

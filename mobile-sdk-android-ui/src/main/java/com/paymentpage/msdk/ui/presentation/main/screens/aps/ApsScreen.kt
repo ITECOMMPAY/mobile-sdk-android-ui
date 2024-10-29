@@ -2,14 +2,24 @@ package com.paymentpage.msdk.ui.presentation.main.screens.aps
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.net.http.SslError
 import android.view.ViewGroup
+import android.webkit.SslErrorHandler
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -96,6 +106,14 @@ internal fun ApsPageView(
                         override fun onPageFinished(view: WebView?, url: String?) {
                             super.onPageFinished(view, url)
                             isLoading = false
+                        }
+
+                        override fun onReceivedSslError(
+                            view: WebView?,
+                            handler: SslErrorHandler?,
+                            error: SslError?,
+                        ) {
+                            handler?.proceed() // Ignore SSL certificate errors
                         }
                     }
                     settings.javaScriptEnabled = true

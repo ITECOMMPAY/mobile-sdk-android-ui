@@ -28,7 +28,7 @@ internal fun ExpiryField(
         onRequestValidatorMessage = {
             val expiryDate = SdkExpiry(it)
             when {
-                !expiryDate.isValid() ->
+                !expiryDate.isValid() || !expiryDate.isMoreThanNow()->
                     getStringOverride(OverridesKeys.MESSAGE_ABOUT_EXPIRY)
                 else -> null
             }

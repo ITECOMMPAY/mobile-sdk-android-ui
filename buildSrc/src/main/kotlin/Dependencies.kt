@@ -2,16 +2,15 @@
 
 object Library {
     const val artifactId = "msdk-ui"
-    const val version = "3.4.7"
+    const val version = "3.6.5"
     const val group = "com.ecommpay"
 }
 
 object Versions {
-    const val compose = "1.5.1"
+    const val compose = "1.6.7"
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
-    const val msdkCore = "0.11.0"
-    const val cyclonedx = "1.7.2"
+    const val msdkCore = "0.12.1"
 }
 
 object LibraryDependencies {
@@ -63,7 +62,7 @@ object LibraryDependencies {
     }
 
     object Msdk {
-        const val core = "com.ecommpay:msdk-core-android:${Versions.msdkCore}"
+        const val core = "io.github.flashpaykg:msdk-core:${Versions.msdkCore}"
     }
 
     object MsdkSample {

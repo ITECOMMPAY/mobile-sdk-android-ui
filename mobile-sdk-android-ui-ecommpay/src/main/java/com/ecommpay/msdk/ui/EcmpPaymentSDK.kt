@@ -18,8 +18,10 @@ class EcmpPaymentSDK(
     private val paymentSDK = PaymentSDK(
         context = context,
         paymentOptions = paymentOptions.map().also {
-            it.footerImage = context.getBitmapFromVectorDrawable(R.drawable.sdk_logo)
-            it.footerLabel = context.getString(R.string.powered_by_label)
+            if (it.footerImage == null)
+                it.footerImage = context.getBitmapFromVectorDrawable(R.drawable.sdk_logo)
+            if (it.footerLabel == null)
+                it.footerLabel = context.getString(R.string.powered_by_label)
         },
         mockModeType = mockModeType.map()
     )

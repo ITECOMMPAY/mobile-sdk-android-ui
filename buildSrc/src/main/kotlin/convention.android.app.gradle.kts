@@ -35,7 +35,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.8"
+        kotlinCompilerExtensionVersion = "1.5.9"
     }
     packagingOptions {
         resources {
@@ -109,5 +109,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
         freeCompilerArgs += "-Xjvm-default=all"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 }

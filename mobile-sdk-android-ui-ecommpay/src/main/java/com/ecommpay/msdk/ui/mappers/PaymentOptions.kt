@@ -35,6 +35,8 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
         isDarkTheme = isDarkTheme,
         logoImage = logoImage,
         brandColor = brandColor,
+        footerImage = footerImage,
+        footerLabel = footerLabel,
         //stored card type
         storedCardType = storedCardType
     )

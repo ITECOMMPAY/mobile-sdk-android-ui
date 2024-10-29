@@ -1,10 +1,9 @@
-import gradle.kotlin.dsl.accessors._47545ee4044af277c92cdb30c1d58315.implementation
-
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id ("org.jetbrains.kotlin.plugin.serialization")
 }
 
 version = System.getenv("SDK_VERSION_NAME") ?: Library.version
@@ -88,7 +87,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.8"
+        kotlinCompilerExtensionVersion = "1.5.9"
     }
     packagingOptions {
         resources {
@@ -113,6 +112,8 @@ android {
 
 dependencies {
     api(LibraryDependencies.Msdk.core)
+    //Serialization
+    implementation(LibraryDependencies.KotlinX.serialization)
     //CardIO (card scanning)
     implementation(LibraryDependencies.CardIO.cardIO)
     //AndroidX
@@ -144,5 +145,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
         freeCompilerArgs += "-Xjvm-default=all"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 }

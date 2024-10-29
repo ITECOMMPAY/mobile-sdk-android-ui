@@ -1,17 +1,27 @@
 pluginManagement {
     repositories {
-        mavenLocal()
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
-        google()
     }
 }
+
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        mavenLocal()
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
         mavenCentral()
-        google()
     }
 }
 
@@ -20,6 +30,7 @@ rootProject.name = "msdk-android-ui"
 
 include ':mobile-sdk-android-ui'
 include ':mobile-sdk-android-ui-ecommpay'
+include ':mobile-sdk-android-ui-flashpay'
 include ':mobile-sdk-android-ui-sample'
 include ':integration-example'
 

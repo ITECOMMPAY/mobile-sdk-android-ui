@@ -23,12 +23,6 @@ import com.paymentpage.msdk.ui.presentation.MainContent
 class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if (paymentOptions == null) {
-            onError(code = ErrorCode.ILLEGAL_STATE, message = "Payment options is empty")
-            return
-        }
 
         mockModeType =
             intent.getSerializableExtra(Constants.EXTRA_MOCK_MODE_TYPE) as SDKMockModeType
@@ -61,16 +55,23 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             )
         msdkSession = MSDKCoreSession(config)
 
-        if (!BuildConfig.DEBUG)
-            with(paymentOptions!!.paymentInfo) {
-                CrashHandler(
-                    projectId = projectId.toLong(),
-                    paymentId = paymentId,
-                    customerId = customerId,
-                    signature = signature,
-                    errorInteractor = msdkSession.getErrorEventInteractor()
-                )
-            }.start(context = this@PaymentActivity)
+        super.onCreate(savedInstanceState)
+
+        if (paymentOptions == null) {
+            onError(code = ErrorCode.ILLEGAL_STATE, message = "Payment options is empty")
+            return
+        }
+
+//        if (!BuildConfig.DEBUG)
+//            with(paymentOptions!!.paymentInfo) {
+//                CrashHandler(
+//                    projectId = projectId.toLong(),
+//                    paymentId = paymentId,
+//                    customerId = customerId,
+//                    signature = signature,
+//                    errorInteractor = msdkSession.getErrorEventInteractor()
+//                )
+//            }.start(context = this@PaymentActivity)
 
         setContent {
             Box(
