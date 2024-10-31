@@ -73,6 +73,9 @@ android {
         }
 
     }
+    defaultConfig {
+        consumerProguardFiles("consumer-rules.pro")
+    }
 }
 
 dependencies {

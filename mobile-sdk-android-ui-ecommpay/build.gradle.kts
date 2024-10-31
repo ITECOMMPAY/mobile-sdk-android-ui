@@ -56,6 +56,7 @@ android {
     namespace = "com.ecommpay.msdk.ui"
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
+        consumerProguardFiles("consumer-rules.pro")
     }
 }
 
