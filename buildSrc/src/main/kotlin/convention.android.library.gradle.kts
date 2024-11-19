@@ -14,11 +14,11 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -87,7 +87,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.9"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packagingOptions {
         resources {
@@ -125,6 +125,7 @@ dependencies {
     //Compose
     implementation(LibraryDependencies.Compose.ui)
     implementation(LibraryDependencies.Compose.material)
+    implementation(LibraryDependencies.Compose.icons)
     implementation(LibraryDependencies.Compose.animationCore)
     implementation(LibraryDependencies.Compose.toolingPreview)
     debugImplementation(LibraryDependencies.Compose.uiTooling)
@@ -137,8 +138,9 @@ dependencies {
     testImplementation(LibraryDependencies.Compose.junit4)
     testImplementation("io.mockk:mockk:1.13.3")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("androidx.test.ext:junit:1.1.4")
-    testImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    testImplementation("androidx.test.ext:junit:1.2.1")
+    testImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

@@ -28,6 +28,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
 
     buildFeatures {
@@ -35,7 +36,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.9"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packagingOptions {
         resources {
@@ -85,6 +86,7 @@ dependencies {
     //Compose
     implementation(LibraryDependencies.Compose.ui)
     implementation(LibraryDependencies.Compose.material)
+    implementation(LibraryDependencies.Compose.icons)
     implementation(LibraryDependencies.Compose.activity)
 
     //Serialization
@@ -103,6 +105,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.test.ext:junit:1.1.3")
     testImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
