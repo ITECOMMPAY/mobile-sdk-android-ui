@@ -1,7 +1,3 @@
-[![Build Status](https://github.com/ITECOMMPAY/mobile-sdk-android-ui/actions/workflows/master_push_pr.yml/badge.svg)]()
-[![Download](https://maven-badges.herokuapp.com/maven-central/com.ecommpay/msdk-ui/badge.svg) ](https://maven-badges.herokuapp.com/maven-central/com.ecommpay/msdk-ui/badge.svg)
-[![Download](https://maven-badges.herokuapp.com/maven-central/com.ecommpay/msdk-core-android/badge.svg) ](https://maven-badges.herokuapp.com/maven-central/com.ecommpay/msdk-core-android/badge.svg)
-
 ## Overview
 Mobile SDK UI  for Android is a software development kit that can be used to integrate Android applications with the [Ecommpay](https://ecommpay.com/) payment platform.
 
