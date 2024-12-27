@@ -9,7 +9,7 @@ plugins {
 version = System.getenv("SDK_VERSION_NAME") ?: Library.version
 
 android {
-    compileSdk = 34
+    compileSdk = 35
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

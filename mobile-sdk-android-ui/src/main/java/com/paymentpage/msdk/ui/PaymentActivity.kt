@@ -6,9 +6,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.ui.Modifier
 import com.paymentpage.msdk.core.ApplicationInfo
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
@@ -61,24 +58,8 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             onError(code = ErrorCode.ILLEGAL_STATE, message = "Payment options is empty")
             return
         }
-
-//        if (!BuildConfig.DEBUG)
-//            with(paymentOptions!!.paymentInfo) {
-//                CrashHandler(
-//                    projectId = projectId.toLong(),
-//                    paymentId = paymentId,
-//                    customerId = customerId,
-//                    signature = signature,
-//                    errorInteractor = msdkSession.getErrorEventInteractor()
-//                )
-//            }.start(context = this@PaymentActivity)
-
         setContent {
-            Box(
-                Modifier
-                    .imePadding()
-                    .navigationBarsPadding()
-            ) {
+            Box {
                 MainContent(
                     activity = this@PaymentActivity,
                     paymentOptions = paymentOptions!!,
