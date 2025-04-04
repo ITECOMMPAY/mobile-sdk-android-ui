@@ -2,7 +2,10 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -68,6 +71,9 @@ internal fun PaymentMethodsScreen(
             Spacer(modifier = Modifier.size(6.dp))
             SDKFooter()
             Spacer(modifier = Modifier.size(25.dp))
+            Spacer(
+                Modifier.windowInsetsBottomHeight(WindowInsets.ime)
+            )
         },
         onClose = onCancel
     )
