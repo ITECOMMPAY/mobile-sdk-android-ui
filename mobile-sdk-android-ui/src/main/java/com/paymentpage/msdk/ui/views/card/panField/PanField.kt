@@ -1,6 +1,7 @@
 package com.paymentpage.msdk.ui.views.card.panField
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
@@ -54,6 +55,8 @@ internal fun PanField(
 ) {
     var card by remember { mutableStateOf<PaymentMethodCard?>(null) }
     val paymentOptions = LocalPaymentOptions.current
+    var needAnimation by remember { mutableStateOf(true) }
+
     Row(modifier = Modifier.fillMaxWidth()) {
         BoxWithConstraints(
             modifier = Modifier
@@ -143,7 +146,10 @@ internal fun PanField(
                             Image(
                                 modifier = Modifier
                                     .padding(5.dp)
-                                    .size(25.dp),
+                                    .size(25.dp)
+                                    .clickable {
+                                        needAnimation = !needAnimation
+                                    },
                                 painter = painterResource(
                                     id = if (drawableId > 0)
                                         drawableId
@@ -160,20 +166,43 @@ internal fun PanField(
                                     null
                             )
                         }
+
                         else -> {
                             if (paymentMethod.availableCardTypes.isNotEmpty())
-                                ChangingCardTypeItems(
-                                    cardTypes = paymentMethod.availableCardTypes,
-                                    startIndex = startIndex, //saving current showing card type
-                                    onCurrentIndexChanged = { currentIndex ->
-                                        startIndex = currentIndex
-                                    }
-                                )
+                                if (needAnimation)
+                                    ChangingCardTypeItems(
+                                        cardTypes = paymentMethod.availableCardTypes,
+                                        startIndex = startIndex, //saving current showing card type
+                                        onCurrentIndexChanged = { currentIndex ->
+                                            startIndex = currentIndex
+                                        },
+                                        onClick = {
+                                            needAnimation = !needAnimation
+                                        }
+                                    )
+                                else
+                                    Image(
+                                        modifier = Modifier
+                                            .padding(5.dp)
+                                            .size(25.dp)
+                                            .clickable {
+                                                needAnimation = !needAnimation
+                                            },
+                                        painter = painterResource(id = SDKTheme.images.defaultCardLogo),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Fit,
+                                        colorFilter = ColorFilter.tint(
+                                            color = customColor(paymentOptions.brandColor)
+                                        )
+                                    )
                             else
                                 Image(
                                     modifier = Modifier
                                         .padding(5.dp)
-                                        .size(25.dp),
+                                        .size(25.dp)
+                                        .clickable {
+                                            needAnimation = !needAnimation
+                                        },
                                     painter = painterResource(id = SDKTheme.images.defaultCardLogo),
                                     contentDescription = null,
                                     contentScale = ContentScale.Fit,

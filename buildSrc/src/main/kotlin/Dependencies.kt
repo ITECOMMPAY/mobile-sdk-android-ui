@@ -2,7 +2,7 @@
 
 object Library {
     const val artifactId = "msdk-ui"
-    const val version = "3.7.1"
+    const val version = "3.8.0"
     const val group = "com.ecommpay"
 }
 

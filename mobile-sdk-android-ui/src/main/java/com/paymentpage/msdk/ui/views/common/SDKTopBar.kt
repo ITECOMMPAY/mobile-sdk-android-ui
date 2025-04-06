@@ -107,7 +107,7 @@ internal fun SDKTopBar(
                     .testTag(TestTagsConstants.SCREEN_CLOSE_BUTTON),
                 imageVector = Icons.Default.Close,
                 colorFilter = ColorFilter.tint(
-                    color = customColor(brandColor = paymentOptions.brandColor)
+                    color = SDKTheme.colors.neutral
                 ),
                 contentDescription = stringResource(id = R.string.icon_close_content_description),
             )

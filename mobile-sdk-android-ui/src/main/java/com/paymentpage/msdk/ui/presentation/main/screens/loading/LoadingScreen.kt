@@ -5,12 +5,14 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -20,11 +22,8 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.traversalIndex
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -41,7 +40,6 @@ import com.paymentpage.msdk.ui.views.lodaing.DotsLoading
 
 @Composable
 internal fun LoadingScreen(onCancel: () -> Unit) {
-
     val state = remember {
         MutableTransitionState(false).apply {
             // Start the animation immediately
@@ -54,6 +52,7 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
     BackHandler(true) { }
 
     SDKScaffold(
+        modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
         verticalArrangement = Arrangement.Center,
         notScrollableContent = {
             Column(
@@ -77,18 +76,15 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                 VerticalSlideFadeAnimation(
                     visibleState = state,
                     duration = 500,
-                    delay = 500
+                    delay = 300
                 ) {
                     Text(
                         modifier = Modifier
                             .semantics {
                                 contentDescription =
                                     getStringOverride(OverridesKeys.TITLE_LOADING_SCREEN)
-                                liveRegion = LiveRegionMode.Polite
-                                isTraversalGroup = true
-                                traversalIndex = -1f
-
                             }
+                            .focusable()
                             .testTag(TestTagsConstants.LOADING_TITLE_TEXT),
                         text = if (isPreview)
                             "Just a moment"
@@ -107,12 +103,6 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                 ) {
                     Text(
                         modifier = Modifier
-                            .semantics {
-                                contentDescription =
-                                    getStringOverride(OverridesKeys.SUB_TITLE_LOADING_SCREEN)
-                                        .replace(".", "")
-                                liveRegion = LiveRegionMode.Polite
-                            }
                             .testTag(TestTagsConstants.LOADING_SUB_TITLE_TEXT),
                         text = if (isPreview)
                             "Checking your operation status..."
@@ -132,23 +122,21 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                         )
                     )
                 ) {
-                    ClickableText(
+                    Text(
                         modifier = Modifier
-                            .testTag(TestTagsConstants.CANCEL_PAYMENT_BUTTON),
+                            .testTag(TestTagsConstants.CANCEL_PAYMENT_BUTTON)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) {
+                                onCancel()
+                            },
+                        text = if (isPreview) "Cancel Payment" else getStringOverride(OverridesKeys.TITLE_CANCEL_PAYMENT),
                         style = SDKTheme.typography.s14Normal.copy(
                             color = SDKTheme.colors.mediumGrey,
                             textAlign = TextAlign.Center,
                             textDecoration = TextDecoration.Underline
-                        ),
-                        text = AnnotatedString(
-                            if (isPreview)
-                                "Cancel Payment"
-                            else
-                                getStringOverride(OverridesKeys.TITLE_CANCEL_PAYMENT)
-                        ),
-                        onClick = {
-                            onCancel()
-                        }
+                        )
                     )
                 }
                 Spacer(modifier = Modifier.size(20.dp))
