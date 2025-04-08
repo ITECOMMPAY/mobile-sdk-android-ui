@@ -3,6 +3,7 @@ import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 plugins {
     id("convention.android.library")
     id("com.vanniktech.maven.publish")
+    id("signing")
 }
 
 fun getExtraString(name: String) = rootProject.ext[name]?.toString() ?: ""

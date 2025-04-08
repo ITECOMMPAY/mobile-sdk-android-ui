@@ -1,5 +1,6 @@
 plugins {
     id("convention.android.app")
+    id("signing")
 }
 
 android {

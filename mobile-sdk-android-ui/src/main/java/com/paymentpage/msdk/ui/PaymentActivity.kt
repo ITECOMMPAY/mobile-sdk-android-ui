@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
+import androidx.core.view.WindowCompat
 import com.paymentpage.msdk.core.ApplicationInfo
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
@@ -58,6 +59,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
             onError(code = ErrorCode.ILLEGAL_STATE, message = "Payment options is empty")
             return
         }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             Box {
                 MainContent(
