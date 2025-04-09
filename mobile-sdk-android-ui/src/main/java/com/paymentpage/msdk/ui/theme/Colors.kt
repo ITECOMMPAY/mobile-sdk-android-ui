@@ -102,7 +102,7 @@ internal fun lightColors(primaryColor: Color? = null): Colors = Colors(
     mediumGrey = lightThemeMediumGrey,
     neutral = lightThemeNeutral,
     link = lightThemeLink,
-    container = lightThemeContainer,
+    container = lightThemeGrey,
     accent = lightThemeAccent
 )
 
@@ -120,7 +120,7 @@ internal fun darkColors(primaryColor: Color? = null): Colors = Colors(
     mediumGrey = darkThemeMediumGrey,
     neutral = darkThemeNeutral,
     link = darkThemeLink,
-    container = darkThemeContainer,
+    container = darkThemeGrey,
     accent = darkThemeAccent
 )
 
