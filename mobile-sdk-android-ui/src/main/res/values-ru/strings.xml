@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok_label" translatable="false">Ок</string>
+
+    <string name="sale_label">Выберите способ оплаты</string>
+    <string name="tokenize_label">Сохранить карту</string>
+    <string name="verify_label">Подтвердить карту</string>
+    <string name="payment_dismiss_confirm_message">Платёж обрабатывается. Вы уверены, что хотите закрыть страницу?</string>
+    <string name="cancel_label">Отмена</string>
+    <string name="proceed_label" translatable="false">Продолжить</string>
+    <string name="error_label">Ошибка</string>
+    <string name="title_camera_permission_label">
+        Включите камеру для сканирования банковской карты. Для этого перейдите в настройки приложения.
+    </string>
+    <string name="button_camera_permission_label">
+        Настройки приложения
+    </string>
+
+    <string name="ssl_error_title" translatable="false">Проблемы с безопасностью соединения</string>
+    <string name="ssl_error_message" translatable="false">
+        Приложение не может проверить безопасность соединения с сервером. Это может быть вызвано временными проблемами сети или попыткой вмешательства посторонних лиц. Если вы не уверены в безопасности текущего подключения или используемой сети, рекомендуется не продолжать.
+    </string>
+</resources>
