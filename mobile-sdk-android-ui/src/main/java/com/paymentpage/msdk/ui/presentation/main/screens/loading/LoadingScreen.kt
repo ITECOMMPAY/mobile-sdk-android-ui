@@ -36,7 +36,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
-import com.paymentpage.msdk.ui.views.lodaing.DotsLoading
+import com.paymentpage.msdk.ui.views.loading.DotsLoading
 
 @Composable
 internal fun LoadingScreen(onCancel: () -> Unit) {

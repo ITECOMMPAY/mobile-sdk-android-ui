@@ -1,4 +1,4 @@
-package com.paymentpage.msdk.ui.views.lodaing
+package com.paymentpage.msdk.ui.views.loading
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background

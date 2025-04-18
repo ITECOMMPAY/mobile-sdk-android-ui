@@ -15,14 +15,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePage
 import com.paymentpage.msdk.core.domain.entities.threeDSecure.ThreeDSecurePageType
 import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.threeDSecureRedirectHandle
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKScaffoldWebView
+import com.paymentpage.msdk.ui.views.common.alertDialog.ErrorAlertDialog
 
 @Composable
 internal fun ThreeDSecureScreen(
@@ -36,7 +40,10 @@ internal fun ThreeDSecureScreen(
     SDKScaffoldWebView(
         notScrollableContent = {
             if (threeDSecurePage != null) {
-                ThreeDSecurePageView(threeDSecurePage = threeDSecurePage)
+                ThreeDSecurePageView(
+                    threeDSecurePage = threeDSecurePage,
+                    onCancel = onCancel
+                )
             }
         },
         onClose = { onCancel() }
@@ -47,8 +54,37 @@ internal fun ThreeDSecureScreen(
 @Composable
 private fun ThreeDSecurePageView(
     threeDSecurePage: ThreeDSecurePage,
+    onCancel: () -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
+    val brandColor = LocalPaymentOptions.current.brandColor
+
+    var showSslWarning by remember { mutableStateOf(false) }
+    var sslErrorHandler by remember { mutableStateOf<SslErrorHandler?>(null) }
+
+    if (showSslWarning) {
+        ErrorAlertDialog(
+            title = stringResource(R.string.ssl_error_title),
+            message = stringResource(R.string.ssl_error_message),
+            confirmButtonText = stringResource(R.string.proceed_label),
+            onConfirmButtonClick = {
+                showSslWarning = false
+                sslErrorHandler?.proceed()
+            },
+            onDismissRequest = {
+                showSslWarning = false
+                sslErrorHandler?.cancel()
+                onCancel()
+            },
+            onDismissButtonClick = {
+                showSslWarning = false
+                sslErrorHandler?.cancel()
+                onCancel()
+            },
+            brandColor = brandColor
+        )
+    }
+
     if (threeDSecurePage.type == ThreeDSecurePageType.THREE_DS_2_FRICTIONLESS)
         Box(
             modifier = Modifier
@@ -92,7 +128,8 @@ private fun ThreeDSecurePageView(
                             handler: SslErrorHandler?,
                             error: SslError?,
                         ) {
-                            handler?.proceed() // Ignore SSL certificate errors
+                            sslErrorHandler = handler
+                            showSslWarning = true
                         }
                     }
                     settings.javaScriptEnabled = true

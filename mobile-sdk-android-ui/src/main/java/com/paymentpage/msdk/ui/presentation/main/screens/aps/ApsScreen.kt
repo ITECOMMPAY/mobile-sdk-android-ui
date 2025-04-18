@@ -23,14 +23,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
+import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.presentation.main.saleAps
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.views.common.SDKScaffoldWebView
+import com.paymentpage.msdk.ui.views.common.alertDialog.ErrorAlertDialog
 
 @Composable
 internal fun ApsScreen(onCancel: () -> Unit) {
@@ -48,7 +53,8 @@ internal fun ApsScreen(onCancel: () -> Unit) {
             if (paymentUrl != null) {
                 ApsPageView(
                     method = method,
-                    paymentUrl = paymentUrl
+                    paymentUrl = paymentUrl,
+                    onCancel = onCancel
                 )
             }
         },
@@ -61,10 +67,40 @@ internal fun ApsScreen(onCancel: () -> Unit) {
 internal fun ApsPageView(
     method: UIPaymentMethod.UIApsPaymentMethod,
     paymentUrl: String,
+    onCancel: () -> Unit
 ) {
+    val context = LocalContext.current
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val brandColor = LocalPaymentOptions.current.brandColor
     var isLoading by remember { mutableStateOf(false) }
+
+    var showSslWarning by remember { mutableStateOf(false) }
+    var sslErrorHandler by remember { mutableStateOf<SslErrorHandler?>(null) }
+
+    if (showSslWarning) {
+        ErrorAlertDialog(
+            title = stringResource(R.string.ssl_error_title),
+            message = stringResource(R.string.ssl_error_message),
+            confirmButtonText = stringResource(R.string.proceed_label),
+            onConfirmButtonClick = {
+                showSslWarning = false
+                sslErrorHandler?.proceed()
+            },
+            onDismissRequest = {
+                showSslWarning = false
+                sslErrorHandler?.cancel()
+                onCancel()
+            },
+             onDismissButtonClick = {
+                 showSslWarning = false
+                 sslErrorHandler?.cancel()
+                 onCancel()
+             },
+            brandColor = brandColor
+        )
+    }
+
     if (isLoading)
         Box(
             modifier = Modifier
@@ -113,7 +149,8 @@ internal fun ApsPageView(
                             handler: SslErrorHandler?,
                             error: SslError?,
                         ) {
-                            handler?.proceed() // Ignore SSL certificate errors
+                            sslErrorHandler = handler
+                            showSslWarning = true
                         }
                     }
                     settings.javaScriptEnabled = true
