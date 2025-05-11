@@ -1,4 +1,5 @@
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
+import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     id("convention.android.library")
@@ -6,30 +7,20 @@ plugins {
     id("signing")
 }
 
-fun getExtraString(name: String) = rootProject.ext[name]?.toString() ?: ""
-
-val javadocJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("javadoc")
-}
-
+group = Library.group
+version = Library.version
 
 mavenPublishing {
-    configure(
-        AndroidSingleVariantLibrary(
-            // the published variant
-            variant = "prodRelease",
-            // whether to publish a sources jar
-            sourcesJar = true,
-            // whether to publish a javadoc jar
-            publishJavadocJar = true,
-        )
+    coordinates(
+        Library.group,
+        Library.artifactId,
+        Library.version
     )
-    coordinates(System.getenv("GROUP_ID") ?: Library.group, Library.artifactId, Library.version)
 
     pom {
         name.set("mSDK UI Module")
         description.set("SDK for Android is a software development kit for fast integration of payment solutions right in your mobile application for Android.")
-        url.set("${System.getenv("GITHUB_URL") ?: ""}/mobile-sdk-android-ui")
+        url.set("https://github.com/ITECOMMPAY/mobile-sdk-android-ui")
         licenses {
             license {
                 name.set("MIT")
@@ -38,20 +29,27 @@ mavenPublishing {
         }
         developers {
             developer {
-                id.set(System.getenv("DEVELOPER_ID"))
-                name.set(System.getenv("DEVELOPER_NAME"))
-                email.set(System.getenv("DEVELOPER_EMAIL"))
+                id.set("<id>")
+                name.set("<name>")
+                url.set("<url>")
             }
         }
         scm {
-            url.set("${System.getenv("GITHUB_URL") ?: ""}/mobile-sdk-android-ui")
+            url.set("https://github.com/ITECOMMPAY/mobile-sdk-android-ui/")
         }
-
     }
+
+    configure(
+        AndroidSingleVariantLibrary(
+            variant = "prodRelease",
+            sourcesJar = true,
+            publishJavadocJar = true,
+        )
+    )
+
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
 }
-
-
-group = System.getenv("GROUP_ID") ?: Library.group
 
 android {
     namespace = "com.ecommpay.msdk.ui"
@@ -62,10 +60,5 @@ android {
 }
 
 dependencies {
-    //Projects
     implementation(project(":mobile-sdk-android-ui"))
-}
-
-signing {
-    useGpgCmd()
 }
