@@ -56,7 +56,11 @@ internal fun GooglePayItem(
     val merchantName = paymentOptions.merchantName
     var isGooglePayAvailable by remember { mutableStateOf(isForcePaymentMethod) }
     var isGooglePayOpened by remember { mutableStateOf(false) }
-    val googlePayHelper = GooglePayHelper(merchantId, merchantName)
+    val googlePayHelper = GooglePayHelper(
+        merchantId = merchantId,
+        merchantName = merchantName,
+        allowedCardNetworks = ArrayList(method.paymentMethod.availableCardTypes)
+    )
     val activity = LocalContext.current as PaymentActivity
     val googlePayClient = remember {
         Wallet.getPaymentsClient(
@@ -104,7 +108,8 @@ internal fun GooglePayItem(
                 merchantName = merchantName,
                 merchantEnvironment = paymentOptions.merchantEnvironment,
                 amount = paymentOptions.paymentInfo.paymentAmount,
-                currency = paymentOptions.paymentInfo.paymentCurrency
+                currency = paymentOptions.paymentInfo.paymentCurrency,
+                allowedCardNetworks = ArrayList(method.paymentMethod.availableCardTypes)
             )
         )
     }
@@ -144,6 +149,7 @@ internal fun GooglePayItem(
                 RecurringAgreements()
             }
         }
+
         customerFields.isAllCustomerFieldsHidden() && (isForcePaymentMethod || isTryAgain) -> {
             method.customerFieldValues = customerFields.mergeHiddenFieldsToList(
                 additionalFields = additionalFields,
@@ -160,6 +166,7 @@ internal fun GooglePayItem(
                 onClick = launchGooglePaySheet
             )
         }
+
         customerFields.isAllCustomerFieldsHidden() -> {
             GooglePayButton(
                 isEnabled = isGooglePayAvailable && !isGooglePayOpened,

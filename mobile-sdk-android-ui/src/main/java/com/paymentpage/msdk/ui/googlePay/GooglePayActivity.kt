@@ -15,7 +15,6 @@ import org.json.JSONObject
 import java.math.BigDecimal
 
 internal class GooglePayActivity : AppCompatActivity() {
-
     private lateinit var googlePayHelper: GooglePayHelper
     private lateinit var googlePayClient: PaymentsClient
 
@@ -30,12 +29,16 @@ internal class GooglePayActivity : AppCompatActivity() {
         val merchantName = intent.extras?.getString(GooglePayActivityContract.EXTRA_MERCHANT_NAME)
         val merchantId = intent.extras?.getString(GooglePayActivityContract.EXTRA_MERCHANT_ID)
         val envName = intent.extras?.getString(GooglePayActivityContract.EXTRA_ENVIRONMENT)
+        val allowedCardNetworks = intent.extras?.getStringArrayList(GooglePayActivityContract.EXTRA_ALLOWED_CARD_NETWORKS)
 
         if (amount != null && !currency.isNullOrEmpty() && !merchantName.isNullOrEmpty() && !merchantId.isNullOrEmpty() && !envName.isNullOrEmpty()) {
-
-            val env = GooglePayEnvironment.values().firstOrNull { it.name == envName }
-                ?: GooglePayEnvironment.TEST
-            googlePayHelper = GooglePayHelper(merchantId, merchantName)
+            val env = GooglePayEnvironment.values()
+                .firstOrNull { it.name == envName } ?: GooglePayEnvironment.TEST
+            googlePayHelper = GooglePayHelper(
+                merchantId = merchantId,
+                merchantName = merchantName,
+                allowedCardNetworks = allowedCardNetworks
+            )
             googlePayClient = Wallet.getPaymentsClient(
                 this@GooglePayActivity,
                 Wallet.WalletOptions.Builder()
@@ -47,8 +50,6 @@ internal class GooglePayActivity : AppCompatActivity() {
             googlePayClient.isReadyToPay(request).addOnCompleteListener { completedTask ->
                 setGooglePayAvailable(completedTask.isSuccessful, amount, currency)
             }
-
-
         } else {
             setResult(Activity.RESULT_CANCELED)
             finish()
@@ -74,7 +75,6 @@ internal class GooglePayActivity : AppCompatActivity() {
             finish()
         }
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -111,7 +111,5 @@ internal class GooglePayActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-
     }
 }
