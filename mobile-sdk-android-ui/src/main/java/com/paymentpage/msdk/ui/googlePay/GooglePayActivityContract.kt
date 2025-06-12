@@ -8,7 +8,6 @@ import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvir
 
 internal class GooglePayActivityContract :
     ActivityResultContract<GooglePayActivityContract.Config, GooglePayActivityContract.Result>() {
-
     override fun createIntent(context: Context, input: Config): Intent {
         return Intent(context, GooglePayActivity::class.java).apply {
             putExtra(EXTRA_AMOUNT, input.amount)
@@ -17,6 +16,8 @@ internal class GooglePayActivityContract :
             putExtra(EXTRA_ENVIRONMENT, input.merchantEnvironment.name)
             putExtra(EXTRA_MERCHANT_ID, input.merchantId)
             putExtra(EXTRA_MERCHANT_NAME, input.merchantName)
+
+            putStringArrayListExtra(EXTRA_ALLOWED_CARD_NETWORKS, input.allowedCardNetworks)
         }
     }
 
@@ -38,6 +39,7 @@ internal class GooglePayActivityContract :
         const val EXTRA_MERCHANT_NAME = "merchant_name"
         const val EXTRA_TOKEN = "token"
         const val EXTRA_ERROR_MESSAGE = "error_message"
+        const val EXTRA_ALLOWED_CARD_NETWORKS = "extra_allowed_card_networks"
     }
 
     class Config(
@@ -46,11 +48,11 @@ internal class GooglePayActivityContract :
         val merchantEnvironment: GooglePayEnvironment = GooglePayEnvironment.TEST,
         val amount: Long,
         val currency: String,
+        val allowedCardNetworks: ArrayList<String>
     )
 
     class Result(
         val token: String? = null,
         val errorMessage: String? = null
     )
-
 }
