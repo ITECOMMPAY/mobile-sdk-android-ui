@@ -2,7 +2,7 @@
 
 object Library {
     const val artifactId = "msdk-ui"
-    const val version = "3.8.3"
+    const val version = "3.8.4"
     const val group = "com.ecommpay"
 }
 
@@ -60,6 +60,7 @@ object LibraryDependencies {
     object Google {
         const val wallet = "com.google.android.gms:play-services-wallet:19.1.0"
         const val material = "com.google.android.material:material:1.6.1"
+        const val payButton = "com.google.pay.button:compose-pay-button:1.1.0"
     }
 
     object Msdk {

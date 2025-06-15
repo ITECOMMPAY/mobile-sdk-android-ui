@@ -93,6 +93,7 @@ dependencies {
 
     //Google
     implementation(LibraryDependencies.Google.material)
+    implementation(LibraryDependencies.Google.payButton)
 
     //Color picker
     implementation(LibraryDependencies.MsdkSample.colorPicker)
