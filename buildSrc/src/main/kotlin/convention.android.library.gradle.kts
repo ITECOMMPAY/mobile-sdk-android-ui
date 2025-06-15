@@ -122,6 +122,7 @@ dependencies {
     implementation(LibraryDependencies.Coil.compose)
     //Google
     implementation(LibraryDependencies.Google.wallet)
+    implementation(LibraryDependencies.Google.payButton)
     //Compose
     implementation(LibraryDependencies.Compose.ui)
     implementation(LibraryDependencies.Compose.material)

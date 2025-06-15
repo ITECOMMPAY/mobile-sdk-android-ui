@@ -31,10 +31,9 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.isAllCustomerFieldsHidden
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeHiddenFieldsToList
-import com.paymentpage.msdk.ui.views.button.GooglePayButton
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 import com.paymentpage.msdk.ui.views.recurring.RecurringAgreements
-
+import com.paymentpage.msdk.ui.views.button.GooglePayButton
 
 @Composable
 internal fun GooglePayItem(
@@ -114,10 +113,13 @@ internal fun GooglePayItem(
         )
     }
 
+    val readyToPayRequest = googlePayHelper.createReadyToPayRequest()
+    val allowedPaymentMethods = readyToPayRequest.getJSONArray("allowedPaymentMethods")
+
     if (!isForcePaymentMethod)
         LaunchedEffect(Unit) {
             val request =
-                IsReadyToPayRequest.fromJson(googlePayHelper.createReadyToPayRequest().toString())
+                IsReadyToPayRequest.fromJson(readyToPayRequest.toString())
             googlePayClient.isReadyToPay(request).addOnCompleteListener { completedTask ->
                 isGooglePayAvailable = completedTask.isSuccessful
             }
@@ -143,8 +145,9 @@ internal fun GooglePayItem(
                 )
                 Spacer(modifier = Modifier.height(22.dp))
                 GooglePayButton(
-                    isEnabled = isCustomerFieldsValid && isGooglePayAvailable && !isGooglePayOpened,
-                    onClick = launchGooglePaySheet
+                    allowedPaymentMethods = allowedPaymentMethods.toString(),
+                    onClick = launchGooglePaySheet,
+                    enabled = isCustomerFieldsValid && isGooglePayAvailable && !isGooglePayOpened
                 )
                 RecurringAgreements()
             }
@@ -162,14 +165,15 @@ internal fun GooglePayItem(
             }
             LaunchedEffect(key1 = Unit, block = { launchGooglePaySheet() })
             GooglePayButton(
-                isEnabled = isGooglePayAvailable && !isGooglePayOpened,
-                onClick = launchGooglePaySheet
+                allowedPaymentMethods = allowedPaymentMethods.toString(),
+                onClick = launchGooglePaySheet,
+                enabled = isGooglePayAvailable && !isGooglePayOpened
             )
         }
 
         customerFields.isAllCustomerFieldsHidden() -> {
             GooglePayButton(
-                isEnabled = isGooglePayAvailable && !isGooglePayOpened,
+                allowedPaymentMethods = allowedPaymentMethods.toString(),
                 onClick = {
                     method.customerFieldValues = customerFields.mergeHiddenFieldsToList(
                         additionalFields = additionalFields,
@@ -181,7 +185,8 @@ internal fun GooglePayItem(
                         )
                     }
                     launchGooglePaySheet()
-                }
+                },
+                enabled = isGooglePayAvailable && !isGooglePayOpened
             )
         }
     }
