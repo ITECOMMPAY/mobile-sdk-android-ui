@@ -86,6 +86,32 @@ internal fun CustomerFields(
             val options = field.options ?: emptyList()
             if (index < visibleCustomerFields.size)
                 Spacer(modifier = Modifier.size(10.dp))
+
+            if (options.isNotEmpty()) {
+                val items = options.associate { it.name to it.value }
+                //First value in the list is item with empty value
+                val sortedItems = items.toSortedMap(
+                    compareBy<String?> {
+                        items[it]?.length
+                    }.thenBy {
+                        it
+                    }
+                )
+                SelectableCustomerField(
+                    items = sortedItems,
+                    initialValue = changedFieldsMap[field.name]?.value,
+                    onValueChanged = { customerField, value, isValid ->
+                        fieldChanged(
+                            customerField,
+                            value,
+                            isValid
+                        )
+                    },
+                    customerField = field
+                )
+                return@forEachIndexed
+            }
+
             when (field.serverType) {
                 FieldServerType.TEL -> {
                     TelCustomerTextField(
@@ -153,41 +179,17 @@ internal fun CustomerFields(
                     )
                 }
                 else -> {
-                    if (options.isNotEmpty()) {
-                        val items = options.associate { it.name to it.value }
-                        //First value in the list is item with empty value
-                        val sortedItems = items.toSortedMap(
-                            compareBy<String?> {
-                                items[it]?.length
-                            }.thenBy {
-                                it
-                            }
-                        )
-                        SelectableCustomerField(
-                            items = sortedItems,
-                            initialValue = changedFieldsMap[field.name]?.value,
-                            onValueChanged = { customerField, value, isValid ->
-                                fieldChanged(
-                                    customerField,
-                                    value,
-                                    isValid
-                                )
-                            },
-                            customerField = field
-                        )
-                    }
-                    else
-                        TextCustomerTextField(
-                            value = changedFieldsMap[field.name]?.value,
-                            onValueChanged = { customerField, value, isValid ->
-                                fieldChanged(
-                                    customerField,
-                                    value,
-                                    isValid
-                                )
-                            },
-                            customerField = field
-                        )
+                    TextCustomerTextField(
+                        value = changedFieldsMap[field.name]?.value,
+                        onValueChanged = { customerField, value, isValid ->
+                            fieldChanged(
+                                customerField,
+                                value,
+                                isValid
+                            )
+                        },
+                        customerField = field
+                    )
                 }
             }
         }
