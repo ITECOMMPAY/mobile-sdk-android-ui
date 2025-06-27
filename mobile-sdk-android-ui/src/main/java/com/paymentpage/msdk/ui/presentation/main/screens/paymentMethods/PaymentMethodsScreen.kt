@@ -43,8 +43,6 @@ internal fun PaymentMethodsScreen(
             filterIsInstance<UIPaymentMethod.UISavedCardPayPaymentMethod>()
         else if (isTokenize)
             listOf(this.first())
-        else if (isTryAgain)
-            filter { it.paymentMethod.code == mainViewModel.payment?.method }
         else this
     }
 
