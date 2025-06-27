@@ -163,7 +163,6 @@ internal fun GooglePayItem(
                     value = it.value
                 )
             }
-            LaunchedEffect(key1 = Unit, block = { launchGooglePaySheet() })
             GooglePayButton(
                 allowedPaymentMethods = allowedPaymentMethods.toString(),
                 onClick = launchGooglePaySheet,

@@ -37,12 +37,9 @@ internal fun PaymentMethodList(
     if (filteredUIPaymentMethods.isEmpty()) return
 
     LaunchedEffect(Unit) {
-        val lastOpenedMethod = paymentMethodsViewModel.state.value.currentMethod
-        val openedMethod = lastOpenedMethod
-            ?: if (filteredUIPaymentMethods.first() is UIPaymentMethod.UIGooglePayPaymentMethod) //if first method is google pay
-                filteredUIPaymentMethods[1.coerceAtMost(filteredUIPaymentMethods.size - 1)]
-            else //first by default
-                filteredUIPaymentMethods.first()
+        val openedMethod = paymentMethodsViewModel.state.value.currentMethod
+            ?: filteredUIPaymentMethods.filterNot { it is UIPaymentMethod.UIGooglePayPaymentMethod }.first()
+
         paymentMethodsViewModel.setCurrentMethod(openedMethod)
     }
 
