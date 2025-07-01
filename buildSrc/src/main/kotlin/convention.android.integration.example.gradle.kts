@@ -10,6 +10,18 @@ android {
     defaultConfig {
         minSdk = 21
         signingConfig = signingConfigs.getByName("debug")
+
+        buildConfigField(
+            "String",
+            "API_HOST",
+            "\"${project.findProperty("API_HOST")}\""
+        )
+
+        buildConfigField(
+            "String",
+            "WS_API_HOST",
+            "\"${project.findProperty("SOCKET_HOST")}\""
+        )
     }
 
     buildFeatures {
@@ -29,24 +41,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
         isCoreLibraryDesugaringEnabled = true
-    }
-
-    flavorDimensions.add("mode")
-    productFlavors {
-        create("prod") {
-            dimension = "mode"
-            buildConfigField(
-                "String",
-                "API_HOST",
-                "\"sdk.ecommpay.com\""
-            )
-
-            buildConfigField(
-                "String",
-                "WS_API_HOST",
-                "\"paymentpage.ecommpay.com\""
-            )
-        }
     }
 
 }

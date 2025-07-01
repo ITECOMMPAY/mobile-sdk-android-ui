@@ -1,8 +1,12 @@
+import gradle.kotlin.dsl.accessors._76a779107637b25b34866585d88a55c4.ext
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id ("org.jetbrains.kotlin.plugin.serialization")
 }
+
+fun getExtraString(name: String) = rootProject.ext[name]?.toString() ?: ""
 
 android {
     compileSdk = 35
@@ -12,6 +16,18 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         signingConfig = signingConfigs.getByName("debug")
+
+        buildConfigField(
+            "String",
+            "API_HOST",
+            "\"${project.findProperty("API_HOST")}\""
+        )
+
+        buildConfigField(
+            "String",
+            "WS_API_HOST",
+            "\"${project.findProperty("SOCKET_HOST")}\""
+        )
     }
 
     buildTypes {
@@ -40,24 +56,6 @@ android {
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-
-    flavorDimensions.add("mode")
-    productFlavors {
-        create("prod") {
-            dimension = "mode"
-            buildConfigField(
-                "String",
-                "API_HOST",
-                "\"sdk.ecommpay.com\""
-            )
-
-            buildConfigField(
-                "String",
-                "WS_API_HOST",
-                "\"paymentpage.ecommpay.com\""
-            )
         }
     }
 

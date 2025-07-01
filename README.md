@@ -256,3 +256,124 @@ To integrate the web service with the [Ecommpay](https://ecommpay.com/)  payment
 If you have any questions about working with SDK UI for Android, contact the  ecommpay  technical support specialists ([support@ecommpay.com](mailto:support@ecommpay.com)).
 
 For more detailed information see [docs](https://developers.ecommpay.com/en/en_sdk_ui_and_core_android.html#en_sdk_ui_and_core_android).
+
+## Configuration Management
+
+The project includes a configuration management script `gen_config.py` that provides two main functionalities:
+
+### Configuration Generation
+
+The script can generate and update `gradle.properties` file with custom configuration parameters while preserving existing settings and comments.
+
+#### Usage
+
+1. **Create a sample configuration file:**
+   ```bash
+   python3 gen_config.py --create-sample-config
+   ```
+
+   This creates a `config.json` file with the following structure:
+   ```json
+   {
+     "api_host": "https://sdk.api.example.com",
+     "socket_host": "https://paymentpage.api.example.com"
+   }
+   ```
+
+   Then edit `config.json` accordingly with specific config values.
+
+2. **Generate/update gradle.properties**:
+   ```bash
+   python3 gen_config.py --config config.json
+   ```
+
+3. (Alternative to step 2) **Specify custom gradle.properties location**:
+   ```bash
+   python3 gen_config.py --config config.json --gradle-file app/gradle.properties
+   ```
+
+3. **Sync project with new gradle properties included**:
+
+    You will now see new entries in `gradle.properties` file. Make sure that the parameters are not duplicated
+
+#### Features
+
+- Preserves existing gradle.properties content and formatting
+- Updates only specified parameters
+- Creates automatic backups
+- Validates the generated configuration
+- Supports custom file paths
+
+### Project Renaming
+
+The script also supports comprehensive project renaming functionality to rename files, directories, and content throughout the project.
+
+#### Usage
+
+1. **Create a rename configuration file** (e.g., `rename_config.json`):
+2. 
+    ```bash
+   python3 gen_config.py --create-sample-rename-config
+   ```
+
+   ```json
+   {
+     "rules": [
+       {
+         "from_text": "original_name",
+         "to_text": "new_name",
+         "case_sensitive": false
+       },
+       {
+         "from_text": "OldCompany",
+         "to_text": "NewCompany",
+         "case_sensitive": true
+       }
+     ],
+     "target_directories": ["."],
+     "file_extensions": [".java", ".kt", ".xml", ".json", ".gradle", ".properties", ".md"],
+     "exclude_directories": [".git", ".gradle", "build", ".idea"],
+     "exclude_files": ["gen_config.py"],
+     "dry_run": false,
+     "backup": true
+   }
+   ```
+
+2. **Execute project renaming**:
+   ```bash
+   python3 gen_config.py --rename-config rename_config.json
+   ```
+
+3. **Test changes with dry run** (modify `dry_run: true` in config):
+   ```bash
+   python3 gen_config.py --rename-config rename_config.json
+   ```
+
+4. **Run actual changes** (modify `dry_run: false` in config):
+   ```bash
+   python3 gen_config.py --rename-config rename_config.json
+   ```
+
+#### Features
+
+- **Content replacement**: Updates text content within files
+- **File renaming**: Renames files based on specified rules
+- **Directory renaming**: Renames directories throughout the project
+- **Flexible filtering**: Configure target directories, file extensions, and exclusions
+- **Case sensitivity control**: Configure case-sensitive or case-insensitive replacements
+- **Safety features**: 
+  - Automatic backup creation
+  - Dry run mode for testing
+  - Comprehensive error handling
+- **Progress tracking**: Detailed logging of all changes made
+
+#### Configuration Options
+
+- `rules`: Array of rename rules with `from_text`, `to_text`, and optional `case_sensitive`
+- `target_directories`: Directories to process (default: current directory)
+- `file_extensions`: File types to process content replacement
+- `exclude_directories`: Directories to skip (e.g., `.git`, `build`)
+- `exclude_files`: Specific files to skip
+- `dry_run`: Test mode without making actual changes
+- `backup`: Create backup before making changes
+

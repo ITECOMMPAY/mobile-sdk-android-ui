@@ -26,7 +26,7 @@ afterEvaluate {
 
         publications {
             register("release", MavenPublication::class) {
-                from(components["prodRelease"])
+                from(components["release"])
 
                 artifactId = Library.artifactId
 
