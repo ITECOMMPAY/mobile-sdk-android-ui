@@ -19,11 +19,32 @@ It can be embedded in mobile applications developed for Android **API 21** or la
 
 **Importing libraries in your project**
 
-The SDK for Android libraries can be imported via MavenCentral. To import the libraries via MavenCentral you need to add the following dependencies to the `dependencies` section:
+The SDK for Android libraries can be imported via MavenCentral or MavenLocal.<br><br>
+
+To import the libraries via MavenCentral you need to add the following dependencies to the `dependencies` section:
 
 ```
 implementation "com.ecommpay:msdk-ui:LATEST_VERSION"
 implementation "dev.ecommlabs:msdk-core-android:LATEST_VERSION"
+```
+
+To use libraries from the Maven Local repository, you first need to publish them there using the Gradle `publishToMavenLocal` command:
+
+```
+./gradlew publishToMavenLocal
+```
+
+Navigate to the .m2/repository folder and locate the following files there:
+`/.m2/repository/com/ecommpay/msdk-ui/X.Y.Z/msdk-ui-X.Y.Z.aar` and `/.m2/repository/com/ecommpay/msdk-ui-common/X.Y.Z/msdk-ui-common-X.Y.Z.aar`
+
+Create a `libs` folder in the root of the project and place both `aar` files into it.
+
+Add the libraries in the project's `build.gradle`:
+
+
+```
+implementation(files("../libs/msdk-ui-X.Y.Z.aar"))
+implementation(files("../libs/msdk-ui-common-X.Y.Z.aar"))
 ```
 
 ## Use
@@ -196,19 +217,19 @@ result ->
 The following functional capabilities are supported by SDK UI for Android:
 
 - Processing different types of payments made with cards and Google Pay as well as other payment methods available for the merchant's project. Supported payment types include:
-  - One-time one-step purchases.
-  - One-time two-step purchases (an authorisation hold can be placed via the SDK and subsequent debiting of the authorised amount is carried out via  Gate  or  Dashboard).
-  - COF purchases (they can be registered via the SDK and then managed via  Gate  or  Dashboard).
+    - One-time one-step purchases.
+    - One-time two-step purchases (an authorisation hold can be placed via the SDK and subsequent debiting of the authorised amount is carried out via  Gate  or  Dashboard).
+    - COF purchases (they can be registered via the SDK and then managed via  Gate  or  Dashboard).
 - Performing payment card verification (it involves debiting a zero amount from the customer's card).
 - Checking current payment information.
 - Auxiliary procedures and additional capabilities to boost payment acceptance rates:
-  - Submission of additional payment information.
-  - Payment retries.
-  - Cascade payment processing.
-  - Collecting customer data.
+    - Submission of additional payment information.
+    - Payment retries.
+    - Cascade payment processing.
+    - Collecting customer data.
 - Additional capabilities to improve user experience:
-  - Saving customer payment data.
-  - Sending email notifications with the list of purchased items to customers.
+    - Saving customer payment data.
+    - Sending email notifications with the list of purchased items to customers.
 - Customising the appearance of the payment interface including the colour scheme settings and the option to add the logo.
 
 In case of card and Google Pay payments, the payment interface described in this article is used. With other payment methods,  Payment Page  is used during payment processing.
@@ -257,3 +278,123 @@ To integrate the web service with the [Ecommpay](https://ecommpay.com/)  payment
 If you have any questions about working with SDK UI for Android, contact the  ecommpay  technical support specialists ([support@ecommpay.com](mailto:support@ecommpay.com)).
 
 For more detailed information see [docs](https://developers.ecommpay.com/en/en_sdk_ui_and_core_android.html#en_sdk_ui_and_core_android).
+
+## Configuration Management
+
+The project includes a configuration management script `gen_config.py` that provides two main functionalities:
+
+### Configuration Generation
+
+The script can generate and update `gradle.properties` file with custom configuration parameters while preserving existing settings and comments.
+
+#### Usage
+
+1. **Create a sample configuration file:**
+   ```bash
+   python3 gen_config.py --create-sample-config
+   ```
+
+   This creates a `config.json` file with the following structure:
+   ```json
+   {
+     "api_host": "sdk.api.example.com",
+     "socket_host": "paymentpage.api.example.com"
+   }
+   ```
+
+   Then edit `config.json` accordingly with specific config values.
+
+2. **Generate/update gradle.properties**:
+   ```bash
+   python3 gen_config.py --config config.json
+   ```
+
+3. (Alternative to step 2) **Specify custom gradle.properties location**:
+   ```bash
+   python3 gen_config.py --config config.json --gradle-file app/gradle.properties
+   ```
+
+3. **Sync project with new gradle properties included**:
+
+   You will now see new entries in `gradle.properties` file. Make sure that the parameters are not duplicated
+
+#### Features
+
+- Preserves existing gradle.properties content and formatting
+- Updates only specified parameters
+- Creates automatic backups
+- Validates the generated configuration
+- Supports custom file paths
+
+### Project Renaming
+
+The script also supports comprehensive project renaming functionality to rename files, directories, and content throughout the project.
+
+#### Usage
+
+1. **Create a rename configuration file** (e.g., `rename_config.json`):
+2.
+ ```bash
+python3 gen_config.py --create-sample-rename-config
+```
+
+```json
+{
+  "rules": [
+    {
+      "from_text": "original_name",
+      "to_text": "new_name",
+      "case_sensitive": false
+    },
+    {
+      "from_text": "OldCompany",
+      "to_text": "NewCompany",
+      "case_sensitive": true
+    }
+  ],
+  "target_directories": ["."],
+  "file_extensions": [".java", ".kt", ".xml", ".json", ".gradle", ".properties", ".md"],
+  "exclude_directories": [".git", ".gradle", "build", ".idea"],
+  "exclude_files": ["gen_config.py"],
+  "dry_run": false,
+  "backup": true
+}
+```
+
+2. **Execute project renaming**:
+   ```bash
+   python3 gen_config.py --rename-config rename_config.json
+   ```
+
+3. **Test changes with dry run** (modify `dry_run: true` in config):
+   ```bash
+   python3 gen_config.py --rename-config rename_config.json
+   ```
+
+4. **Run actual changes** (modify `dry_run: false` in config):
+   ```bash
+   python3 gen_config.py --rename-config rename_config.json
+   ```
+
+#### Features
+
+- **Content replacement**: Updates text content within files
+- **File renaming**: Renames files based on specified rules
+- **Directory renaming**: Renames directories throughout the project
+- **Flexible filtering**: Configure target directories, file extensions, and exclusions
+- **Case sensitivity control**: Configure case-sensitive or case-insensitive replacements
+- **Safety features**:
+    - Automatic backup creation
+    - Dry run mode for testing
+    - Comprehensive error handling
+- **Progress tracking**: Detailed logging of all changes made
+
+#### Configuration Options
+
+- `rules`: Array of rename rules with `from_text`, `to_text`, and optional `case_sensitive`
+- `target_directories`: Directories to process (default: current directory)
+- `file_extensions`: File types to process content replacement
+- `exclude_directories`: Directories to skip (e.g., `.git`, `build`)
+- `exclude_files`: Specific files to skip
+- `dry_run`: Test mode without making actual changes
+- `backup`: Create backup before making changes

@@ -29,6 +29,18 @@ android {
             "SDK_VERSION_NAME",
             "\"$version\""
         )
+
+        buildConfigField(
+            "String",
+            "API_HOST",
+            "\"${project.findProperty("API_HOST")}\""
+        )
+
+        buildConfigField(
+            "String",
+            "WS_API_HOST",
+            "\"${project.findProperty("SOCKET_HOST")}\""
+        )
     }
 
     buildTypes {
@@ -47,24 +59,6 @@ android {
             )
         }
 
-    }
-
-    flavorDimensions.add("mode")
-    productFlavors {
-        create("prod") {
-            dimension = "mode"
-            buildConfigField(
-                "String",
-                "API_HOST",
-                System.getenv("SDK_API_HOST") ?: "\"sdk.ecommpay.com\""
-            )
-
-            buildConfigField(
-                "String",
-                "WS_API_HOST",
-                System.getenv("SDK_WS_API_HOST") ?: "\"paymentpage.ecommpay.com\""
-            )
-        }
     }
 
     buildFeatures {
@@ -116,6 +110,7 @@ dependencies {
     debugImplementation(LibraryDependencies.Compose.uiTooling)
     implementation(LibraryDependencies.Compose.navigation)
     implementation(LibraryDependencies.Compose.activity)
+    implementation(LibraryDependencies.Compose.lifecycleViewModel)
     //Accompanist
     implementation(LibraryDependencies.Accompanist.navigation)
     implementation(LibraryDependencies.Accompanist.permissions)

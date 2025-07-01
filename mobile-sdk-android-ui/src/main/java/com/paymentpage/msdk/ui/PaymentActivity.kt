@@ -3,6 +3,7 @@ package com.paymentpage.msdk.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -55,16 +56,28 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
 
         super.onCreate(savedInstanceState)
 
-        if (paymentOptions == null) {
+        val localPaymentOptions = paymentOptions ?: run {
+            Log.e("SDK_ERROR", "Payment options is empty - this will cause crash!")
             onError(code = ErrorCode.ILLEGAL_STATE, message = "Payment options is empty")
             return
         }
+
+        crashHandler = CrashHandler(
+            projectId = localPaymentOptions.paymentInfo.projectId.toLong(),
+            paymentId = localPaymentOptions.paymentInfo.paymentId,
+            customerId = localPaymentOptions.paymentInfo.customerId,
+            signature = localPaymentOptions.paymentInfo.signature,
+            errorInteractor = msdkSession.getErrorEventInteractor(),
+        )
+
+        crashHandler?.start(this)
+
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             Box {
                 MainContent(
                     activity = this@PaymentActivity,
-                    paymentOptions = paymentOptions!!,
+                    paymentOptions = localPaymentOptions,
                     msdkSession = msdkSession,
                 )
             }
@@ -116,6 +129,7 @@ class PaymentActivity : ComponentActivity(), PaymentDelegate {
     companion object {
 
         internal var paymentOptions: SDKPaymentOptions? = null
+        internal var crashHandler: CrashHandler? = null
 
         var mockModeType = SDKMockModeType.DISABLED
 
