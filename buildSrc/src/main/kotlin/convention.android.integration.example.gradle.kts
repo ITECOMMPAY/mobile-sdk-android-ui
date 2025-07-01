@@ -10,6 +10,18 @@ android {
     defaultConfig {
         minSdk = 21
         signingConfig = signingConfigs.getByName("debug")
+
+        buildConfigField(
+            "String",
+            "API_HOST",
+            "\"${project.findProperty("API_HOST")}\""
+        )
+
+        buildConfigField(
+            "String",
+            "WS_API_HOST",
+            "\"${project.findProperty("SOCKET_HOST")}\""
+        )
     }
 
     buildFeatures {
@@ -28,39 +40,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    flavorDimensions.add("mode")
-    productFlavors {
-        create("nl3") {
-            dimension = "mode"
-            buildConfigField(
-                "String",
-                "API_HOST",
-                "\"pp-sdk.westresscode.net\""
-            )
-
-            buildConfigField(
-                "String",
-                "WS_API_HOST",
-                "\"paymentpage.westresscode.net\""
-            )
-        }
-
-        create("prod") {
-            dimension = "mode"
-            buildConfigField(
-                "String",
-                "API_HOST",
-                "\"sdk.ecommpay.com\""
-            )
-
-            buildConfigField(
-                "String",
-                "WS_API_HOST",
-                "\"paymentpage.ecommpay.com\""
-            )
-        }
     }
 
 }
