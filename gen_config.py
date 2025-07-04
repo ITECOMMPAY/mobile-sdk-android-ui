@@ -42,7 +42,7 @@ class GradleConfig:
     def to_gradle_properties(self) -> Dict[str, str]:
         """
         Converts the configuration to gradle.properties format
-        
+
         Returns only non-empty values as strings
         """
         properties = {}
@@ -136,7 +136,7 @@ class ProjectRenamer:
         """
         Main method to rename files, folders, and content
         """
-        print(f"\n🚀 Starting project rename operation...")
+        print(f"\nStarting project rename operation...")
         
         try:
             if self.config.backup and not self.config.dry_run:
@@ -151,18 +151,18 @@ class ProjectRenamer:
             # Step 3: Rename directories
             self._rename_directories()
             
-            print(f"\n✅ Project rename operation completed!")
+            print(f"\nProject rename operation completed!")
             self._print_summary()
             
         except Exception as e:
-            print(f"\n❌ Error during rename operation: {e}")
+            print(f"\nError during rename operation: {e}")
             if self.backup_dir and self.backup_dir.exists():
                 print(f"   Backup available at: {self.backup_dir}")
             sys.exit(1)
     
     def _create_backup(self) -> None:
         """Create backup of the project"""
-        print(f"💾 Creating backup...")
+        print(f"Creating backup...")
         
         try:
             self.backup_dir.mkdir(exist_ok=True)
@@ -176,7 +176,7 @@ class ProjectRenamer:
                     else:
                         shutil.copy2(source_path, self.backup_dir)
             
-            print(f"   ✓ Backup created: {self.backup_dir}")
+            print(f" Backup created: {self.backup_dir}")
             
         except Exception as e:
             raise Exception(f"Failed to create backup: {e}")
@@ -203,13 +203,13 @@ class ProjectRenamer:
     
     def _rename_file_content(self) -> None:
         """Rename content within files"""
-        print(f"\n📝 Renaming content in files...")
+        print(f"\nRenaming content in files...")
         
         for target_dir in self.config.target_directories:
             target_path = self.project_root / target_dir
             
             if not target_path.exists():
-                print(f"   ⚠️  Target directory not found: {target_path}")
+                print(f"  Target directory not found: {target_path}")
                 continue
             
             if target_path.is_file():
@@ -254,14 +254,14 @@ class ProjectRenamer:
                         f.write(modified_content)
                 
                 self.modified_files.append(str(file_path.relative_to(self.project_root)))
-                print(f"   ✓ Modified: {file_path.relative_to(self.project_root)}")
+                print(f"  Modified: {file_path.relative_to(self.project_root)}")
             
         except Exception as e:
-            print(f"   ❌ Error processing {file_path}: {e}")
+            print(f"   Error processing {file_path}: {e}")
     
     def _rename_files(self) -> None:
         """Rename files based on rules"""
-        print(f"\n📁 Renaming files...")
+        print(f"\nRenaming files...")
         
         files_to_rename = []
         
@@ -297,7 +297,7 @@ class ProjectRenamer:
     
     def _rename_directories(self) -> None:
         """Rename directories based on rules"""
-        print(f"\n📂 Renaming directories...")
+        print(f"\nRenaming directories...")
         
         dirs_to_rename = []
         
@@ -337,7 +337,7 @@ class ProjectRenamer:
         """Rename a file or directory"""
         try:
             if new_path.exists():
-                print(f"   ⚠️  Target already exists: {new_path.relative_to(self.project_root)}")
+                print(f" Target already exists: {new_path.relative_to(self.project_root)}")
                 return
             
             if not self.config.dry_run:
@@ -353,19 +353,19 @@ class ProjectRenamer:
             print(f"   ✓ {action} {item_type}: {old_path.name} → {new_path.name}")
             
         except Exception as e:
-            print(f"   ❌ Error renaming {item_type} {old_path}: {e}")
+            print(f"  Error renaming {item_type} {old_path}: {e}")
     
     def _print_summary(self) -> None:
         """Print operation summary"""
-        print(f"\n📊 Operation Summary:")
+        print(f"\nOperation Summary:")
         print(f"   Files with modified content: {len(self.modified_files)}")
         print(f"   Renamed items: {len(self.renamed_items)}")
         
         if self.config.dry_run:
-            print(f"   🔍 This was a dry run - no actual changes were made")
+            print(f"  his was a dry run - no actual changes were made")
         
         if self.backup_dir and self.backup_dir.exists():
-            print(f"   💾 Backup location: {self.backup_dir}")
+            print(f"  Backup location: {self.backup_dir}")
 
 
 class GradlePropertiesGenerator:
@@ -382,9 +382,9 @@ class GradlePropertiesGenerator:
         self.build_time = datetime.now(timezone.utc)
         self.backup_created = False
         
-        print(f"🔧 Initializing gradle.properties generator")
-        print(f"   File: {self.gradle_file}")
-        print(f"   Configuration: {len(self.config.to_gradle_properties())} parameters to update")
+        print(f" Initializing gradle.properties generator")
+        print(f" File: {self.gradle_file}")
+        print(f" Configuration: {len(self.config.to_gradle_properties())} parameters to update")
         
         # Create parent directory if it doesn't exist
         self.gradle_file.parent.mkdir(parents=True, exist_ok=True)
@@ -396,7 +396,7 @@ class GradlePropertiesGenerator:
         Preserves existing parameters and comments,
         updating only those specified in the configuration
         """
-        print(f"\n📝 Updating gradle.properties...")
+        print(f"\nUpdating gradle.properties...")
         
         try:
             # Create a backup of the existing file
@@ -411,11 +411,11 @@ class GradlePropertiesGenerator:
             # Write the updated file
             self._write_gradle_file(updated_content)
             
-            print(f"\n✅ gradle.properties successfully updated!")
+            print(f"\ngradle.properties successfully updated!")
             self._validate_gradle_file()
             
         except Exception as e:
-            print(f"\n❌ Error updating gradle.properties: {e}")
+            print(f"\nError updating gradle.properties: {e}")
             self._restore_backup()
             sys.exit(1)
     
@@ -429,7 +429,7 @@ class GradlePropertiesGenerator:
                 self.backup_created = True
                 print(f"   → Backup created: {backup_path}")
             except Exception as e:
-                print(f"   ⚠️  Failed to create backup: {e}")
+                print(f"   Failed to create backup: {e}")
     
     def _read_existing_file(self) -> List[str]:
         """
@@ -521,13 +521,13 @@ class GradlePropertiesGenerator:
     
     def _validate_gradle_file(self) -> None:
         """Validates the generated file"""
-        print("\n🔍 Validating gradle.properties...")
+        print("\nValidating gradle.properties...")
         
         if not self.gradle_file.exists():
             raise Exception("gradle.properties file not found after generation")
         
         file_size = self.gradle_file.stat().st_size
-        print(f"   ✓ File size: {file_size} bytes")
+        print(f"  File size: {file_size} bytes")
         
         # Check that all required parameters are present
         properties_to_check = self.config.to_gradle_properties()
@@ -541,9 +541,9 @@ class GradlePropertiesGenerator:
                 missing_properties.append(key)
         
         if missing_properties:
-            print(f"   ⚠️  Missing parameters: {missing_properties}")
+            print(f"  Missing parameters: {missing_properties}")
         else:
-            print("   ✓ All parameters are present")
+            print("   All parameters are present")
     
     def _restore_backup(self) -> None:
         """Restores the file from backup in case of error"""
@@ -552,9 +552,9 @@ class GradlePropertiesGenerator:
             if backup_path.exists():
                 try:
                     shutil.copy2(backup_path, self.gradle_file)
-                    print(f"   → File restored from backup")
+                    print(f"   File restored from backup")
                 except Exception as e:
-                    print(f"   ❌ Failed to restore from backup: {e}")
+                    print(f"   Failed to restore from backup: {e}")
 
 
 def load_config_from_file(config_file: str) -> Dict[str, Any]:
@@ -567,10 +567,10 @@ def load_config_from_file(config_file: str) -> Dict[str, Any]:
         with open(config_file, 'r', encoding='utf-8') as f:
             return json.load(f)
     except FileNotFoundError:
-        print(f"❌ Configuration file {config_file} not found")
+        print(f"Configuration file {config_file} not found")
         sys.exit(1)
     except json.JSONDecodeError as e:
-        print(f"❌ JSON parsing error in file {config_file}: {e}")
+        print(f"JSON parsing error in file {config_file}: {e}")
         sys.exit(1)
 
 
@@ -584,7 +584,7 @@ def create_sample_config_file(filename: str = "gradle_config.json") -> None:
     with open(filename, 'w', encoding='utf-8', newline='') as f:
         json.dump(sample_config, f, indent=2)
     
-    print(f"✅ Sample configuration file created: {filename}")
+    print(f"Sample configuration file created: {filename}")
     print("   Edit the file and run the script with --config parameter")
 
 
@@ -614,7 +614,7 @@ def create_sample_rename_config_file(filename: str = "rename_config.json") -> No
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(sample_config, f, indent=2)
     
-    print(f"✅ Sample rename configuration file created: {filename}")
+    print(f"Sample rename configuration file created: {filename}")
     print("   Edit the file and run the script with --rename-config parameter")
 
 
@@ -725,7 +725,7 @@ Usage examples:
         
         # Validate that we have rules to apply
         if not rename_config.rules:
-            print("❌ No rename rules specified in configuration")
+            print("No rename rules specified in configuration")
             sys.exit(1)
         
         # Execute rename operation
@@ -736,12 +736,12 @@ Usage examples:
     # Determine gradle configuration source
     if args.config:
         # Load from file
-        print(f"📄 Loading configuration from file: {args.config}")
+        print(f"Loading configuration from file: {args.config}")
         config_data = load_config_from_file(args.config)
         gradle_config = parse_gradle_config(config_data)
         
     else:
-        print("❌ You must specify --config for configuration generation")
+        print("You must specify --config for configuration generation")
         print("   Or use rename operations with --rename-config")
         parser.print_help()
         sys.exit(1)
@@ -749,7 +749,7 @@ Usage examples:
     # Check that there are parameters to update
     properties_to_update = gradle_config.to_gradle_properties()
     if not properties_to_update:
-        print("❌ No parameters to update")
+        print("No parameters to update")
         sys.exit(1)
     
     # Generate gradle.properties
