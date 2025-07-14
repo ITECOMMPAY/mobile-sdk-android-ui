@@ -216,7 +216,9 @@ internal fun PanField(
                 testTag = testTag
             )
         }
-        if (!paymentOptions.hideScanningCards) {
+
+        //TODO("CardIO. Remove when card scanning will be implemented again")
+        if (!paymentOptions.hideScanningCards && false) {
             Spacer(modifier = Modifier.size(10.dp))
             CardScanningItem(
                 modifier = Modifier
