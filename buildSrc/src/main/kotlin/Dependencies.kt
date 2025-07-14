@@ -2,7 +2,7 @@
 
 object Library {
     const val artifactId = "msdk-ui"
-    const val version = "3.8.6"
+    const val version = "3.8.7"
     const val group = "com.ecommpay"
 }
 
@@ -14,10 +14,6 @@ object Versions {
 }
 
 object LibraryDependencies {
-    object CardIO {
-        const val cardIO= "io.card:android-sdk:5.5.1"
-    }
-
     object Compose {
         const val ui = "androidx.compose.ui:ui:${Versions.compose}"
         const val material = "androidx.compose.material:material:${Versions.compose}"
