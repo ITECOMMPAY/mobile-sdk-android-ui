@@ -1,5 +1,6 @@
 package com.ecommpay.msdk.ui.mappers
 
+import com.ecommpay.msdk.ui.EcmpAdditionalField
 import com.ecommpay.msdk.ui.EcmpAdditionalFieldType
 import com.ecommpay.msdk.ui.EcmpPaymentOptions
 import com.ecommpay.msdk.ui.EcmpRecipientInfo
@@ -23,7 +24,7 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
         additionalFields = additionalFields.map { additionalField ->
             SDKAdditionalField(
                 type = additionalField.type?.map(),
-                value = additionalField.value
+                value = additionalField.formattedValue()
             )
         },
         hideScanningCards = hideScanningCards,
@@ -41,6 +42,14 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
         storedCardType = storedCardType
     )
 
+/**
+ * This removes all prohibited characters from field values
+ */
+internal fun EcmpAdditionalField.formattedValue() =
+    when(type) {
+        EcmpAdditionalFieldType.CUSTOMER_PHONE -> value?.filter { it.isDigit() }
+        else -> value
+    }
 
 internal fun EcmpAdditionalFieldType.map(): SDKAdditionalFieldType? =
     SDKAdditionalFieldType.values().find { it.value == value }
