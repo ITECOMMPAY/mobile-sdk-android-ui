@@ -37,10 +37,14 @@ internal fun PaymentMethodList(
     if (filteredUIPaymentMethods.isEmpty()) return
 
     LaunchedEffect(Unit) {
-        val openedMethod = paymentMethodsViewModel.state.value.currentMethod
-            ?: filteredUIPaymentMethods.filterNot { it is UIPaymentMethod.UIGooglePayPaymentMethod }.first()
+        val openedMethod = paymentMethodsViewModel.state.value.currentMethod ?:
+        filteredUIPaymentMethods
+            .filterNot { it is UIPaymentMethod.UIGooglePayPaymentMethod }
+            .firstOrNull()
 
-        paymentMethodsViewModel.setCurrentMethod(openedMethod)
+        if (openedMethod != null) {
+            paymentMethodsViewModel.setCurrentMethod(openedMethod)
+        }
     }
 
     Column(modifier = Modifier.fillMaxWidth()) {

@@ -11,7 +11,7 @@ enum class EcmpAdditionalFieldType(val value: String) {
     CUSTOMER_FIRST_NAME("first_name"),
     CUSTOMER_MIDDLE_NAME("middle_name"),
     CUSTOMER_LAST_NAME("last_name"),
-    CUSTOMER_PHONE("phone"),
+    CUSTOMER_PHONE("customer_phone"),
     CUSTOMER_STATE("state"),
     CUSTOMER_CITY("city"),
     CUSTOMER_DAY_OF_BIRTH("day_of_birth"),
