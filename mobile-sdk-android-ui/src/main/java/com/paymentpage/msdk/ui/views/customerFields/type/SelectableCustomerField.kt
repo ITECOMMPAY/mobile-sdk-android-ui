@@ -18,15 +18,15 @@ import com.paymentpage.msdk.ui.views.common.SelectItemsDialog
 @Composable
 internal fun SelectableCustomerField(
     items: Map<String?, String?>,
-    initialValue: String? = null,
+    initialKey: String? = null,
     onValueChanged: (CustomerField, String, Boolean) -> Unit,
     customerField: CustomerField,
 ) {
-    var selectedText by remember { mutableStateOf(initialValue ?: "") }
+    var selectedText by remember { mutableStateOf(initialKey.orEmpty()) }
 
     var dialogState by remember { mutableStateOf(false) }
     CustomTextField(
-        initialValue = initialValue,
+        initialValue = initialKey.orEmpty(),
         pastedValue = selectedText,
         onValueChanged = null,
         isEditable = false,
@@ -55,12 +55,12 @@ internal fun SelectableCustomerField(
             modifier = Modifier.size(width = 400.dp, height = 300.dp),
             items = items,
             onDismissRequest = { dialogState = false }
-        ) { countryName ->
-            selectedText = if (!items[countryName].isNullOrEmpty()) countryName else ""
+        ) { selectedKey ->
+            selectedText = if (!items[selectedKey].isNullOrEmpty()) selectedKey else ""
             onValueChanged(
                 customerField,
                 //Country code
-                items[countryName] ?: "",
+                items[selectedKey] ?: "",
 
                 //validation
                 if (customerField.isRequired)

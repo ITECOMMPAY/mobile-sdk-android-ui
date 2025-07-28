@@ -97,9 +97,23 @@ internal fun CustomerFields(
                         it
                     }
                 )
+
+                val selectedFieldEntry = changedFieldsMap[field.name]?.value
+                    ?.let { selectedValue ->
+                        sortedItems.entries.find { (_, value) -> selectedValue == value }
+                    }
+
+                selectedFieldEntry?.value?.let { selectedFieldValue ->
+                    fieldChanged(
+                        field,
+                        selectedFieldValue,
+                        true
+                    )
+                }
+
                 SelectableCustomerField(
                     items = sortedItems,
-                    initialValue = changedFieldsMap[field.name]?.value,
+                    initialKey = selectedFieldEntry?.key,
                     onValueChanged = { customerField, value, isValid ->
                         fieldChanged(
                             customerField,
@@ -126,6 +140,7 @@ internal fun CustomerFields(
                         customerField = field
                     )
                 }
+
                 FieldServerType.DATE -> {
                     DateCustomerTextField(
                         value = changedFieldsMap[field.name]?.value,
@@ -139,6 +154,7 @@ internal fun CustomerFields(
                         customerField = field
                     )
                 }
+
                 FieldServerType.NUMBER -> {
                     NumberCustomerTextField(
                         value = changedFieldsMap[field.name]?.value,
@@ -152,6 +168,7 @@ internal fun CustomerFields(
                         customerField = field
                     )
                 }
+
                 FieldServerType.PASSWORD -> {
                     PasswordCustomerTextField(
                         value = changedFieldsMap[field.name]?.value,
@@ -165,6 +182,7 @@ internal fun CustomerFields(
                         customerField = field
                     )
                 }
+
                 FieldServerType.EMAIL -> {
                     EmailCustomerTextField(
                         value = changedFieldsMap[field.name]?.value,
@@ -178,6 +196,7 @@ internal fun CustomerFields(
                         customerField = field
                     )
                 }
+
                 else -> {
                     TextCustomerTextField(
                         value = changedFieldsMap[field.name]?.value,
