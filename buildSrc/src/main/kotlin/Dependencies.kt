@@ -2,7 +2,7 @@
 
 object Library {
     const val artifactId = "msdk-ui"
-    const val version = "3.8.8"
+    const val version = "3.8.9"
     const val group = "com.ecommpay"
 }
 
@@ -10,7 +10,7 @@ object Versions {
     const val compose = "1.7.4"
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
-    const val msdkCore = "0.12.6"
+    const val msdkCore = "0.12.7"
 }
 
 object LibraryDependencies {
