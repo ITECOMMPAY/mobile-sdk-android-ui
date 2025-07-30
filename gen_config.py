@@ -500,7 +500,7 @@ def create_sample_rename_config_file(filename: str = "rename_config.json") -> No
         "target_directories": ["."],
         "file_extensions": [".java", ".kt", ".xml", ".json", ".gradle", ".properties", ".md"],
         "exclude_directories": [".git", ".gradle", "build", ".idea", "node_modules"],
-        "exclude_files": ["gen_config.py"],
+        "exclude_files": ["gen_config.py", "rename_config.json"],
         "dry_run": True,
         "backup": False
     }
