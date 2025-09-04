@@ -33,21 +33,6 @@ android {
 
     flavorDimensions.add("mode")
     productFlavors {
-        create("nl3") {
-            dimension = "mode"
-            buildConfigField(
-                "String",
-                "API_HOST",
-                "\"pp-sdk.westresscode.net\""
-            )
-
-            buildConfigField(
-                "String",
-                "WS_API_HOST",
-                "\"paymentpage.westresscode.net\""
-            )
-        }
-
         create("prod") {
             dimension = "mode"
             buildConfigField(
