@@ -116,6 +116,7 @@ dependencies {
     implementation(LibraryDependencies.KotlinX.serialization)
     //AndroidX
     implementation(LibraryDependencies.AndroidX.appCompat)
+    implementation(LibraryDependencies.AndroidX.constraintLayout)
     //Coil
     implementation(LibraryDependencies.Coil.compose)
     //Google
@@ -139,7 +140,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.test.ext:junit:1.2.1")
     testImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.3")
+    coreLibraryDesugaring(LibraryDependencies.Tools.desugaring)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

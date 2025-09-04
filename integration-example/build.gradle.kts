@@ -59,5 +59,6 @@ android {
     }
 }
 dependencies {
+    coreLibraryDesugaring(libs.tools.desugaring)
     implementation(project(":mobile-sdk-android-ui-ecommpay"))
 }

@@ -9,12 +9,11 @@ import com.ecommpay.msdk.ui.mappers.map
 import com.paymentpage.msdk.ui.PaymentSDK
 
 
-class EcmpPaymentSDK(
+class Ecommpay(
     context: Context,
     paymentOptions: EcmpPaymentOptions,
     mockModeType: EcmpMockModeType = EcmpMockModeType.DISABLED
 ) {
-
     private val paymentSDK = PaymentSDK(
         context = context,
         paymentOptions = paymentOptions.map().also {
@@ -37,8 +36,7 @@ class EcmpPaymentSDK(
         paymentSDK.openPaymentScreen(fragment = fragment, requestCode = requestCode)
     }
 
-    companion object {
-
+    companion object Companion {
         const val RESULT_SUCCESS = PaymentSDK.RESULT_SUCCESS
         const val RESULT_DECLINE = PaymentSDK.RESULT_DECLINE
         const val RESULT_CANCELLED = PaymentSDK.RESULT_CANCELLED

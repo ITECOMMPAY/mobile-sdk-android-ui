@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import com.ecommpay.msdk.ui.EcmpActionType
 import com.ecommpay.msdk.ui.EcmpAdditionalField
 import com.ecommpay.msdk.ui.EcmpAdditionalFieldType
-import com.ecommpay.msdk.ui.EcmpPaymentSDK
+import com.ecommpay.msdk.ui.Ecommpay
 import com.ecommpay.msdk.ui.EcmpScreenDisplayMode
 import com.ecommpay.ui.msdk.sample.data.storage.entities.CommonJson
 import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
@@ -14,7 +14,7 @@ import com.ecommpay.ui.msdk.sample.domain.entities.RecurrentData
 object ProcessRepository {
     var additionalFields: List<EcmpAdditionalField> =
         EcmpAdditionalFieldType.values().map { EcmpAdditionalField(type = it) }
-    var mockModeType: EcmpPaymentSDK.EcmpMockModeType = EcmpPaymentSDK.EcmpMockModeType.DISABLED
+    var mockModeType: Ecommpay.EcmpMockModeType = Ecommpay.EcmpMockModeType.DISABLED
     var actionType: EcmpActionType = EcmpActionType.Sale
     var screenDisplayModes: List<EcmpScreenDisplayMode> = listOf(EcmpScreenDisplayMode.DEFAULT)
     var paymentData: PaymentData = PaymentData()

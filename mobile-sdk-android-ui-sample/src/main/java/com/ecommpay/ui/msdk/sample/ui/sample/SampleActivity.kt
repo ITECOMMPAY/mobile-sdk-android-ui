@@ -13,7 +13,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import com.ecommpay.msdk.ui.BuildConfig
 import com.ecommpay.msdk.ui.EcmpPaymentInfo
-import com.ecommpay.msdk.ui.EcmpPaymentSDK
+import com.ecommpay.msdk.ui.Ecommpay
 import com.ecommpay.msdk.ui.paymentOptions
 import com.ecommpay.ui.msdk.sample.data.ProcessRepository
 import com.ecommpay.ui.msdk.sample.domain.mappers.map
@@ -110,7 +110,7 @@ class SampleActivity : ComponentActivity() {
             storedCardType = ProcessRepository.storedCardType
         }
 
-        val sdk = EcmpPaymentSDK(
+        val sdk = Ecommpay(
             context = this.applicationContext,
             paymentOptions = paymentOptions,
             mockModeType = mockModeType,
@@ -118,11 +118,11 @@ class SampleActivity : ComponentActivity() {
 
         if (BuildConfig.DEBUG) {
             sdk.intent.putExtra(
-                EcmpPaymentSDK.EXTRA_API_HOST,
+                Ecommpay.EXTRA_API_HOST,
                 ProcessRepository.paymentData.apiHost
             )
             sdk.intent.putExtra(
-                EcmpPaymentSDK.EXTRA_WS_API_HOST,
+                Ecommpay.EXTRA_WS_API_HOST,
                 ProcessRepository.paymentData.wsApiHost
             )
         }
@@ -134,9 +134,9 @@ class SampleActivity : ComponentActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val data = result.data
             when (result.resultCode) {
-                EcmpPaymentSDK.RESULT_SUCCESS -> {
+                Ecommpay.RESULT_SUCCESS -> {
                     val payment = Json.decodeFromString<Payment?>(
-                        data?.getStringExtra(EcmpPaymentSDK.EXTRA_PAYMENT).toString()
+                        data?.getStringExtra(Ecommpay.EXTRA_PAYMENT).toString()
                     )
                     when {
                         payment?.token != null -> {
@@ -161,7 +161,7 @@ class SampleActivity : ComponentActivity() {
                     }
                 }
 
-                EcmpPaymentSDK.RESULT_CANCELLED -> {
+                Ecommpay.RESULT_CANCELLED -> {
                     viewUseCase.pushIntent(
                         SampleViewIntents.ShowMessage(
                             MessageUI.Dialogs.Info.Cancelled(
@@ -171,7 +171,7 @@ class SampleActivity : ComponentActivity() {
                     )
                 }
 
-                EcmpPaymentSDK.RESULT_DECLINE -> {
+                Ecommpay.RESULT_DECLINE -> {
                     viewUseCase.pushIntent(
                         SampleViewIntents.ShowMessage(
                             MessageUI.Dialogs.Info.Decline(
@@ -181,9 +181,9 @@ class SampleActivity : ComponentActivity() {
                     )
                 }
 
-                EcmpPaymentSDK.RESULT_ERROR -> {
-                    val errorCode = data?.getStringExtra(EcmpPaymentSDK.EXTRA_ERROR_CODE)
-                    val message = data?.getStringExtra(EcmpPaymentSDK.EXTRA_ERROR_MESSAGE)
+                Ecommpay.RESULT_ERROR -> {
+                    val errorCode = data?.getStringExtra(Ecommpay.EXTRA_ERROR_CODE)
+                    val message = data?.getStringExtra(Ecommpay.EXTRA_ERROR_MESSAGE)
                     viewUseCase.pushIntent(
                         SampleViewIntents.ShowMessage(
                             MessageUI.Dialogs.Info.Error(
