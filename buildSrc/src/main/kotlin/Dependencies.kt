@@ -10,7 +10,8 @@ object Versions {
     const val compose = "1.7.4"
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
-    const val msdkCore = "0.12.7"
+    const val msdkCore = "0.12.8"
+    const val desugaring = "2.1.3"
 }
 
 object LibraryDependencies {
@@ -57,6 +58,10 @@ object LibraryDependencies {
         const val wallet = "com.google.android.gms:play-services-wallet:19.1.0"
         const val material = "com.google.android.material:material:1.6.1"
         const val payButton = "com.google.pay.button:compose-pay-button:1.1.0"
+    }
+
+    object Tools {
+        const val desugaring = "com.android.tools:desugar_jdk_libs:${Versions.desugaring}"
     }
 
     object Msdk {

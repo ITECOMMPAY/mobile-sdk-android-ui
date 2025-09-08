@@ -2,7 +2,7 @@ package com.ecommpay.ui.msdk.sample.domain.ui.main
 
 import android.graphics.Bitmap
 import android.net.Uri
-import com.ecommpay.msdk.ui.EcmpPaymentSDK
+import com.ecommpay.msdk.ui.Ecommpay
 import com.ecommpay.msdk.ui.EcmpScreenDisplayMode
 import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
 import com.ecommpay.ui.msdk.sample.domain.ui.base.ViewIntents
@@ -29,7 +29,7 @@ sealed interface MainViewIntents : ViewIntents {
 
     //Custom mock mode
     object ChangeMockModeCheckbox : MainViewIntents
-    data class SelectMockMode(val mockModeType: EcmpPaymentSDK.EcmpMockModeType) : MainViewIntents
+    data class SelectMockMode(val mockModeType: Ecommpay.EcmpMockModeType) : MainViewIntents
 
     //Custom screen display mode
     object ChangeScreenDisplayModeCheckbox : MainViewIntents

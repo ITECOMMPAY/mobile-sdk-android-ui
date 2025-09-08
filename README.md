@@ -132,15 +132,15 @@ val paymentOptions = paymentOptions {
 }
 ```
 
-4. Create the `EcmpPaymentSDK` object.
+4. Create the `Ecommpay` object.
 
-If necessary, you can open the payment form in the test mode in order to get information about errors if there were any when payment parameters were specified or to test processing payments with a certain payment result. In the `EcmpPaymentSDK` object, specify the `EcmpMockModeType.SUCCESS` value for the `mockModeType` parameter (if you need to receive `Success` payment result). You can also pass values `EcmpMockModeType.DECLINE` (if you need to receive `Decline` payment result) and `EcmpMockModeType.DISABLED` (if you need to switch to the production mode).
+If necessary, you can open the payment form in the test mode in order to get information about errors if there were any when payment parameters were specified or to test processing payments with a certain payment result. In the `Ecommpay` object, specify the `EcmpMockModeType.SUCCESS` value for the `mockModeType` parameter (if you need to receive `Success` payment result). You can also pass values `EcmpMockModeType.DECLINE` (if you need to receive `Decline` payment result) and `EcmpMockModeType.DISABLED` (if you need to switch to the production mode).
 
 ```
-val sdk = EcmpPaymentSDK(
+val sdk = Ecommpay(
    context = applicationContext,
    paymentOptions = paymentOptions,
-   mockModeType = EcmpPaymentSDK.EcmpMockModeType.DISABLED
+   mockModeType = Ecommpay.EcmpMockModeType.DISABLED
 )
 ```
 
@@ -157,9 +157,9 @@ val startActivityForResult = registerForActivityResult(ActivityResultContracts.S
 result ->
  val data = result.data
  when (result.resultCode) {
-  EcmpPaymentSDK.RESULT_SUCCESS -> {
+  Ecommpay.RESULT_SUCCESS -> {
    val payment = Json.decodeFromString<Payment?>(
-    data?.getStringExtra(EcmpPaymentSDK.EXTRA_PAYMENT).toString()
+    data?.getStringExtra(Ecommpay.EXTRA_PAYMENT).toString()
    )
    when {
     payment?.token != null -> {
@@ -172,17 +172,17 @@ result ->
     }
    }
   }
-  EcmpPaymentSDK.RESULT_CANCELLED -> {
+  Ecommpay.RESULT_CANCELLED -> {
    Toast.makeText(this, "Payment was cancelled", Toast.LENGTH_SHORT).show()
    Log.d("PaymentSDK", "Payment was cancelled")
   }
-  EcmpPaymentSDK.RESULT_DECLINE -> {
+  Ecommpay.RESULT_DECLINE -> {
    Toast.makeText(this, "Payment was declined", Toast.LENGTH_SHORT).show()
    Log.d("PaymentSDK", "Payment was declined")
   }
-  EcmpPaymentSDK.RESULT_ERROR -> {
-   val errorCode = data?.getStringExtra(EcmpPaymentSDK.EXTRA_ERROR_CODE)
-   val message = data?.getStringExtra(EcmpPaymentSDK.EXTRA_ERROR_MESSAGE)
+  Ecommpay.RESULT_ERROR -> {
+   val errorCode = data?.getStringExtra(Ecommpay.EXTRA_ERROR_CODE)
+   val message = data?.getStringExtra(Ecommpay.EXTRA_ERROR_MESSAGE)
    Toast.makeText(this,"Payment was interrupted. See logs",Toast.LENGTH_SHORT).show()
    Log.d("PaymentSDK","Payment was interrupted. Error code: $errorCode. Message: $message")
   }

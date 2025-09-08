@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ecommpay.msdk.ui.EcmpPaymentSDK
+import com.ecommpay.msdk.ui.Ecommpay
 import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewIntents
 import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewState
 
@@ -20,7 +20,7 @@ internal fun SelectMockMode(
     viewState: MainViewState,
     intentListener: (MainViewIntents) -> Unit,
 ) {
-    EcmpPaymentSDK.EcmpMockModeType.values()
+    Ecommpay.EcmpMockModeType.values()
         .forEach { mockModeType ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -51,7 +51,7 @@ internal fun SelectMockMode(
         onClick = {
             intentListener(
                 MainViewIntents.SelectMockMode(
-                    mockModeType = EcmpPaymentSDK.EcmpMockModeType.DISABLED
+                    mockModeType = Ecommpay.EcmpMockModeType.DISABLED
                 )
             )
         }) {

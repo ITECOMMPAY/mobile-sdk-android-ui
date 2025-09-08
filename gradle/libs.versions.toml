@@ -1,8 +1,10 @@
 [versions]
 gradleVersion = "8.6.1"
 kotlinVersion = "1.9.24"
+desugar = "2.1.3"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradleVersion" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinVersion" }
 kotlin-serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlinVersion" }
+tools-desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }

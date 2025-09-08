@@ -2,7 +2,7 @@ package com.ecommpay.ui.msdk.sample.domain.ui.main
 
 import android.graphics.Bitmap
 import android.net.Uri
-import com.ecommpay.msdk.ui.EcmpPaymentSDK
+import com.ecommpay.msdk.ui.Ecommpay
 import com.ecommpay.msdk.ui.EcmpScreenDisplayMode
 import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
 import com.ecommpay.ui.msdk.sample.domain.ui.base.ViewState
@@ -18,7 +18,7 @@ data class MainViewState(
     val isVisibleScreenDisplayMode: Boolean = false,
     val selectedResourceImageId: Int = -1,
     val selectedForcePaymentMethodId: Int = -1,
-    val selectedMockModeType: EcmpPaymentSDK.EcmpMockModeType = EcmpPaymentSDK.EcmpMockModeType.DISABLED,
+    val selectedMockModeType: Ecommpay.EcmpMockModeType = Ecommpay.EcmpMockModeType.DISABLED,
     val selectedScreenDisplayModes: List<EcmpScreenDisplayMode> = listOf(EcmpScreenDisplayMode.DEFAULT),
     val localImageUri: Uri? = null,
     val bitmap: Bitmap? = null,

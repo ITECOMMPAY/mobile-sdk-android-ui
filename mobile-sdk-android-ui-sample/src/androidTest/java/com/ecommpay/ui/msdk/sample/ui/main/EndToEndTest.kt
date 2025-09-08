@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTestApi::class)
+
 package com.ecommpay.ui.msdk.sample.ui.main
 
 import android.app.Instrumentation
@@ -53,6 +55,7 @@ internal class MainScreenTest {
         }
     }
 
+    @OptIn(ExperimentalTestApi::class)
     @Test
     fun endToEndTest() {
         composeTestRule
