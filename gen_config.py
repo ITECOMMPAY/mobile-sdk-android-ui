@@ -472,8 +472,8 @@ def load_config_from_file(config_file: str) -> Dict[str, Any]:
 def create_sample_config_file(filename: str = "gradle_config.json") -> None:
     """Creates a sample configuration file"""
     sample_config = {
-        "api_host": "https://api.example.com",
-        "socket_host": "wss://socket.example.com",
+        "api_host": "sdk.example.com",
+        "socket_host": "paymentpage.example.com",
     }
     
     with open(filename, 'w', encoding='utf-8', newline='') as f:

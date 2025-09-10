@@ -110,6 +110,7 @@ dependencies {
     debugImplementation(LibraryDependencies.Compose.uiTooling)
     implementation(LibraryDependencies.Compose.navigation)
     implementation(LibraryDependencies.Compose.activity)
+    implementation(LibraryDependencies.Compose.lifecycleViewModel)
     //Accompanist
     implementation(LibraryDependencies.Accompanist.navigation)
     implementation(LibraryDependencies.Accompanist.permissions)

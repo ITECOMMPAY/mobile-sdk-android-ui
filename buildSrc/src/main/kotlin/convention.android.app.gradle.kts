@@ -62,6 +62,8 @@ android {
 }
 
 dependencies {
+    api(LibraryDependencies.Msdk.core)
+
     //AndroidX
     implementation(LibraryDependencies.AndroidX.coreKtx)
 
@@ -69,10 +71,20 @@ dependencies {
     implementation(LibraryDependencies.Compose.ui)
     implementation(LibraryDependencies.Compose.material)
     implementation(LibraryDependencies.Compose.icons)
+    implementation(LibraryDependencies.Compose.animationCore)
+    implementation(LibraryDependencies.Compose.navigation)
     implementation(LibraryDependencies.Compose.activity)
+    implementation(LibraryDependencies.Compose.lifecycleViewModel)
+
+    implementation(LibraryDependencies.Coil.compose)
+
 
     //Serialization
     implementation(LibraryDependencies.KotlinX.serialization)
+
+    //Accompanist
+    implementation(LibraryDependencies.Accompanist.navigation)
+    implementation(LibraryDependencies.Accompanist.permissions)
 
     //Google
     implementation(LibraryDependencies.Google.material)

@@ -2,6 +2,7 @@ package com.paymentpage.msdk.ui
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.interactors.analytics.error.ErrorEventDelegate
 import com.paymentpage.msdk.core.domain.interactors.analytics.error.ErrorEventInteractor
@@ -71,6 +72,13 @@ internal class CrashHandler(
             it.className.startsWith(BuildConfig.LIBRARY_PACKAGE_NAME)
         }
         val mainElement = if (ownStackTrace.isNotEmpty()) ownStackTrace[0] else null
-        return "${mainElement?.fileName ?: "Unknown file name"}:${mainElement?.lineNumber ?: "Unknown line"}"
+
+        return if (BuildConfig.DEBUG) {
+            Log.e("SDK_CRASH", "Exception: ${ex.message}")
+            Log.e("SDK_CRASH", "Full stack trace:", ex)
+            ex.stackTraceToString()
+        } else {
+            "${mainElement?.fileName ?: "Unknown file name"}:${mainElement?.lineNumber ?: "Unknown line"}"
+        }
     }
 }
