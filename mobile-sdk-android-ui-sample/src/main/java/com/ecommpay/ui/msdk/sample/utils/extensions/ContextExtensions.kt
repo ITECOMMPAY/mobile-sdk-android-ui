@@ -12,11 +12,3 @@ fun Context.resIdByName(resIdName: String?, resType: String): Int {
     }
     throw Resources.NotFoundException()
 }
-
-fun Context.copyInClipBoard(text: String, textToast: String){
-    val clipboard: ClipboardManager =
-        this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText("", text)
-    clipboard.setPrimaryClip(clip)
-    Toast.makeText(this, textToast, Toast.LENGTH_SHORT).show()
-}

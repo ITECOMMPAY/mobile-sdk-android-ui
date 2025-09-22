@@ -123,7 +123,8 @@ val paymentOptions = paymentOptions {
 
     //Custom theme
     isDarkTheme = false
-    brandColor = "#000000" //#RRGGBB
+    primaryBrandColor = "#4B007C" //#RRGGBB
+    secondaryBrandColor = "#CAB2FF"
     //Any bitmap image
     logoImage = BitmapFactory.decodeResource(
         resources,

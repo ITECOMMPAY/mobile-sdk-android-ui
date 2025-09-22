@@ -111,7 +111,7 @@ class ComposeActivity : ComponentActivity() {
 
             //Custom theme
             isDarkTheme = false
-            brandColor = "#000000" //#RRGGBB
+            primaryBrandColor = "#000000" //#RRGGBB
             //Any bitmap image
             logoImage = BitmapFactory.decodeResource(
                 resources,

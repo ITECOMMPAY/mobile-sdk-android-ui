@@ -28,7 +28,7 @@ internal fun GooglePayButton(
             .height(LocalDimensions.current.buttonHeight)
             .fillMaxWidth()
             .testTag(TestTagsConstants.GOOGLE_PAY_BUTTON),
-        radius = 6.dp,
+        radius = 20.dp,
         theme = if (SDKTheme.colors.isDarkTheme) {
             ButtonTheme.Light
         } else {

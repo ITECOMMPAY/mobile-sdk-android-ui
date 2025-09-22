@@ -103,8 +103,10 @@ class SampleActivity : ComponentActivity() {
             merchantName = repositoryPaymentData.merchantName
             isTestEnvironment = true
             //theme customization
+
             logoImage = ProcessRepository.bitmap
-            brandColor = ProcessRepository.brandColor
+            primaryBrandColor = ProcessRepository.primaryBrandColor
+            secondaryBrandColor = ProcessRepository.secondaryBrandColor
             isDarkTheme = ProcessRepository.isDarkTheme
             //stored card type
             storedCardType = ProcessRepository.storedCardType

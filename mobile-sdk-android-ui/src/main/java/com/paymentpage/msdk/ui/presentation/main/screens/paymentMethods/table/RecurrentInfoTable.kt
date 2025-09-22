@@ -2,11 +2,14 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.table
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.SDKActionType
+import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.amountUI
 import com.paymentpage.msdk.ui.utils.extensions.core.chargedAmountUI
 import com.paymentpage.msdk.ui.utils.extensions.core.expiryDateUI
@@ -74,4 +77,18 @@ internal fun RecurrentInfoTable(
         spaceBetweenItems = spaceBetweenItems,
         isTableEmptyCallback = isTableEmptyCallback
     )
+}
+
+@Preview
+@Composable
+fun RecurrentInfoTable_Preview() {
+    SDKTheme {
+        RecurrentInfoTable(
+            actionType = SDKActionType.Sale,
+            paymentInfo = PaymentInfo.create(23523, paymentId = "", paymentAmount = 150, paymentCurrency = "RUB"),
+            recurrentInfo = RecurrentInfo(register = true),
+            labelTextStyle = TextStyle.Default,
+            spaceBetweenItems = 10.dp,
+        )
+    }
 }

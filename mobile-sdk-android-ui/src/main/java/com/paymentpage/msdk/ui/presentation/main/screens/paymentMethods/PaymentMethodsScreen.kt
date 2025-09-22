@@ -9,14 +9,23 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.core.MSDKCoreSession
+import com.paymentpage.msdk.core.MSDKCoreSessionConfig
+import com.paymentpage.msdk.core.domain.entities.PaymentInfo
+import com.paymentpage.msdk.core.utils.Duration
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.SDKActionType
+import com.paymentpage.msdk.ui.SDKCommonProvider
+import com.paymentpage.msdk.ui.SDKPaymentOptions
+import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.ExpandablePaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
@@ -75,4 +84,33 @@ internal fun PaymentMethodsScreen(
         },
         onClose = onCancel
     )
+}
+
+@Preview
+@Composable
+fun PaymentMethodsScreen_Preview() {
+    SDKTheme {
+        val options = SDKPaymentOptions(
+            paymentInfo = PaymentInfo(
+                projectId = 124124,
+                paymentId = "ewfew",
+                paymentAmount = 0L,
+                paymentCurrency = "RUB"
+            )
+        )
+
+        val config = MSDKCoreSessionConfig.mockFullSuccessFlow(
+            duration = Duration.millis(Constants.THREE_D_SECURE_REDIRECT_DURATION)
+        )
+
+        val msdkSession = MSDKCoreSession(config)
+
+        SDKCommonProvider(options, msdkSession) {
+            PaymentMethodsScreen(
+                actionType = SDKActionType.Sale,
+                onCancel = {},
+                onError = { _,_ -> },
+            )
+        }
+    }
 }

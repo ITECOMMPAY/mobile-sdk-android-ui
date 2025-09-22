@@ -47,8 +47,9 @@ internal fun SelectItemsDialog(
                                 onClick = {
                                     onClickItem(key)
                                 },
-                                color = backgroundColor,
+                                secondaryColor = backgroundColor,
                                 isEnabled = true,
+                                isRightArrowVisible = false,
                                 content = {
                                     Text(
                                         text = key,

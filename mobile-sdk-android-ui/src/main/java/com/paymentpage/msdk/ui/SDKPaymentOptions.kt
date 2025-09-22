@@ -28,7 +28,8 @@ class SDKPaymentOptions(
     //theme customization
     val isDarkTheme: Boolean = false,
     val logoImage: Bitmap? = null,
-    var brandColor: String? = null,
+    var primaryBrandColor: String? = null,
+    var secondaryBrandColor: String? = null,
     var footerImage: Bitmap? = null,
     var footerLabel: String? = null,
     //stored card type

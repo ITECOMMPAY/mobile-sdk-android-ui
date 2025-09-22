@@ -41,8 +41,8 @@ internal fun lightImages(): Images = Images(
     apsDefaultLogo = R.drawable.aps_default_logo_light,
     googlePayMethodResId = R.drawable.payment_method_google_pay,
     googlePayLogo = R.drawable.googlepay_logo_light,
-    successLogo = R.drawable.success_logo_light,
-    errorLogo = R.drawable.error_logo_light,
+    successLogo = R.drawable.ic_result_success_light,
+    errorLogo = R.drawable.ic_result_failed_light,
     cvvInfoLogo = R.drawable.cvv_info_icon_light
 )
 

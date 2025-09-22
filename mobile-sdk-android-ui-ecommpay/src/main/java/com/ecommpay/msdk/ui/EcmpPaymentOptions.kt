@@ -39,7 +39,8 @@ class EcmpPaymentOptions {
     //theme customization
     var isDarkTheme: Boolean = false
     var logoImage: Bitmap? = null
-    var brandColor: String? = null
+    var primaryBrandColor: String? = null
+    var secondaryBrandColor: String? = null
     var footerImage: Bitmap? = null
     var footerLabel: String? = null
     var storedCardType: Int? = null

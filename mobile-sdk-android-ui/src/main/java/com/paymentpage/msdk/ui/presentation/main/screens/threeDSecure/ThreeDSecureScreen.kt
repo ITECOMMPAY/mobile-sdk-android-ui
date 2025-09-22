@@ -57,7 +57,7 @@ private fun ThreeDSecurePageView(
     onCancel: () -> Unit
 ) {
     val viewModel = LocalMainViewModel.current
-    val brandColor = LocalPaymentOptions.current.brandColor
+    val brandColor = LocalPaymentOptions.current.primaryBrandColor
 
     var showSslWarning by remember { mutableStateOf(false) }
     var sslErrorHandler by remember { mutableStateOf<SslErrorHandler?>(null) }

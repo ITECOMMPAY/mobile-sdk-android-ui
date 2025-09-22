@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -29,6 +30,7 @@ import com.paymentpage.msdk.ui.views.common.alertDialog.ConfirmAlertDialog
 internal fun CvvField(
     initialValue: String? = null,
     modifier: Modifier,
+    shape: Shape = SDKTheme.shapes.radius16,
     cardType: String? = null,
     length: Int = if (cardType == "amex") 4 else 3,
     testTag: String? = null,
@@ -39,6 +41,7 @@ internal fun CvvField(
     CustomTextField(
         initialValue = initialValue,
         modifier = modifier,
+        shape = shape,
         keyboardType = KeyboardType.Number,
         onFilterValueBefore = { text -> text.filter { it.isDigit() } },
         onRequestValidatorMessage = {
@@ -76,7 +79,7 @@ internal fun CvvField(
             onConfirmButtonClick = { cvvAlertDialogState = false },
             confirmButtonText = getStringOverride(OverridesKeys.BUTTON_OK),
             onDismissRequest = { cvvAlertDialogState = false },
-            brandColor = paymentOptions.brandColor
+            brandColor = paymentOptions.primaryBrandColor
         )
     }
 }

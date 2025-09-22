@@ -35,7 +35,8 @@ object ProcessRepository {
     var isEnabledThreeDSecure: Boolean = false
 
     //Theme
-    var brandColor: String? = null
+    var primaryBrandColor: String? = null
+    var secondaryBrandColor: String? = null
     var bitmap: Bitmap? = null
     var isDarkTheme: Boolean = false
 }

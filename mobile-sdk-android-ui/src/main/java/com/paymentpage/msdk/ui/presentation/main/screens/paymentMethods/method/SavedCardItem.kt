@@ -2,6 +2,7 @@ package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -23,6 +24,7 @@ import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.button.CustomOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CvvField
 import com.paymentpage.msdk.ui.views.card.ExpiryField
+import com.paymentpage.msdk.ui.views.card.panField.PanField
 import com.paymentpage.msdk.ui.views.common.alertDialog.MessageAlertDialog
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 
@@ -52,10 +54,24 @@ internal fun SavedCardItem(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            PanField(
+                initialValue = method.title,
+                paymentMethod = method.paymentMethod,
+                isEditable = false,
+                isMaskEnabled = false,
+                onValueChanged = { _,_ -> },
+                onScanningResult = { },
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 8.dp, bottomEnd = 8.dp),
+                testTag = "${TestTagsConstants.PREFIX_NEW_CARD}${TestTagsConstants.PAN_TEXT_FIELD}"
+            )
+
+            Spacer(modifier = Modifier.size(2.dp))
+
             Row {
                 ExpiryField(
                     modifier = Modifier
                         .weight(1f),
+                    shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp, bottomStart = 16.dp, bottomEnd = 8.dp),
                     initialValue = method.savedAccount.cardExpiry?.stringValue ?: "",
                     isDisabled = true,
                     showRedStarForRequiredFields = false,
@@ -72,6 +88,7 @@ internal fun SavedCardItem(
                 CvvField(
                     modifier = Modifier
                         .weight(1f),
+                    shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp, bottomStart = 8.dp, bottomEnd = 16.dp),
                     initialValue = method.cvv,
                     onValueChanged = { value, isValid ->
                         isCvvValid = isValid
@@ -154,7 +171,7 @@ internal fun SavedCardItem(
                         },
                         onDismissButtonClick = { deleteCardAlertDialogState = false },
                         confirmButtonText = getStringOverride(OverridesKeys.BUTTON_DELETE),
-                        brandColor = paymentOptions.brandColor
+                        brandColor = paymentOptions.primaryBrandColor
                     )
                 }
             }

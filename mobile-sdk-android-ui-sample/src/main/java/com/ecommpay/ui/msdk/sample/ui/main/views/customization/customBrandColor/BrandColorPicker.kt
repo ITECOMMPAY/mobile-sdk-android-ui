@@ -21,11 +21,25 @@ import com.ecommpay.ui.msdk.sample.utils.HexToJetpackColor
 import com.ecommpay.ui.msdk.sample.utils.extensions.toHexCode
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 
+private const val defaultPrimaryBrandColor = "#00579E"
+private const val defaultSecondaryBrandColor = "#CAB2FF"
+
 @Composable
 internal fun BrandColorPicker(
+    isPrimaryColor: Boolean,
     viewState: MainViewState,
     intentListener: (MainViewIntents) -> Unit,
 ) {
+    val labelText = when(isPrimaryColor) {
+        true -> "Primary color"
+        else -> "Secondary color"
+    }
+
+    val color = when(isPrimaryColor) {
+        true -> viewState.primaryBrandColor
+        else -> viewState.secondaryBrandColor
+    }
+
     val dialogState = rememberMaterialDialogState()
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -35,28 +49,34 @@ internal fun BrandColorPicker(
             modifier = Modifier
                 .weight(1f)
                 .testTag("brandColorTextField"),
-            value = if (viewState.brandColor.isNotEmpty())
-                viewState.brandColor.uppercase()
-            else "#",
+            value = color,
             onValueChange = {
+                val color = (if (it.length in 0..7) it else it.substring(0, 7)).uppercase()
+
                 intentListener(
                     MainViewIntents.ChangeBrandColor(
-                        brandColor = (if (it.length in 0..7) it else it.substring(0, 7)).uppercase()
+                        primaryBrandColor = color.takeIf { isPrimaryColor },
+                        secondaryBrandColor = color.takeIf { isPrimaryColor.not() }
                     )
                 )
             },
-            label = { Text(text = "Brand color") }
+            label = { Text(text = labelText) }
         )
         Spacer(modifier = Modifier.width(10.dp))
         Box(
             modifier = Modifier
                 .clip(CircleShape)
         ) {
+            val color = when(isPrimaryColor) {
+                true -> viewState.primaryBrandColor
+                else -> viewState.secondaryBrandColor
+            }
+
             Box(
                 modifier = Modifier
                     .size(50.dp)
                     .background(
-                        color = HexToJetpackColor.getColor(viewState.brandColor) ?: Color.White
+                        color = HexToJetpackColor.getColor(color) ?: Color.White
                     )
                     .clickable {
                         dialogState.show()
@@ -73,7 +93,8 @@ internal fun BrandColorPicker(
         onClick = {
             intentListener(
                 MainViewIntents.ChangeBrandColor(
-                    brandColor = "#00579E"
+                    primaryBrandColor = defaultPrimaryBrandColor,
+                    secondaryBrandColor = defaultSecondaryBrandColor,
                 )
             )
         }
@@ -83,7 +104,8 @@ internal fun BrandColorPicker(
     ColorPickerDialog(dialogState = dialogState) {
         intentListener(
             MainViewIntents.ChangeBrandColor(
-                brandColor = it.toHexCode()
+                primaryBrandColor = it.toHexCode(),
+                secondaryBrandColor = it.toHexCode(),
             )
         )
     }

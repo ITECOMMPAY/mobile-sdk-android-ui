@@ -2,15 +2,18 @@ package com.paymentpage.msdk.ui.views.card
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.VisualTransformation
 import com.paymentpage.msdk.core.validators.custom.CardHolderNameValidator
 import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 
 @Composable
 internal fun CardHolderField(
     modifier: Modifier,
+    shape: Shape = SDKTheme.shapes.radius16,
     initialValue: String? = null,
     scanningCardHolder: String? = null,
     isDisabled: Boolean = false,
@@ -21,6 +24,7 @@ internal fun CardHolderField(
         initialValue = initialValue,
         pastedValue = scanningCardHolder,
         modifier = modifier,
+        shape = shape,
         onFilterValueBefore = { value ->
             value.filter { it.isLetter() || it == ' ' || it == '.' || it == '-' || it == '\'' }
                 .uppercase()

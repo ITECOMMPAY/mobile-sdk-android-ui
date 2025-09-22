@@ -68,12 +68,15 @@ class MainViewUC : BaseViewUC<MainViewIntents, MainViewState>(MainViewState()) {
             }
 
             is MainViewIntents.ChangeBrandColor -> {
-                ProcessRepository.brandColor = viewIntent.brandColor
-                updateState(
-                    viewState.value.copy(
-                        brandColor = viewIntent.brandColor
-                    )
-                )
+                viewIntent.primaryBrandColor?.let {
+                    ProcessRepository.primaryBrandColor = it
+                    updateState(viewState.value.copy(primaryBrandColor = it))
+                }
+
+                viewIntent.secondaryBrandColor?.let {
+                    ProcessRepository.secondaryBrandColor = it
+                    updateState(viewState.value.copy(secondaryBrandColor = it))
+                }
             }
             //Custom mock mode
             is MainViewIntents.ChangeMockModeCheckbox -> {

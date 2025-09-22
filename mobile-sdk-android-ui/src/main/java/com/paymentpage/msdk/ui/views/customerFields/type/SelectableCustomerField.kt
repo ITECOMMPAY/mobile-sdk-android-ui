@@ -23,8 +23,8 @@ internal fun SelectableCustomerField(
     customerField: CustomerField,
 ) {
     var selectedText by remember { mutableStateOf(initialKey.orEmpty()) }
-
     var dialogState by remember { mutableStateOf(false) }
+
     CustomTextField(
         initialValue = initialKey.orEmpty(),
         pastedValue = selectedText,
@@ -35,20 +35,13 @@ internal fun SelectableCustomerField(
         isRequired = customerField.isRequired,
         trailingIcon = {
             Image(
-                modifier = Modifier
-                    .clickable {
-                        dialogState = true
-                    },
+                modifier = Modifier.clickable { dialogState = true },
                 imageVector = Icons.Default.KeyboardArrowDown,
                 colorFilter = ColorFilter.tint(SDKTheme.colors.neutral),
                 contentDescription = items.keys.first(),
             )
         },
-        testTag = "${
-            customerField.label.uppercase()
-        }${
-            TestTagsConstants.POSTFIX_CUSTOMER_FIELD
-        }"
+        testTag = "${customerField.label.uppercase()}${TestTagsConstants.POSTFIX_CUSTOMER_FIELD}"
     )
     if (dialogState)
         SelectItemsDialog(

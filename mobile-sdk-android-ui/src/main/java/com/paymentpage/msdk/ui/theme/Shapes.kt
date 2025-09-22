@@ -7,7 +7,10 @@ import androidx.compose.ui.unit.dp
 internal data class Shapes(
     val radius6: RoundedCornerShape = RoundedCornerShape(6.dp),
     val radius8: RoundedCornerShape = RoundedCornerShape(8.dp),
-    val radius12: RoundedCornerShape = RoundedCornerShape(12.dp)
+    val radius12: RoundedCornerShape = RoundedCornerShape(12.dp),
+    val radius16: RoundedCornerShape = RoundedCornerShape(16.dp),
+    val radius20: RoundedCornerShape = RoundedCornerShape(20.dp),
+    val radius64: RoundedCornerShape = RoundedCornerShape(64.dp)
 )
 
 internal val LocalShapes = staticCompositionLocalOf { Shapes() }

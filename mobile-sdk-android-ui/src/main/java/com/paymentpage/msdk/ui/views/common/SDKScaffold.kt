@@ -18,7 +18,15 @@ import androidx.compose.ui.semantics.invisibleToUser
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.core.MSDKCoreSession
+import com.paymentpage.msdk.core.MSDKCoreSessionConfig
+import com.paymentpage.msdk.core.domain.entities.PaymentInfo
+import com.paymentpage.msdk.core.utils.Duration
+import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.SDKCommonProvider
+import com.paymentpage.msdk.ui.SDKPaymentOptions
 import com.paymentpage.msdk.ui.TestTagsConstants
+import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.theme.SDKTheme
 
 
@@ -33,7 +41,7 @@ internal fun SDKScaffold(
     notScrollableContent: (@Composable ColumnScope.() -> Unit)? = null,
     scrollableContent: (@Composable ColumnScope.() -> Unit)? = null,
     onClose: () -> Unit,
-    onBack: (() -> Unit)? = null
+    onBack: (() -> Unit)? = null,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
@@ -96,5 +104,27 @@ internal fun SDKScaffold(
 @Preview
 @Composable
 private fun SDKScaffoldPreview() {
-    SDKScaffold(onClose = {})
+    SDKTheme {
+        val options = SDKPaymentOptions(
+            paymentInfo = PaymentInfo(
+                projectId = 124124,
+                paymentId = "ewfew",
+                paymentAmount = 0L,
+                paymentCurrency = "RUB"
+            )
+        )
+
+        val config = MSDKCoreSessionConfig.mockFullSuccessFlow(
+            duration = Duration.millis(Constants.THREE_D_SECURE_REDIRECT_DURATION)
+        )
+
+        val msdkSession = MSDKCoreSession(config)
+
+        SDKCommonProvider(options, msdkSession) {
+            SDKScaffold(
+                onClose = {},
+                title = "Payment methods"
+            )
+        }
+    }
 }

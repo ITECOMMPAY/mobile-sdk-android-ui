@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.init.WalletSaveMode
+import com.paymentpage.msdk.core.validators.custom.PanValidator
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
@@ -38,7 +40,9 @@ import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
 import com.paymentpage.msdk.ui.presentation.main.payNewCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.theme.InterFamily
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.theme.SohneBreitFamily
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
@@ -51,6 +55,8 @@ import com.paymentpage.msdk.ui.views.card.panField.PanField
 import com.paymentpage.msdk.ui.views.common.SDKTextWithLink
 import com.paymentpage.msdk.ui.views.common.checkbox.SDKCheckboxDefaults
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
+import kotlin.collections.contains
+import kotlin.text.uppercase
 
 @Composable
 internal fun NewCardItem(
@@ -58,6 +64,8 @@ internal fun NewCardItem(
     actionType: SDKActionType,
     isOnlyOneMethodOnScreen: Boolean = false,
 ) {
+    val panValidator = remember { PanValidator() }
+
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
@@ -80,6 +88,8 @@ internal fun NewCardItem(
     var isExpiryValid by remember { mutableStateOf(method.isValidExpiry) }
     var cardType by remember { mutableStateOf<String?>(null) }
 
+    var cardPanError by remember { mutableStateOf<String?>(null) }
+
     val checkedStateContentDescription =
         stringResource(id = R.string.checked_state_content_description)
     val notCheckedStateContentDescription =
@@ -91,20 +101,38 @@ internal fun NewCardItem(
         fallbackIcon = painterResource(id = SDKTheme.images.defaultCardLogo),
         //default card icon color
         iconColor = ColorFilter.tint(
-            color = customColor(paymentOptions.brandColor)
+            color = customColor(paymentOptions.primaryBrandColor)
         ),
     ) {
-        Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {
             PanField(
                 initialValue = method.pan,
                 scanningPan = scanningResult?.pan,
                 paymentMethod = method.paymentMethod,
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 8.dp, bottomEnd = 8.dp),
                 onValueChanged = { value, isValid ->
                     isPanValid = isValid
                     method.pan = value
                     method.isValidPan = isValid
                     scanningResult = null
+                },
+                onRequestValidatorMessage = {
+                    cardPanError = when {
+                        it.isEmpty() -> getStringOverride(OverridesKeys.MESSAGE_REQUIRED_FIELD)
+                        !panValidator.isValid(it) -> getStringOverride(OverridesKeys.MESSAGE_ABOUT_CARD_NUMBER)
+                        cardType == null -> null
+                        !method.paymentMethod.availableCardTypes.contains(cardType) -> {
+                            val regex = Regex("\\[\\[.+]]")
+                            val message = regex.replace(
+                                getStringOverride(OverridesKeys.MESSAGE_WRONG_CARD_TYPE),
+                                cardType?.uppercase() ?: ""
+                            )
+                            message
+                        }
+                        else -> null
+                    }
+
+                    null to (cardPanError != null)
                 },
                 onPaymentMethodCardTypeChange = {
                     cardType = it
@@ -118,7 +146,49 @@ internal fun NewCardItem(
                     TestTagsConstants.PAN_TEXT_FIELD
                 }"
             )
-            Spacer(modifier = Modifier.size(10.dp))
+
+            Spacer(modifier = Modifier.size(2.dp))
+
+            Row {
+                ExpiryField(
+                    modifier = Modifier
+                        .weight(1f),
+                    shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp, bottomStart = 16.dp, bottomEnd = 8.dp),
+                    initialValue = method.expiry,
+                    scanningExpiry = scanningResult?.expiry,
+                    errorMessage = cardPanError,
+                    onValueChanged = { value, isValid ->
+                        isExpiryValid = isValid
+                        method.expiry = value
+                        method.isValidExpiry = isValid
+                        scanningResult = null
+                    },
+                    testTag = "${
+                        TestTagsConstants.PREFIX_NEW_CARD
+                    }${
+                        TestTagsConstants.EXPIRY_TEXT_FIELD
+                    }"
+                )
+                Spacer(modifier = Modifier.size(10.dp))
+                CvvField(
+                    modifier = Modifier
+                        .weight(1f),
+                    shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp, bottomStart = 8.dp, bottomEnd = 16.dp),
+                    initialValue = method.cvv,
+                    cardType = cardType,
+                    onValueChanged = { value, isValid ->
+                        isCvvValid = isValid
+                        method.cvv = value
+                        method.isValidCvv = isValid
+                    },
+                    testTag = "${
+                        TestTagsConstants.PREFIX_NEW_CARD
+                    }${
+                        TestTagsConstants.CVV_TEXT_FIELD
+                    }"
+                )
+            }
+            Spacer(modifier = Modifier.size(7.dp))
             CardHolderField(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -136,43 +206,6 @@ internal fun NewCardItem(
                     TestTagsConstants.CARDHOLDER_TEXT_FIELD
                 }"
             )
-            Spacer(modifier = Modifier.size(10.dp))
-            Row {
-                ExpiryField(
-                    modifier = Modifier
-                        .weight(1f),
-                    initialValue = method.expiry,
-                    scanningExpiry = scanningResult?.expiry,
-                    onValueChanged = { value, isValid ->
-                        isExpiryValid = isValid
-                        method.expiry = value
-                        method.isValidExpiry = isValid
-                        scanningResult = null
-                    },
-                    testTag = "${
-                        TestTagsConstants.PREFIX_NEW_CARD
-                    }${
-                        TestTagsConstants.EXPIRY_TEXT_FIELD
-                    }"
-                )
-                Spacer(modifier = Modifier.size(10.dp))
-                CvvField(
-                    modifier = Modifier
-                        .weight(1f),
-                    initialValue = method.cvv,
-                    cardType = cardType,
-                    onValueChanged = { value, isValid ->
-                        isCvvValid = isValid
-                        method.cvv = value
-                        method.isValidCvv = isValid
-                    },
-                    testTag = "${
-                        TestTagsConstants.PREFIX_NEW_CARD
-                    }${
-                        TestTagsConstants.CVV_TEXT_FIELD
-                    }"
-                )
-            }
 
             if (
                 customerFields.hasVisibleCustomerFields() &&
@@ -230,11 +263,13 @@ internal fun NewCardItem(
                     Column {
                         Text(
                             text = getStringOverride(OverridesKeys.TITLE_SAVED_CARDS),
-                            style = SDKTheme.typography.s16Normal
+                            fontFamily = SohneBreitFamily,
+                            style = SDKTheme.typography.s14Medium
                         )
                         SDKTextWithLink(
                             overrideKey = OverridesKeys.COF_AGREEMENTS,
-                            style = SDKTheme.typography.s12Light
+                            fontFamily = InterFamily,
+                            style = SDKTheme.typography.s14Light
                         )
                     }
                 }
