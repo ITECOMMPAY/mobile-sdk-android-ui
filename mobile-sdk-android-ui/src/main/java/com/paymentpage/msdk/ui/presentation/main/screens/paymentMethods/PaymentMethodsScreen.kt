@@ -95,7 +95,7 @@ fun PaymentMethodsScreen_Preview() {
                 projectId = 124124,
                 paymentId = "ewfew",
                 paymentAmount = 0L,
-                paymentCurrency = "RUB"
+                paymentCurrency = "USD"
             )
         )
 

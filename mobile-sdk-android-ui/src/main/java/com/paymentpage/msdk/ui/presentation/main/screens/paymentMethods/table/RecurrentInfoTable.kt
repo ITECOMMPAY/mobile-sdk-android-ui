@@ -85,7 +85,7 @@ fun RecurrentInfoTable_Preview() {
     SDKTheme {
         RecurrentInfoTable(
             actionType = SDKActionType.Sale,
-            paymentInfo = PaymentInfo.create(23523, paymentId = "", paymentAmount = 150, paymentCurrency = "RUB"),
+            paymentInfo = PaymentInfo.create(23523, paymentId = "", paymentAmount = 150, paymentCurrency = "USD"),
             recurrentInfo = RecurrentInfo(register = true),
             labelTextStyle = TextStyle.Default,
             spaceBetweenItems = 10.dp,
