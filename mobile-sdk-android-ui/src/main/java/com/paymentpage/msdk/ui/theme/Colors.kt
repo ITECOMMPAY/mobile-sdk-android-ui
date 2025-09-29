@@ -8,8 +8,10 @@ import androidx.compose.ui.graphics.Color
 
 internal class Colors(
     isDarkTheme: Boolean,
-    //Brand color
+    /**Brand color #1*/
     primary: Color,
+    /**Brand color #2*/
+    secondary: Color,
     background: Color,
     containerRed: Color,
     red: Color,
@@ -27,6 +29,8 @@ internal class Colors(
     var isDarkTheme by mutableStateOf(isDarkTheme)
         private set
     var primary by mutableStateOf(primary)
+        private set
+    var secondary by mutableStateOf(secondary)
         private set
     var background by mutableStateOf(background)
         private set
@@ -57,8 +61,9 @@ internal class Colors(
 }
 
 //Light theme
-private val lightThemePrimary = Color(0xFF00579E)
-private val lightThemeBackground = Color(0xFFFFFFFF)
+private val lightThemePrimary = Color(0xFF4B007C)
+private val lightThemeSecondary = Color(0xFFCAB2FF)
+private val lightThemeBackground = Color(0xFFF0F1F3)
 private val lightThemeContainerRed = Color(0xFFF8EAEA)
 private val lightThemeRed = Color(0xFFC03230)
 private val lightThemeContainerGreen = Color(0xFFEBFBEE)
@@ -69,11 +74,12 @@ private val lightThemeGrey = Color(0xFF666666)
 private val lightThemeMediumGrey = Color(0xFFBCBDBE)
 private val lightThemeNeutral = Color(0xFF000000)
 private val lightThemeLink = Color(0xFF00579E)
-private val lightThemeContainer = Color(0xFFE0E0E0)
+private val lightThemeContainer = Color(0xFFFFFFFF)
 private val lightThemeAccent = Color(0xFFF2F6FA)
 
 //Dark Theme
-private val darkThemePrimary = Color(0xFF054BA0)
+private val darkThemePrimary = Color(0xFF4B007C)
+private val darkThemeSecondary = Color(0xFFCAB2FF)
 private val darkThemeBackground = Color(0xFF181826)
 private val darkThemeContainerRed = Color(0xFF4F1B21)
 private val darkThemeRed = Color(0xFFDB1F35)
@@ -88,9 +94,13 @@ private val darkThemeLink = Color(0xFF4299FF)
 private val darkThemeContainer = Color(0xFF27293D)
 private val darkThemeAccent = Color(0xFF323757)
 
-internal fun lightColors(primaryColor: Color? = null): Colors = Colors(
+internal fun lightColors(
+    primaryColor: Color? = null,
+    secondaryColor: Color? = null,
+): Colors = Colors(
     isDarkTheme = false,
     primary = primaryColor ?: lightThemePrimary,
+    secondary = secondaryColor ?: lightThemeSecondary,
     background = lightThemeBackground,
     containerRed = lightThemeContainerRed,
     red = lightThemeRed,
@@ -102,13 +112,17 @@ internal fun lightColors(primaryColor: Color? = null): Colors = Colors(
     mediumGrey = lightThemeMediumGrey,
     neutral = lightThemeNeutral,
     link = lightThemeLink,
-    container = lightThemeGrey,
+    container = lightThemeContainer,
     accent = lightThemeAccent
 )
 
-internal fun darkColors(primaryColor: Color? = null): Colors = Colors(
+internal fun darkColors(
+    primaryColor: Color? = null,
+    secondaryColor: Color? = null,
+): Colors = Colors(
     isDarkTheme = true,
     primary = primaryColor ?: darkThemePrimary,
+    secondary = secondaryColor ?: darkThemeSecondary,
     background = darkThemeBackground,
     containerRed = darkThemeContainerRed,
     red = darkThemeRed,

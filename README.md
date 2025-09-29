@@ -23,7 +23,7 @@ The SDK for Android libraries can be imported via MavenCentral. To import the li
 
 ```
 implementation "com.ecommpay:msdk-ui:LATEST_VERSION"
-implementation "com.ecommpay:msdk-core-android:LATEST_VERSION"
+implementation "dev.ecommlabs:msdk-core-android:LATEST_VERSION"
 ```
 
 ## Use
@@ -123,7 +123,8 @@ val paymentOptions = paymentOptions {
 
     //Custom theme
     isDarkTheme = false
-    brandColor = "#000000" //#RRGGBB
+    primaryBrandColor = "#4B007C" //#RRGGBB
+    secondaryBrandColor = "#CAB2FF"
     //Any bitmap image
     logoImage = BitmapFactory.decodeResource(
         resources,

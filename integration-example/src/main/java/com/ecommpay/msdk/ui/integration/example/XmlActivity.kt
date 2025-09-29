@@ -79,8 +79,8 @@ class XmlActivity : AppCompatActivity() {
             hideScanningCards = false
 
             //Custom theme
-            isDarkTheme = false
-            brandColor = "#000000" //#RRGGBB
+//            isDarkTheme = false //TODO Should be fixed in further release
+            primaryBrandColor = "#000000" //#RRGGBB
             //Any bitmap image
             logoImage = BitmapFactory.decodeResource(
                 resources,

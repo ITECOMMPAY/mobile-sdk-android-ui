@@ -2,7 +2,7 @@
 
 object Library {
     const val artifactId = "msdk-ui"
-    const val version = "3.8.10"
+    const val version = "3.9.0"
     const val group = "com.ecommpay"
 }
 
@@ -10,7 +10,7 @@ object Versions {
     const val compose = "1.7.4"
     const val serialization = "1.3.3"
     const val detekt = "1.20.0"
-    const val msdkCore = "0.12.8"
+    const val msdkCore = "0.13.0"
     const val desugaring = "2.1.3"
 }
 
@@ -65,7 +65,7 @@ object LibraryDependencies {
     }
 
     object Msdk {
-        const val core = "com.ecommpay:msdk-core-android:${Versions.msdkCore}"
+        const val core = "dev.ecommlabs:msdk-core-android:${Versions.msdkCore}"
     }
 
     object MsdkSample {

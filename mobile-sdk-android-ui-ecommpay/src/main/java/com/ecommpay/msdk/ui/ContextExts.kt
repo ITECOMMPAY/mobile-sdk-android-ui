@@ -7,7 +7,7 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 
-internal fun Context.getBitmapFromVectorDrawable(drawableId: Int): Bitmap? {
+fun Context.getBitmapFromVectorDrawable(drawableId: Int): Bitmap? {
     var drawable = ContextCompat.getDrawable(this, drawableId) ?: return null
 
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {

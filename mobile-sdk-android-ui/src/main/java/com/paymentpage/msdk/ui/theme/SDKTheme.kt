@@ -35,13 +35,14 @@ internal object SDKTheme {
 @Composable
 internal fun SDKTheme(
     isDarkTheme: Boolean = false,
-    brandColor: Color? = null,
+    primaryBrandColor: Color? = null,
+    secondaryBrandColor: Color? = null,
     content: @Composable () -> Unit,
 ) {
     val colors = if (isDarkTheme)
-        darkColors(primaryColor = brandColor)
+        darkColors(primaryColor = primaryBrandColor, secondaryColor = secondaryBrandColor)
     else
-        lightColors(primaryColor = brandColor)
+        lightColors(primaryColor = primaryBrandColor, secondaryColor = secondaryBrandColor)
 
     val typography = if (isDarkTheme)
         darkTypography()

@@ -107,7 +107,7 @@ internal fun CardScanningItem(
                         locale = languageCode
                     )
                 ),
-                brandColor = paymentOptions.brandColor
+                brandColor = paymentOptions.primaryBrandColor
             )
 
     }

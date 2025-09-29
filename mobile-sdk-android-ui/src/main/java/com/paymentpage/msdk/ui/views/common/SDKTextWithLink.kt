@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.R
@@ -20,6 +21,7 @@ import com.paymentpage.msdk.ui.utils.extensions.core.annotatedString
 @Composable
 internal fun SDKTextWithLink(
     overrideKey: String,
+    fontFamily: FontFamily = FontFamily.Default,
     style: TextStyle,
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip
@@ -32,6 +34,7 @@ internal fun SDKTextWithLink(
     if (linkedMessage == null) {
         Text(
             text = overrideKey,
+            fontFamily = fontFamily,
             style = style
         )
     } else {

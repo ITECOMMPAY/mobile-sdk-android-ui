@@ -39,6 +39,15 @@ internal fun CustomizationFields(
             Spacer(modifier = Modifier.size(10.dp))
             BrandColorPicker(
                 viewState = viewState,
+                isPrimaryColor = true,
+                intentListener = intentListener
+            )
+
+            Spacer(Modifier.size(10.dp))
+
+            BrandColorPicker(
+                viewState = viewState,
+                isPrimaryColor = false,
                 intentListener = intentListener
             )
             Spacer(modifier = Modifier.size(10.dp))

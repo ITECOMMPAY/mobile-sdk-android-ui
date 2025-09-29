@@ -81,8 +81,9 @@ internal fun MainContent(
 
 
     SDKTheme(
-        isDarkTheme = paymentOptions.isDarkTheme,
-        brandColor = HexToJetpackColor.getColor(paymentOptions.brandColor)
+//        isDarkTheme = paymentOptions.isDarkTheme,
+        primaryBrandColor = HexToJetpackColor.getColor(paymentOptions.primaryBrandColor),
+        secondaryBrandColor = HexToJetpackColor.getColor(paymentOptions.secondaryBrandColor),
     ) {
         BottomDrawer(
             modifier = Modifier
@@ -134,7 +135,7 @@ internal fun MainContent(
                                 locale = languageCode
                             )
                         ),
-                        brandColor = paymentOptions.brandColor
+                        brandColor = paymentOptions.primaryBrandColor
                     )
                 }
 
@@ -164,7 +165,7 @@ internal fun MainContent(
                                 )
                             errorResultState = null
                         },
-                        brandColor = paymentOptions.brandColor
+                        brandColor = paymentOptions.primaryBrandColor
                     )
                 }
             }

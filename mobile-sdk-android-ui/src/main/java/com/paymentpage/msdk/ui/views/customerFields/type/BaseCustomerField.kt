@@ -23,7 +23,9 @@ internal fun BaseCustomerTextField(
         maxLength = maxLength,
         initialValue = initialValue,
         onRequestValidatorMessage = {
-            customerField.validate(it, onTransformValueBeforeValidate)
+            val errorMessage = customerField.validate(it, onTransformValueBeforeValidate)
+
+            errorMessage
         },
         onValueChanged = { text, isValid ->
             var isResultValid = isValid

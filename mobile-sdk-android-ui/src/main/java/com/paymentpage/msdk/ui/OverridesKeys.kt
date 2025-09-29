@@ -53,7 +53,6 @@ internal object OverridesKeys {
     internal const val MESSAGE_WRONG_CARD_TYPE = "message_wrong_card_type"
     internal const val MESSAGE_DELETE_CARD_SINGLE = "message_delete_card_single"
     internal const val TITLE_SAVED_CARDS = "title_saved_cards"
-    internal const val VAT_INCLUDED = "vat_included"
     internal const val TITLE_TOTAL_PRICE = "title_total_price"
 
     //Additional fields

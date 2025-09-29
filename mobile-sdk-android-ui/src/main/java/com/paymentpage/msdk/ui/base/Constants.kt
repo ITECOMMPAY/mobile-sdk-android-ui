@@ -1,6 +1,8 @@
 package com.paymentpage.msdk.ui.base
 
 internal object Constants {
+    const val DEFAULT_LANGUAGE = "EN"
+
     const val RESULT_SUCCESS = 1 //when payment completed successfully
     const val RESULT_DECLINE = 100 //when payment declined
     const val RESULT_CANCELLED = 200 //when user canceled payment flow

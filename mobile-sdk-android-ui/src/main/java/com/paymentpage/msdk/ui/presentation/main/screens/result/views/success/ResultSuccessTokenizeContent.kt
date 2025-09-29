@@ -23,6 +23,6 @@ internal fun ResultSuccessTokenizeContent(
         onConfirmButtonClick = { onClose(payment) },
         confirmButtonText = getStringOverride(OverridesKeys.BUTTON_OK),
         onDismissRequest = { onClose(payment) },
-        brandColor = paymentOptions.brandColor
+        brandColor = paymentOptions.primaryBrandColor
     )
 }

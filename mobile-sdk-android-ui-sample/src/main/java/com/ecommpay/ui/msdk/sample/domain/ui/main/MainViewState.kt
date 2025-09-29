@@ -22,7 +22,8 @@ data class MainViewState(
     val selectedScreenDisplayModes: List<EcmpScreenDisplayMode> = listOf(EcmpScreenDisplayMode.DEFAULT),
     val localImageUri: Uri? = null,
     val bitmap: Bitmap? = null,
-    val brandColor: String = "#00579E",
+    val primaryBrandColor: String = "#4B007C",
+    val secondaryBrandColor: String = "#CAB2FF",
     val isDarkTheme: Boolean = false,
     val storedCardType: Int? = null
 ) : ViewState

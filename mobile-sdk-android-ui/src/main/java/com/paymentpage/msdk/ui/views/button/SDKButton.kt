@@ -15,22 +15,21 @@ internal fun SDKButton(
     label: String,
     isEnabled: Boolean,
     textStyle: TextStyle = SDKTheme.typography.s16Normal.copy(
-        color = Color.White.copy(
+        color = Color.Black.copy(
             alpha = when {
-                !SDKTheme.colors.isDarkTheme -> 1.0f
                 isEnabled -> 1.0f
                 //disabled && darkTheme
                 else -> 0.3f
             }
         ),
     ),
-    color: Color = SDKTheme.colors.primary,
+    color: Color = SDKTheme.colors.secondary,
     onClick: () -> Unit,
 ) {
     CustomButton(
         modifier = modifier,
         isEnabled = isEnabled,
-        color = color,
+        secondaryColor = color,
         content = {
             Text(
                 text = label,

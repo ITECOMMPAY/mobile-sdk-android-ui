@@ -40,7 +40,7 @@ internal fun ApsPayItem(
         fallbackIcon = painterResource(id = SDKTheme.images.apsDefaultLogoResId),
         //default aps icon color
         iconColor = ColorFilter.tint(
-            color = customColor(paymentOptions.brandColor)
+            color = customColor(paymentOptions.primaryBrandColor)
         ),
     ) {
         Spacer(modifier = Modifier.size(10.dp))

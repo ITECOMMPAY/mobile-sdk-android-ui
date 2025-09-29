@@ -34,6 +34,7 @@ import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.theme.SohneBreitFamily
 import com.paymentpage.msdk.ui.utils.extensions.customColor
 
 
@@ -65,6 +66,7 @@ internal fun SDKTopBar(
                 }
                 .testTag(TestTagsConstants.SCREEN_TITLE_TEXT),
             maxLines = 1,
+            fontFamily = SohneBreitFamily,
             style = SDKTheme.typography.s22Bold,
             text = title ?: "",
             overflow = TextOverflow.Ellipsis
@@ -85,7 +87,7 @@ internal fun SDKTopBar(
                     .testTag(TestTagsConstants.SCREEN_BACK_BUTTON),
                 imageVector = Icons.Default.ArrowBack,
                 colorFilter = ColorFilter.tint(
-                    color = customColor(brandColor = paymentOptions.brandColor)
+                    color = customColor(brandColor = paymentOptions.primaryBrandColor)
                 ),
                 contentDescription = stringResource(id = R.string.icon_back_content_description),
             )

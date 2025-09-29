@@ -72,7 +72,7 @@ internal fun ApsPageView(
     val context = LocalContext.current
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
-    val brandColor = LocalPaymentOptions.current.brandColor
+    val brandColor = LocalPaymentOptions.current.primaryBrandColor
     var isLoading by remember { mutableStateOf(false) }
 
     var showSslWarning by remember { mutableStateOf(false) }

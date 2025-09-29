@@ -33,9 +33,10 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
         merchantName = merchantName,
         merchantEnvironment = if (isTestEnvironment) GooglePayEnvironment.TEST else GooglePayEnvironment.PROD,
         //theme customization
-        isDarkTheme = isDarkTheme,
+//        isDarkTheme = isDarkTheme, //TODO Should be fixed in further release
         logoImage = logoImage,
-        brandColor = brandColor,
+        primaryBrandColor = primaryBrandColor,
+        secondaryBrandColor = secondaryBrandColor,
         footerImage = footerImage,
         footerLabel = footerLabel,
         //stored card type

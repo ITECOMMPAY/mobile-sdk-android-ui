@@ -18,7 +18,7 @@ import com.ecommpay.ui.msdk.sample.ui.base.ComposeViewState
 import com.ecommpay.ui.msdk.sample.ui.components.SDKInfoDialog
 import com.ecommpay.ui.msdk.sample.ui.components.SDKToast
 import com.ecommpay.ui.msdk.sample.ui.navigation.NavigationState
-import com.ecommpay.ui.msdk.sample.utils.extensions.copyInClipBoard
+import com.paymentpage.msdk.ui.utils.copyInClipBoard
 
 @Composable
 internal fun SampleActivity.SampleState(

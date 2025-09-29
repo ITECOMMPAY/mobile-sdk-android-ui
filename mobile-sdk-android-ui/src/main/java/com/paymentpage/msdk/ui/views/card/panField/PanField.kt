@@ -1,13 +1,26 @@
 package com.paymentpage.msdk.ui.views.card.panField
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -19,6 +32,8 @@ import androidx.compose.ui.text.ParagraphIntrinsics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
@@ -41,21 +56,29 @@ import com.paymentpage.msdk.ui.utils.extensions.paymentMethodLogoId
 import com.paymentpage.msdk.ui.views.card.CardScanningItem
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun PanField(
     modifier: Modifier = Modifier,
     initialValue: String,
     scanningPan: String? = null,
+    shape: Shape = SDKTheme.shapes.radius16,
     paymentMethod: PaymentMethod,
     onScanningResult: (CardScanningActivityContract.Result) -> Unit,
     onPaymentMethodCardTypeChange: ((String?) -> Unit)? = null,
+    isEditable: Boolean = true,
+    isMaskEnabled: Boolean = true,
     testTag: String? = null,
     onValueChanged: (String, Boolean) -> Unit,
+    onRequestValidatorMessage: ((String) -> Pair<String?, Boolean>?)? = null,
 ) {
+    val panValidator = remember { PanValidator() }
+
     var card by remember { mutableStateOf<PaymentMethodCard?>(null) }
     val paymentOptions = LocalPaymentOptions.current
     var needAnimation by remember { mutableStateOf(true) }
+    var isError by remember { mutableStateOf(false) }
 
     Row(modifier = Modifier.fillMaxWidth()) {
         BoxWithConstraints(
@@ -94,35 +117,39 @@ internal fun PanField(
                     fontSize = shrunkFontSize
                 ),
                 singleLine = true,
+                shape = shape,
+                isError = isError,
+                isDisabled = isEditable.not(),
                 keyboardType = KeyboardType.Number,
                 onFilterValueBefore = { value -> value.filter { it.isDigit() } },
                 maxLength = card?.maxLength ?: 19,
-                onValueChanged = { value, isValid ->
-                    onValueChanged(value, PanValidator().isValid(value) && isValid)
+                onFocusChanged = { isFocused ->
+                    if (isFocused) { isError = false }
                 },
-                onRequestValidatorMessage = {
-                    if (!PanValidator().isValid(it))
-                        getStringOverride(OverridesKeys.MESSAGE_ABOUT_CARD_NUMBER)
-                    else if (card == null) null
-                    else if (!paymentMethod.availableCardTypes.contains(card?.code)) {
-                        val regex = Regex("\\[\\[.+]]")
-                        val message = regex.replace(
-                            getStringOverride(OverridesKeys.MESSAGE_WRONG_CARD_TYPE),
-                            card?.code?.uppercase() ?: ""
-                        )
-                        message
-                    } else
-                        null
+                onValueChanged = { value, isValid ->
+                    onValueChanged(value, panValidator.isValid(value) && isValid)
+                },
+                onRequestValidatorMessage = { text ->
+                    val validatorResponse = onRequestValidatorMessage?.invoke(text)
+                    isError = validatorResponse?.second ?: false
+
+                    validatorResponse?.first
                 },
                 visualTransformation = { number ->
+                    if (isMaskEnabled.not()) {
+                        return@CustomTextField TransformedText(number, OffsetMapping.Identity)
+                    }
+
                     val trimmedCardNumber = number.text.replace(" ", "")
                     card = if (trimmedCardNumber.isNotEmpty())
                         paymentMethod.cardTypesManager?.search(trimmedCardNumber)
                     else
                         null
+
                     if (onPaymentMethodCardTypeChange != null) {
                         onPaymentMethodCardTypeChange(card?.code)
                     }
+
                     when (card?.code) {
                         Constants.AMEX_CARD_TYPE_NAME -> formatAmex(number)
                         Constants.DINERS_CLUB_CARD_TYPE_NAME -> formatDinnersClub(number)
@@ -160,7 +187,7 @@ internal fun PanField(
                                 contentScale = ContentScale.Fit,
                                 colorFilter = if (drawableId == 0)
                                     ColorFilter.tint(
-                                        color = customColor(paymentOptions.brandColor)
+                                        color = customColor(paymentOptions.primaryBrandColor)
                                     )
                                 else
                                     null
@@ -192,7 +219,7 @@ internal fun PanField(
                                         contentDescription = null,
                                         contentScale = ContentScale.Fit,
                                         colorFilter = ColorFilter.tint(
-                                            color = customColor(paymentOptions.brandColor)
+                                            color = customColor(paymentOptions.primaryBrandColor)
                                         )
                                     )
                             else
@@ -207,7 +234,7 @@ internal fun PanField(
                                     contentDescription = null,
                                     contentScale = ContentScale.Fit,
                                     colorFilter = ColorFilter.tint(
-                                        color = customColor(paymentOptions.brandColor)
+                                        color = customColor(paymentOptions.primaryBrandColor)
                                     )
                                 )
                         }

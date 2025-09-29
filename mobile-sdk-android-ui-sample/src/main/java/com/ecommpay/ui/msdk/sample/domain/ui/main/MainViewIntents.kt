@@ -21,7 +21,7 @@ sealed interface MainViewIntents : ViewIntents {
     object ChangeCustomizationCheckbox : MainViewIntents
     data class SelectResourceImage(val id: Int, val bitmap: Bitmap?) : MainViewIntents
     data class SelectLocalImage(val uri: Uri, val bitmap: Bitmap?) : MainViewIntents
-    data class ChangeBrandColor(val brandColor: String) : MainViewIntents
+    data class ChangeBrandColor(val primaryBrandColor: String? = null, val secondaryBrandColor: String? = null) : MainViewIntents
     data class SelectForcePaymentMethod(val id: Int, val paymentData: PaymentData) : MainViewIntents
 
     //Stored card type

@@ -6,13 +6,19 @@ package com.paymentpage.msdk.ui.presentation.main
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.paymentpage.msdk.ui.*
+import com.paymentpage.msdk.ui.LocalMainViewModel
+import com.paymentpage.msdk.ui.LocalMsdkSession
+import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
+import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.PaymentDelegate
+import com.paymentpage.msdk.ui.SDKActionType
+import com.paymentpage.msdk.ui.SDKScreenDisplayMode
 import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.navigation.Navigator
 import com.paymentpage.msdk.ui.navigation.Route
@@ -139,6 +145,7 @@ private fun setupStateListener(
                     )
                     mainScreenNavigator.navigateTo(Route.PaymentMethods)
                 }
+
                 it.finalPaymentState != null -> {
                     val payment =
                         mainViewModel.payment
@@ -163,6 +170,7 @@ private fun setupStateListener(
                         }
                     }
                 }
+
                 it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.ClarificationFields)
                 it.threeDSecurePageState != null -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)

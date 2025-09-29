@@ -2,10 +2,12 @@ package com.paymentpage.msdk.ui.views.card
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.paymentpage.msdk.core.domain.entities.SdkExpiry
 import com.paymentpage.msdk.ui.OverridesKeys
+import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.MaskVisualTransformation
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.CustomTextField
@@ -13,8 +15,10 @@ import com.paymentpage.msdk.ui.views.common.CustomTextField
 @Composable
 internal fun ExpiryField(
     modifier: Modifier,
+    shape: Shape = SDKTheme.shapes.radius16,
     initialValue: String? = null,
     scanningExpiry: String? = null,
+    errorMessage: String? = null,
     isDisabled: Boolean = false,
     showRedStarForRequiredFields: Boolean = true,
     testTag: String? = null,
@@ -24,11 +28,13 @@ internal fun ExpiryField(
         modifier = modifier,
         initialValue = initialValue?.replace("/", ""),
         pastedValue = scanningExpiry?.replace("/", ""),
+        externalErrorMessage = errorMessage,
         onFilterValueBefore = { text -> text.filter { it.isDigit() } },
+        shape = shape,
         onRequestValidatorMessage = {
             val expiryDate = SdkExpiry(it)
             when {
-                !expiryDate.isValid() || !expiryDate.isMoreThanNow()->
+                !expiryDate.isValid() || !expiryDate.isMoreThanNow() ->
                     getStringOverride(OverridesKeys.MESSAGE_ABOUT_EXPIRY)
                 else -> null
             }

@@ -23,7 +23,7 @@ internal fun String.paymentDateToPatternDate(pattern: String): String {
 internal fun String.patternDateToPatternDate(
     inPattern: String,
     outPattern: String,
-    locale: Locale?
+    locale: Locale?,
 ): String? {
     val isDateValid = DateValidator().isValid(this)
     if (!isDateValid)
@@ -39,4 +39,21 @@ internal fun String.patternDateToPatternDate(
     } catch (ex: ParseException) {
         null
     }
+}
+
+internal fun String.toLanguageCode() = when (this.lowercase()) {
+    "de" -> "GER"
+    "en" -> "ENG"
+    "es" -> "SPA"
+    "fr" -> "FRA"
+    "hu" -> "HUN"
+    "it" -> "ITA"
+    else -> this
+}
+
+internal fun String.toCurrencySign() = when (this) {
+    "USD" -> "$"
+    "EUR" -> "€"
+    "GBP" -> "£"
+    else -> this
 }
