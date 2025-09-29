@@ -107,7 +107,7 @@ class SampleActivity : ComponentActivity() {
             logoImage = ProcessRepository.bitmap
             primaryBrandColor = ProcessRepository.primaryBrandColor
             secondaryBrandColor = ProcessRepository.secondaryBrandColor
-            isDarkTheme = ProcessRepository.isDarkTheme
+//            isDarkTheme = ProcessRepository.isDarkTheme //TODO Should be fixed in further release
             //stored card type
             storedCardType = ProcessRepository.storedCardType
         }

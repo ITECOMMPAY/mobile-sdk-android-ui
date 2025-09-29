@@ -110,7 +110,7 @@ class ComposeActivity : ComponentActivity() {
             hideScanningCards = false
 
             //Custom theme
-            isDarkTheme = false
+//            isDarkTheme = false //TODO Should be fixed in further release
             primaryBrandColor = "#000000" //#RRGGBB
             //Any bitmap image
             logoImage = BitmapFactory.decodeResource(

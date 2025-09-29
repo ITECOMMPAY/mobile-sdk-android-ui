@@ -81,7 +81,7 @@ internal fun MainContent(
 
 
     SDKTheme(
-        isDarkTheme = paymentOptions.isDarkTheme,
+//        isDarkTheme = paymentOptions.isDarkTheme,
         primaryBrandColor = HexToJetpackColor.getColor(paymentOptions.primaryBrandColor),
         secondaryBrandColor = HexToJetpackColor.getColor(paymentOptions.secondaryBrandColor),
     ) {

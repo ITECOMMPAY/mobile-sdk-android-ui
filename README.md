@@ -23,7 +23,7 @@ The SDK for Android libraries can be imported via MavenCentral. To import the li
 
 ```
 implementation "com.ecommpay:msdk-ui:LATEST_VERSION"
-implementation "com.ecommpay:msdk-core-android:LATEST_VERSION"
+implementation "dev.ecommlabs:msdk-core-android:LATEST_VERSION"
 ```
 
 ## Use
