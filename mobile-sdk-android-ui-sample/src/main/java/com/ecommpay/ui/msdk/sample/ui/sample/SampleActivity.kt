@@ -11,10 +11,13 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.ecommpay.msdk.ui.BuildConfig
 import com.ecommpay.msdk.ui.EcmpPaymentInfo
 import com.ecommpay.msdk.ui.Ecommpay
 import com.ecommpay.msdk.ui.paymentOptions
+import com.ecommpay.ui.msdk.sample.R
 import com.ecommpay.ui.msdk.sample.data.ProcessRepository
 import com.ecommpay.ui.msdk.sample.domain.mappers.map
 import com.ecommpay.ui.msdk.sample.domain.ui.base.MessageUI
@@ -104,10 +107,13 @@ class SampleActivity : ComponentActivity() {
             isTestEnvironment = true
             //theme customization
 
-            logoImage = ProcessRepository.bitmap
+            logoImage = ProcessRepository.bitmap ?: ResourcesCompat.getDrawable(
+                resources, R.drawable.ecommpay_default_logo, null
+            )?.toBitmap()
+
             primaryBrandColor = ProcessRepository.primaryBrandColor
             secondaryBrandColor = ProcessRepository.secondaryBrandColor
-//            isDarkTheme = ProcessRepository.isDarkTheme //TODO Should be fixed in further release
+            isDarkTheme = ProcessRepository.isDarkTheme
             //stored card type
             storedCardType = ProcessRepository.storedCardType
         }

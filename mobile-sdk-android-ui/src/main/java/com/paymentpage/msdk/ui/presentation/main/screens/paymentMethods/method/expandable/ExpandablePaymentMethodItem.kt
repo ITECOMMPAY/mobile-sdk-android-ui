@@ -62,7 +62,7 @@ internal fun ExpandablePaymentMethodItem(
     method: UIPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
     fallbackIcon: Painter? = null,
-    iconColor: ColorFilter? = null,
+    iconColor: ColorFilter = ColorFilter.tint(color = SDKTheme.colors.paymentIcon),
     isLocalResourceIcon: Boolean = method.logoUrl.isNullOrEmpty() &&
             method.paymentMethod.iconUrl.isNullOrEmpty(),
     content: @Composable ColumnScope.() -> Unit,
@@ -109,7 +109,7 @@ internal fun ExpandablePaymentMethodItem(
     Box(
         modifier = Modifier
             .background(
-                color = SDKTheme.colors.container,
+                color = SDKTheme.colors.cardBackground,
                 shape = SDKTheme.shapes.radius20
             )
             .animateContentSize(

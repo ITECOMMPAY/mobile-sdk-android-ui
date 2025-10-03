@@ -17,7 +17,7 @@ internal fun BaseCustomerTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     onFilterValueBefore: ((String) -> String)? = null,
     onTransformValueBeforeValidate: ((String) -> String)? = null,
-    maxLength: Int? = null
+    maxLength: Int? = null,
 ) {
     CustomTextField(
         maxLength = maxLength,

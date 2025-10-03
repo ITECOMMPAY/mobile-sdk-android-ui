@@ -12,20 +12,22 @@ internal fun CustomerField.validate(
     onTransformValueBeforeValidate: ((String) -> String)?
 ): String? {
     val validator = this.validator
-    var resultMessage: String? = null
     val trimmedValue = value.trim()
-    if (this.isRequired && trimmedValue.isEmpty()) {
-        resultMessage =
-            getStringOverride(OverridesKeys.MESSAGE_REQUIRED_FIELD)
-    } else if (validator != null) {
-        val text = if (onTransformValueBeforeValidate != null)
-            onTransformValueBeforeValidate(value)
-        else
-            value
-        if (!validator.isValid(text))
-            resultMessage = this.errorMessage ?: this.errorMessageKey
+
+    return when {
+        this.isRequired && trimmedValue.isEmpty() -> getStringOverride(OverridesKeys.MESSAGE_REQUIRED_FIELD)
+        validator != null -> {
+            if (trimmedValue.isEmpty())
+                return null
+
+            val text = onTransformValueBeforeValidate?.invoke(value) ?: value
+
+            return if (!validator.isValid(text))
+                this.errorMessage ?: this.errorMessageKey
+            else null
+        }
+        else -> null
     }
-    return resultMessage
 }
 
 

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -23,7 +22,6 @@ import com.paymentpage.msdk.ui.presentation.main.showAps
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
-import com.paymentpage.msdk.ui.utils.extensions.customColor
 import com.paymentpage.msdk.ui.views.button.PayButton
 
 @Composable
@@ -38,10 +36,6 @@ internal fun ApsPayItem(
         method = method,
         isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
         fallbackIcon = painterResource(id = SDKTheme.images.apsDefaultLogoResId),
-        //default aps icon color
-        iconColor = ColorFilter.tint(
-            color = customColor(paymentOptions.primaryBrandColor)
-        ),
     ) {
         Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {
@@ -50,7 +44,7 @@ internal fun ApsPayItem(
                     .fillMaxWidth()
                     .testTag(TestTagsConstants.APS_PAYMENT_DISCLAIMER_TEXT),
                 text = getStringOverride(OverridesKeys.APS_PAYMENT_DISCLAIMER),
-                style = SDKTheme.typography.s14Light,
+                style = SDKTheme.typography.s14Normal,
                 textAlign = TextAlign.Start
             )
             Spacer(modifier = Modifier.size(20.dp))

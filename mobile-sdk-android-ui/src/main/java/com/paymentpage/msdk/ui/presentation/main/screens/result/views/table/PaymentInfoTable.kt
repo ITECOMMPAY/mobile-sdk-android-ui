@@ -9,6 +9,7 @@ import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.theme.defaults.SdkColorDefaults
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.paymentDateToPatternDate
 import com.paymentpage.msdk.ui.views.common.SDKTable
@@ -65,8 +66,8 @@ internal fun PaymentInfoTable(
 
     SDKTable(
         tableMap = resultTableMap,
-        labelTextStyle = SDKTheme.typography.s14Light.copy(color = SDKTheme.colors.grey),
-        valueTextStyle = SDKTheme.typography.s14Normal,
+        labelTextStyle = SDKTheme.typography.s14Normal.copy(color = SdkColorDefaults.inputColor().textAdditional().value),
+        valueTextStyle = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.textPrimary),
         spaceBetweenItems = 15.dp
     )
 

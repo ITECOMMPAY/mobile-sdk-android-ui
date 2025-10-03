@@ -84,12 +84,12 @@ internal fun MainViewModel.paySavedCard(
     val request = when (actionType) {
         SDKActionType.Sale ->
             if (isPayWithToken)
-                CardSaleTokenizeRequest(cvv = method.cvv).apply {
+                CardSaleTokenizeRequest(cvv = method.cvv.orEmpty()).apply {
                     this.recipientInfo = recipientInfo
                 }
             else
                 SavedCardSaleRequest(
-                    cvv = method.cvv,
+                    cvv = method.cvv.orEmpty(),
                     accountId = method.accountId
                 ).apply {
                     this.recipientInfo = recipientInfo
@@ -97,12 +97,12 @@ internal fun MainViewModel.paySavedCard(
 
         else ->
             if (isPayWithToken)
-                CardAuthTokenizeRequest(cvv = method.cvv).apply {
+                CardAuthTokenizeRequest(cvv = method.cvv.orEmpty()).apply {
                     this.recipientInfo = recipientInfo
                 }
             else
                 SavedCardAuthRequest(
-                    cvv = method.cvv,
+                    cvv = method.cvv.orEmpty(),
                     accountId = method.accountId
                 ).apply {
                     this.recipientInfo = recipientInfo
@@ -131,11 +131,11 @@ internal fun MainViewModel.payNewCard(
     storedCardType: Int? = null
 ) {
     sendEvent(MainScreenUiEvent.ShowLoading)
-    val expiry = SdkExpiry(method.expiry)
+    val expiry = SdkExpiry(method.expiry.orEmpty())
     val request = when (actionType) {
         SDKActionType.Sale -> NewCardSaleRequest(
-            cvv = method.cvv,
-            pan = method.pan,
+            cvv = method.cvv.orEmpty(),
+            pan = method.pan.orEmpty(),
             expiryDate = CardDate(
                 month = expiry.month ?: 0,
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
@@ -148,8 +148,8 @@ internal fun MainViewModel.payNewCard(
         }
 
         SDKActionType.Auth -> CardAuthRequest(
-            cvv = method.cvv,
-            pan = method.pan,
+            cvv = method.cvv.orEmpty(),
+            pan = method.pan.orEmpty(),
             expiryDate = CardDate(
                 month = expiry.month ?: 0,
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
@@ -162,7 +162,7 @@ internal fun MainViewModel.payNewCard(
         }
 
         SDKActionType.Tokenize -> CardTokenizeRequest(
-            pan = method.pan,
+            pan = method.pan.orEmpty(),
             expiryDate = CardDate(
                 month = expiry.month ?: 0,
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0
@@ -171,8 +171,8 @@ internal fun MainViewModel.payNewCard(
         )
 
         SDKActionType.Verify -> CardVerifyRequest(
-            cvv = method.cvv,
-            pan = method.pan,
+            cvv = method.cvv.orEmpty(),
+            pan = method.pan.orEmpty(),
             expiryDate = CardDate(
                 month = expiry.month ?: 0,
                 year = expiry.year?.twoDigitYearToFourDigitYear() ?: 0

@@ -1,6 +1,5 @@
 package com.paymentpage.msdk.ui.views.common
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,7 +37,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.theme.SDKColorInput
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.theme.defaults.SdkColorDefaults
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -50,7 +51,8 @@ internal fun CustomTextField(
     externalErrorMessage: String? = null,
     textStyle: TextStyle? = null,
     singleLine: Boolean = false,
-    shape: Shape = SDKTheme.shapes.radius16,
+    shape: Shape = SDKTheme.shapes.radius12,
+    color: SDKColorInput = SdkColorDefaults.inputColor(),
     onValueChanged: ((String, Boolean) -> Unit)?,
     onRequestValidatorMessage: ((String) -> String?)? = null,
     onFilterValueBefore: ((String) -> String)? = null,
@@ -63,21 +65,21 @@ internal fun CustomTextField(
     isDisabled: Boolean = false,
     isEditable: Boolean = true,
     isRequired: Boolean = true,
-    showRedStarForRequiredFields: Boolean = true,
     trailingIcon: @Composable (() -> Unit)? = null,
     maxLength: Int? = null,
     contentDescriptionValue: String? = null,
     testTag: String? = null,
 ) {
-
     var textValue by remember { mutableStateOf(initialValue ?: "") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isFocused by remember { mutableStateOf(false) }
 
-    val keyboardOptions = KeyboardOptions(
-        keyboardType = keyboardType,
-        imeAction = if (nextFocus != null) ImeAction.Next else ImeAction.Done
-    )
+    val keyboardOptions = remember(keyboardType, nextFocus) {
+        KeyboardOptions(
+            keyboardType = keyboardType,
+            imeAction = if (nextFocus != null) ImeAction.Next else ImeAction.Done
+        )
+    }
     val requiredFieldContentDescription =
         stringResource(id = R.string.required_field_content_description)
     val onValueChange: (String) -> Unit = {
@@ -99,7 +101,6 @@ internal fun CustomTextField(
 
     if (pastedValue != null)
         LaunchedEffect(key1 = pastedValue) {
-            //if you want paste value by yourself
             textValue = pastedValue
             onValueChange(pastedValue)
 
@@ -107,10 +108,8 @@ internal fun CustomTextField(
         }
 
     Column(modifier = modifier.fillMaxWidth()) {
-        val disabledTextColor = if (!SDKTheme.colors.isDarkTheme)
-            SDKTheme.colors.mediumGrey
-        else
-            SDKTheme.colors.grey
+        val disabledTextColor = color.textAdditional().value
+        val defaultBackground = color.defaultBackground()
 
         TextField(
             trailingIcon = trailingIcon,
@@ -120,40 +119,32 @@ internal fun CustomTextField(
             colors = TextFieldDefaults.textFieldColors(
                 disabledLabelColor = disabledTextColor,
                 disabledTextColor = disabledTextColor,
-                textColor = SDKTheme.colors.neutral,
-                backgroundColor = Color.Transparent,
+                textColor = color.textPrimary().value,
+                backgroundColor = when {
+                    isFocused -> color.focusedBackground().value
+                    (isError || errorMessage != null) -> SDKTheme.colors.containerRed
+                    isDisabled -> color.disabledBackground().value
+                    else -> defaultBackground.value
+                },
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
+                errorIndicatorColor = Color.Transparent,
                 cursorColor = SDKTheme.colors.primary,
             ),
             enabled = !isDisabled,
             readOnly = !isEditable,
             isError = isError,
+            shape = shape,
             modifier = Modifier
                 .fillMaxWidth()
                 .border(
-                    width = if (!isFocused) 1.dp else 2.dp,
+                    width = 2.dp,
                     color = when {
-                        (isError || errorMessage != null) -> SDKTheme.colors.red
-                        else ->
-                            when {
-                                isFocused -> SDKTheme.colors.primary
-                                isDisabled -> SDKTheme.colors.inputField
-                                else -> if (!SDKTheme.colors.isDarkTheme)
-                                    SDKTheme.colors.container
-                                else
-                                    SDKTheme.colors.inputField
-                            }
-                    },
-                    shape = shape
-                )
-                .background(
-                    color = when {
-                        (isError || errorMessage != null) -> SDKTheme.colors.containerRed
-                        isFocused -> SDKTheme.colors.accent
+                        isFocused -> color.focusedBorder().value
+                        (isError || errorMessage != null) -> color.errorBorder().value
                         isDisabled -> Color.Transparent
-                        else -> SDKTheme.colors.inputField
+                        else -> Color.Transparent
                     },
                     shape = shape
                 )
@@ -162,8 +153,13 @@ internal fun CustomTextField(
                     val focused = it.isFocused && !isFocused
 
                     when {
-                        unfocused -> {errorMessage = onRequestValidatorMessage?.invoke(textValue) }
-                        focused -> { errorMessage = null }
+                        unfocused -> {
+                            errorMessage = onRequestValidatorMessage?.invoke(textValue)
+                        }
+
+                        focused -> {
+                            errorMessage = null
+                        }
                     }
 
                     isFocused = it.isFocused
@@ -177,7 +173,7 @@ internal fun CustomTextField(
                                 contentDescriptionValue
                             else ""
                         }${
-                            if (isRequired && showRedStarForRequiredFields) " $requiredFieldContentDescription" else ""
+                            if (isRequired) " $requiredFieldContentDescription" else ""
                         }"
                 }
                 .testTag(testTag ?: ""),
@@ -186,25 +182,28 @@ internal fun CustomTextField(
                     Text(
                         text = label,
                         color = when {
-                            isFocused && !SDKTheme.colors.isDarkTheme -> SDKTheme.colors.primary
-                            isFocused && SDKTheme.colors.isDarkTheme -> SDKTheme.colors.neutral
-                            isDisabled && !SDKTheme.colors.isDarkTheme -> SDKTheme.colors.mediumGrey
-                            isDisabled && SDKTheme.colors.isDarkTheme -> SDKTheme.colors.grey
+                            isFocused -> color.textPrimary().value
+                            isDisabled -> color.textAdditional().value
                             else -> when {
-                                (isError || errorMessage != null) && !isFocused && textValue.isNotEmpty() -> SDKTheme.colors.red
-                                else -> SDKTheme.colors.neutral
+                                (isError || errorMessage != null) && !isFocused && textValue.isNotEmpty() -> color.errorBorder().value
+                                else -> color.textPrimary().value
                             }
                         },
                         maxLines = 1
                     )
-                    if (isRequired && showRedStarForRequiredFields) {
+                    if (isRequired.not()) {
                         Text(
                             modifier = Modifier
                                 .semantics {
                                     invisibleToUser()
                                 },
-                            text = "*",
-                            color = SDKTheme.colors.red,
+                            text = " ", // TODO Replace to actual string from Override dictionary
+                        )
+
+                        Text(
+                            modifier = Modifier,
+                            text = "(optional)", // TODO Replace to actual string from Override dictionary
+                            color = SdkColorDefaults.inputColor().textAdditional().value,
                             maxLines = 1
                         )
                     }
@@ -214,11 +213,7 @@ internal fun CustomTextField(
                 if (!placeholder.isNullOrEmpty())
                     Text(
                         placeholder,
-                        color =
-                            if (isDisabled)
-                                SDKTheme.colors.mediumGrey
-                            else
-                                SDKTheme.colors.neutral,
+                        color = if (isDisabled) color.textAdditional().value else color.textPrimary().value,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 14.sp
@@ -251,6 +246,6 @@ private fun CustomTextFieldPreview() {
         keyboardType = KeyboardType.Number,
         onValueChanged = null,
         label = "LABEL",
-        isDisabled = false,
+        isDisabled = true,
     )
 }

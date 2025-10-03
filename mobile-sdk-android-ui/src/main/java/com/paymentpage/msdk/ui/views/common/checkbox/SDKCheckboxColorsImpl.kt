@@ -11,6 +11,8 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.state.ToggleableState
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.theme.selectedCheckBox
+import com.paymentpage.msdk.ui.theme.unselectedCheckBox
 
 private const val BoxInDuration = 50
 private const val BoxOutDuration = 100
@@ -94,21 +96,14 @@ private class SDKCheckboxColorsImpl(
 object SDKCheckboxDefaults {
     @Composable
     fun colors(
-        checkedColor: Color = SDKTheme.colors.primary,
-        uncheckedColor: Color =
-            if (!SDKTheme.colors.isDarkTheme)
-                SDKTheme.colors.container
-            else
-                SDKTheme.colors.highlight,
+        checkedColor: Color = selectedCheckBox,
+        uncheckedColor: Color = unselectedCheckBox,
         checkmarkColor: Color =
             if (!SDKTheme.colors.isDarkTheme)
                 SDKTheme.colors.background
             else
                 SDKTheme.colors.neutral,
-        uncheckedBoxColor: Color =
-            if (!SDKTheme.colors.isDarkTheme)
-                SDKTheme.colors.background
-            else SDKTheme.colors.inputField,
+        uncheckedBoxColor: Color = unselectedCheckBox,
         disabledIndeterminateColor: Color = checkedColor.copy(alpha = ContentAlpha.disabled),
     ): CheckboxColors {
         return remember(

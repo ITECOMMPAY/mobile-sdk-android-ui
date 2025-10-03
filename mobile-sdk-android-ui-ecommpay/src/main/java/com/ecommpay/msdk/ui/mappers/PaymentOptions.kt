@@ -1,5 +1,6 @@
 package com.ecommpay.msdk.ui.mappers
 
+import android.graphics.Bitmap
 import com.ecommpay.msdk.ui.EcmpAdditionalField
 import com.ecommpay.msdk.ui.EcmpAdditionalFieldType
 import com.ecommpay.msdk.ui.EcmpPaymentOptions
@@ -13,7 +14,10 @@ import com.paymentpage.msdk.ui.SDKAdditionalFieldType
 import com.paymentpage.msdk.ui.SDKPaymentOptions
 import com.paymentpage.msdk.ui.SDKScreenDisplayMode
 
-internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
+internal fun EcmpPaymentOptions.map(
+    footerImage: Bitmap? = null,
+    footerLabel: String? = null,
+): SDKPaymentOptions =
     SDKPaymentOptions(
         //payment configuration
         paymentInfo = paymentInfo,
@@ -33,12 +37,13 @@ internal fun EcmpPaymentOptions.map(): SDKPaymentOptions =
         merchantName = merchantName,
         merchantEnvironment = if (isTestEnvironment) GooglePayEnvironment.TEST else GooglePayEnvironment.PROD,
         //theme customization
-//        isDarkTheme = isDarkTheme, //TODO Should be fixed in further release
+        isDarkTheme = isDarkTheme,
         logoImage = logoImage,
         primaryBrandColor = primaryBrandColor,
         secondaryBrandColor = secondaryBrandColor,
         footerImage = footerImage,
         footerLabel = footerLabel,
+        hideFooterLogo = hideEcommpayLogo,
         //stored card type
         storedCardType = storedCardType
     )

@@ -15,13 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.theme.LocalDimensions
+import com.paymentpage.msdk.ui.theme.SDKColorButton
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.theme.defaults.SdkColorDefaults
 import com.paymentpage.msdk.ui.views.button.PayButton
 
 internal val circleButtonPadding = 4.dp
@@ -32,8 +33,7 @@ internal fun CustomButton(
     content: @Composable (RowScope.() -> Unit),
     isEnabled: Boolean,
     shape: Shape = SDKTheme.shapes.radius64,
-    secondaryColor: Color = SDKTheme.colors.secondary,
-    primaryColor: Color = SDKTheme.colors.primary,
+    color: SDKColorButton = SdkColorDefaults.buttonColor(),
     isRightArrowVisible: Boolean = true,
     onClick: () -> Unit,
 ) {
@@ -49,8 +49,8 @@ internal fun CustomButton(
                 .fillMaxWidth(),
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = secondaryColor,
-                disabledBackgroundColor = secondaryColor.copy(alpha = 0.3f)
+                backgroundColor = color.background().value,
+                disabledBackgroundColor = color.background().value.copy(alpha = 0.3f)
             ),
             shape = shape,
             border = null,
@@ -65,13 +65,13 @@ internal fun CustomButton(
                     .clip(SDKTheme.shapes.radius64)
                     .align(Alignment.BottomEnd)
                     .height(LocalDimensions.current.buttonHeight - circleButtonPadding * 2)
-                    .background(primaryColor.copy(alpha = alpha)),
+                    .background(color.circleBackground().value.copy(alpha = alpha)),
             ) {
                 Image(
                     Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = null,
                     modifier = Modifier.padding(8.dp),
-                    colorFilter = ColorFilter.tint(color = Color.White)
+                    colorFilter = ColorFilter.tint(color = color.arrow().value)
                 )
             }
         }

@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.theme.defaults.SdkColorDefaults
 
 @Composable
 internal fun SelectItemsDialog(
@@ -22,7 +23,7 @@ internal fun SelectItemsDialog(
     items: Map<String?, String?>,
     dialogShape: Shape = SDKTheme.shapes.radius12,
     itemShape: Shape = RectangleShape,
-    backgroundColor: Color = SDKTheme.colors.background,
+    backgroundColor: Color = SDKTheme.colors.cardBackground,
     onDismissRequest: () -> Unit,
     onClickItem: (String) -> Unit,
 ) {
@@ -47,7 +48,9 @@ internal fun SelectItemsDialog(
                                 onClick = {
                                     onClickItem(key)
                                 },
-                                secondaryColor = backgroundColor,
+                                color = SdkColorDefaults.buttonColor(
+                                    background = backgroundColor
+                                ),
                                 isEnabled = true,
                                 isRightArrowVisible = false,
                                 content = {

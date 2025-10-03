@@ -37,11 +37,10 @@ class EcmpPaymentOptions {
     var merchantName: String = ""
     var isTestEnvironment: Boolean = true
     //theme customization
-//    var isDarkTheme: Boolean = false //TODO Should be fixed in further release
+    var isDarkTheme: Boolean = false
     var logoImage: Bitmap? = null
     var primaryBrandColor: String? = null
     var secondaryBrandColor: String? = null
-    var footerImage: Bitmap? = null
-    var footerLabel: String? = null
+    var hideEcommpayLogo: Boolean = false
     var storedCardType: Int? = null
 }

@@ -36,7 +36,7 @@ internal class Images(
 }
 
 internal fun lightImages(): Images = Images(
-    defaultCardLogo = R.drawable.card_logo_light,
+    defaultCardLogo = R.drawable.ic_card_logo,
     cardScanningLogo = R.drawable.card_scanning_logo_light,
     apsDefaultLogo = R.drawable.aps_default_logo_light,
     googlePayMethodResId = R.drawable.payment_method_google_pay,
@@ -47,13 +47,13 @@ internal fun lightImages(): Images = Images(
 )
 
 internal fun darkImages(): Images = Images(
-    defaultCardLogo = R.drawable.card_logo_dark,
+    defaultCardLogo = R.drawable.ic_card_logo,
     cardScanningLogo = R.drawable.card_scanning_logo_dark,
     apsDefaultLogo = R.drawable.aps_default_logo_dark,
     googlePayMethodResId = R.drawable.payment_method_google_pay,
     googlePayLogo = R.drawable.googlepay_logo_dark,
-    successLogo = R.drawable.success_logo_dark,
-    errorLogo = R.drawable.error_logo_dark,
+    successLogo = R.drawable.ic_result_success_light,
+    errorLogo = R.drawable.ic_result_failed_light,
     cvvInfoLogo = R.drawable.cvv_info_icon_dark
 )
 

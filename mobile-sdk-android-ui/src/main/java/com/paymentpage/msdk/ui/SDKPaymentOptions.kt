@@ -26,12 +26,13 @@ class SDKPaymentOptions(
     val additionalFields: List<SDKAdditionalField> = emptyList(),
     val hideScanningCards: Boolean = false,
     //theme customization
-//    val isDarkTheme: Boolean = false, //TODO Should be fixed in further release
+    val isDarkTheme: Boolean = false,
     val logoImage: Bitmap? = null,
     var primaryBrandColor: String? = null,
     var secondaryBrandColor: String? = null,
     var footerImage: Bitmap? = null,
     var footerLabel: String? = null,
+    var hideFooterLogo: Boolean = false,
     //stored card type
     var storedCardType: Int? = null
 )

@@ -62,7 +62,7 @@ internal fun CustomerFieldsScreen(
             Box(
                 modifier = Modifier
                     .background(
-                        color = SDKTheme.colors.container,
+                        color = SDKTheme.colors.cardBackground,
                         shape = SDKTheme.shapes.radius20
                     ),
                 contentAlignment = Alignment.Center

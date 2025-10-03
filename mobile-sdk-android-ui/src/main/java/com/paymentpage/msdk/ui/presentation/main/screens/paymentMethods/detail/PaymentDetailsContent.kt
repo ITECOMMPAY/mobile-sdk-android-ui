@@ -11,13 +11,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.TestTagsConstants
@@ -42,7 +41,7 @@ fun PaymentDetailsContent(
                         heading()
                     },
                 text = paymentIdLabel,
-                style = SDKTheme.typography.s12Light.copy(color = Color.White.copy(alpha = 0.6f))
+                style = SDKTheme.typography.s12Light.copy(color = SDKTheme.colors.textPrimaryInverted.copy(alpha = 0.6f))
             )
             Spacer(modifier = Modifier.size(6.dp))
 
@@ -53,7 +52,7 @@ fun PaymentDetailsContent(
                         .align(Alignment.CenterVertically)
                         .weight(1f),
                     text = paymentIdValue,
-                    style = SDKTheme.typography.s14Bold.copy(color = Color.White),
+                    style = SDKTheme.typography.s14Bold.copy(color = SDKTheme.colors.textPrimaryInverted),
                 )
 
                 val currentContext = LocalContext.current
@@ -61,6 +60,7 @@ fun PaymentDetailsContent(
                 Image(
                     painter = painterResource(R.drawable.ic_clipboard_copy),
                     contentDescription = "Copy payment id",
+                    colorFilter = ColorFilter.tint(SDKTheme.colors.textPrimaryInverted),
                     modifier = Modifier.clickable {
                         currentContext.copyInClipBoard(text = paymentIdValue)
                     },
@@ -78,14 +78,14 @@ fun PaymentDetailsContent(
                         heading()
                     },
                 text = paymentDescriptionLabel,
-                style = SDKTheme.typography.s12Normal.copy(color = Color.White.copy(alpha = 0.6f))
+                style = SDKTheme.typography.s12Normal.copy(color = SDKTheme.colors.textPrimaryInverted.copy(alpha = 0.6f))
             )
             Spacer(modifier = Modifier.size(6.dp))
             Text(
                 modifier = Modifier
                     .testTag(TestTagsConstants.PAYMENT_DESCRIPTION_VALUE_TEXT),
                 text = paymentDescriptionValue,
-                style = SDKTheme.typography.s14Normal.copy(color = Color.White)
+                style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.textPrimaryInverted)
             )
         }
     }

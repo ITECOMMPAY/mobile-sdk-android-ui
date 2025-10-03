@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,7 +28,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.init.WalletSaveMode
-import com.paymentpage.msdk.core.validators.custom.PanValidator
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
@@ -49,14 +49,10 @@ import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.customColor
 import com.paymentpage.msdk.ui.views.button.CustomOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
-import com.paymentpage.msdk.ui.views.card.CvvField
-import com.paymentpage.msdk.ui.views.card.ExpiryField
-import com.paymentpage.msdk.ui.views.card.panField.PanField
+import com.paymentpage.msdk.ui.views.card.CombinedCardField
 import com.paymentpage.msdk.ui.views.common.SDKTextWithLink
 import com.paymentpage.msdk.ui.views.common.checkbox.SDKCheckboxDefaults
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
-import kotlin.collections.contains
-import kotlin.text.uppercase
 
 @Composable
 internal fun NewCardItem(
@@ -64,8 +60,6 @@ internal fun NewCardItem(
     actionType: SDKActionType,
     isOnlyOneMethodOnScreen: Boolean = false,
 ) {
-    val panValidator = remember { PanValidator() }
-
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
@@ -74,21 +68,16 @@ internal fun NewCardItem(
     val additionalFields = paymentOptions.additionalFields
     var savedState by remember { mutableStateOf(method.saveCard) }
 
+    var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
+    var isCardFieldsValid by remember { mutableStateOf<Boolean>(method.isValidPan && method.isValidExpiry && method.isValidCvv) }
+    var isCardHolderValid by remember { mutableStateOf(method.isValidCardHolder) }
+
     var scanningResult by remember {
         mutableStateOf<CardScanningActivityContract.Result?>(
             value = null,
             policy = neverEqualPolicy()
         )
     }
-
-    var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
-    var isCvvValid by remember { mutableStateOf(method.isValidCvv) }
-    var isPanValid by remember { mutableStateOf(method.isValidPan) }
-    var isCardHolderValid by remember { mutableStateOf(method.isValidCardHolder) }
-    var isExpiryValid by remember { mutableStateOf(method.isValidExpiry) }
-    var cardType by remember { mutableStateOf<String?>(null) }
-
-    var cardPanError by remember { mutableStateOf<String?>(null) }
 
     val checkedStateContentDescription =
         stringResource(id = R.string.checked_state_content_description)
@@ -99,96 +88,22 @@ internal fun NewCardItem(
         method = method,
         isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
         fallbackIcon = painterResource(id = SDKTheme.images.defaultCardLogo),
-        //default card icon color
-        iconColor = ColorFilter.tint(
-            color = customColor(paymentOptions.primaryBrandColor)
-        ),
     ) {
         Column(Modifier.fillMaxWidth()) {
-            PanField(
-                initialValue = method.pan,
-                scanningPan = scanningResult?.pan,
-                paymentMethod = method.paymentMethod,
-                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 8.dp, bottomEnd = 8.dp),
-                onValueChanged = { value, isValid ->
-                    isPanValid = isValid
-                    method.pan = value
-                    method.isValidPan = isValid
-                    scanningResult = null
+            CombinedCardField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                method = method,
+                hideScanningCard = paymentOptions.hideScanningCards,
+                onScanningResultReceived = {
+                    scanningResult = it
                 },
-                onRequestValidatorMessage = {
-                    cardPanError = when {
-                        it.isEmpty() -> getStringOverride(OverridesKeys.MESSAGE_REQUIRED_FIELD)
-                        !panValidator.isValid(it) -> getStringOverride(OverridesKeys.MESSAGE_ABOUT_CARD_NUMBER)
-                        cardType == null -> null
-                        !method.paymentMethod.availableCardTypes.contains(cardType) -> {
-                            val regex = Regex("\\[\\[.+]]")
-                            val message = regex.replace(
-                                getStringOverride(OverridesKeys.MESSAGE_WRONG_CARD_TYPE),
-                                cardType?.uppercase() ?: ""
-                            )
-                            message
-                        }
-                        else -> null
-                    }
-
-                    null to (cardPanError != null)
-                },
-                onPaymentMethodCardTypeChange = {
-                    cardType = it
-                },
-                onScanningResult = { result ->
-                    scanningResult = result
-                },
-                testTag = "${
-                    TestTagsConstants.PREFIX_NEW_CARD
-                }${
-                    TestTagsConstants.PAN_TEXT_FIELD
-                }"
+                onValidationChanged = {
+                    isCardFieldsValid = it
+                }
             )
 
-            Spacer(modifier = Modifier.size(2.dp))
-
-            Row {
-                ExpiryField(
-                    modifier = Modifier
-                        .weight(1f),
-                    shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp, bottomStart = 16.dp, bottomEnd = 8.dp),
-                    initialValue = method.expiry,
-                    scanningExpiry = scanningResult?.expiry,
-                    errorMessage = cardPanError,
-                    onValueChanged = { value, isValid ->
-                        isExpiryValid = isValid
-                        method.expiry = value
-                        method.isValidExpiry = isValid
-                        scanningResult = null
-                    },
-                    testTag = "${
-                        TestTagsConstants.PREFIX_NEW_CARD
-                    }${
-                        TestTagsConstants.EXPIRY_TEXT_FIELD
-                    }"
-                )
-                Spacer(modifier = Modifier.size(10.dp))
-                CvvField(
-                    modifier = Modifier
-                        .weight(1f),
-                    shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp, bottomStart = 8.dp, bottomEnd = 16.dp),
-                    initialValue = method.cvv,
-                    cardType = cardType,
-                    onValueChanged = { value, isValid ->
-                        isCvvValid = isValid
-                        method.cvv = value
-                        method.isValidCvv = isValid
-                    },
-                    testTag = "${
-                        TestTagsConstants.PREFIX_NEW_CARD
-                    }${
-                        TestTagsConstants.CVV_TEXT_FIELD
-                    }"
-                )
-            }
-            Spacer(modifier = Modifier.size(7.dp))
+            Spacer(modifier = Modifier.size(8.dp))
             CardHolderField(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -253,13 +168,16 @@ internal fun NewCardItem(
                     verticalAlignment = Alignment.Top
                 ) {
                     Checkbox(
-                        modifier = Modifier.size(25.dp),
+                        modifier = Modifier
+                            .padding(top = 2.dp)
+                            .size(18.dp)
+                            .clip(SDKTheme.shapes.radius4),
                         checked = savedState,
                         //Parent composable fun controls checked state of this checkbox
                         onCheckedChange = null,
                         colors = SDKCheckboxDefaults.colors()
                     )
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
                             text = getStringOverride(OverridesKeys.TITLE_SAVED_CARDS),
@@ -269,7 +187,7 @@ internal fun NewCardItem(
                         SDKTextWithLink(
                             overrideKey = OverridesKeys.COF_AGREEMENTS,
                             fontFamily = InterFamily,
-                            style = SDKTheme.typography.s14Light
+                            style = SDKTheme.typography.s14Normal
                         )
                     }
                 }
@@ -280,7 +198,7 @@ internal fun NewCardItem(
                 testTagPrefix = TestTagsConstants.PREFIX_NEW_CARD,
                 method = method,
                 customerFields = customerFields,
-                isValid = isCvvValid && isPanValid && isCardHolderValid && isExpiryValid,
+                isValid = isCardFieldsValid && isCardHolderValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
                     paymentMethodsViewModel.setCurrentMethod(method)

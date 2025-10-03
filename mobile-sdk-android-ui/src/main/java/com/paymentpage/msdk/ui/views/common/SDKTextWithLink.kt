@@ -38,14 +38,13 @@ internal fun SDKTextWithLink(
             style = style
         )
     } else {
-        val linkedString = linkedMessage.annotatedString()
+        val linkedString = linkedMessage.annotatedString(style)
         val uriHandler = LocalUriHandler.current
         ClickableText(
             modifier = Modifier
                 .semantics {
                     contentDescription = "${linkedMessage.message} $linkRoleContentDescription"
-                }
-                .testTag("${overrideKey.uppercase()}${TestTagsConstants.POSTFIX_LINK}"),
+                }.testTag("${overrideKey.uppercase()}${TestTagsConstants.POSTFIX_LINK}"),
             style = style,
             text = linkedString,
             maxLines = maxLines,

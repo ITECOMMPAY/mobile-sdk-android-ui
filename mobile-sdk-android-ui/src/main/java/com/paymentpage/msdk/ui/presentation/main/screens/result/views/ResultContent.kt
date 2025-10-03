@@ -14,7 +14,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.base.ErrorCode
@@ -28,6 +27,7 @@ import com.paymentpage.msdk.ui.presentation.main.screens.result.views.table.Comp
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.table.PaymentInfoTable
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.theme.SohneBreitFamily
+import com.paymentpage.msdk.ui.theme.defaults.SdkColorDefaults
 import com.paymentpage.msdk.ui.utils.extensions.core.RecurrentTypeUI
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.isShowRecurringUI
@@ -62,9 +62,10 @@ internal fun ResultContent(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .background(
-                    color = if (!SDKTheme.colors.isDarkTheme) Color.White else SDKTheme.colors.container,
-                    shape = SDKTheme.shapes.radius12
-                ).padding(25.dp)
+                    color = SDKTheme.colors.cardBackground,
+                    shape = SDKTheme.shapes.radius16
+                )
+                .padding(25.dp)
         ) {
             if (
                 recurrentInfo != null &&
@@ -88,8 +89,10 @@ internal fun ResultContent(
                     actionType = paymentOptions.actionType,
                     paymentInfo = paymentOptions.paymentInfo,
                     recurrentInfo = recurrentInfo,
-                    labelTextStyle = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.grey),
-                    valueTextStyle = SDKTheme.typography.s14Normal,
+                    labelTextStyle = SDKTheme.typography.s14Normal.copy(
+                        color = SdkColorDefaults.inputColor().textAdditional().value
+                    ),
+                    valueTextStyle = SDKTheme.typography.s14Normal.copy(SDKTheme.colors.textPrimary),
                     spaceBetweenItems = 15.dp,
                     isTableEmptyCallback = { isDividerVisible = !it }
                 )

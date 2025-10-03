@@ -115,20 +115,20 @@ internal fun ResultDeclineContent(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Spacer(modifier = Modifier.size(15.dp))
+                        Spacer(modifier = Modifier.size(12.dp))
                         Text(
                             text = if (actionType == SDKActionType.Verify)
                                 getStringOverride(OverridesKeys.TITLE_RESULT_ERROR_VERIFICATION)
                             else
                                 getStringOverride(OverridesKeys.TITLE_RESULT_ERROR_PAYMENT),
-                            style = SDKTheme.typography.s24Bold,
+                            style = SDKTheme.typography.s20SemiBold,
                             textAlign = TextAlign.Center
                         )
                         if (!payment.paymentMassage.isNullOrEmpty()) {
-                            Spacer(modifier = Modifier.size(5.dp))
+                            Spacer(modifier = Modifier.size(8.dp))
                             Text(
                                 text = payment.paymentMassage!!,
-                                style = SDKTheme.typography.s14Normal.copy(color = SDKTheme.colors.red),
+                                style = SDKTheme.typography.s16Normal,
                                 textAlign = TextAlign.Center
                             )
                         }
@@ -144,7 +144,7 @@ internal fun ResultDeclineContent(
                         initialOffsetYRatio = 0.3f
                     ) {
                         Column {
-                            Spacer(modifier = Modifier.size(15.dp))
+                            Spacer(modifier = Modifier.size(24.dp))
                             ExpandablePaymentOverview(
                                 actionType = actionType,
                                 expandable = false
@@ -159,7 +159,7 @@ internal fun ResultDeclineContent(
                     initialOffsetYRatio = 0.3f
                 ) {
                     Column {
-                        Spacer(modifier = Modifier.size(15.dp))
+                        Spacer(modifier = Modifier.size(24.dp))
                         ResultContent(onError)
                     }
                 }
@@ -171,7 +171,7 @@ internal fun ResultDeclineContent(
                     initialOffsetYRatio = 0.3f
                 ) {
                     Column {
-                        Spacer(modifier = Modifier.size(15.dp))
+                        Spacer(modifier = Modifier.size(24.dp))
                         if (!isTryAgain)
                             SDKButton(
                                 modifier = Modifier
