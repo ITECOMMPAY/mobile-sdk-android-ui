@@ -15,7 +15,7 @@ data class PaymentData(
     val forcePaymentMethod: String? = null,
     val token: String? = null,
     val hideSavedWallets: Boolean = false,
-    val secretKey: String = "1d2bd69318a1e3c77a0cb3f608c0b53bf1778d0e886fc776f361348cb8be7d38425cdd722524eca922c0031d40eef83d91a7d15c69015520933bec01f84c1c31",
+    val secretKey: String = "",
     val apiHost: String = BuildConfig.API_HOST,
     val wsApiHost: String = BuildConfig.WS_API_HOST,
     val merchantId: String = "BCR2DN6TZ75OBLTH",
