@@ -16,12 +16,10 @@ class Ecommpay(
 ) {
     private val paymentSDK = PaymentSDK(
         context = context,
-        paymentOptions = paymentOptions.map().also {
-            if (it.footerImage == null)
-                it.footerImage = context.getBitmapFromVectorDrawable(R.drawable.sdk_logo)
-            if (it.footerLabel == null)
-                it.footerLabel = context.getString(R.string.powered_by_label)
-        },
+        paymentOptions = paymentOptions.map(
+            footerImage = context.getBitmapFromVectorDrawable(R.drawable.sdk_logo),
+            footerLabel = context.getString(R.string.powered_by_label)
+        ),
         mockModeType = mockModeType.map()
     )
 

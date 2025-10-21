@@ -4,7 +4,10 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -129,14 +132,17 @@ private fun Content(
 
     SDKScaffold(
         title = stringResource(id = screenTitleResourceId),
-        notScrollableContent = {
+        scrollableContent = {
             Loading()
-            Spacer(modifier = Modifier.size(5.dp))
+            Spacer(modifier = Modifier.size(24.dp))
             SDKFooter(
                 isVisiblePrivacyPolicy = false,
                 isVisibleCookiePolicy = false
             )
             Spacer(modifier = Modifier.size(25.dp))
+            Spacer(
+                Modifier.windowInsetsBottomHeight(WindowInsets.ime)
+            )
         },
         onClose = onCancel
     )
@@ -144,37 +150,31 @@ private fun Content(
 
 @Composable
 private fun Loading(
-    range: IntRange = (1..5),
+    range: IntRange = (1..3),
 ) {
     ShimmerAnimatedItem(
         itemHeight = 150.dp,
-        borderRadius = 12.dp
+        borderRadius = 20.dp
     )
     Spacer(modifier = Modifier.size(10.dp))
-    Row {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            ShimmerAnimatedItem(
-                itemHeight = 50.dp,
-                borderRadius = 6.dp,
-            )
-        }
-        Spacer(modifier = Modifier.size(10.dp))
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            ShimmerAnimatedItem(
-                itemHeight = 50.dp,
-                borderRadius = 6.dp,
-            )
-        }
-    }
+
+    ShimmerAnimatedItem(
+        itemHeight = 50.dp,
+        borderRadius = 20.dp
+    )
+
+    Spacer(modifier = Modifier.size(10.dp))
+
+    ShimmerAnimatedItem(
+        itemHeight = 300.dp,
+        borderRadius = 20.dp
+    )
+
     Spacer(modifier = Modifier.size(10.dp))
     range.forEach { _ ->
         ShimmerAnimatedItem(
             itemHeight = 50.dp,
-            borderRadius = 6.dp
+            borderRadius = 20.dp
         )
         Spacer(modifier = Modifier.size(10.dp))
     }
@@ -183,8 +183,7 @@ private fun Loading(
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun LoadingPreview() {
-    Content(
-        actionType = SDKActionType.Sale,
-        onCancel = {}
-    )
+    Column {
+        Loading()
+    }
 }

@@ -13,15 +13,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.paymentpage.msdk.core.domain.entities.SdkExpiry
+import com.paymentpage.msdk.core.validators.custom.PanValidator
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
 import com.paymentpage.msdk.ui.presentation.main.payNewCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.button.SaveButton
@@ -41,6 +45,7 @@ internal fun TokenizeCardPayItem(
     val tokenizeCustomerFields = remember {
         method.paymentMethod.customerFields.filter { it.isTokenize }
     }
+    val panValidator = remember { PanValidator() }
 
     var scanningResult by remember {
         mutableStateOf<CardScanningActivityContract.Result?>(
@@ -54,6 +59,8 @@ internal fun TokenizeCardPayItem(
     var isPanValid by remember { mutableStateOf(method.isValidPan) }
     var isCardHolderValid by remember { mutableStateOf(method.isValidCardHolder) }
     var isExpiryValid by remember { mutableStateOf(method.isValidExpiry) }
+    var cardPanError by remember { mutableStateOf<String?>(null) }
+    var cardExpirationError by remember { mutableStateOf<String?>(null) }
     var cardType by remember { mutableStateOf<String?>(null) }
 
     ExpandablePaymentMethodItem(
@@ -63,7 +70,7 @@ internal fun TokenizeCardPayItem(
         Spacer(modifier = Modifier.size(10.dp))
         Column(Modifier.fillMaxWidth()) {
             PanField(
-                initialValue = method.pan,
+                initialValue = method.pan.orEmpty(),
                 scanningPan = scanningResult?.pan,
                 paymentMethod = method.paymentMethod,
                 onValueChanged = { value, isValid ->
@@ -71,6 +78,25 @@ internal fun TokenizeCardPayItem(
                     method.pan = value
                     method.isValidPan = isValid
                     scanningResult = null
+                },
+                onRequestValidatorMessage = {
+                    cardPanError = when {
+                        it.isEmpty() -> getStringOverride(OverridesKeys.MESSAGE_REQUIRED_FIELD)
+                        !panValidator.isValid(it) -> getStringOverride(OverridesKeys.MESSAGE_ABOUT_CARD_NUMBER)
+                        cardType == null -> null
+                        !method.paymentMethod.availableCardTypes.contains(cardType) -> {
+                            val regex = Regex("\\[\\[.+]]")
+                            val message = regex.replace(
+                                getStringOverride(OverridesKeys.MESSAGE_WRONG_CARD_TYPE),
+                                cardType?.uppercase() ?: ""
+                            )
+                            message
+                        }
+
+                        else -> null
+                    }
+
+                    null to (cardPanError != null)
                 },
                 onPaymentMethodCardTypeChange = {
                     cardType = it
@@ -105,6 +131,18 @@ internal fun TokenizeCardPayItem(
                     method.expiry = value
                     method.isValidExpiry = isValid
                     scanningResult = null
+                },
+                onRequestValidatorMessage = {
+                    val expiryDate = SdkExpiry(it)
+
+                    cardExpirationError = when {
+                        !expiryDate.isValid() || !expiryDate.isMoreThanNow() ->
+                            getStringOverride(OverridesKeys.MESSAGE_ABOUT_EXPIRY)
+
+                        else -> null
+                    }
+
+                    cardExpirationError
                 },
                 testTag = TestTagsConstants.EXPIRY_TEXT_FIELD
             )

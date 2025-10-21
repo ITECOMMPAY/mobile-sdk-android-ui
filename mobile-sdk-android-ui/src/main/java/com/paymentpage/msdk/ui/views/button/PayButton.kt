@@ -11,20 +11,23 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.invisibleToUser
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.paymentpage.msdk.ui.TestTagsConstants
+import com.paymentpage.msdk.ui.theme.SDKColorButton
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.theme.SohneBreitFamily
+import com.paymentpage.msdk.ui.theme.defaults.SdkColorDefaults
+import com.paymentpage.msdk.ui.utils.extensions.toCurrencySign
 import com.paymentpage.msdk.ui.views.common.CustomButton
+import com.paymentpage.msdk.ui.views.recurring.RecurringAgreements
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun PayButton(
     modifier: Modifier = Modifier,
     isEnabled: Boolean,
-    primaryColor: Color = SDKTheme.colors.primary,
-    secondaryColor: Color = SDKTheme.colors.secondary,
-    textColor: Color = Color.Black.copy(
+    color: SDKColorButton = SdkColorDefaults.buttonColor(),
+    textColor: Color = color.text().value.copy(
         alpha = when {
             isEnabled -> 1.0f
             //disabled && darkTheme
@@ -41,12 +44,14 @@ internal fun PayButton(
         modifier = modifier.semantics(mergeDescendants = true) {},
         isEnabled = isEnabled,
         shape = SDKTheme.shapes.radius20,
+        color = color,
         content = {
             Text(
                 modifier = Modifier
                     .testTag(TestTagsConstants.BUTTON_LABEL_TEXT),
                 text = payLabel,
-                style = SDKTheme.typography.s16Normal.copy(color = textColor)
+                fontFamily = SohneBreitFamily,
+                style = SDKTheme.typography.s14SemiBold.copy(color = textColor)
             )
             Text(
                 modifier = Modifier
@@ -65,10 +70,10 @@ internal fun PayButton(
                     Text(
                         modifier = Modifier
                             .testTag(TestTagsConstants.BUTTON_CURRENCY_TEXT),
-                        text = currency,
-                        style = SDKTheme.typography.s16Normal.copy(
+                        text = currency.toCurrencySign(),
+                        fontFamily = SohneBreitFamily,
+                        style = SDKTheme.typography.s14SemiBold.copy(
                             color = textColor,
-                            fontWeight = FontWeight.Bold
                         )
                     )
                     Text(
@@ -82,9 +87,9 @@ internal fun PayButton(
                         modifier = Modifier
                             .testTag(TestTagsConstants.BUTTON_AMOUNT_TEXT),
                         text = amount,
-                        style = SDKTheme.typography.s16Normal.copy(
+                        fontFamily = SohneBreitFamily,
+                        style = SDKTheme.typography.s14SemiBold.copy(
                             color = textColor,
-                            fontWeight = FontWeight.Bold
                         )
                     )
                 }
@@ -92,8 +97,8 @@ internal fun PayButton(
         },
         onClick = onClick
     )
-//    if (showRecurringAgreement)
-//        RecurringAgreements()
+    if (showRecurringAgreement)
+        RecurringAgreements()
 }
 
 @Composable

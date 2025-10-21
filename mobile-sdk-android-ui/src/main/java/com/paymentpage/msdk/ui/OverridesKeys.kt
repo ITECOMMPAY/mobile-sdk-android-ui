@@ -99,4 +99,5 @@ internal object OverridesKeys {
     internal const val TITLE = "title"
 
     internal const val TITLE_PRIVACY_POLICY = "privacy_policy"
+    internal const val TITLE_COOKIE_POLICY = "cookie_policy"
 }

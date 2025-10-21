@@ -10,7 +10,7 @@ import com.paymentpage.msdk.ui.utils.MaskVisualTransformation
 internal fun DateCustomerTextField(
     value: String? = null,
     onValueChanged: (CustomerField, String, Boolean) -> Unit,
-    customerField: CustomerField
+    customerField: CustomerField,
 ) {
     BaseCustomerTextField(
         initialValue = value?.replace("-", ""),

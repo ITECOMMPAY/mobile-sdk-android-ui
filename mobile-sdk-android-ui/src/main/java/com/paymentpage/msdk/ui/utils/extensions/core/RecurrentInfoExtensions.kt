@@ -6,6 +6,7 @@ import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.patternDateToPatternDate
+import com.paymentpage.msdk.ui.utils.extensions.toCurrencySign
 import java.util.Locale
 
 private fun RecurrentInfo.period(): RecurrentPeriod? =
@@ -33,9 +34,9 @@ internal fun RecurrentInfo.periodUI(): String? =
 
 internal fun RecurrentInfo.amountUI(paymentInfo: PaymentInfo): String =
     if (this.amount == null)
-        "${paymentInfo.paymentAmount.amountToCoins()} ${paymentInfo.paymentCurrency.uppercase()}"
+        "${paymentInfo.paymentAmount.amountToCoins()} ${paymentInfo.paymentCurrency.uppercase().toCurrencySign()}"
     else
-        "${this.amount.amountToCoins()} ${paymentInfo.paymentCurrency.uppercase()}"
+        "${this.amount.amountToCoins()} ${paymentInfo.paymentCurrency.uppercase().toCurrencySign()}"
 
 internal fun RecurrentInfo.chargedAmountUI(
     actionType: SDKActionType,
@@ -46,7 +47,7 @@ internal fun RecurrentInfo.chargedAmountUI(
         actionType == SDKActionType.Verify &&
         this.periodUI() != null
     )
-        "0.00 ${paymentInfo.paymentCurrency.uppercase()}"
+        "0.00 ${paymentInfo.paymentCurrency.uppercase().toCurrencySign()}"
     else
         null
 

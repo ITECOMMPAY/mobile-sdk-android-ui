@@ -64,12 +64,12 @@ internal fun CardScanningItem(
     )
     Box(
         modifier = modifier
-            .clip(SDKTheme.shapes.radius6)
+            .clip(SDKTheme.shapes.radius16)
             .background(SDKTheme.colors.inputField)
             .border(
                 width = 1.dp,
                 color = SDKTheme.colors.highlight,
-                shape = SDKTheme.shapes.radius6
+                shape = SDKTheme.shapes.radius16
             )
             .clickable {
                 permissionRequestState = showState

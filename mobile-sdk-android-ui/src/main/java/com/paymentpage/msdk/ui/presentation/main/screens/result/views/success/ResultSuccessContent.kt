@@ -110,15 +110,23 @@ internal fun ResultSuccessContent(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Spacer(modifier = Modifier.size(15.dp))
+                        Spacer(modifier = Modifier.size(12.dp))
                         Text(
                             text = if (actionType == SDKActionType.Verify)
                                 getStringOverride(OverridesKeys.TITLE_RESULT_SUCCES_VERIFICATION)
                             else
                                 getStringOverride(OverridesKeys.TITLE_RESULT_SUCCES_PAYMENT),
-                            style = SDKTheme.typography.s24Bold,
+                            style = SDKTheme.typography.s20SemiBold,
                             textAlign = TextAlign.Center
                         )
+                        if (!payment.paymentMassage.isNullOrEmpty()) {
+                            Spacer(modifier = Modifier.size(8.dp))
+                            Text(
+                                text = payment.paymentMassage!!,
+                                style = SDKTheme.typography.s16Normal,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
 
@@ -131,7 +139,7 @@ internal fun ResultSuccessContent(
                         initialOffsetYRatio = 0.3f
                     ) {
                         Column {
-                            Spacer(modifier = Modifier.size(15.dp))
+                            Spacer(modifier = Modifier.size(24.dp))
                             ExpandablePaymentOverview(
                                 actionType = actionType,
                                 expandable = false
@@ -146,7 +154,7 @@ internal fun ResultSuccessContent(
                     initialOffsetYRatio = 0.3f
                 ) {
                     Column {
-                        Spacer(modifier = Modifier.size(15.dp))
+                        Spacer(modifier = Modifier.size(24.dp))
                         ResultContent(onError)
                     }
                 }
@@ -158,7 +166,7 @@ internal fun ResultSuccessContent(
                     initialOffsetYRatio = 0.3f
                 ) {
                     Column {
-                        Spacer(modifier = Modifier.size(15.dp))
+                        Spacer(modifier = Modifier.size(24.dp))
                         SDKButton(
                             modifier = Modifier
                                 .testTag(TestTagsConstants.DONE_BUTTON),

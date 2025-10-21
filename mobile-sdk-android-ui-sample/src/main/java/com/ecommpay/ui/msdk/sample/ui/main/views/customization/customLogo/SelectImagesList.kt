@@ -3,7 +3,13 @@ package com.ecommpay.ui.msdk.sample.ui.main.views.customization.customLogo
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
@@ -22,6 +28,7 @@ import com.ecommpay.ui.msdk.sample.utils.extensions.bitmapFromUri
 import com.ecommpay.ui.msdk.sample.utils.extensions.resIdByName
 import com.ecommpay.ui.msdk.sample.utils.extensions.uriFromResourceId
 
+private const val SKIPPED_DRAWABLE_NAME = "default"
 
 @Composable
 internal fun SelectImagesList(
@@ -30,7 +37,10 @@ internal fun SelectImagesList(
     intentListener: (MainViewIntents) -> Unit,
 ) {
     val context = LocalContext.current
-    val drawablesFields = R.drawable::class.java.fields.filter { it.name.contains("_logo") }
+    val drawablesFields = R.drawable::class.java.fields.filter {
+        it.name.contains("_logo") && it.name.contains(SKIPPED_DRAWABLE_NAME).not()
+    }
+
     drawablesFields.forEachIndexed { index, field ->
         Row(
             modifier = Modifier.fillMaxWidth(),

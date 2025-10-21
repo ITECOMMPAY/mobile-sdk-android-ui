@@ -29,8 +29,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
@@ -39,8 +40,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalMsdkSession
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
@@ -51,6 +50,8 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.P
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.table.RecurrentInfoTable
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.theme.SohneBreitFamily
+import com.paymentpage.msdk.ui.theme.defaults.SdkColorDefaults
+import com.paymentpage.msdk.ui.theme.selectColor
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.RecurrentTypeUI
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -87,7 +88,13 @@ internal fun ExpandablePaymentOverview(
     var isExpanded by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
-            .background(SDKTheme.colors.primary, shape = SDKTheme.shapes.radius20)
+            .background(
+                selectColor(
+                    SDKTheme.colors.primary,
+                    SDKTheme.colors.secondary
+                ),
+                shape = SDKTheme.shapes.radius20
+            )
             .fillMaxWidth()
     ) {
         Box(
@@ -97,6 +104,7 @@ internal fun ExpandablePaymentOverview(
                 painter = painterResource(R.drawable.card_payment_overview_background),
                 contentDescription = "background",
                 modifier = Modifier.matchParentSize(),
+                colorFilter = ColorFilter.tint(SDKTheme.colors.cardBackground),
                 contentScale = ContentScale.Crop
             )
             Column(
@@ -145,7 +153,7 @@ internal fun ExpandablePaymentOverview(
                                 .align(Alignment.CenterVertically)
                                 .testTag(TestTagsConstants.LANGUAGE_VALUE_TEXT),
                             text = language.toLanguageCode(),
-                            style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
+                            style = SDKTheme.typography.s14SemiBold.copy(color = SDKTheme.colors.textPrimaryInverted)
                         )
                     }
                 }
@@ -161,7 +169,7 @@ internal fun ExpandablePaymentOverview(
                         actionType = actionType,
                         paymentInfo = paymentOptions.paymentInfo,
                         recurrentInfo = paymentOptions.recurrentInfo,
-                        labelTextStyle = SDKTheme.typography.s14Light.copy(color = Color.White),
+                        labelTextStyle = SDKTheme.typography.s14Light.copy(color = SDKTheme.colors.textPrimaryInverted),
                         spaceBetweenItems = 12.dp,
                         isTableEmptyCallback = { isDividerVisible = !it }
                     )
@@ -183,7 +191,7 @@ internal fun ExpandablePaymentOverview(
                                         .testTag(TestTagsConstants.PAYMENT_ID_LABEL_TEXT),
                                     text = paymentIdLabel,
                                     style = SDKTheme.typography.s12Light.copy(
-                                        color = Color.White.copy(
+                                        color = SDKTheme.colors.textPrimaryInverted.copy(
                                             alpha = 0.6f
                                         )
                                     )
@@ -193,7 +201,7 @@ internal fun ExpandablePaymentOverview(
                                     modifier = Modifier
                                         .testTag(TestTagsConstants.PAYMENT_ID_VALUE_TEXT),
                                     text = paymentIdValueFinal,
-                                    style = SDKTheme.typography.s14Bold.copy(color = Color.White)
+                                    style = SDKTheme.typography.s14Bold.copy(color = SDKTheme.colors.textPrimaryInverted)
                                 )
                             }
                         }
@@ -202,7 +210,8 @@ internal fun ExpandablePaymentOverview(
                     else -> {
                         val coinsText =
                             LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins()
-                        val currencyText = paymentOptions.paymentInfo.paymentCurrency.toCurrencySign()
+                        val currencyText =
+                            paymentOptions.paymentInfo.paymentCurrency.toCurrencySign()
 
                         Box(
                             modifier = Modifier
@@ -216,7 +225,7 @@ internal fun ExpandablePaymentOverview(
                                         .testTag(TestTagsConstants.CURRENCY_VALUE_TEXT),
                                     text = currencyText,
                                     fontFamily = SohneBreitFamily,
-                                    style = SDKTheme.typography.s36Medium.copy(color = Color.White)
+                                    style = SDKTheme.typography.s36Medium.copy(color = SDKTheme.colors.textPrimaryInverted)
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
@@ -224,7 +233,7 @@ internal fun ExpandablePaymentOverview(
                                         .testTag(TestTagsConstants.COINS_VALUE_TEXT),
                                     text = coinsText,
                                     fontFamily = SohneBreitFamily,
-                                    style = SDKTheme.typography.s36Medium.copy(color = Color.White)
+                                    style = SDKTheme.typography.s36Medium.copy(color = SDKTheme.colors.textPrimaryInverted)
                                 )
                             }
                         }
@@ -264,7 +273,7 @@ internal fun ExpandablePaymentOverview(
                                 .align(Alignment.CenterVertically),
                             text = paymentDetailsLabel,
                             fontFamily = SohneBreitFamily,
-                            style = SDKTheme.typography.s14SemiBold.copy(color = Color.White)
+                            style = SDKTheme.typography.s14SemiBold.copy(color = SDKTheme.colors.textPrimaryInverted)
                         )
 
                         val rotationDegree = when (isExpanded) {
@@ -281,14 +290,31 @@ internal fun ExpandablePaymentOverview(
                             )
                         }
 
-                        Image(
-                            painter = painterResource(R.drawable.ic_payment_details_expand),
+                        Box(
                             modifier = Modifier
+                                .size(28.dp)
+                                .clip(SDKTheme.shapes.radius32)
+                                .background(
+                                    selectColor(
+                                        SDKTheme.colors.secondary,
+                                        SDKTheme.colors.primary
+                                    )
+                                )
                                 .testTag(TestTagsConstants.PAYMENT_DETAILS_BUTTON)
-                                .rotate(rotation.value)
                                 .clickable { isExpanded = !isExpanded },
-                            contentDescription = null,
-                        )
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.ic_expand_arrow),
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .rotate(rotation.value),
+                                colorFilter = ColorFilter.tint(
+                                    SdkColorDefaults.buttonColor().text().value
+                                ),
+                                contentDescription = null,
+                            )
+                        }
+
                     }
                 }
             }

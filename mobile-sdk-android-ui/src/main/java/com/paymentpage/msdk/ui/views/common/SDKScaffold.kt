@@ -3,7 +3,16 @@ package com.paymentpage.msdk.ui.views.common
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -17,12 +26,12 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.invisibleToUser
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.MSDKCoreSession
 import com.paymentpage.msdk.core.MSDKCoreSessionConfig
 import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.utils.Duration
-import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.SDKCommonProvider
 import com.paymentpage.msdk.ui.SDKPaymentOptions
 import com.paymentpage.msdk.ui.TestTagsConstants
@@ -36,6 +45,7 @@ internal fun SDKScaffold(
     modifier: Modifier = Modifier,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+    horizontalPadding: Dp = 16.dp,
     title: String? = null,
     showCloseButton: Boolean = true,
     notScrollableContent: (@Composable ColumnScope.() -> Unit)? = null,
@@ -66,7 +76,8 @@ internal fun SDKScaffold(
                 )
                 .height(LocalConfiguration.current.screenHeightDp.dp * 0.9f) //Height of bottom sheet
                 .fillMaxWidth()
-                .padding(top = 25.dp, start = 25.dp, end = 25.dp),
+                .padding(top = 25.dp)
+                .padding(horizontal = horizontalPadding),
             content = {
                 if (title != null || showCloseButton || onBack != null) {
                     SDKTopBar(

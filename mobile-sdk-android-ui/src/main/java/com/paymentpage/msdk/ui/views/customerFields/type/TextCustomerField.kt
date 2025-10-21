@@ -7,7 +7,7 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 internal fun TextCustomerTextField(
     value: String? = null,
     onValueChanged: (CustomerField, String, Boolean) -> Unit,
-    customerField: CustomerField
+    customerField: CustomerField,
 ) {
     BaseCustomerTextField(
         initialValue = value,

@@ -9,8 +9,7 @@ import android.provider.MediaStore
 
 internal fun bitmapFromUri(uri: Uri, context: Context): Bitmap {
     return if (Build.VERSION.SDK_INT < 28) {
-        MediaStore.Images
-            .Media.getBitmap(context.contentResolver, uri)
+        MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
     } else {
         val source = ImageDecoder
             .createSource(context.contentResolver, uri)

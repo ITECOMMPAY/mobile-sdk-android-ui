@@ -1,6 +1,10 @@
 package com.paymentpage.msdk.ui.views.card
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.KeyboardType
@@ -20,10 +24,12 @@ internal fun ExpiryField(
     scanningExpiry: String? = null,
     errorMessage: String? = null,
     isDisabled: Boolean = false,
-    showRedStarForRequiredFields: Boolean = true,
     testTag: String? = null,
     onValueChanged: (String, Boolean) -> Unit,
+    onRequestValidatorMessage: ((String) -> String?),
 ) {
+    var isFieldInvalid by remember { mutableStateOf(false) }
+
     CustomTextField(
         modifier = modifier,
         initialValue = initialValue?.replace("/", ""),
@@ -31,19 +37,19 @@ internal fun ExpiryField(
         externalErrorMessage = errorMessage,
         onFilterValueBefore = { text -> text.filter { it.isDigit() } },
         shape = shape,
-        onRequestValidatorMessage = {
-            val expiryDate = SdkExpiry(it)
-            when {
-                !expiryDate.isValid() || !expiryDate.isMoreThanNow() ->
-                    getStringOverride(OverridesKeys.MESSAGE_ABOUT_EXPIRY)
-                else -> null
-            }
+        isError = isFieldInvalid,
+        onRequestValidatorMessage = { text ->
+            val validatorResponse = onRequestValidatorMessage.invoke(text)
+
+            isFieldInvalid = validatorResponse != null
+
+            null
         },
         onValueChanged = { value, isValid ->
             val expiryDate = SdkExpiry(value)
             onValueChanged(
                 expiryDate.stringValue,
-                expiryDate.isValid() && isValid
+                expiryDate.isValid() && isValid && expiryDate.isMoreThanNow()
             )
         },
         visualTransformation = MaskVisualTransformation("##/##"),
@@ -52,7 +58,6 @@ internal fun ExpiryField(
         keyboardType = KeyboardType.Number,
         maxLength = 4,
         isRequired = true,
-        showRedStarForRequiredFields = showRedStarForRequiredFields,
         testTag = testTag
     )
 }
@@ -63,7 +68,8 @@ private fun ExpiryFieldPreview() {
     ExpiryField(
         modifier = Modifier,
         initialValue = "02/30",
-        onValueChanged = { _, _ -> }
+        onValueChanged = { _, _ -> },
+        onRequestValidatorMessage = { _ -> null },
     )
 }
 
@@ -74,6 +80,7 @@ private fun ExpiryFieldPreviewDisabled() {
         isDisabled = true,
         modifier = Modifier,
         initialValue = "02/30",
-        onValueChanged = { _, _ -> }
+        onValueChanged = { _, _ -> },
+        onRequestValidatorMessage = { _ -> null },
     )
 }

@@ -8,6 +8,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
+        targetSdk = 35
         minSdk = 21
         signingConfig = signingConfigs.getByName("debug")
     }

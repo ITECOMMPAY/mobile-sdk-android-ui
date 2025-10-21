@@ -26,9 +26,12 @@ internal class Typography(
     s15Normal: TextStyle,
     s15Medium: TextStyle,
     s16Normal: TextStyle,
+    s16SemiBold: TextStyle,
     s16Bold: TextStyle,
     s18Normal: TextStyle,
+    s18SemiBold: TextStyle,
     s18Bold: TextStyle,
+    s20SemiBold: TextStyle,
     s22Bold: TextStyle,
     s24Bold: TextStyle,
     s28Bold: TextStyle,
@@ -55,11 +58,17 @@ internal class Typography(
         private set
     var s16Normal by mutableStateOf(s16Normal)
         private set
+    var s16SemiBold by mutableStateOf(s16SemiBold)
+        private set
     var s16Bold by mutableStateOf(s16Bold)
+        private set
+    var s18SemiBold by mutableStateOf(s18SemiBold)
         private set
     var s18Bold by mutableStateOf(s18Bold)
         private set
     var s18Normal by mutableStateOf(s18Normal)
+        private set
+    var s20SemiBold by mutableStateOf(s20SemiBold)
         private set
     var s22Bold by mutableStateOf(s22Bold)
         private set
@@ -288,11 +297,23 @@ private val typographyLightS16Normal: TextStyle = TextStyle(
     color = Color.Black,
     fontSize = 16.sp
 )
+private val typographyLightS16SemiBold: TextStyle = TextStyle(
+    fontFamily = InterFamily,
+    fontWeight = FontWeight.SemiBold,
+    color = Color.Black,
+    fontSize = 16.sp
+)
 private val typographyLightS16Bold: TextStyle = TextStyle(
     fontFamily = InterFamily,
     fontWeight = FontWeight.Bold,
     color = Color.Black,
     fontSize = 16.sp
+)
+private val typographyLightS18SemiBold: TextStyle = TextStyle(
+    fontFamily = InterFamily,
+    fontWeight = FontWeight.SemiBold,
+    color = Color.Black,
+    fontSize = 18.sp
 )
 private val typographyLightS18Bold: TextStyle = TextStyle(
     fontFamily = InterFamily,
@@ -305,6 +326,12 @@ private val typographyLightS18Normal: TextStyle = TextStyle(
     fontWeight = FontWeight.Normal,
     color = Color.Black,
     fontSize = 18.sp
+)
+private val typographyLightS20SemiBold: TextStyle = TextStyle(
+    fontFamily = InterFamily,
+    fontWeight = FontWeight.SemiBold,
+    color = Color.Black,
+    fontSize = 20.sp
 )
 private val typographyLightS22Bold: TextStyle = TextStyle(
     fontFamily = InterFamily,
@@ -399,11 +426,23 @@ private val typographyDarkS16Normal: TextStyle = TextStyle(
     color = Color.White,
     fontSize = 16.sp
 )
+private val typographyDarkS16SemiBold: TextStyle = TextStyle(
+    fontFamily = InterFamily,
+    fontWeight = FontWeight.SemiBold,
+    color = Color.White,
+    fontSize = 16.sp
+)
 private val typographyDarkS16Bold: TextStyle = TextStyle(
     fontFamily = InterFamily,
     fontWeight = FontWeight.Bold,
     color = Color.White,
     fontSize = 16.sp
+)
+private val typographyDarkS18SemiBold: TextStyle = TextStyle(
+    fontFamily = InterFamily,
+    fontWeight = FontWeight.SemiBold,
+    color = Color.White,
+    fontSize = 18.sp
 )
 private val typographyDarkS18Bold: TextStyle = TextStyle(
     fontFamily = InterFamily,
@@ -416,6 +455,12 @@ private val typographyDarkS18Normal: TextStyle = TextStyle(
     fontWeight = FontWeight.Normal,
     color = Color.White,
     fontSize = 18.sp
+)
+private val typographyDarkS20SemiBold: TextStyle = TextStyle(
+    fontFamily = InterFamily,
+    fontWeight = FontWeight.SemiBold,
+    color = Color.White,
+    fontSize = 20.sp
 )
 private val typographyDarkS22Bold: TextStyle = TextStyle(
     fontFamily = InterFamily,
@@ -459,8 +504,11 @@ internal fun lightTypography(): Typography = Typography(
     s15Normal = typographyLightS15Normal,
     s15Medium = typographyLightS15Medium,
     s16Normal = typographyLightS16Normal,
+    s16SemiBold = typographyLightS16SemiBold,
     s16Bold = typographyLightS16Bold,
+    s18SemiBold = typographyLightS18SemiBold,
     s18Bold = typographyLightS18Bold,
+    s20SemiBold = typographyLightS20SemiBold,
     s22Bold = typographyLightS22Bold,
     s24Bold = typographyLightS24Bold,
     s28Bold = typographyLightS28Bold,
@@ -480,9 +528,12 @@ internal fun darkTypography(): Typography = Typography(
     s15Normal = typographyDarkS15Normal,
     s15Medium = typographyDarkS15Medium,
     s16Normal = typographyDarkS16Normal,
+    s16SemiBold = typographyDarkS16SemiBold,
     s16Bold = typographyDarkS16Bold,
+    s18SemiBold = typographyLightS18SemiBold,
     s18Bold = typographyDarkS18Bold,
     s18Normal = typographyDarkS18Normal,
+    s20SemiBold = typographyDarkS20SemiBold,
     s22Bold = typographyDarkS22Bold,
     s24Bold = typographyDarkS24Bold,
     s28Bold = typographyDarkS28Bold,

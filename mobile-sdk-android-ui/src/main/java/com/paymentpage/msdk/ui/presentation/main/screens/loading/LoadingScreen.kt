@@ -33,6 +33,7 @@ import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.animation.VerticalSlideFadeAnimation
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.theme.SohneBreitFamily
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -72,7 +73,7 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                 ) {
                     DotsLoading()
                 }
-                Spacer(modifier = Modifier.size(35.dp))
+                Spacer(modifier = Modifier.size(26.dp))
                 VerticalSlideFadeAnimation(
                     visibleState = state,
                     duration = 500,
@@ -90,29 +91,12 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                             "Just a moment"
                         else
                             getStringOverride(OverridesKeys.TITLE_LOADING_SCREEN),
-                        style = SDKTheme.typography.s24Bold,
+                        fontFamily = SohneBreitFamily,
+                        style = SDKTheme.typography.s20SemiBold,
                         textAlign = TextAlign.Center
                     )
                 }
-                Spacer(modifier = Modifier.size(15.dp))
-                VerticalSlideFadeAnimation(
-                    visibleState = state,
-                    duration = 500,
-                    delay = 800,
-                    initialOffsetYRatio = 0.5f
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .testTag(TestTagsConstants.LOADING_SUB_TITLE_TEXT),
-                        text = if (isPreview)
-                            "Checking your operation status..."
-                        else
-                            getStringOverride(OverridesKeys.SUB_TITLE_LOADING_SCREEN),
-                        style = SDKTheme.typography.s14Normal,
-                        textAlign = TextAlign.Center
-                    )
-                }
-                Spacer(modifier = Modifier.size(35.dp))
+                Spacer(modifier = Modifier.size(26.dp))
                 AnimatedVisibility(
                     visibleState = state,
                     enter = fadeIn(
@@ -132,8 +116,8 @@ internal fun LoadingScreen(onCancel: () -> Unit) {
                                 onCancel()
                             },
                         text = if (isPreview) "Cancel Payment" else getStringOverride(OverridesKeys.TITLE_CANCEL_PAYMENT),
-                        style = SDKTheme.typography.s14Normal.copy(
-                            color = SDKTheme.colors.mediumGrey,
+                        style = SDKTheme.typography.s16SemiBold.copy(
+                            color = SDKTheme.colors.link,
                             textAlign = TextAlign.Center,
                             textDecoration = TextDecoration.Underline
                         )

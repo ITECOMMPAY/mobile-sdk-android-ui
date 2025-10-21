@@ -67,7 +67,7 @@ internal fun SDKTopBar(
                 .testTag(TestTagsConstants.SCREEN_TITLE_TEXT),
             maxLines = 1,
             fontFamily = SohneBreitFamily,
-            style = SDKTheme.typography.s22Bold,
+            style = SDKTheme.typography.s18SemiBold,
             text = title ?: "",
             overflow = TextOverflow.Ellipsis
         )

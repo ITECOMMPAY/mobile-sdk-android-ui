@@ -1,14 +1,11 @@
 package com.paymentpage.msdk.ui.views.card.panField
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.TextFieldDefaults
@@ -19,13 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.invisibleToUser
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.ParagraphIntrinsics
@@ -39,9 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodCard
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.validators.custom.PanValidator
-import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.base.Constants
@@ -51,8 +43,6 @@ import com.paymentpage.msdk.ui.utils.card.formatAmex
 import com.paymentpage.msdk.ui.utils.card.formatDinnersClub
 import com.paymentpage.msdk.ui.utils.card.formatOtherCardNumbers
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
-import com.paymentpage.msdk.ui.utils.extensions.customColor
-import com.paymentpage.msdk.ui.utils.extensions.paymentMethodLogoId
 import com.paymentpage.msdk.ui.views.card.CardScanningItem
 import com.paymentpage.msdk.ui.views.common.CustomTextField
 
@@ -68,16 +58,15 @@ internal fun PanField(
     onScanningResult: (CardScanningActivityContract.Result) -> Unit,
     onPaymentMethodCardTypeChange: ((String?) -> Unit)? = null,
     isEditable: Boolean = true,
+    hideScanningCard: Boolean = true,
     isMaskEnabled: Boolean = true,
     testTag: String? = null,
     onValueChanged: (String, Boolean) -> Unit,
-    onRequestValidatorMessage: ((String) -> Pair<String?, Boolean>?)? = null,
+    onRequestValidatorMessage: ((String) -> Pair<String?, Boolean>?),
 ) {
     val panValidator = remember { PanValidator() }
 
     var card by remember { mutableStateOf<PaymentMethodCard?>(null) }
-    val paymentOptions = LocalPaymentOptions.current
-    var needAnimation by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
 
     Row(modifier = Modifier.fillMaxWidth()) {
@@ -130,7 +119,7 @@ internal fun PanField(
                     onValueChanged(value, panValidator.isValid(value) && isValid)
                 },
                 onRequestValidatorMessage = { text ->
-                    val validatorResponse = onRequestValidatorMessage?.invoke(text)
+                    val validatorResponse = onRequestValidatorMessage.invoke(text)
                     isError = validatorResponse?.second ?: false
 
                     validatorResponse?.first
@@ -157,95 +146,12 @@ internal fun PanField(
                     }
                 },
                 label = getStringOverride(OverridesKeys.TITLE_CARD_NUMBER),
-                trailingIcon = {
-                    val isDarkTheme = SDKTheme.colors.isDarkTheme
-                    val context = LocalContext.current
-                    var startIndex by remember { mutableStateOf(0) }
-                    when {
-                        initialValue.isNotEmpty() -> {
-                            val drawableId = remember(initialValue) {
-                                context.paymentMethodLogoId(
-                                    paymentMethodType = PaymentMethodType.CARD,
-                                    paymentMethodName = card?.code ?: "",
-                                    isDarkTheme = isDarkTheme
-                                )
-                            }
-                            Image(
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .size(25.dp)
-                                    .clickable {
-                                        needAnimation = !needAnimation
-                                    },
-                                painter = painterResource(
-                                    id = if (drawableId > 0)
-                                        drawableId
-                                    else
-                                        SDKTheme.images.defaultCardLogo
-                                ),
-                                contentDescription = null,
-                                contentScale = ContentScale.Fit,
-                                colorFilter = if (drawableId == 0)
-                                    ColorFilter.tint(
-                                        color = customColor(paymentOptions.primaryBrandColor)
-                                    )
-                                else
-                                    null
-                            )
-                        }
-
-                        else -> {
-                            if (paymentMethod.availableCardTypes.isNotEmpty())
-                                if (needAnimation)
-                                    ChangingCardTypeItems(
-                                        cardTypes = paymentMethod.availableCardTypes,
-                                        startIndex = startIndex, //saving current showing card type
-                                        onCurrentIndexChanged = { currentIndex ->
-                                            startIndex = currentIndex
-                                        },
-                                        onClick = {
-                                            needAnimation = !needAnimation
-                                        }
-                                    )
-                                else
-                                    Image(
-                                        modifier = Modifier
-                                            .padding(5.dp)
-                                            .size(25.dp)
-                                            .clickable {
-                                                needAnimation = !needAnimation
-                                            },
-                                        painter = painterResource(id = SDKTheme.images.defaultCardLogo),
-                                        contentDescription = null,
-                                        contentScale = ContentScale.Fit,
-                                        colorFilter = ColorFilter.tint(
-                                            color = customColor(paymentOptions.primaryBrandColor)
-                                        )
-                                    )
-                            else
-                                Image(
-                                    modifier = Modifier
-                                        .padding(5.dp)
-                                        .size(25.dp)
-                                        .clickable {
-                                            needAnimation = !needAnimation
-                                        },
-                                    painter = painterResource(id = SDKTheme.images.defaultCardLogo),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Fit,
-                                    colorFilter = ColorFilter.tint(
-                                        color = customColor(paymentOptions.primaryBrandColor)
-                                    )
-                                )
-                        }
-                    }
-                },
                 testTag = testTag
             )
         }
 
         //TODO("CardIO. Remove when card scanning will be implemented again")
-        if (!paymentOptions.hideScanningCards && false) {
+        if (!hideScanningCard && false) {
             Spacer(modifier = Modifier.size(10.dp))
             CardScanningItem(
                 modifier = Modifier

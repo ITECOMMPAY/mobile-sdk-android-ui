@@ -3,7 +3,10 @@ package com.paymentpage.msdk.ui.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+
+internal val LocalDarkThemeSelection = staticCompositionLocalOf { false }
 
 internal object SDKTheme {
     val colors: Colors
@@ -56,6 +59,7 @@ internal fun SDKTheme(
 
     CompositionLocalProvider(
         LocalColors provides colors,
+        LocalDarkThemeSelection provides isDarkTheme,
         LocalDimensions provides SDKTheme.dimensions,
         LocalTypography provides typography,
         LocalShapes provides SDKTheme.shapes,

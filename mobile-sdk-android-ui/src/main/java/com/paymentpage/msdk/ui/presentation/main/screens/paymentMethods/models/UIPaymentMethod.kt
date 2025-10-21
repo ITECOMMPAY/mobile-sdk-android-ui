@@ -14,19 +14,39 @@ internal sealed class UIPaymentMethod(
     var customerFieldValues: List<CustomerFieldValue> = emptyList(),
     var isCustomerFieldsValid: Boolean = false
 ) {
+    abstract var pan: String?
+    abstract var expiry: String?
+    abstract var cvv: String?
+    abstract var isValidCvv: Boolean
+    abstract var isValidPan: Boolean
+    abstract var isValidExpiry: Boolean
+
     class UIGooglePayPaymentMethod(
         index: Int,
         title: String,
         paymentMethod: PaymentMethod,
-    ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod)
+    ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
+        override var pan: String? = null
+        override var expiry: String? = null
+        override var cvv: String? = null
+        override var isValidCvv: Boolean = true
+        override var isValidPan: Boolean = true
+        override var isValidExpiry: Boolean = true
+    }
+
     class UISavedCardPayPaymentMethod(
         index: Int,
         title: String,
         val savedAccount: SavedAccount,
         paymentMethod: PaymentMethod,
     ) : UIPaymentMethod(index, title, null, paymentMethod) {
-        var cvv: String = ""
-        var isValidCvv: Boolean = false
+        override var pan: String? = savedAccount.number
+        override var expiry: String? = savedAccount.cardExpiry?.stringValue
+        override var cvv: String? = null
+        override var isValidCvv: Boolean = false
+        override var isValidPan: Boolean = true
+        override var isValidExpiry: Boolean = true
+
         val accountId: Long = savedAccount.id
     }
 
@@ -35,16 +55,16 @@ internal sealed class UIPaymentMethod(
         title: String,
         paymentMethod: PaymentMethod
     ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
-        var cvv: String = ""
-        var pan: String = ""
-        var expiry: String = ""
+        override var pan: String? = null
+        override var expiry: String? = null
+        override var cvv: String? = null
+        override var isValidCvv: Boolean = false
+        override var isValidPan: Boolean = false
+        override var isValidExpiry: Boolean = false
+
+        var isValidCardHolder: Boolean = false
         var cardHolder: String = ""
         var saveCard: Boolean = false
-
-        var isValidCvv: Boolean = false
-        var isValidPan: Boolean = false
-        var isValidExpiry: Boolean = false
-        var isValidCardHolder: Boolean = false
     }
 
     class UIApsPaymentMethod(
@@ -56,5 +76,12 @@ internal sealed class UIPaymentMethod(
         title = title,
         logoUrl = null,
         paymentMethod = paymentMethod,
-    )
+    ) {
+        override var pan: String? = null
+        override var expiry: String? = null
+        override var cvv: String? = null
+        override var isValidCvv: Boolean = true
+        override var isValidPan: Boolean = true
+        override var isValidExpiry: Boolean = true
+    }
 }
