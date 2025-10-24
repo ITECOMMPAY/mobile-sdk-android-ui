@@ -31,6 +31,7 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.isAllCustomerFieldsHidden
 import com.paymentpage.msdk.ui.utils.extensions.core.mergeHiddenFieldsToList
+import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
 import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 import com.paymentpage.msdk.ui.views.recurring.RecurringAgreements
 import com.paymentpage.msdk.ui.views.button.GooglePayButton
@@ -125,12 +126,26 @@ internal fun GooglePayItem(
             }
         }
 
+    val allVisibleFieldsFilled = customerFields.hasVisibleCustomerFields() &&
+            customerFields.visibleCustomerFields().all { field ->
+                additionalFields.any { it.type?.value == field.name && !it.value.isNullOrEmpty() }
+            }
+
+    LaunchedEffect(isForcePaymentMethod, isOnlyOneMethodOnScreen) {
+        if ((isForcePaymentMethod || isOnlyOneMethodOnScreen) &&
+            customerFields.hasVisibleCustomerFields() &&
+            !allVisibleFieldsFilled) {
+            paymentMethodsViewModel.setCurrentMethod(method)
+        }
+    }
+
     when {
-        customerFields.hasVisibleCustomerFields() -> {
+        customerFields.hasVisibleCustomerFields() && !allVisibleFieldsFilled -> {
             ExpandablePaymentMethodItem(
                 method = method,
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
                 fallbackIcon = painterResource(id = SDKTheme.images.googlePayMethodResId),
+                iconColor = null,
             ) {
                 Spacer(modifier = Modifier.size(10.dp))
                 CustomerFields(
@@ -151,6 +166,38 @@ internal fun GooglePayItem(
                 )
                 RecurringAgreements()
             }
+        }
+
+        allVisibleFieldsFilled && (isForcePaymentMethod || isTryAgain) -> {
+            method.customerFieldValues = customerFields.map { field ->
+                val additionalValue = additionalFields.firstOrNull { it.type?.value == field.name }?.value
+                CustomerFieldValue(
+                    name = field.name,
+                    value = additionalValue ?: ""
+                )
+            }
+            GooglePayButton(
+                allowedPaymentMethods = allowedPaymentMethods.toString(),
+                onClick = launchGooglePaySheet,
+                enabled = isGooglePayAvailable && !isGooglePayOpened
+            )
+        }
+
+        allVisibleFieldsFilled -> {
+            GooglePayButton(
+                allowedPaymentMethods = allowedPaymentMethods.toString(),
+                onClick = {
+                    method.customerFieldValues = customerFields.map { field ->
+                        val additionalValue = additionalFields.firstOrNull { it.type?.value == field.name }?.value
+                        CustomerFieldValue(
+                            name = field.name,
+                            value = additionalValue ?: ""
+                        )
+                    }
+                    launchGooglePaySheet()
+                },
+                enabled = isGooglePayAvailable && !isGooglePayOpened
+            )
         }
 
         customerFields.isAllCustomerFieldsHidden() && (isForcePaymentMethod || isTryAgain) -> {
