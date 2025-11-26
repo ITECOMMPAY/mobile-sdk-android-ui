@@ -62,7 +62,7 @@ internal fun ExpandablePaymentMethodItem(
     method: UIPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
     fallbackIcon: Painter? = null,
-    iconColor: ColorFilter = ColorFilter.tint(color = SDKTheme.colors.paymentIcon),
+    iconColor: ColorFilter? = ColorFilter.tint(color = SDKTheme.colors.paymentIcon),
     isLocalResourceIcon: Boolean = method.logoUrl.isNullOrEmpty() &&
             method.paymentMethod.iconUrl.isNullOrEmpty(),
     content: @Composable ColumnScope.() -> Unit,
