@@ -101,7 +101,7 @@ class NavigationViewUC(
 
     private fun navigate(viewIntent: NavigationViewIntents.Navigate) {
         val route = viewIntent.to
-        val popBackStack = viewIntent.back
+        val popBackStack: NavRoutes? = viewIntent.back
         val backStack = mBackStack
 
         var count = popBackStack?.let {
@@ -113,7 +113,7 @@ class NavigationViewUC(
         when (count) {
             null -> Unit
             //Экран, до которого нужно очистить бэкстэк не найден
-            0 -> backStack.addLast(popBackStack)
+            0 -> popBackStack?.let { backStack.addLast(it) }
             //все ок
             else -> {
                 //очистка

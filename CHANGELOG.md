@@ -4,3 +4,4 @@
 ## [3.9.2] - Fix Google Pay implementation
 ## [3.9.3] - Implement renaming + config generation script
 ## [3.9.4] - Fix allowed card networks mapping in google pay payments
+## [3.10.0] - Bump core version with ktor 3+
