@@ -17,4 +17,5 @@ dependencies {
     implementation(libs.findLibrary("android-gradle-plugin").get())
     implementation(libs.findLibrary("kotlin-gradle-plugin").get())
     implementation(libs.findLibrary("kotlin-serialization-plugin").get())
+    implementation(libs.findLibrary("kotlin-compose-compiler-plugin").get())
 }

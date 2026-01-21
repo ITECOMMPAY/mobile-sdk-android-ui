@@ -19,7 +19,6 @@ import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.ui.LocalInitViewModel
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalMsdkSession
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.SDKActionType
@@ -29,7 +28,6 @@ import com.paymentpage.msdk.ui.navigation.Route
 import com.paymentpage.msdk.ui.presentation.main.restoreAps
 import com.paymentpage.msdk.ui.presentation.main.restorePayment
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.utils.extensions.core.mergeUIPaymentMethods
 import com.paymentpage.msdk.ui.utils.extensions.stringResourceIdFromStringName
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
@@ -63,23 +61,20 @@ private fun setupStateListener(
     val initViewModel = LocalInitViewModel.current
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
-    val paymentMethods = LocalMsdkSession.current.getPaymentMethods() ?: emptyList()
-    val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
-
-    if (paymentMethods.isNotEmpty())
-        paymentMethodsViewModel.setPaymentMethods(
-            paymentMethods.mergeUIPaymentMethods(
-                actionType = actionType,
-                savedAccounts = savedAccounts
-            )
-        )
 
     LaunchedEffect(Unit) {
         initViewModel.loadInit()
         initViewModel.state.onEach {
             when {
                 it.error != null -> onError(it.error, true)
-                it.isInitLoaded -> navigator.navigateTo(Route.Main)
+                it.isInitLoaded -> {
+                    paymentMethodsViewModel.updatePaymentMethods(
+                        actionType = actionType,
+                        paymentMethods = it.paymentMethods,
+                        savedAccounts = it.savedAccounts
+                    )
+                    navigator.navigateTo(Route.Main)
+                }
                 it.payment != null -> {
                     val paymentMethod =
                         it.paymentMethods?.find { paymentMethod -> paymentMethod.code == it.payment.method }
