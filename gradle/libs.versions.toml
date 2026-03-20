@@ -1,5 +1,5 @@
 [versions]
-gradleVersion = "8.6.1"
+gradleVersion = "8.8.0"
 kotlinVersion = "2.2.0"
 desugar = "2.1.3"
 

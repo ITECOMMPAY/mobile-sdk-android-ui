@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import com.ecommpay.msdk.ui.*
 import com.ecommpay.msdk.ui.integration.example.utils.CommonUtils
 import com.ecommpay.msdk.ui.integration.example.utils.SignatureGenerator
+import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import kotlinx.serialization.json.Json
 
@@ -69,7 +70,7 @@ class ComposeActivity : ComponentActivity() {
 
         //2. Sign it
         ecmpPaymentInfo.signature = SignatureGenerator.generateSignature(
-            paramsToSign = ecmpPaymentInfo.getParamsForSignature(),
+            paramsToSign = ecmpPaymentInfo.getParamsForSignature(PaymentInfo.paramsWithoutHideSaveWallets),
             secret = BuildConfig.PROJECT_SECRET_KEY
         )
 

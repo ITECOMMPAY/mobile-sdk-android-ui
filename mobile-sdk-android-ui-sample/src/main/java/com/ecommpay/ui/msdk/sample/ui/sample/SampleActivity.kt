@@ -25,6 +25,7 @@ import com.ecommpay.ui.msdk.sample.domain.ui.base.viewUseCase
 import com.ecommpay.ui.msdk.sample.domain.ui.sample.SampleViewIntents
 import com.ecommpay.ui.msdk.sample.domain.ui.sample.SampleViewUC
 import com.ecommpay.ui.msdk.sample.utils.SignatureGenerator
+import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
 import kotlinx.serialization.json.Json
 
@@ -78,7 +79,8 @@ class SampleActivity : ComponentActivity() {
         )
         ecmpPaymentInfo.signature =
             SignatureGenerator.generateSignature(
-                ecmpPaymentInfo.getParamsForSignature(), repositoryPaymentData.secretKey
+                ecmpPaymentInfo.getParamsForSignature(PaymentInfo.paramsWithoutHideSaveWallets),
+                repositoryPaymentData.secretKey
             )
         val paymentOptions = paymentOptions {
             //payment configuration

@@ -138,7 +138,7 @@ fun MainScreen(
             modifier = Modifier
                 .testTag("hideSavedWalletsCheckbox"),
             text = "Hide saved wallets",
-            isChecked = paymentData.hideSavedWallets,
+            isChecked = paymentData.hideSavedWallets ?: false,
             onCheckedChange = {
                 intentListener(
                     MainViewIntents.ChangeField(
