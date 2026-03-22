@@ -42,7 +42,7 @@ class EcmpPaymentInfo(
     /**
      * hiding or displaying saved payment instruments in the payment form
      */
-    hideSavedWallets: Boolean? = null,
+    hideSavedWallets: Boolean? = false,
     /**
      * the identifier of the payment method which is opened to the customer without an option for the customer to select another payment method. The list of codes is provided in the IDs of payment methods supported on Payment Page section
      */
