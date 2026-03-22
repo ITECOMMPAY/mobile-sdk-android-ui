@@ -25,8 +25,9 @@ import com.ecommpay.ui.msdk.sample.domain.ui.base.viewUseCase
 import com.ecommpay.ui.msdk.sample.domain.ui.sample.SampleViewIntents
 import com.ecommpay.ui.msdk.sample.domain.ui.sample.SampleViewUC
 import com.ecommpay.ui.msdk.sample.utils.SignatureGenerator
-import com.paymentpage.msdk.core.domain.entities.PaymentInfo
+import com.paymentpage.msdk.core.domain.entities.SignatureParam
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
+import com.paymentpage.msdk.core.domain.entities.signatureParams
 import kotlinx.serialization.json.Json
 
 class SampleActivity : ComponentActivity() {
@@ -77,9 +78,19 @@ class SampleActivity : ComponentActivity() {
             token = repositoryPaymentData.token,
             ecmpThreeDSecureInfo = threeDSecureInfoToSend
         )
+        // For signature issues, you can specify your own list of keys for signature using dsl buildersignatureParams
+        // Important: if a parameter is not in the signature, it cannot be set in EcmpPaymentInfo
+        val customParams = signatureParams {
+            include(SignatureParam.PROJECT_ID, SignatureParam.PAYMENT_ID)
+            includeAll(SignatureParam.DEFAULT)
+            exclude(SignatureParam.HIDE_SAVED_WALLETS)
+        }
+
+        val defaultParams = SignatureParam.DEFAULT
+
         ecmpPaymentInfo.signature =
             SignatureGenerator.generateSignature(
-                ecmpPaymentInfo.getParamsForSignature(PaymentInfo.paramsWithoutHideSaveWallets),
+                ecmpPaymentInfo.getParamsForSignature(defaultParams),
                 repositoryPaymentData.secretKey
             )
         val paymentOptions = paymentOptions {

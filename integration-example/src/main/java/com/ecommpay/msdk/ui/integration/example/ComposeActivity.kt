@@ -19,11 +19,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.ecommpay.msdk.ui.*
+import com.ecommpay.msdk.ui.EcmpActionType
+import com.ecommpay.msdk.ui.EcmpAdditionalField
+import com.ecommpay.msdk.ui.EcmpAdditionalFieldType
+import com.ecommpay.msdk.ui.EcmpPaymentInfo
+import com.ecommpay.msdk.ui.EcmpRecipientInfo
+import com.ecommpay.msdk.ui.EcmpRecurrentData
+import com.ecommpay.msdk.ui.EcmpScreenDisplayMode
+import com.ecommpay.msdk.ui.Ecommpay
 import com.ecommpay.msdk.ui.integration.example.utils.CommonUtils
 import com.ecommpay.msdk.ui.integration.example.utils.SignatureGenerator
-import com.paymentpage.msdk.core.domain.entities.PaymentInfo
+import com.ecommpay.msdk.ui.paymentOptions
+import com.paymentpage.msdk.core.domain.entities.SignatureParam
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
+import com.paymentpage.msdk.core.domain.entities.signatureParams
 import kotlinx.serialization.json.Json
 
 class ComposeActivity : ComponentActivity() {
@@ -69,8 +78,18 @@ class ComposeActivity : ComponentActivity() {
         )
 
         //2. Sign it
+        // For signature issues, you can specify your own list of keys for signature using dsl buildersignatureParams
+        // Important: if a parameter is not in the signature, it cannot be set in EcmpPaymentInfo
+        val customParams = signatureParams {
+            include(SignatureParam.PROJECT_ID, SignatureParam.PAYMENT_ID)
+            includeAll(SignatureParam.DEFAULT)
+            exclude(SignatureParam.HIDE_SAVED_WALLETS)
+        }
+
+        val defaultParams = SignatureParam.DEFAULT
+
         ecmpPaymentInfo.signature = SignatureGenerator.generateSignature(
-            paramsToSign = ecmpPaymentInfo.getParamsForSignature(PaymentInfo.paramsWithoutHideSaveWallets),
+            paramsToSign = ecmpPaymentInfo.getParamsForSignature(defaultParams),
             secret = BuildConfig.PROJECT_SECRET_KEY
         )
 
@@ -155,6 +174,7 @@ class ComposeActivity : ComponentActivity() {
                                 "Tokenization was finished successfully. Your token is ${payment.token}"
                             )
                         }
+
                         else -> {
                             Toast.makeText(
                                 this,
@@ -166,14 +186,17 @@ class ComposeActivity : ComponentActivity() {
                     }
 
                 }
+
                 Ecommpay.RESULT_CANCELLED -> {
                     Toast.makeText(this, "Payment was cancelled", Toast.LENGTH_SHORT).show()
                     Log.d("PaymentSDK", "Payment was cancelled")
                 }
+
                 Ecommpay.RESULT_DECLINE -> {
                     Toast.makeText(this, "Payment was declined", Toast.LENGTH_SHORT).show()
                     Log.d("PaymentSDK", "Payment was declined")
                 }
+
                 Ecommpay.RESULT_ERROR -> {
                     val errorCode = data?.getStringExtra(Ecommpay.EXTRA_ERROR_CODE)
                     val message = data?.getStringExtra(Ecommpay.EXTRA_ERROR_MESSAGE)

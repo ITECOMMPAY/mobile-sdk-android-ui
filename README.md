@@ -66,37 +66,42 @@ This object must contain the following required parameters:
 - `customerId`  (String) — a customer's identifier within the project
 - `signature`  (String) — a request signature generated after all required parameters have been specified
 
-```
+```kotlin
 val ecmpPaymentInfo = EcmpPaymentInfo(
+    //Required fields
     projectId = 77655,
     paymentId = "payment_322",
-    paymentAmount = 100,
+    paymentAmount = 100, //amount in smallest currency units (cents)
     paymentCurrency = "USD",
+    //Optional fields
     paymentDescription = "Cosmoshop payment",
     customerId = "customer_003",
-    //Code of the customer's country
-    regionCode = "DE",
-    //Token associated with certain payment data
-    token = "o8i7u65y4t3rkjhgfdw3456789oikjhgfdfghjkl...",
-    //Payment interface language code
-    languageCode = "de",
-    //Data to be included in the notification with the list of the purchased items
-    receiptData = "eyAKICAicG9zaXRpb25zIjpbIAogICAgIIjoxLAogICAgICAgICJhbW91bnQiOjU5OTAsCiAgQ==",
-    //Parameter to enable hiding or displaying saved payment instruments
-    hideSavedWallets = false,
-    //Identifier of the preselected payment method
-    forcePaymentMethod = "card"
+    regionCode = "DE", //Customer's country code
+    token = "o8i7u65y4t3rkjhgfdw3456789oikjhgfdfghjkl...", //Token for saved payment methods
+    languageCode = "de", //Payment interface language
+    hideSavedWallets = false, //Show/hide saved payment instruments
+    forcePaymentMethod = "card", //Preselected payment method
+    ecmpThreeDSecureInfo = EcmpThreeDSecureInfo() //3D Secure configuration
 )
 ```
 
 2. Sign the parameters contained in the `EcmpPaymentInfo` object.
 
-```
-ecmpPaymentInfo.signature = SignatureGenerator
- .generateSignature(
-  paramsToSign = ecmpPaymentInfo.getParamsForSignature(),
-  secret = SECRET_KEY
- )
+```kotlin
+// For signature generation, you can specify your own list of keys using DSL builder
+// Important: if a parameter is not in the signature, it cannot be set in EcmpPaymentInfo
+val customParams = signatureParams {
+    include(SignatureParam.PROJECT_ID, SignatureParam.PAYMENT_ID)
+    includeAll(SignatureParam.DEFAULT)
+    exclude(SignatureParam.HIDE_SAVED_WALLETS)
+}
+
+val defaultParams = SignatureParam.DEFAULT
+
+ecmpPaymentInfo.signature = SignatureGenerator.generateSignature(
+    paramsToSign = ecmpPaymentInfo.getParamsForSignature(defaultParams),
+    secret = SECRET_KEY
+)
 ```
 
 3. Create the `EcmpPaymentOptions` object that contains the required parameter `actionType` (enum) with the value specifying the required operation type:
@@ -108,7 +113,7 @@ ecmpPaymentInfo.signature = SignatureGenerator
 
 In addition to the required  `EcmpPaymentInfo`  object and the  `actionType`  parameter, the following example contains several additional parameters including the  `EcmpAdditionalFields`  object with data specified in the fields that are used for collecting customer information.
 
-```
+```kotlin
 val paymentOptions = paymentOptions {
     //Required object for payment
     paymentInfo = ecmpPaymentInfo
@@ -124,12 +129,16 @@ val paymentOptions = paymentOptions {
 
     additionalFields {
         field {
-            type = EcmpAdditionalFieldType.CUSTOMER_EMAIL,
-            value = "mail@mail.com"
+            EcmpAdditionalField(
+                EcmpAdditionalFieldType.CUSTOMER_EMAIL,
+                "mail@mail.com"
+            )
         }
         field {
-            type = EcmpAdditionalFieldType.CUSTOMER_FIRST_NAME,
-            value = "firstName"
+            EcmpAdditionalField(
+                EcmpAdditionalFieldType.CUSTOMER_FIRST_NAME,
+                "firstName"
+            )
         }
     }
     screenDisplayModes {
@@ -140,7 +149,7 @@ val paymentOptions = paymentOptions {
     recipientInfo = EcmpRecipientInfo()
 
     //Parameter to enable hiding or displaying scanning cards feature
-    hideScanningCard = false,
+    hideScanningCards = false
 
     //Custom theme
     isDarkTheme = false
@@ -151,6 +160,8 @@ val paymentOptions = paymentOptions {
         resources,
         R.drawable.example_logo
     )
+    //Stored card type configuration
+    storedCardType = EcmpStoredCardType.STANDARD
 }
 ```
 
@@ -158,57 +169,66 @@ val paymentOptions = paymentOptions {
 
 If necessary, you can open the payment form in the test mode in order to get information about errors if there were any when payment parameters were specified or to test processing payments with a certain payment result. In the `Ecommpay` object, specify the `EcmpMockModeType.SUCCESS` value for the `mockModeType` parameter (if you need to receive `Success` payment result). You can also pass values `EcmpMockModeType.DECLINE` (if you need to receive `Decline` payment result) and `EcmpMockModeType.DISABLED` (if you need to switch to the production mode).
 
-```
+```kotlin
 val sdk = Ecommpay(
-   context = applicationContext,
-   paymentOptions = paymentOptions,
-   mockModeType = Ecommpay.EcmpMockModeType.DISABLED
+    context = applicationContext,
+    paymentOptions = paymentOptions,
+    mockModeType = Ecommpay.EcmpMockModeType.DISABLED
 )
+
+// For debug builds, you can specify custom API hosts
+if (BuildConfig.DEBUG) {
+    sdk.intent.putExtra(Ecommpay.EXTRA_API_HOST, "sdk.ecommpay.com")
+    sdk.intent.putExtra(Ecommpay.EXTRA_WS_API_HOST, "paymentpage.ecommpay.com")
+}
 ```
 
 5. Open the payment form.
 
-```
+```kotlin
 startActivityForResult.launch(sdk.intent)
 ```
 
 6. Handle result.
 
-```
-val startActivityForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-result ->
- val data = result.data
- when (result.resultCode) {
-  Ecommpay.RESULT_SUCCESS -> {
-   val payment = Json.decodeFromString<Payment?>(
-    data?.getStringExtra(Ecommpay.EXTRA_PAYMENT).toString()
-   )
-   when {
-    payment?.token != null -> {
-     Toast.makeText(this,"Tokenization was finished successfully. Your token is ${payment.token}",Toast.LENGTH_SHORT).show()
-     Log.d("PaymentSDK","Tokenization was finished successfully. Your token is ${payment.token}")
+```kotlin
+val startActivityForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    val data = result.data
+    when (result.resultCode) {
+        Ecommpay.RESULT_SUCCESS -> {
+            val payment = Json.decodeFromString<Payment?>(
+                data?.getStringExtra(Ecommpay.EXTRA_PAYMENT).toString()
+            )
+            when {
+                payment?.token != null -> {
+                    Toast.makeText(
+                        this,
+                        "Tokenization was finished successfully. Your token is ${payment.token}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.d("PaymentSDK", "Tokenization was finished successfully. Your token is ${payment.token}")
+                }
+                else -> {
+                    Toast.makeText(this, "Payment was finished successfully", Toast.LENGTH_SHORT).show()
+                    Log.d("PaymentSDK", "Payment was finished successfully")
+                }
+            }
+        }
+        Ecommpay.RESULT_CANCELLED -> {
+            Toast.makeText(this, "Payment was cancelled", Toast.LENGTH_SHORT).show()
+            Log.d("PaymentSDK", "Payment was cancelled")
+        }
+        Ecommpay.RESULT_DECLINE -> {
+            Toast.makeText(this, "Payment was declined", Toast.LENGTH_SHORT).show()
+            Log.d("PaymentSDK", "Payment was declined")
+        }
+        Ecommpay.RESULT_ERROR -> {
+            val errorCode = data?.getStringExtra(Ecommpay.EXTRA_ERROR_CODE)
+            val message = data?.getStringExtra(Ecommpay.EXTRA_ERROR_MESSAGE)
+            Toast.makeText(this, "Payment was interrupted. See logs", Toast.LENGTH_SHORT).show()
+            Log.d("PaymentSDK", "Payment was interrupted. Error code: $errorCode. Message: $message")
+        }
     }
-    else -> {
-     Toast.makeText(this,"Payment was finished successfully",Toast.LENGTH_SHORT).show()
-     Log.d("PaymentSDK", "Payment was finished successfully")
-    }
-   }
-  }
-  Ecommpay.RESULT_CANCELLED -> {
-   Toast.makeText(this, "Payment was cancelled", Toast.LENGTH_SHORT).show()
-   Log.d("PaymentSDK", "Payment was cancelled")
-  }
-  Ecommpay.RESULT_DECLINE -> {
-   Toast.makeText(this, "Payment was declined", Toast.LENGTH_SHORT).show()
-   Log.d("PaymentSDK", "Payment was declined")
-  }
-  Ecommpay.RESULT_ERROR -> {
-   val errorCode = data?.getStringExtra(Ecommpay.EXTRA_ERROR_CODE)
-   val message = data?.getStringExtra(Ecommpay.EXTRA_ERROR_MESSAGE)
-   Toast.makeText(this,"Payment was interrupted. See logs",Toast.LENGTH_SHORT).show()
-   Log.d("PaymentSDK","Payment was interrupted. Error code: $errorCode. Message: $message")
-  }
- }
 }
 ```
 
