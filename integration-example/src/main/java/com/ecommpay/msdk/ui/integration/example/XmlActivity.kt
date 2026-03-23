@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ecommpay.msdk.ui.*
 import com.ecommpay.msdk.ui.integration.example.utils.CommonUtils
 import com.ecommpay.msdk.ui.integration.example.utils.SignatureGenerator
+import com.paymentpage.msdk.core.domain.entities.SignatureParam
 import com.paymentpage.msdk.core.domain.entities.payment.Payment
+import com.paymentpage.msdk.core.domain.entities.signatureParams
 import kotlinx.serialization.json.Json
 
 class XmlActivity : AppCompatActivity() {
@@ -37,8 +39,18 @@ class XmlActivity : AppCompatActivity() {
         )
 
         //2. Sign it
+        // For signature issues, you can specify your own list of keys for signature using dsl buildersignatureParams
+        // Important: if a parameter is not in the signature, it cannot be set in EcmpPaymentInfo
+        val customParams = signatureParams {
+            include(SignatureParam.PROJECT_ID, SignatureParam.PAYMENT_ID)
+            includeAll(SignatureParam.DEFAULT)
+            exclude(SignatureParam.HIDE_SAVED_WALLETS)
+        }
+
+        val defaultParams = SignatureParam.DEFAULT
+
         ecmpPaymentInfo.signature = SignatureGenerator.generateSignature(
-            paramsToSign = ecmpPaymentInfo.getParamsForSignature(),
+            paramsToSign = ecmpPaymentInfo.getParamsForSignature(defaultParams),
             secret = BuildConfig.PROJECT_SECRET_KEY
         )
 
