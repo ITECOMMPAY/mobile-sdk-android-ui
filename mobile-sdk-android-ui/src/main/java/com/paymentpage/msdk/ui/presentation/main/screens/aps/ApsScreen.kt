@@ -3,7 +3,10 @@ package com.paymentpage.msdk.ui.presentation.main.screens.aps
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.net.http.SslError
+import android.os.Handler
+import android.os.Looper
 import android.view.ViewGroup
+import android.webkit.JavascriptInterface
 import android.webkit.SslErrorHandler
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -27,10 +30,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.R
+import com.paymentpage.msdk.ui.presentation.main.MainScreenUiEvent
+import com.paymentpage.msdk.ui.presentation.main.MainViewModel
 import com.paymentpage.msdk.ui.presentation.main.saleAps
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -73,6 +79,27 @@ internal fun ApsPageView(
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val brandColor = LocalPaymentOptions.current.primaryBrandColor
+
+    /**
+     * JavaScript bridge for Payment Page v5 (SPA architecture).
+     * PPv5 does not perform URL redirects on screen changes, so we intercept
+     * postMessage events to detect payment completion and close the WebView.
+     */
+    class EcpMobileSDKInterface(
+        private val mainViewModel: MainViewModel,
+        private val method: UIPaymentMethod.UIApsPaymentMethod,
+    ) {
+        @JavascriptInterface
+        fun postMessage(json: String) {
+            val messageType = parseApsPostMessage(json)
+            if (messageType != ApsPostMessageType.UNKNOWN) {
+                Handler(Looper.getMainLooper()).post {
+                    mainViewModel.sendEvent(MainScreenUiEvent.ShowLoading)
+                    mainViewModel.saleAps(method)
+                }
+            }
+        }
+    }
     var isLoading by remember { mutableStateOf(false) }
 
     var showSslWarning by remember { mutableStateOf(false) }
@@ -142,6 +169,19 @@ internal fun ApsPageView(
                         override fun onPageFinished(view: WebView?, url: String?) {
                             super.onPageFinished(view, url)
                             isLoading = false
+                            // inject script to forward window.postMessage to native bridge
+                            view?.evaluateJavascript(
+                                """
+                                (function() {
+                                    window.addEventListener('message', function(event) {
+                                        if (event.data && window.EcpMobileSDK) {
+                                            var msg = typeof event.data === 'string' ? event.data : JSON.stringify(event.data);
+                                            window.EcpMobileSDK.postMessage(msg);
+                                        }
+                                    });
+                                })();
+                                """.trimIndent(), null
+                            )
                         }
 
                         override fun onReceivedSslError(
@@ -156,6 +196,8 @@ internal fun ApsPageView(
                     settings.javaScriptEnabled = true
                     settings.builtInZoomControls = true
                     settings.domStorageEnabled = true
+
+                    addJavascriptInterface(EcpMobileSDKInterface(mainViewModel, method), "EcpMobileSDK")
 
                     loadUrl(paymentUrl)
                 }

@@ -5,6 +5,7 @@ local.properties
 /buildSrc/build
 /buildSrc/.gradle
 /fastlane/report.xml
+secring.gpg
 
 Gemfile.lock
 *.iml
