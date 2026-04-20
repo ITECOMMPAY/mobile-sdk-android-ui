@@ -2,6 +2,7 @@
 /.idea
 /build
 local.properties
+.credentials
 /buildSrc/build
 /buildSrc/.gradle
 /fastlane/report.xml

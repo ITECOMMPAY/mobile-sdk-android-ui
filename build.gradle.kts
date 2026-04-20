@@ -19,17 +19,26 @@ ext["projectDescription"] = null
 ext["projectUrl"] = null
 ext["repositoryUrl"] = null
 
-// Grabbing secrets from local.properties file or from environment variables, which could be used on CI
-val secretPropsFile = project.rootProject.file("local.properties")
-if (secretPropsFile.exists()) {
-    secretPropsFile.reader().use {
-        java.util.Properties().apply {
-            load(it)
+// Grabbing secrets from .credentials, local.properties file or from environment variables, which could be used on CI
+fun loadProperties(fileName: String): Boolean {
+    val file = project.rootProject.file(fileName)
+    if (file.exists()) {
+        file.reader().use {
+            java.util.Properties().apply {
+                load(it)
+            }
+        }.onEach { (name, value) ->
+            extra[name.toString()] = value
         }
-    }.onEach { (name, value) ->
-        extra[name.toString()] = value
+        return true
     }
-} else {
+    return false
+}
+
+val credentialsLoaded = loadProperties("local.properties")
+val secureLoaded = loadProperties(".credentials")
+
+if (!credentialsLoaded && !secureLoaded) {
     ext["signing.keyId"] = System.getenv("SIGNING_KEY_ID")
     ext["signing.password"] = System.getenv("SIGNING_PASSWORD")
     ext["signing.secretKeyRingFile"] = System.getenv("SIGNING_SECRET_KEY_RING_FILE")
