@@ -85,7 +85,6 @@ internal fun CombinedCardField(
                 cardPanError = when {
                     it.isEmpty() -> getStringOverride(OverridesKeys.MESSAGE_REQUIRED_FIELD)
                     !panValidator.isValid(it) -> getStringOverride(OverridesKeys.MESSAGE_ABOUT_CARD_NUMBER)
-                    cardType == null -> null
                     !method.paymentMethod.availableCardTypes.contains(cardType) -> {
                         val regex = Regex("\\[\\[.+]]")
                         val message = regex.replace(
