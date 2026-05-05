@@ -69,5 +69,11 @@ internal fun PaymentMethodItem(
                 onActionClicked = onActionClicked
             )
         }
+        is UIPaymentMethod.UISbpQrPaymentMethod -> {
+            SbpPayItem(
+                method = method,
+                isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
+            )
+        }
     }
 }

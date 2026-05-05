@@ -52,6 +52,14 @@ internal class MainViewModel(
         sendEvent(MainScreenUiEvent.ShowClarificationFields(clarificationFields = clarificationFields))
     }
 
+    override fun onSbpQrDataReceived(
+        qrData: String,
+        payment: Payment,
+    ) {
+        this._payment = payment
+        sendEvent(MainScreenUiEvent.ShowSbpQrPage(qrData = qrData))
+    }
+
     override fun onCompleteWithDecline(
         isTryAgain: Boolean,
         paymentMessage: String?,

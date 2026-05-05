@@ -94,6 +94,7 @@ internal fun ExpandablePaymentMethodItem(
             is UIPaymentMethod.UISavedCardPayPaymentMethod -> TestTagsConstants.PREFIX_SAVE_CARD
             is UIPaymentMethod.UIGooglePayPaymentMethod -> TestTagsConstants.PREFIX_GOOGLE_PAY
             is UIPaymentMethod.UIApsPaymentMethod -> TestTagsConstants.PREFIX_APS
+            is UIPaymentMethod.UISbpQrPaymentMethod -> TestTagsConstants.PREFIX_APS
         }
     }${
         if (isDarkTheme) TestTagsConstants.DARK_THEME else TestTagsConstants.LIGHT_THEME

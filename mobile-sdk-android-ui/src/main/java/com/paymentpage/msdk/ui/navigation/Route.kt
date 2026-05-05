@@ -14,6 +14,7 @@ sealed class Route(
     object CustomerFields : Route(route = "customerFields")
     object ClarificationFields : Route(route = "clarificationFields")
     object ThreeDSecurePage : Route(route = "threeDSecurePage")
+    object SbpQrPage : Route(route = "sbpQrPage")
     object ApsPage : Route(route = "apsPage")
     object Loading : Route(route = "loading")
     object PaymentMethods : Route(route = "paymentMethods")

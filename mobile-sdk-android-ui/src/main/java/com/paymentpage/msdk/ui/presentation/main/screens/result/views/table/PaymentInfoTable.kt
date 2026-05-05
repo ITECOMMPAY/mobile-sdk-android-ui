@@ -33,6 +33,12 @@ internal fun PaymentInfoTable(
                     method.paymentMethod.translations[OverridesKeys.TITLE] ?: ""
                 )
         }
+        is UIPaymentMethod.UISbpQrPaymentMethod -> {
+            method.paymentMethod.name
+                ?: getStringOverride(
+                    method.paymentMethod.translations[OverridesKeys.TITLE] ?: ""
+                )
+        }
         is UIPaymentMethod.UIGooglePayPaymentMethod -> {
             method.paymentMethod.name ?: getStringOverride(OverridesKeys.GOOGLE_PAY_HOST_TITLE)
         }

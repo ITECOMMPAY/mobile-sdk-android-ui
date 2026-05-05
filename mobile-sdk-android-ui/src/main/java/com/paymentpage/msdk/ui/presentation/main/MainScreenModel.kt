@@ -25,6 +25,7 @@ internal sealed interface MainScreenUiEvent : UiEvent {
 
     class ShowThreeDSecurePage(val threeDSecurePage: ThreeDSecurePage, val isCascading: Boolean) :
         MainScreenUiEvent
+    class ShowSbpQrPage(val qrData: String) : MainScreenUiEvent
 
     object ShowSuccessPage : MainScreenUiEvent
     class ShowDeclinePage(val paymentMessage: String?, val isTryAgain: Boolean) :
@@ -42,6 +43,7 @@ internal data class MainScreenState(
     val request: PayRequest? = null,
     val clarificationFields: List<ClarificationField> = emptyList(),
     val threeDSecurePageState: ThreeDSecurePageState? = null,
+    val sbpQrData: String? = null,
     val apsPageState: ApsPageState? = null,
     val finalPaymentState: FinalPaymentState? = null,
     val error: ErrorResult? = null

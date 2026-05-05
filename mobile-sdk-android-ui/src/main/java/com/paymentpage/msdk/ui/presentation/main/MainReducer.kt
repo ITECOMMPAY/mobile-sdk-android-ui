@@ -12,6 +12,7 @@ internal class MainReducer(initial: MainScreenState) :
                     request = null,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
+                    sbpQrData = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isLoading = true,
@@ -25,6 +26,7 @@ internal class MainReducer(initial: MainScreenState) :
                     request = null,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
+                    sbpQrData = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isLoading = null,
@@ -38,6 +40,7 @@ internal class MainReducer(initial: MainScreenState) :
                     request = null,
                     isLoading = false,
                     threeDSecurePageState = null,
+                    sbpQrData = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     error = event.error,
@@ -52,6 +55,7 @@ internal class MainReducer(initial: MainScreenState) :
                     request = event.request,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
+                    sbpQrData = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isDeleteCardLoading = null,
@@ -65,6 +69,7 @@ internal class MainReducer(initial: MainScreenState) :
                     clarificationFields = event.clarificationFields,
                     request = null,
                     threeDSecurePageState = null,
+                    sbpQrData = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isDeleteCardLoading = null,
@@ -81,6 +86,21 @@ internal class MainReducer(initial: MainScreenState) :
                         threeDSecurePage = event.threeDSecurePage,
                         isCascading = event.isCascading
                     ),
+                    sbpQrData = null,
+                    finalPaymentState = null,
+                    apsPageState = null,
+                    isDeleteCardLoading = null,
+                    isTryAgain = null
+                )
+            )
+            is MainScreenUiEvent.ShowSbpQrPage -> setState(
+                oldState.copy(
+                    isLoading = false,
+                    customerFields = emptyList(),
+                    request = null,
+                    clarificationFields = emptyList(),
+                    threeDSecurePageState = null,
+                    sbpQrData = event.qrData,
                     finalPaymentState = null,
                     apsPageState = null,
                     isDeleteCardLoading = null,
@@ -94,6 +114,7 @@ internal class MainReducer(initial: MainScreenState) :
                     request = null,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
+                    sbpQrData = null,
                     finalPaymentState = FinalPaymentState.Success,
                     apsPageState = null,
                     isDeleteCardLoading = null,
@@ -107,6 +128,7 @@ internal class MainReducer(initial: MainScreenState) :
                     request = null,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
+                    sbpQrData = null,
                     apsPageState = null,
                     finalPaymentState = FinalPaymentState.Decline(
                         paymentMessage = event.paymentMessage,
@@ -121,6 +143,7 @@ internal class MainReducer(initial: MainScreenState) :
                     apsPageState = ApsPageState(apsMethod = event.apsMethod),
                     customerFields = emptyList(),
                     request = null,
+                    sbpQrData = null,
                     isTryAgain = null
                 )
             )
@@ -132,6 +155,7 @@ internal class MainReducer(initial: MainScreenState) :
                     request = null,
                     clarificationFields = emptyList(),
                     threeDSecurePageState = null,
+                    sbpQrData = null,
                     finalPaymentState = null,
                     apsPageState = null,
                     isDeleteCardLoading = null,

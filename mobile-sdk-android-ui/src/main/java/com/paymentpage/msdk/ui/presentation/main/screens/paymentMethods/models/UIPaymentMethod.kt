@@ -90,4 +90,19 @@ internal sealed class UIPaymentMethod(
         override var isValidPan: Boolean = true
         override var isValidExpiry: Boolean = true
     }
+
+    data class UISbpQrPaymentMethod(
+        override val index: Int,
+        override val title: String,
+        override val logoUrl: String?,
+        override val paymentMethod: PaymentMethod,
+    ) : UIPaymentMethod() {
+        override val id: String = paymentMethod.code
+        override var pan: String? = null
+        override var expiry: String? = null
+        override var cvv: String? = null
+        override var isValidCvv: Boolean = true
+        override var isValidPan: Boolean = true
+        override var isValidExpiry: Boolean = true
+    }
 }

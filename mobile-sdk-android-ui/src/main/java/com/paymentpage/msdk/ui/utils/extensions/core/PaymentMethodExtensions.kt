@@ -16,6 +16,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
     val googlePayMethod = find { it.paymentMethodType == PaymentMethodType.GOOGLE_PAY }
     val cardPayMethod = find { it.paymentMethodType == PaymentMethodType.CARD }
     val apsPaymentMethods = filter { it.paymentMethodType == PaymentMethodType.APS }
+    val sbpPaymentMethods = filter { it.paymentMethodType == PaymentMethodType.SBP }
 
     var position = 0
 
@@ -66,6 +67,17 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
             apsPaymentMethods.forEach {
                 result.add(
                     UIPaymentMethod.UIApsPaymentMethod(
+                        index = position,
+                        title = it.name ?: getStringOverride(it.translations[OverridesKeys.TITLE] ?: ""),
+                        paymentMethod = it,
+                    )
+                )
+                position += 1
+            }
+            //get sbp payment methods
+            sbpPaymentMethods.forEach {
+                result.add(
+                    UIPaymentMethod.UISbpQrPaymentMethod(
                         index = position,
                         title = it.name ?: getStringOverride(it.translations[OverridesKeys.TITLE] ?: ""),
                         paymentMethod = it,

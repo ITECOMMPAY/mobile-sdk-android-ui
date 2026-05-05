@@ -29,6 +29,7 @@ import com.paymentpage.msdk.ui.presentation.main.screens.loading.LoadingScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.PaymentMethodsScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultDeclineScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultSuccessScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.sbpQr.SbpQrScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.threeDSecure.ThreeDSecureScreen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
@@ -84,6 +85,9 @@ internal fun MainScreen(
         //3DS
         composable(route = Route.ThreeDSecurePage.getPath()) {
             ThreeDSecureScreen(onCancel = onCancel)
+        }
+        composable(route = Route.SbpQrPage.getPath()) {
+            SbpQrScreen(onCancel = onCancel)
         }
         //APS
         composable(route = Route.ApsPage.getPath()) {
@@ -175,6 +179,7 @@ private fun setupStateListener(
                 it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.ClarificationFields)
                 it.threeDSecurePageState != null -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)
+                it.sbpQrData != null -> mainScreenNavigator.navigateTo(Route.SbpQrPage)
                 it.apsPageState != null -> mainScreenNavigator.navigateTo(Route.ApsPage)
             }
         }.collect()

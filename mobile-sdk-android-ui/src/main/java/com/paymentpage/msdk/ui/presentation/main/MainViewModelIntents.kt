@@ -10,6 +10,7 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.interactors.pay.PayRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.aps.ApsSaleRequest
+import com.paymentpage.msdk.core.domain.interactors.pay.sbp.SbpSaleRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.StoredCardType
 import com.paymentpage.msdk.core.domain.interactors.pay.card.auth.CardAuthRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.card.auth.CardAuthTokenizeRequest
@@ -259,6 +260,14 @@ internal fun MainViewModel.saleAps(
     method: UIPaymentMethod.UIApsPaymentMethod,
 ) {
     val request = ApsSaleRequest(methodCode = method.paymentMethod.code)
+    payInteractor.sendRequest(request)
+}
+
+@Suppress("UNUSED_PARAMETER")
+internal fun MainViewModel.saleSbp(
+    sbpMethod: UIPaymentMethod.UISbpQrPaymentMethod,
+) {
+    val request = SbpSaleRequest()
     payInteractor.sendRequest(request)
 }
 
