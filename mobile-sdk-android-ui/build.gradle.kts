@@ -77,4 +77,5 @@ android {
 dependencies {
     implementation(LibraryDependencies.Msdk.core)
     implementation ("com.jakewharton.threetenabp:threetenabp:1.4.0")
+    implementation(LibraryDependencies.ZXing.core)
 }
