@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.HorizontalOrVertical
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -76,11 +77,11 @@ internal fun SDKScaffold(
                 )
                 .height(LocalConfiguration.current.screenHeightDp.dp * 0.9f) //Height of bottom sheet
                 .fillMaxWidth()
-                .padding(top = 25.dp)
-                .padding(horizontal = horizontalPadding),
+                .padding(top = 25.dp),
             content = {
                 if (title != null || showCloseButton || onBack != null) {
                     SDKTopBar(
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         title = title,
                         showCloseButton = showCloseButton,
                         onClose = onClose,
@@ -91,7 +92,8 @@ internal fun SDKScaffold(
                 if (notScrollableContent != null) {
                     Column(
                         modifier = modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .padding(horizontal = horizontalPadding),
                         content = notScrollableContent,
                         verticalArrangement = verticalArrangement,
                         horizontalAlignment = horizontalAlignment,
@@ -101,7 +103,8 @@ internal fun SDKScaffold(
                     Column(
                         modifier = modifier
                             .verticalScroll(rememberScrollState())
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .padding(horizontal = horizontalPadding),
                         content = scrollableContent,
                         verticalArrangement = verticalArrangement,
                         horizontalAlignment = horizontalAlignment,
@@ -114,7 +117,14 @@ internal fun SDKScaffold(
 
 @Preview
 @Composable
-private fun SDKScaffoldPreview() {
+fun SDKScaffoldPreview(
+    title: String? = null,
+    verticalArrangement: HorizontalOrVertical = Arrangement.Center,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+    horizontalPadding: Dp = 16.dp,
+    notScrollableContent: (@Composable ColumnScope.() -> Unit)? = null,
+    scrollableContent: (@Composable ColumnScope.() -> Unit)? = null,
+) {
     SDKTheme {
         val options = SDKPaymentOptions(
             paymentInfo = PaymentInfo(
@@ -133,8 +143,13 @@ private fun SDKScaffoldPreview() {
 
         SDKCommonProvider(options, msdkSession) {
             SDKScaffold(
+                title = title,
+                verticalArrangement = verticalArrangement,
+                horizontalAlignment = horizontalAlignment,
+                horizontalPadding = horizontalPadding,
+                notScrollableContent = notScrollableContent,
+                scrollableContent = scrollableContent,
                 onClose = {},
-                title = "Payment methods"
             )
         }
     }

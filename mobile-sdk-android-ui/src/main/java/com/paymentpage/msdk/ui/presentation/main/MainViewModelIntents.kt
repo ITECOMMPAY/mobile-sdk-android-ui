@@ -263,7 +263,6 @@ internal fun MainViewModel.saleAps(
     payInteractor.sendRequest(request)
 }
 
-@Suppress("UNUSED_PARAMETER")
 internal fun MainViewModel.saleSbp(
     sbpMethod: UIPaymentMethod.UISbpQrPaymentMethod,
 ) {
