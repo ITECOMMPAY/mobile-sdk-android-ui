@@ -15,7 +15,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
-import com.ecommpay.msdk.ui.BuildConfig
+import com.ecommpay.ui.msdk.sample.BuildConfig
 import com.ecommpay.msdk.ui.EcmpPaymentInfo
 import com.ecommpay.msdk.ui.Ecommpay
 import com.ecommpay.msdk.ui.paymentOptions

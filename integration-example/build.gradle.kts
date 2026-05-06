@@ -15,46 +15,46 @@ android {
     }
 
     buildTypes {
-        buildTypes {
-            getByName("debug") {
-                buildConfigField(
-                    "String",
-                    "PROJECT_SECRET_KEY",
-                    "\"" + projectSecretKey + "\""
-                )
+        getByName("debug") {
+            isDebuggable = true
 
-                buildConfigField(
-                    "int",
-                    "PROJECT_ID",
-                    projectId
-                )
+            buildConfigField(
+                "String",
+                "PROJECT_SECRET_KEY",
+                "\"" + projectSecretKey + "\""
+            )
 
-                buildConfigField(
-                    "String",
-                    "GPAY_MERCHANT_ID",
-                    "\"" + gPayMerchantId + "\""
-                )
-            }
+            buildConfigField(
+                "int",
+                "PROJECT_ID",
+                projectId
+            )
 
-            getByName("release") {
-                buildConfigField(
-                    "String",
-                    "PROJECT_SECRET_KEY",
-                    "\"" + projectSecretKey + "\""
-                )
+            buildConfigField(
+                "String",
+                "GPAY_MERCHANT_ID",
+                "\"" + gPayMerchantId + "\""
+            )
+        }
 
-                buildConfigField(
-                    "int",
-                    "PROJECT_ID",
-                    projectId
-                )
+        getByName("release") {
+            buildConfigField(
+                "String",
+                "PROJECT_SECRET_KEY",
+                "\"" + projectSecretKey + "\""
+            )
 
-                buildConfigField(
-                    "String",
-                    "GPAY_MERCHANT_ID",
-                    "\"" + gPayMerchantId + "\""
-                )
-            }
+            buildConfigField(
+                "int",
+                "PROJECT_ID",
+                projectId
+            )
+
+            buildConfigField(
+                "String",
+                "GPAY_MERCHANT_ID",
+                "\"" + gPayMerchantId + "\""
+            )
         }
     }
 }
