@@ -5,3 +5,5 @@
 ## [3.9.3] - Implement renaming + config generation script
 ## [3.9.4] - Fix allowed card networks mapping in google pay payments
 ## [3.10.0] - Bump core version with ktor 3+
+## [3.10.3] - Fix unknown pan validation
+## [3.10.4] - Implement proper PaymentActivity state handling after reconfiguration
