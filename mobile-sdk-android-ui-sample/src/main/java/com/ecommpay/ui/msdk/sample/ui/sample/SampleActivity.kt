@@ -1,8 +1,10 @@
 package com.ecommpay.ui.msdk.sample.ui.sample
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -32,9 +34,16 @@ import kotlinx.serialization.json.Json
 
 class SampleActivity : ComponentActivity() {
     private lateinit var viewUseCase: SampleViewUC
+    private var startActivityForResult: ActivityResultLauncher<Intent>? = null
+    private var isPaymentFlowInProgress = false
+    private var shouldRestartPaymentAfterClose = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        isPaymentFlowInProgress = savedInstanceState?.getBoolean(KEY_IS_PAYMENT_FLOW_IN_PROGRESS) ?: false
+        shouldRestartPaymentAfterClose = savedInstanceState?.getBoolean(KEY_SHOULD_RESTART_AFTER_CLOSE) ?: false
+        registerPaymentLauncher()
 
         viewUseCase = viewUseCase("Sample") { SampleViewUC() }
 
@@ -148,11 +157,35 @@ class SampleActivity : ComponentActivity() {
             )
         }
 
-        startActivityForResult.launch(sdk.intent)
+        isPaymentFlowInProgress = true
+        startActivityForResult?.launch(sdk.intent)
     }
 
-    private val startActivityForResult =
+    fun closeAndRestartPaymentPage() {
+        if (!isPaymentFlowInProgress) {
+            startPaymentPage()
+            return
+        }
+
+        shouldRestartPaymentAfterClose = true
+        val isClosed = Ecommpay.closeActivePaymentSession()
+        if (!isClosed) {
+            shouldRestartPaymentAfterClose = false
+            startPaymentPage()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(KEY_IS_PAYMENT_FLOW_IN_PROGRESS, isPaymentFlowInProgress)
+        outState.putBoolean(KEY_SHOULD_RESTART_AFTER_CLOSE, shouldRestartPaymentAfterClose)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun registerPaymentLauncher() {
+        startActivityForResult?.unregister()
+        startActivityForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            isPaymentFlowInProgress = false
             val data = result.data
             when (result.resultCode) {
                 Ecommpay.RESULT_SUCCESS -> {
@@ -214,5 +247,17 @@ class SampleActivity : ComponentActivity() {
                     )
                 }
             }
+
+            if (shouldRestartPaymentAfterClose) {
+                shouldRestartPaymentAfterClose = false
+                startPaymentPage()
+            }
         }
+
+    }
+
+    companion object {
+        private const val KEY_IS_PAYMENT_FLOW_IN_PROGRESS = "is_payment_flow_in_progress"
+        private const val KEY_SHOULD_RESTART_AFTER_CLOSE = "should_restart_after_close"
+    }
 }

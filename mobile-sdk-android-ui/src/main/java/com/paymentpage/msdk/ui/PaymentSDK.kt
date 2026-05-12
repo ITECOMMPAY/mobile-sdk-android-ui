@@ -42,5 +42,8 @@ class PaymentSDK(
 
         const val EXTRA_API_HOST = Constants.EXTRA_API_HOST
         const val EXTRA_WS_API_HOST = Constants.EXTRA_WS_API_HOST
+
+        @JvmStatic
+        fun closeActivePaymentSession(): Boolean = PaymentActivity.closeActivePaymentSession()
     }
 }
