@@ -2,8 +2,10 @@ package com.paymentpage.msdk.ui.presentation.main.screens.sbpQr
 
 import android.graphics.Bitmap
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,22 +19,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
+import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.SDKActionType
+import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.screens.result.views.animation.VerticalSlideFadeAnimation
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.views.button.SDKButton
+import com.paymentpage.msdk.ui.views.common.ExpandablePaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.common.SDKScaffoldPreview
 
 @Composable
-internal fun SbpQrScreen(onCancel: () -> Unit) {
+internal fun SbpQrScreen(
+    actionType: SDKActionType,
+    onLinkClicked: (String) -> Unit,
+    onCancel: () -> Unit,
+) {
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
 
@@ -50,9 +61,11 @@ internal fun SbpQrScreen(onCancel: () -> Unit) {
         horizontalPadding = 0.dp,
         notScrollableContent = {
             SbpQrContent(
+                actionType = actionType,
+                qrData = qrData,
                 qrBitmap = qrBitmap,
-                title = "Для оплаты",
-                description = "Отсканируйте QR-код в мобильном приложении банка или штатной камерой телефона",
+                title = "Отсканируйте QR-код указанный ниже, чтобы продолжить оплату",
+                onLinkClicked = onLinkClicked,
             )
         },
         onClose = onCancel,
@@ -61,43 +74,15 @@ internal fun SbpQrScreen(onCancel: () -> Unit) {
 
 @Composable
 internal fun SbpQrContent(
+    actionType: SDKActionType,
+    qrData: String,
     qrBitmap: Bitmap?,
     title: String,
-    description: String,
+    onLinkClicked: (String) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFFDF9FA),
-                        Color(0xFFF8F8FA),
-                        Color(0xFFF5F5F7),
-                    )
-                )
-            )
-            .background(
-                brush = Brush.radialGradient(
-                    colors = listOf(
-                        Color(0x66CEC2FF),
-                        Color(0x00CEC2FF),
-                    ),
-                    radius = 720f,
-                    center = androidx.compose.ui.geometry.Offset(820f, 120f)
-                )
-            )
-            .background(
-                brush = Brush.radialGradient(
-                    colors = listOf(
-                        Color(0x66FF8A8A),
-                        Color(0x00FF8A8A),
-                    )
-                    ,
-                    radius = 760f,
-                    center = androidx.compose.ui.geometry.Offset(-80f, 980f)
-                )
-            )
             .padding(horizontal = 20.dp, vertical = 24.dp)
     ) {
         Column(
@@ -105,7 +90,42 @@ internal fun SbpQrContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.weight(0.35f))
+            val visibleState = remember {
+                MutableTransitionState(false).apply {
+                    // Start the animation immediately
+                    targetState = true
+                }
+            }
+
+            //remove payment overview block if logo does not exist when verify
+            if (actionType != SDKActionType.Verify || LocalPaymentOptions.current.logoImage != null)
+                VerticalSlideFadeAnimation(
+                    visibleState = visibleState,
+                    delay = 1000,
+                    duration = 500,
+                    initialOffsetYRatio = 0.3f
+                ) {
+                    Column {
+                        Spacer(modifier = Modifier.size(24.dp))
+                        ExpandablePaymentOverview(
+                            actionType = actionType,
+                            expandable = false
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.size(28.dp))
+                }
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("SBP_QR_TITLE_TEXT"),
+                text = title,
+                style = SDKTheme.typography.s20SemiBold.copy(color = SDKTheme.colors.textPrimary),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.size(28.dp))
 
             if (qrBitmap != null) {
                 Box(
@@ -126,29 +146,43 @@ internal fun SbpQrContent(
                 }
             }
 
+            Spacer(modifier = Modifier.size(14.dp))
+
+            Text(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .testTag("SBP_QR_LINK_TEXT")
+                    .clickable(enabled = qrData.isNotBlank()) {
+                        onLinkClicked(qrData)
+                    },
+                text = "Или перейдите по ссылке",
+                style = SDKTheme.typography.s14Normal.copy(
+                    color = SDKTheme.colors.link,
+                    textDecoration = TextDecoration.Underline
+                ),
+                textAlign = TextAlign.Center
+            )
+
             Spacer(modifier = Modifier.size(28.dp))
 
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("SBP_QR_TITLE_TEXT"),
-                text = title,
-                style = SDKTheme.typography.s28Bold.copy(color = SDKTheme.colors.textPrimary),
-                textAlign = TextAlign.Center
-            )
+            VerticalSlideFadeAnimation(
+                visibleState = visibleState,
+                delay = 1200,
+                duration = 500,
+                initialOffsetYRatio = 0.3f
+            ) {
+                Column {
+                    Spacer(modifier = Modifier.size(24.dp))
+                    SDKButton(
+                        modifier = Modifier
+                            .testTag(TestTagsConstants.PAY_BUTTON),
+                        label = "Оплатить",
+                        isEnabled = true
+                    ) { onLinkClicked(qrData) }
+                }
+            }
 
-            Spacer(modifier = Modifier.size(12.dp))
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("SBP_QR_DESCRIPTION_TEXT"),
-                text = description,
-                style = SDKTheme.typography.s20SemiBold.copy(color = SDKTheme.colors.textPrimary),
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.weight(0.65f))
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }
@@ -165,9 +199,10 @@ internal fun SbpQrContentPreview() {
         horizontalPadding = 0.dp,
         notScrollableContent = {
             SbpQrContent(
+                actionType = SDKActionType.Sale,
+                qrData = qrData,
                 qrBitmap = qrBitmap,
-                title = "Для оплаты",
-                description = "Отсканируйте QR-код в мобильном приложении банка или штатной камерой телефона",
+                title = "Отсканируйте QR-код указанный ниже, чтобы продолжить оплату",
             )
         }
     )

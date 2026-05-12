@@ -3,11 +3,14 @@
 
 package com.paymentpage.msdk.ui.presentation.main
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -45,6 +48,7 @@ internal fun MainScreen(
     onError: (ErrorResult, Boolean) -> Unit,
     onCancel: () -> Unit,
 ) {
+    val context = LocalContext.current
     val lastRoute = mainScreenNavigator.lastRoute
 
     val navController = rememberNavController()
@@ -87,7 +91,13 @@ internal fun MainScreen(
             ThreeDSecureScreen(onCancel = onCancel)
         }
         composable(route = Route.SbpQrPage.getPath()) {
-            SbpQrScreen(onCancel = onCancel)
+            SbpQrScreen(
+                actionType = actionType,
+                onLinkClicked = {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+                },
+                onCancel = onCancel
+            )
         }
         //APS
         composable(route = Route.ApsPage.getPath()) {
