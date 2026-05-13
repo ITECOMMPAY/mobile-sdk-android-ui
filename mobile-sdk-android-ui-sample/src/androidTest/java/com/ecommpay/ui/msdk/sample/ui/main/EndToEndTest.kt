@@ -3,32 +3,23 @@
 package com.ecommpay.ui.msdk.sample.ui.main
 
 import android.app.Instrumentation
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
-import com.ecommpay.ui.msdk.sample.domain.ui.base.viewUseCase
-import com.ecommpay.ui.msdk.sample.domain.ui.sample.SampleViewUC
+import com.ecommpay.msdk.ui.Ecommpay
+import com.ecommpay.ui.msdk.sample.data.ProcessRepository
 import com.ecommpay.ui.msdk.sample.ui.sample.SampleActivity
-import com.ecommpay.ui.msdk.sample.ui.sample.SampleState
 import com.paymentpage.msdk.ui.PaymentActivity
 import com.paymentpage.msdk.ui.TestTagsConstants
 import org.junit.Assert.assertEquals
-import org.junit.Before
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalComposeUiApi::class)
 internal class MainScreenTest {
-    private val viewUseCase = viewUseCase("Sample") { SampleViewUC() }
-
     //Create activity monitor for checking lunching another activity
     private val activityMonitor: Instrumentation.ActivityMonitor = InstrumentationRegistry.getInstrumentation().addMonitor(
         PaymentActivity::class.java.name,
@@ -39,72 +30,83 @@ internal class MainScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<SampleActivity>()
 
-    @Before
-    fun setUp() {
-        composeTestRule.setContent {
-            Surface(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .semantics {
-                        testTagsAsResourceId = true
-                    },
-                color = MaterialTheme.colors.background
-            ) {
-                composeTestRule.activity.SampleState(viewUseCase = viewUseCase)
-            }
-        }
-    }
-
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun endToEndTest() {
-        composeTestRule
-            .onNodeWithTag("paymentDescriptionTextField")
-            .assertIsDisplayed()
+        val initialMockModeType = ProcessRepository.mockModeType
+        ProcessRepository.mockModeType = Ecommpay.EcmpMockModeType.SUCCESS
+        try {
+            composeTestRule
+                .onNodeWithTag("paymentDescriptionTextField")
+                .assertIsDisplayed()
 
-        composeTestRule
-            .onNodeWithTag("paymentDescriptionTextField")
-            .performTextInput("123")
+            composeTestRule
+                .onNodeWithTag("paymentDescriptionTextField")
+                .performTextReplacement("Test 123")
 
-        composeTestRule
-            .onNodeWithTag("paymentDescriptionTextField")
-            .performClick()
-            .assertTextEquals("Payment Description","Test 123")
+            composeTestRule
+                .onNodeWithTag("paymentDescriptionTextField")
+                .assertTextEquals("Payment Description","Test 123")
 
-        composeTestRule
-            .onNodeWithTag("saleButton")
-            .performScrollTo()
-            .assertIsDisplayed()
-            .performClick()
+            composeTestRule
+                .onNodeWithTag("saleButton")
+                .performScrollTo()
+                .assertIsDisplayed()
+                .performClick()
+
+            val paymentActivity = activityMonitor.waitForActivityWithTimeout(5000)
+
+            assertEquals(PaymentActivity::class.java.name, paymentActivity.javaClass.name)
+
+            composeTestRule.waitUntilExists(
+                matcher = hasTestTag(TestTagsConstants.PAYMENT_DETAILS_BUTTON),
+                timeoutMillis = 10000
+            )
+
+            composeTestRule
+                .onNodeWithTag(TestTagsConstants.PAYMENT_DETAILS_BUTTON)
+                .performClick()
+
+            composeTestRule.waitUntilExists(
+                matcher = hasTestTag(TestTagsConstants.PAYMENT_DESCRIPTION_VALUE_TEXT),
+                timeoutMillis = 10000
+            )
+
+            composeTestRule
+                .onNodeWithTag(TestTagsConstants.PAYMENT_DESCRIPTION_VALUE_TEXT)
+                .assertTextEquals("Test 123")
+
+            composeTestRule
+                .onNodeWithTag(TestTagsConstants.PAYMENT_DETAILS_BUTTON)
+                .performClick()
+
+            composeTestRule.waitUntilDoesNotExist(
+                matcher = hasTestTag(TestTagsConstants.PAYMENT_DESCRIPTION_VALUE_TEXT),
+                timeoutMillis = 10000
+            )
+        } finally {
+            ProcessRepository.mockModeType = initialMockModeType
+        }
+    }
+
+    @Test
+    fun forceCloseActivePaymentSession_shouldReturnCancelledResultToHost() {
+        composeTestRule.runOnUiThread {
+            composeTestRule.activity.startPaymentPage()
+        }
 
         val paymentActivity = activityMonitor.waitForActivityWithTimeout(5000)
-
         assertEquals(PaymentActivity::class.java.name, paymentActivity.javaClass.name)
 
-        composeTestRule.waitUntilExists(
-            matcher = hasTestTag(TestTagsConstants.PAYMENT_DETAILS_BUTTON),
-            timeoutMillis = 10000
-        )
-
-        composeTestRule
-            .onNodeWithTag(TestTagsConstants.PAYMENT_DETAILS_BUTTON)
-            .performClick()
+        var isClosed = false
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            isClosed = Ecommpay.closeActivePaymentSession()
+            isClosed
+        }
+        assertTrue("Expected PaymentActivity to be closed by SDK API", isClosed)
 
         composeTestRule.waitUntilExists(
-            matcher = hasTestTag(TestTagsConstants.PAYMENT_DESCRIPTION_VALUE_TEXT),
-            timeoutMillis = 10000
-        )
-
-        composeTestRule
-            .onNodeWithTag(TestTagsConstants.PAYMENT_DESCRIPTION_VALUE_TEXT)
-            .assertTextEquals("Test 123")
-
-        composeTestRule
-            .onNodeWithTag(TestTagsConstants.PAYMENT_DETAILS_BUTTON)
-            .performClick()
-
-        composeTestRule.waitUntilDoesNotExist(
-            matcher = hasTestTag(TestTagsConstants.PAYMENT_DESCRIPTION_VALUE_TEXT),
+            matcher = hasText("You cancelled the payment"),
             timeoutMillis = 10000
         )
     }

@@ -46,6 +46,9 @@ class Ecommpay(
 
         const val EXTRA_API_HOST = PaymentSDK.EXTRA_API_HOST
         const val EXTRA_WS_API_HOST = PaymentSDK.EXTRA_WS_API_HOST
+
+        @JvmStatic
+        fun closeActivePaymentSession(): Boolean = PaymentSDK.closeActivePaymentSession()
     }
 
     enum class EcmpMockModeType {
