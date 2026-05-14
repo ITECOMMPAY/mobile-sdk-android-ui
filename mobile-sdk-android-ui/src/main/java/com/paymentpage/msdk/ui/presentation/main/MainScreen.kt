@@ -3,14 +3,11 @@
 
 package com.paymentpage.msdk.ui.presentation.main
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -33,6 +30,7 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.PaymentM
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultDeclineScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.result.ResultSuccessScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.sbpQr.SbpQrScreen
+import com.paymentpage.msdk.ui.presentation.main.screens.sbpWebView.SbpWebViewScreen
 import com.paymentpage.msdk.ui.presentation.main.screens.threeDSecure.ThreeDSecureScreen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
@@ -48,7 +46,7 @@ internal fun MainScreen(
     onError: (ErrorResult, Boolean) -> Unit,
     onCancel: () -> Unit,
 ) {
-    val context = LocalContext.current
+    val mainViewModel = LocalMainViewModel.current
     val lastRoute = mainScreenNavigator.lastRoute
 
     val navController = rememberNavController()
@@ -94,8 +92,13 @@ internal fun MainScreen(
             SbpQrScreen(
                 actionType = actionType,
                 onLinkClicked = {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+                    mainViewModel.sendEvent(MainScreenUiEvent.ShowSbpWebViewPage(qrData = it))
                 },
+                onCancel = onCancel
+            )
+        }
+        composable(route = Route.SbpWebViewPage.getPath()) {
+            SbpWebViewScreen(
                 onCancel = onCancel
             )
         }
@@ -189,6 +192,7 @@ private fun setupStateListener(
                 it.customerFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.CustomerFields)
                 it.clarificationFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.ClarificationFields)
                 it.threeDSecurePageState != null -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)
+                it.sbpWebViewData != null -> mainScreenNavigator.navigateTo(Route.SbpWebViewPage)
                 it.sbpQrData != null -> mainScreenNavigator.navigateTo(Route.SbpQrPage)
                 it.apsPageState != null -> mainScreenNavigator.navigateTo(Route.ApsPage)
             }

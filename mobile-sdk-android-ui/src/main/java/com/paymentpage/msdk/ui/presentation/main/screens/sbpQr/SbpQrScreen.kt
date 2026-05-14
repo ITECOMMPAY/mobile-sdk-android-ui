@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,13 +27,16 @@ import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
+import com.paymentpage.msdk.ui.OverridesKeys.BUTTON_PAY
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.animation.VerticalSlideFadeAnimation
 import com.paymentpage.msdk.ui.theme.SDKTheme
+import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.button.SDKButton
 import com.paymentpage.msdk.ui.views.common.ExpandablePaymentOverview
+import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.common.SDKScaffoldPreview
 
@@ -59,7 +61,7 @@ internal fun SbpQrScreen(
         title = method.title,
         verticalArrangement = Arrangement.Center,
         horizontalPadding = 0.dp,
-        notScrollableContent = {
+        scrollableContent = {
             SbpQrContent(
                 actionType = actionType,
                 qrData = qrData,
@@ -80,109 +82,103 @@ internal fun SbpQrContent(
     title: String,
     onLinkClicked: (String) -> Unit = {},
 ) {
-    Box(
+    Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 20.dp, vertical = 24.dp)
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            val visibleState = remember {
-                MutableTransitionState(false).apply {
-                    // Start the animation immediately
-                    targetState = true
-                }
+        val visibleState = remember {
+            MutableTransitionState(false).apply {
+                // Start the animation immediately
+                targetState = true
             }
+        }
 
-            //remove payment overview block if logo does not exist when verify
-            if (actionType != SDKActionType.Verify || LocalPaymentOptions.current.logoImage != null)
-                VerticalSlideFadeAnimation(
-                    visibleState = visibleState,
-                    delay = 1000,
-                    duration = 500,
-                    initialOffsetYRatio = 0.3f
-                ) {
-                    Column {
-                        Spacer(modifier = Modifier.size(24.dp))
-                        ExpandablePaymentOverview(
-                            actionType = actionType,
-                            expandable = false
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.size(28.dp))
-                }
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("SBP_QR_TITLE_TEXT"),
-                text = title,
-                style = SDKTheme.typography.s20SemiBold.copy(color = SDKTheme.colors.textPrimary),
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.size(28.dp))
-
-            if (qrBitmap != null) {
-                Box(
-                    modifier = Modifier
-                        .background(
-                            color = SDKTheme.colors.cardBackground,
-                            shape = SDKTheme.shapes.radius20
-                        )
-                        .padding(18.dp),
-                ) {
-                    Image(
-                        bitmap = qrBitmap.asImageBitmap(),
-                        contentDescription = "SBP QR",
-                        modifier = Modifier
-                            .size(240.dp)
-                            .testTag("SBP_QR_IMAGE")
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.size(14.dp))
-
-            Text(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .testTag("SBP_QR_LINK_TEXT")
-                    .clickable(enabled = qrData.isNotBlank()) {
-                        onLinkClicked(qrData)
-                    },
-                text = "Или перейдите по ссылке",
-                style = SDKTheme.typography.s14Normal.copy(
-                    color = SDKTheme.colors.link,
-                    textDecoration = TextDecoration.Underline
-                ),
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.size(28.dp))
-
+        //remove payment overview block if logo does not exist when verify
+        if (actionType != SDKActionType.Verify || LocalPaymentOptions.current.logoImage != null) {
             VerticalSlideFadeAnimation(
                 visibleState = visibleState,
-                delay = 1200,
+                delay = 1000,
                 duration = 500,
                 initialOffsetYRatio = 0.3f
             ) {
-                Column {
-                    Spacer(modifier = Modifier.size(24.dp))
-                    SDKButton(
-                        modifier = Modifier
-                            .testTag(TestTagsConstants.PAY_BUTTON),
-                        label = "Оплатить",
-                        isEnabled = true
-                    ) { onLinkClicked(qrData) }
-                }
+                ExpandablePaymentOverview(
+                    actionType = actionType,
+                    expandable = false
+                )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.size(28.dp))
+        }
+
+        if (qrBitmap != null) {
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = SDKTheme.colors.cardBackground,
+                        shape = SDKTheme.shapes.radius20
+                    )
+                    .padding(18.dp),
+            ) {
+                Image(
+                    bitmap = qrBitmap.asImageBitmap(),
+                    contentDescription = "SBP QR",
+                    modifier = Modifier
+                        .size(240.dp)
+                        .testTag("SBP_QR_IMAGE")
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.size(14.dp))
+
+        Text(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .testTag("SBP_QR_LINK_TEXT")
+                .clickable(enabled = qrData.isNotBlank()) {
+                    onLinkClicked(qrData)
+                },
+            text = qrData,
+            style = SDKTheme.typography.s14Normal.copy(
+                color = SDKTheme.colors.link,
+                textDecoration = TextDecoration.Underline
+            ),
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.size(28.dp))
+
+        VerticalSlideFadeAnimation(
+            visibleState = visibleState,
+            delay = 1200,
+            duration = 500,
+            initialOffsetYRatio = 0.3f
+        ) {
+            Column {
+                Spacer(modifier = Modifier.size(24.dp))
+                SDKButton(
+                    modifier = Modifier
+                        .testTag(TestTagsConstants.PAY_BUTTON),
+                    label = getStringOverride(BUTTON_PAY),
+                    isEnabled = true
+                ) { onLinkClicked(qrData) }
+            }
+        }
+
+        VerticalSlideFadeAnimation(
+            visibleState = visibleState,
+            delay = 1300,
+            duration = 500,
+            initialOffsetYRatio = 0.3f
+        ) {
+            Column {
+                Spacer(modifier = Modifier.size(15.dp))
+                SDKFooter()
+                Spacer(modifier = Modifier.size(25.dp))
+            }
         }
     }
 }

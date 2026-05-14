@@ -266,6 +266,7 @@ internal fun MainViewModel.saleAps(
 internal fun MainViewModel.saleSbp(
     sbpMethod: UIPaymentMethod.UISbpQrPaymentMethod,
 ) {
+    sendEvent(MainScreenUiEvent.ShowLoading)
     val request = SbpSaleRequest()
     payInteractor.sendRequest(request)
 }
