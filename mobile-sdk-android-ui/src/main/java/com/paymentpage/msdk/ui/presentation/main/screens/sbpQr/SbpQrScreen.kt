@@ -15,10 +15,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -39,6 +42,9 @@ import com.paymentpage.msdk.ui.views.common.ExpandablePaymentOverview
 import com.paymentpage.msdk.ui.views.common.SDKFooter
 import com.paymentpage.msdk.ui.views.common.SDKScaffold
 import com.paymentpage.msdk.ui.views.common.SDKScaffoldPreview
+import kotlinx.coroutines.delay
+
+private const val TABLET_MIN_SMALLEST_WIDTH_DP = 600
 
 @Composable
 internal fun SbpQrScreen(
@@ -48,12 +54,25 @@ internal fun SbpQrScreen(
 ) {
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val smallestScreenWidthDp = LocalConfiguration.current.smallestScreenWidthDp
 
     val lastState = mainViewModel.lastState
     val method =
         paymentMethodsViewModel.lastState.currentMethod as UIPaymentMethod.UISbpQrPaymentMethod
     val qrData = lastState.sbpQrData.orEmpty()
-    val qrBitmap = remember(qrData) { generateQrBitmap(qrData, 768) }
+    val isTablet = remember(smallestScreenWidthDp) {
+        derivedStateOf { smallestScreenWidthDp >= TABLET_MIN_SMALLEST_WIDTH_DP }
+    }
+    val qrBitmap = remember(qrData, isTablet) {
+        if (isTablet.value) generateQrBitmap(qrData, 768) else null
+    }
+
+    if (!isTablet.value) {
+        LaunchedEffect(qrData) {
+            delay(700)
+            onLinkClicked(qrData)
+        }
+    }
 
     BackHandler(true) { }
 
@@ -66,7 +85,7 @@ internal fun SbpQrScreen(
                 actionType = actionType,
                 qrData = qrData,
                 qrBitmap = qrBitmap,
-                title = "Отсканируйте QR-код указанный ниже, чтобы продолжить оплату",
+                isTablet = isTablet.value,
                 onLinkClicked = onLinkClicked,
             )
         },
@@ -79,15 +98,16 @@ internal fun SbpQrContent(
     actionType: SDKActionType,
     qrData: String,
     qrBitmap: Bitmap?,
-    title: String,
+    isTablet: Boolean,
+    modifier: Modifier = Modifier,
     onLinkClicked: (String) -> Unit = {},
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
         val visibleState = remember {
             MutableTransitionState(false).apply {
@@ -100,8 +120,8 @@ internal fun SbpQrContent(
         if (actionType != SDKActionType.Verify || LocalPaymentOptions.current.logoImage != null) {
             VerticalSlideFadeAnimation(
                 visibleState = visibleState,
-                delay = 1000,
-                duration = 500,
+                delay = 300,
+                duration = 200,
                 initialOffsetYRatio = 0.3f
             ) {
                 ExpandablePaymentOverview(
@@ -113,65 +133,68 @@ internal fun SbpQrContent(
             Spacer(modifier = Modifier.size(28.dp))
         }
 
-        if (qrBitmap != null) {
-            Box(
-                modifier = Modifier
-                    .background(
-                        color = SDKTheme.colors.cardBackground,
-                        shape = SDKTheme.shapes.radius20
-                    )
-                    .padding(18.dp),
+        if (isTablet) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    bitmap = qrBitmap.asImageBitmap(),
-                    contentDescription = "SBP QR",
-                    modifier = Modifier
-                        .size(240.dp)
-                        .testTag("SBP_QR_IMAGE")
+                if (qrBitmap != null) {
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                color = SDKTheme.colors.cardBackground,
+                                shape = SDKTheme.shapes.radius20
+                            )
+                            .padding(18.dp),
+                    ) {
+                        Image(
+                            bitmap = qrBitmap.asImageBitmap(),
+                            contentDescription = "SBP QR",
+                            modifier = Modifier
+                                .size(240.dp)
+                                .testTag(TestTagsConstants.SBP_QR_IMAGE)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.size(14.dp))
+
+                SbpQrLinkText(
+                    qrData = qrData,
+                    onLinkClicked = onLinkClicked
+                )
+
+                Spacer(modifier = Modifier.size(14.dp))
+
+                VerticalSlideFadeAnimation(
+                    visibleState = visibleState,
+                    delay = 350,
+                    duration = 200,
+                    initialOffsetYRatio = 0.3f
+                ) {
+                    SDKButton(
+                        modifier = Modifier.testTag(TestTagsConstants.PAY_BUTTON),
+                        label = getStringOverride(BUTTON_PAY),
+                        isEnabled = true
+                    ) { onLinkClicked(qrData) }
+                }
+            }
+        } else {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                SbpQrLinkText(
+                    qrData = qrData,
+                    onLinkClicked = onLinkClicked
                 )
             }
         }
 
-        Spacer(modifier = Modifier.size(14.dp))
-
-        Text(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .testTag("SBP_QR_LINK_TEXT")
-                .clickable(enabled = qrData.isNotBlank()) {
-                    onLinkClicked(qrData)
-                },
-            text = qrData,
-            style = SDKTheme.typography.s14Normal.copy(
-                color = SDKTheme.colors.link,
-                textDecoration = TextDecoration.Underline
-            ),
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.size(28.dp))
-
         VerticalSlideFadeAnimation(
             visibleState = visibleState,
-            delay = 1200,
-            duration = 500,
-            initialOffsetYRatio = 0.3f
-        ) {
-            Column {
-                Spacer(modifier = Modifier.size(24.dp))
-                SDKButton(
-                    modifier = Modifier
-                        .testTag(TestTagsConstants.PAY_BUTTON),
-                    label = getStringOverride(BUTTON_PAY),
-                    isEnabled = true
-                ) { onLinkClicked(qrData) }
-            }
-        }
-
-        VerticalSlideFadeAnimation(
-            visibleState = visibleState,
-            delay = 1300,
-            duration = 500,
+            delay = 400,
+            duration = 200,
             initialOffsetYRatio = 0.3f
         ) {
             Column {
@@ -181,6 +204,26 @@ internal fun SbpQrContent(
             }
         }
     }
+}
+
+@Composable
+private fun SbpQrLinkText(
+    qrData: String,
+    onLinkClicked: (String) -> Unit,
+) {
+    Text(
+        modifier = Modifier
+            .testTag(TestTagsConstants.SBP_QR_LINK_TEXT)
+            .clickable(enabled = qrData.isNotBlank()) {
+                onLinkClicked(qrData)
+            },
+        text = qrData,
+        style = SDKTheme.typography.s14Normal.copy(
+            color = SDKTheme.colors.link,
+            textDecoration = TextDecoration.Underline
+        ),
+        textAlign = TextAlign.Center
+    )
 }
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -198,7 +241,7 @@ internal fun SbpQrContentPreview() {
                 actionType = SDKActionType.Sale,
                 qrData = qrData,
                 qrBitmap = qrBitmap,
-                title = "Отсканируйте QR-код указанный ниже, чтобы продолжить оплату",
+                isTablet = true,
             )
         }
     )
