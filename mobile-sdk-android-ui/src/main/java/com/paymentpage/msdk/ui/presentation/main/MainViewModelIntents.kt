@@ -1,5 +1,6 @@
 package com.paymentpage.msdk.ui.presentation.main
 
+import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.CardDate
 import com.paymentpage.msdk.core.domain.entities.RecipientInfo
 import com.paymentpage.msdk.core.domain.entities.SdkExpiry
@@ -24,10 +25,63 @@ import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePaySaleR
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayVerifyRequest
 import com.paymentpage.msdk.core.domain.interactors.pay.restore.PaymentRestoreRequest
 import com.paymentpage.msdk.ui.SDKActionType
+import com.paymentpage.msdk.ui.SDKPaymentOptions
 import com.paymentpage.msdk.ui.base.ErrorResult
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.PaymentMethodAction
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.core.needSendWithSaleRequest
 import com.paymentpage.msdk.ui.utils.extensions.core.twoDigitYearToFourDigitYear
+
+internal fun MainViewModel.onActionClicked(
+    action: PaymentMethodAction,
+    paymentOptions: SDKPaymentOptions
+) {
+    when (action) {
+        is PaymentMethodAction.PayWithNewCard -> {
+            payNewCard(
+                actionType = paymentOptions.actionType,
+                method = action.method,
+                recipientInfo = paymentOptions.recipientInfo,
+                customerFields = action.customerFields,
+                storedCardType = paymentOptions.storedCardType
+            )
+        }
+
+        is PaymentMethodAction.PayWithSavedCard -> {
+            paySavedCard(
+                actionType = paymentOptions.actionType,
+                method = action.method,
+                token = paymentOptions.paymentInfo.token,
+                recipientInfo = paymentOptions.recipientInfo,
+                customerFields = action.customerFields
+            )
+        }
+
+        is PaymentMethodAction.PayWithGooglePay -> {
+            payGoogle(
+                actionType = paymentOptions.actionType,
+                method = action.method,
+                merchantId = paymentOptions.merchantId,
+                token = action.token,
+                environment = paymentOptions.merchantEnvironment,
+                recipientInfo = paymentOptions.recipientInfo,
+            )
+        }
+
+        is PaymentMethodAction.ShowAps -> {
+            showAps(action.method)
+        }
+
+        is PaymentMethodAction.ShowError -> {
+            showError(
+                ErrorResult(
+                    code = ErrorCode.UNKNOWN,
+                    message = action.message
+                )
+            )
+        }
+    }
+}
 
 internal fun MainViewModel.payGoogle(
     actionType: SDKActionType,
@@ -257,5 +311,4 @@ internal fun MainViewModel.showError(errorResult: ErrorResult) {
 internal fun MainViewModel.tryAgain() {
     sendEvent(MainScreenUiEvent.TryAgain)
 }
-
 

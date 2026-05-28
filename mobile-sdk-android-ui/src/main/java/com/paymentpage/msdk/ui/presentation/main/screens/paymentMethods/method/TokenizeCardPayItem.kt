@@ -15,15 +15,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.SdkExpiry
 import com.paymentpage.msdk.core.validators.custom.PanValidator
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.base.Constants
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
-import com.paymentpage.msdk.ui.presentation.main.payNewCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.PaymentMethodAction
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
@@ -38,10 +36,10 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 internal fun TokenizeCardPayItem(
     method: UIPaymentMethod.UICardPayPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
+    isSelected: Boolean,
+    onToggleSelection: () -> Unit,
+    onActionClicked: (PaymentMethodAction) -> Unit
 ) {
-    val mainViewModel = LocalMainViewModel.current
-    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
-    val paymentOptions = LocalPaymentOptions.current
     val tokenizeCustomerFields = remember {
         method.paymentMethod.customerFields.filter { it.isTokenize }
     }
@@ -65,6 +63,8 @@ internal fun TokenizeCardPayItem(
 
     ExpandablePaymentMethodItem(
         method = method,
+        isExpanded = isSelected,
+        onToggleExpanded = onToggleSelection,
         isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
     ) {
         Spacer(modifier = Modifier.size(10.dp))
@@ -170,11 +170,11 @@ internal fun TokenizeCardPayItem(
                 isValid = isPanValid && isCardHolderValid && isExpiryValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
-                    paymentMethodsViewModel.setCurrentMethod(method)
-                    mainViewModel.payNewCard(
-                        actionType = paymentOptions.actionType,
-                        method = method,
-                        customerFields = tokenizeCustomerFields
+                    onActionClicked(
+                        PaymentMethodAction.PayWithNewCard(
+                            method = method,
+                            customerFields = tokenizeCustomerFields
+                        )
                     )
                 }
             )

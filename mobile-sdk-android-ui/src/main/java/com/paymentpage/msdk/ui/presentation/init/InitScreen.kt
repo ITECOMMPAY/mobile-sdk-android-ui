@@ -61,6 +61,7 @@ private fun setupStateListener(
     val initViewModel = LocalInitViewModel.current
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val paymentOptions = LocalPaymentOptions.current
 
     LaunchedEffect(Unit) {
         initViewModel.loadInit()
@@ -71,7 +72,8 @@ private fun setupStateListener(
                     paymentMethodsViewModel.updatePaymentMethods(
                         actionType = actionType,
                         paymentMethods = it.paymentMethods,
-                        savedAccounts = it.savedAccounts
+                        savedAccounts = it.savedAccounts,
+                        isSaleWithToken = paymentOptions.paymentInfo.token != null
                     )
                     navigator.navigateTo(Route.Main)
                 }

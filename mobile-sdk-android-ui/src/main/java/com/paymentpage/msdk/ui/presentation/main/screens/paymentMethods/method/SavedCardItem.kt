@@ -27,8 +27,8 @@ import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
-import com.paymentpage.msdk.ui.presentation.main.paySavedCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.PaymentMethodAction
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -43,6 +43,9 @@ import com.paymentpage.msdk.ui.views.customerFields.CustomerFields
 internal fun SavedCardItem(
     method: UIPaymentMethod.UISavedCardPayPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
+    isSelected: Boolean,
+    onToggleSelection: () -> Unit,
+    onActionClicked: (PaymentMethodAction) -> Unit
 ) {
     val mainViewModel = LocalMainViewModel.current
     val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
@@ -65,6 +68,8 @@ internal fun SavedCardItem(
 
     ExpandablePaymentMethodItem(
         method = method,
+        isExpanded = isSelected,
+        onToggleExpanded = onToggleSelection,
         isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
         fallbackIcon = painterResource(SDKTheme.images.defaultCardLogo),
     ) {
@@ -112,13 +117,11 @@ internal fun SavedCardItem(
                 isValid = isCardFieldsValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
-                    paymentMethodsViewModel.setCurrentMethod(method)
-                    mainViewModel.paySavedCard(
-                        actionType = paymentOptions.actionType,
-                        token = token,
-                        method = method,
-                        recipientInfo = paymentOptions.recipientInfo,
-                        customerFields = customerFields
+                    onActionClicked(
+                        PaymentMethodAction.PayWithSavedCard(
+                            method = method,
+                            customerFields = customerFields
+                        )
                     )
                 }
             )

@@ -5,55 +5,37 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.LocalMsdkSession
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.PaymentMethodItem
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.PaymentMethodAction
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethodListItem
 
 @Composable
 internal fun PaymentMethodList(
     actionType: SDKActionType,
-    uiPaymentMethods: List<UIPaymentMethod>
+    uiPaymentMethods: List<UIPaymentMethodListItem>,
+    onToggleMethodSelection: (UIPaymentMethod) -> Unit,
+    onSelectMethodForAction: (UIPaymentMethod) -> Unit,
+    onActionClicked: (PaymentMethodAction) -> Unit
 ) {
-    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
-
-    val lastSelectedMethod = paymentMethodsViewModel.state.collectAsState().value.currentMethod
-
-    val savedAccounts = LocalMsdkSession.current.getSavedAccounts() ?: emptyList()
-
-    //filter if saved accounts changed
-    val filteredUIPaymentMethods = uiPaymentMethods.filter { paymentMethod ->
-        if (paymentMethod is UIPaymentMethod.UISavedCardPayPaymentMethod) {
-            savedAccounts.isNotEmpty() && savedAccounts.map { it.id }
-                .contains(paymentMethod.savedAccount.id)
-        } else true
-    }
-
-    if (filteredUIPaymentMethods.isEmpty()) return
-
-    LaunchedEffect(Unit) {
-        val openedMethod = paymentMethodsViewModel.state.value.currentMethod ?:
-        filteredUIPaymentMethods
-            .filterNot { it is UIPaymentMethod.UIGooglePayPaymentMethod }
-            .firstOrNull()
-
-        if (openedMethod != null) {
-            paymentMethodsViewModel.setCurrentMethod(openedMethod)
-        }
-    }
+    if (uiPaymentMethods.isEmpty()) return
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        val isOnlyOneMethodOnScreen = filteredUIPaymentMethods.size == 1
-        filteredUIPaymentMethods.forEach { uiPaymentMethod ->
+        val isOnlyOneMethodOnScreen = uiPaymentMethods.size == 1
+        uiPaymentMethods.forEach { uiPaymentMethod ->
             PaymentMethodItem(
-                method = if (lastSelectedMethod?.index == uiPaymentMethod.index) lastSelectedMethod else uiPaymentMethod,
+                method = uiPaymentMethod.method,
                 actionType = actionType,
-                isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
+                isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
+                isSelected = uiPaymentMethod.isSelected,
+                onToggleSelection = { onToggleMethodSelection(uiPaymentMethod.method) },
+                onActionClicked = { action ->
+                    onSelectMethodForAction(uiPaymentMethod.method)
+                    onActionClicked(action)
+                }
             )
             Spacer(modifier = Modifier.size(10.dp))
         }

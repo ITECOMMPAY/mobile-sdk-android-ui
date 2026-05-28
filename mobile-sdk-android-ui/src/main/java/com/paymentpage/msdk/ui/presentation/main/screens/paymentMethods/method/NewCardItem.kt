@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -28,8 +27,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import com.paymentpage.msdk.core.domain.entities.init.WalletSaveMode
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
@@ -37,8 +34,8 @@ import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.cardScanning.CardScanningActivityContract
-import com.paymentpage.msdk.ui.presentation.main.payNewCard
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.PaymentMethodAction
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.theme.InterFamily
 import com.paymentpage.msdk.ui.theme.SDKTheme
@@ -46,7 +43,6 @@ import com.paymentpage.msdk.ui.theme.SohneBreitFamily
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.visibleCustomerFields
-import com.paymentpage.msdk.ui.utils.extensions.customColor
 import com.paymentpage.msdk.ui.views.button.CustomOrConfirmButton
 import com.paymentpage.msdk.ui.views.card.CardHolderField
 import com.paymentpage.msdk.ui.views.card.CombinedCardField
@@ -59,9 +55,10 @@ internal fun NewCardItem(
     method: UIPaymentMethod.UICardPayPaymentMethod,
     actionType: SDKActionType,
     isOnlyOneMethodOnScreen: Boolean = false,
+    isSelected: Boolean,
+    onToggleSelection: () -> Unit,
+    onActionClicked: (PaymentMethodAction) -> Unit
 ) {
-    val mainViewModel = LocalMainViewModel.current
-    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val customerFields = remember { method.paymentMethod.customerFields }
     val walletSaveMode = method.paymentMethod.walletSaveMode
     val paymentOptions = LocalPaymentOptions.current
@@ -86,6 +83,8 @@ internal fun NewCardItem(
 
     ExpandablePaymentMethodItem(
         method = method,
+        isExpanded = isSelected,
+        onToggleExpanded = onToggleSelection,
         isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
         fallbackIcon = painterResource(id = SDKTheme.images.defaultCardLogo),
     ) {
@@ -201,13 +200,11 @@ internal fun NewCardItem(
                 isValid = isCardFieldsValid && isCardHolderValid,
                 isValidCustomerFields = isCustomerFieldsValid,
                 onClickButton = {
-                    paymentMethodsViewModel.setCurrentMethod(method)
-                    mainViewModel.payNewCard(
-                        actionType = paymentOptions.actionType,
-                        method = method,
-                        recipientInfo = paymentOptions.recipientInfo,
-                        customerFields = customerFields,
-                        storedCardType = paymentOptions.storedCardType
+                    onActionClicked(
+                        PaymentMethodAction.PayWithNewCard(
+                            method = method,
+                            customerFields = customerFields
+                        )
                     )
                 }
             )
