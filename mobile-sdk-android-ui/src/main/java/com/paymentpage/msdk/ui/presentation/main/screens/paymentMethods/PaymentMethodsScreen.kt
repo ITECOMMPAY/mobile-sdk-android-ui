@@ -64,8 +64,10 @@ internal fun PaymentMethodsScreen(
                 actionType = actionType,
                 uiPaymentMethods = uiPaymentMethods,
                 onToggleMethodSelection = paymentMethodsViewModel::onPaymentMethodClick,
-                onSelectMethodForAction = paymentMethodsViewModel::onPaymentActionClicked,
-                onActionClicked = { action -> mainViewModel.onActionClicked(action, paymentOptions) }
+                onActionClicked = { action ->
+                    action.method?.let { paymentMethodsViewModel.onPaymentActionClicked(it) }
+                    mainViewModel.onActionClicked(action, paymentOptions)
+                }
             )
             Spacer(modifier = Modifier.size(6.dp))
             SDKFooter()

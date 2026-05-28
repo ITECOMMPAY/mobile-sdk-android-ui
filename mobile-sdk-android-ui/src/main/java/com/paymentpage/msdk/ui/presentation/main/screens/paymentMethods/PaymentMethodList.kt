@@ -18,7 +18,6 @@ internal fun PaymentMethodList(
     actionType: SDKActionType,
     uiPaymentMethods: List<UIPaymentMethodListItem>,
     onToggleMethodSelection: (UIPaymentMethod) -> Unit,
-    onSelectMethodForAction: (UIPaymentMethod) -> Unit,
     onActionClicked: (PaymentMethodAction) -> Unit
 ) {
     if (uiPaymentMethods.isEmpty()) return
@@ -32,10 +31,7 @@ internal fun PaymentMethodList(
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
                 isSelected = uiPaymentMethod.isSelected,
                 onToggleSelection = { onToggleMethodSelection(uiPaymentMethod.method) },
-                onActionClicked = { action ->
-                    onSelectMethodForAction(uiPaymentMethod.method)
-                    onActionClicked(action)
-                }
+                onActionClicked = onActionClicked,
             )
             Spacer(modifier = Modifier.size(10.dp))
         }
