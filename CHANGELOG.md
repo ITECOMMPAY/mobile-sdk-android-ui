@@ -7,4 +7,4 @@
 ## [3.10.0] - Bump core version with ktor 3+
 ## [3.10.3] - Fix unknown pan validation
 ## [3.10.4] - Implement proper PaymentActivity state handling after reconfiguration
-## [3.10.5] - Global refactoring. Moving out payment method selection from UI
+## [3.11.0] - Global refactoring. Moving out payment method selection from UI
