@@ -29,6 +29,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
                         index = position,
                         title = googlePayMethod.name
                             ?: getStringOverride(OverridesKeys.GOOGLE_PAY_HOST_TITLE),
+                        logoUrl = it.paymentUrl,
                         paymentMethod = it,
                     )
                 )
@@ -55,6 +56,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
                     UIPaymentMethod.UICardPayPaymentMethod(
                         index = position,
                         title = getStringOverride(OverridesKeys.BUTTON_ADD_NEW_CARD),
+                        logoUrl = it.iconUrl,
                         paymentMethod = it,
                     )
                 )
@@ -79,6 +81,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
                     UIPaymentMethod.UICardPayPaymentMethod(
                         index = position,
                         title = "",
+                        logoUrl = it.paymentUrl,
                         paymentMethod = it,
                     )
                 )
@@ -93,6 +96,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
                         index = position,
                         title = googlePayMethod.name
                             ?: getStringOverride(OverridesKeys.GOOGLE_PAY_HOST_TITLE),
+                        logoUrl = it.paymentUrl,
                         paymentMethod = it,
                     )
                 )
@@ -104,6 +108,7 @@ internal fun List<PaymentMethod>.mergeUIPaymentMethods(
                     UIPaymentMethod.UICardPayPaymentMethod(
                         index = position,
                         title = getStringOverride(OverridesKeys.BUTTON_ADD_NEW_CARD),
+                        logoUrl = it.paymentUrl,
                         paymentMethod = it,
                     )
                 )

@@ -9,13 +9,11 @@ import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.U
 @Immutable
 internal sealed interface PaymentMethodsUiEvent : UiEvent {
     data class SetCurrentMethod(val method: UIPaymentMethod?) : PaymentMethodsUiEvent
-    data class SetPaymentMethods(val paymentMethods: List<UIPaymentMethod>) : PaymentMethodsUiEvent
-    data class SetVisiblePaymentMethods(val paymentMethods: List<UIPaymentMethodListItem>) : PaymentMethodsUiEvent
+    data class SetPaymentMethods(val paymentMethods: List<UIPaymentMethodListItem>) : PaymentMethodsUiEvent
 }
 
 @Immutable
 internal data class PaymentMethodsState(
     val currentMethod: UIPaymentMethod? = null,
-    val paymentMethods: List<UIPaymentMethod> = emptyList(),
-    val visiblePaymentMethods: List<UIPaymentMethodListItem> = emptyList()
+    val visiblePaymentMethods: List<UIPaymentMethodListItem> = emptyList(),
 ) : UiState

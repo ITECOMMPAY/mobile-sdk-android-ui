@@ -20,7 +20,6 @@ internal class PaymentMethodsViewModel(
 ) : BaseViewModel<PaymentMethodsState, PaymentMethodsUiEvent>(), CardRemoveDelegate {
     private var actionType: SDKActionType = SDKActionType.Sale
     private var isSaleWithToken: Boolean = false
-    private var savedAccountIds: Set<Long> = emptySet()
 
     init {
         cardRemoveInteractor.addDelegate(this)
@@ -45,27 +44,26 @@ internal class PaymentMethodsViewModel(
     }
 
     fun onPaymentMethodClick(method: UIPaymentMethod) {
-        val isCurrentSelected = areSameMethods(state.value.currentMethod, method)
-        setCurrentMethod(if (isCurrentSelected) null else method)
+        val isCurrentSelected = state.value.currentMethod?.id == method.id
+
+        setCurrentMethod(method.takeUnless { isCurrentSelected })
     }
 
     fun onPaymentActionClicked(method: UIPaymentMethod) {
         setCurrentMethod(method)
     }
 
-    fun clearCurrentMethod() {
+    fun resetCurrentMethod() {
         setCurrentMethod(null)
     }
 
     fun setPaymentMethods(uiPaymentMethods: List<UIPaymentMethod>) {
-        sendEvent(PaymentMethodsUiEvent.SetPaymentMethods(uiPaymentMethods))
-        val visibleMethods = getVisiblePaymentMethods(uiPaymentMethods)
-        val selectedMethod = resolveCurrentMethod(visibleMethods)
+        val selectedMethod = resolveCurrentMethod(uiPaymentMethods)
         sendEvent(PaymentMethodsUiEvent.SetCurrentMethod(selectedMethod))
         sendEvent(
-            PaymentMethodsUiEvent.SetVisiblePaymentMethods(
+            PaymentMethodsUiEvent.SetPaymentMethods(
                 toListItems(
-                    methods = visibleMethods,
+                    methods = uiPaymentMethods,
                     currentMethod = selectedMethod
                 )
             )
@@ -80,7 +78,6 @@ internal class PaymentMethodsViewModel(
     ) {
         this.actionType = actionType
         this.isSaleWithToken = isSaleWithToken
-        this.savedAccountIds = savedAccounts?.map { it.id }?.toSet() ?: emptySet()
 
         val methods = paymentMethods?.mergeUIPaymentMethods(
             actionType = actionType,
@@ -99,26 +96,20 @@ internal class PaymentMethodsViewModel(
 
     override fun onStartingRemove() {}
 
+    // From card remove delegate
     override fun onSuccess(result: Boolean) {
-        val method = state.value.currentMethod
-        if (method is UIPaymentMethod.UISavedCardPayPaymentMethod) {
-            savedAccountIds = savedAccountIds - method.accountId
-        }
+        val deletedAccountId = (state.value.currentMethod as? UIPaymentMethod.UISavedCardPayPaymentMethod)?.accountId
 
-        val filteredMethods = state.value.paymentMethods
-            .filter { paymentMethod ->
-                if (paymentMethod is UIPaymentMethod.UISavedCardPayPaymentMethod) {
-                    savedAccountIds.contains(paymentMethod.savedAccount.id)
-                } else {
-                    true
-                }
+        val filteredMethods = state.value.visiblePaymentMethods
+            .filter { item ->
+                item.method !is UIPaymentMethod.UISavedCardPayPaymentMethod ||
+                    item.method.accountId != deletedAccountId
             }
-            .filter { !areSameMethods(it, method) }
+            .map { it.method }
 
         val newMethodList = when {
             isSaleWithToken -> filteredMethods.filterIsInstance<UIPaymentMethod.UISavedCardPayPaymentMethod>()
-            actionType == SDKActionType.Tokenize -> filteredMethods.firstOrNull()?.let { listOf(it) }
-                ?: emptyList()
+            actionType == SDKActionType.Tokenize -> filteredMethods.take(1)
             else -> filteredMethods
         }
 
@@ -126,9 +117,10 @@ internal class PaymentMethodsViewModel(
     }
 
     private fun updateVisiblePaymentMethods(currentMethod: UIPaymentMethod?) {
-        val visibleMethods = getVisiblePaymentMethods(state.value.paymentMethods)
+        val visibleMethods = state.value.visiblePaymentMethods.map { it.method }
+
         sendEvent(
-            PaymentMethodsUiEvent.SetVisiblePaymentMethods(
+            PaymentMethodsUiEvent.SetPaymentMethods(
                 toListItems(
                     methods = visibleMethods,
                     currentMethod = currentMethod
@@ -137,13 +129,11 @@ internal class PaymentMethodsViewModel(
         )
     }
 
-    private fun getVisiblePaymentMethods(methods: List<UIPaymentMethod>): List<UIPaymentMethod> = methods
-
     private fun resolveCurrentMethod(visibleMethods: List<UIPaymentMethod>): UIPaymentMethod? {
         if (visibleMethods.isEmpty()) return null
 
         val currentMethod = state.value.currentMethod
-        val selectedMethod = visibleMethods.firstOrNull { areSameMethods(it, currentMethod) }
+        val selectedMethod = visibleMethods.firstOrNull { it.id == currentMethod?.id }
         if (selectedMethod != null) return selectedMethod
 
         return visibleMethods.firstOrNull { it !is UIPaymentMethod.UIGooglePayPaymentMethod }
@@ -151,30 +141,16 @@ internal class PaymentMethodsViewModel(
 
     private fun toListItems(
         methods: List<UIPaymentMethod>,
-        currentMethod: UIPaymentMethod?
+        currentMethod: UIPaymentMethod?,
     ): List<UIPaymentMethodListItem> {
         return methods.map { method ->
             UIPaymentMethodListItem(
                 method = method,
-                isSelected = areSameMethods(method, currentMethod)
+                isSelected = method.id == currentMethod?.id
             )
         }
     }
 
-    private fun areSameMethods(left: UIPaymentMethod?, right: UIPaymentMethod?): Boolean {
-        if (left == null || right == null) return false
-        if (left::class != right::class) return false
-
-        return when {
-            left is UIPaymentMethod.UISavedCardPayPaymentMethod &&
-                    right is UIPaymentMethod.UISavedCardPayPaymentMethod -> left.accountId == right.accountId
-
-            left is UIPaymentMethod.UIApsPaymentMethod &&
-                    right is UIPaymentMethod.UIApsPaymentMethod -> left.paymentMethod.code == right.paymentMethod.code
-
-            else -> left.index == right.index
-        }
-    }
 }
 
 
@@ -187,10 +163,6 @@ internal class PaymentMethodsReducer(initial: PaymentMethodsState) :
             }
 
             is PaymentMethodsUiEvent.SetPaymentMethods -> {
-                setState(oldState.copy(paymentMethods = event.paymentMethods))
-            }
-
-            is PaymentMethodsUiEvent.SetVisiblePaymentMethods -> {
                 setState(oldState.copy(visiblePaymentMethods = event.paymentMethods))
             }
         }

@@ -22,7 +22,6 @@ internal class PaymentMethodsViewModelTest {
         viewModel.configureFilters(
             actionType = SDKActionType.Sale,
             isSaleWithToken = true,
-            savedAccountIds = setOf(11L, 12L)
         )
 
         viewModel.setPaymentMethods(
@@ -55,7 +54,6 @@ internal class PaymentMethodsViewModelTest {
         viewModel.configureFilters(
             actionType = SDKActionType.Sale,
             isSaleWithToken = false,
-            savedAccountIds = emptySet()
         )
         viewModel.setPaymentMethods(
             listOf(
@@ -81,7 +79,6 @@ internal class PaymentMethodsViewModelTest {
         viewModel.configureFilters(
             actionType = SDKActionType.Sale,
             isSaleWithToken = false,
-            savedAccountIds = emptySet()
         )
 
         viewModel.setPaymentMethods(
@@ -117,7 +114,6 @@ internal class PaymentMethodsViewModelTest {
         viewModel.configureFilters(
             actionType = SDKActionType.Sale,
             isSaleWithToken = false,
-            savedAccountIds = setOf(100L)
         )
 
         viewModel.setPaymentMethods(
@@ -146,11 +142,9 @@ internal class PaymentMethodsViewModelTest {
     private fun PaymentMethodsViewModel.configureFilters(
         actionType: SDKActionType,
         isSaleWithToken: Boolean,
-        savedAccountIds: Set<Long>
     ) {
         setPrivateField("actionType", actionType)
         setPrivateField("isSaleWithToken", isSaleWithToken)
-        setPrivateField("savedAccountIds", savedAccountIds)
     }
 
     private fun PaymentMethodsViewModel.setPrivateField(name: String, value: Any) {

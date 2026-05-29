@@ -186,7 +186,7 @@ internal fun ResultDeclineContent(
                                 label = getStringOverride(OverridesKeys.BUTTON_TRY_AGAIN),
                                 isEnabled = true
                             ) {
-                                paymentMethodsViewModel.clearCurrentMethod()
+                                paymentMethodsViewModel.resetCurrentMethod()
                                 mainViewModel.tryAgain()
                             }
                     }

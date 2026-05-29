@@ -1,19 +1,22 @@
 package com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models
 
 
+import androidx.compose.runtime.Stable
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 
-
+@Stable
 internal sealed class UIPaymentMethod(
-    val index: Int,
-    val title: String,
-    val logoUrl: String?,
-    val paymentMethod: PaymentMethod,
     var customerFieldValues: List<CustomerFieldValue> = emptyList(),
     var isCustomerFieldsValid: Boolean = false
 ) {
+    abstract val id: String
+    abstract val index: Int
+    abstract val title: String
+    abstract val logoUrl: String?
+    abstract val paymentMethod: PaymentMethod
+
     abstract var pan: String?
     abstract var expiry: String?
     abstract var cvv: String?
@@ -21,11 +24,13 @@ internal sealed class UIPaymentMethod(
     abstract var isValidPan: Boolean
     abstract var isValidExpiry: Boolean
 
-    class UIGooglePayPaymentMethod(
-        index: Int,
-        title: String,
-        paymentMethod: PaymentMethod,
-    ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
+    data class UIGooglePayPaymentMethod(
+        override val index: Int,
+        override val title: String,
+        override val logoUrl: String?,
+        override val paymentMethod: PaymentMethod,
+    ) : UIPaymentMethod() {
+        override val id: String = hashCode().toString()
         override var pan: String? = null
         override var expiry: String? = null
         override var cvv: String? = null
@@ -34,12 +39,14 @@ internal sealed class UIPaymentMethod(
         override var isValidExpiry: Boolean = true
     }
 
-    class UISavedCardPayPaymentMethod(
-        index: Int,
-        title: String,
+    data class UISavedCardPayPaymentMethod(
+        override val index: Int,
+        override val title: String,
+        override val logoUrl: String? = null,
+        override val paymentMethod: PaymentMethod,
         val savedAccount: SavedAccount,
-        paymentMethod: PaymentMethod,
-    ) : UIPaymentMethod(index, title, null, paymentMethod) {
+    ) : UIPaymentMethod() {
+        override val id: String = hashCode().toString()
         override var pan: String? = savedAccount.number
         override var expiry: String? = savedAccount.cardExpiry?.stringValue
         override var cvv: String? = null
@@ -51,10 +58,12 @@ internal sealed class UIPaymentMethod(
     }
 
     open class UICardPayPaymentMethod(
-        index: Int,
-        title: String,
-        paymentMethod: PaymentMethod
-    ) : UIPaymentMethod(index, title, paymentMethod.iconUrl, paymentMethod) {
+        override val index: Int,
+        override val title: String,
+        override val logoUrl: String?,
+        override val paymentMethod: PaymentMethod,
+    ) : UIPaymentMethod() {
+        override val id: String = hashCode().toString()
         override var pan: String? = null
         override var expiry: String? = null
         override var cvv: String? = null
@@ -68,15 +77,12 @@ internal sealed class UIPaymentMethod(
     }
 
     class UIApsPaymentMethod(
-        index: Int,
-        title: String,
-        paymentMethod: PaymentMethod
-    ) : UIPaymentMethod(
-        index = index,
-        title = title,
-        logoUrl = null,
-        paymentMethod = paymentMethod,
-    ) {
+        override val index: Int,
+        override val title: String,
+        override val logoUrl: String? = null,
+        override val paymentMethod: PaymentMethod
+    ) : UIPaymentMethod() {
+        override val id: String = hashCode().toString()
         override var pan: String? = null
         override var expiry: String? = null
         override var cvv: String? = null
