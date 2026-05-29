@@ -157,6 +157,7 @@ internal class PaymentMethodsViewModelTest {
         return UIPaymentMethod.UIGooglePayPaymentMethod(
             index = index,
             title = "Google Pay",
+            logoUrl = null,
             paymentMethod = mockPaymentMethod(code = "google_pay")
         )
     }
@@ -174,6 +175,7 @@ internal class PaymentMethodsViewModelTest {
         return UIPaymentMethod.UICardPayPaymentMethod(
             index = index,
             title = "Card",
+            logoUrl = null,
             paymentMethod = mockPaymentMethod(code = "card")
         )
     }

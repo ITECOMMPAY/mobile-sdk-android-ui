@@ -30,7 +30,7 @@ internal sealed class UIPaymentMethod(
         override val logoUrl: String?,
         override val paymentMethod: PaymentMethod,
     ) : UIPaymentMethod() {
-        override val id: String = hashCode().toString()
+        override val id: String = paymentMethod.code
         override var pan: String? = null
         override var expiry: String? = null
         override var cvv: String? = null
@@ -46,7 +46,7 @@ internal sealed class UIPaymentMethod(
         override val paymentMethod: PaymentMethod,
         val savedAccount: SavedAccount,
     ) : UIPaymentMethod() {
-        override val id: String = hashCode().toString()
+        override val id: String = savedAccount.id.toString()
         override var pan: String? = savedAccount.number
         override var expiry: String? = savedAccount.cardExpiry?.stringValue
         override var cvv: String? = null
@@ -57,13 +57,13 @@ internal sealed class UIPaymentMethod(
         val accountId: Long = savedAccount.id
     }
 
-    open class UICardPayPaymentMethod(
+    data class UICardPayPaymentMethod(
         override val index: Int,
         override val title: String,
         override val logoUrl: String?,
         override val paymentMethod: PaymentMethod,
     ) : UIPaymentMethod() {
-        override val id: String = hashCode().toString()
+        override val id: String = paymentMethod.code
         override var pan: String? = null
         override var expiry: String? = null
         override var cvv: String? = null
@@ -76,13 +76,13 @@ internal sealed class UIPaymentMethod(
         var saveCard: Boolean = false
     }
 
-    class UIApsPaymentMethod(
+    data class UIApsPaymentMethod(
         override val index: Int,
         override val title: String,
         override val logoUrl: String? = null,
         override val paymentMethod: PaymentMethod
     ) : UIPaymentMethod() {
-        override val id: String = hashCode().toString()
+        override val id: String = paymentMethod.code
         override var pan: String? = null
         override var expiry: String? = null
         override var cvv: String? = null
