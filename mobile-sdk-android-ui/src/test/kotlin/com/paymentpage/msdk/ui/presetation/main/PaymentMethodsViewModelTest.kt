@@ -92,7 +92,7 @@ internal class PaymentMethodsViewModelTest {
             .map { it.method }
             .filterIsInstance<UIPaymentMethod.UIApsPaymentMethod>()
             .first()
-        viewModel.onPaymentActionClicked(apsMethod)
+        viewModel.onPaymentMethodClick(apsMethod)
 
         viewModel.setPaymentMethods(
             listOf(
@@ -128,7 +128,7 @@ internal class PaymentMethodsViewModelTest {
             .filterIsInstance<UIPaymentMethod.UISavedCardPayPaymentMethod>()
             .first()
 
-        viewModel.onPaymentActionClicked(savedMethod)
+        viewModel.onPaymentMethodClick(savedMethod)
         viewModel.deleteSavedCard(savedMethod)
 
         val state = viewModel.state.value

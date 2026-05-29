@@ -20,6 +20,7 @@ internal class PaymentMethodsViewModel(
 ) : BaseViewModel<PaymentMethodsState, PaymentMethodsUiEvent>(), CardRemoveDelegate {
     private var actionType: SDKActionType = SDKActionType.Sale
     private var isSaleWithToken: Boolean = false
+    private var pendingDeleteAccountId: Long? = null
 
     init {
         cardRemoveInteractor.addDelegate(this)
@@ -47,10 +48,6 @@ internal class PaymentMethodsViewModel(
         val isCurrentSelected = state.value.currentMethod?.id == method.id
 
         setCurrentMethod(method.takeUnless { isCurrentSelected })
-    }
-
-    fun onPaymentActionClicked(method: UIPaymentMethod) {
-        setCurrentMethod(method)
     }
 
     fun resetCurrentMethod() {
@@ -88,8 +85,8 @@ internal class PaymentMethodsViewModel(
     }
 
     fun deleteSavedCard(method: UIPaymentMethod.UISavedCardPayPaymentMethod) {
-        val request = CardRemoveRequest(id = method.accountId)
-        this.cardRemoveInteractor.sendRequest(request = request)
+        pendingDeleteAccountId = method.accountId
+        this.cardRemoveInteractor.sendRequest(request = CardRemoveRequest(id = method.accountId))
     }
 
     override fun onError(code: ErrorCode, message: String) {}
@@ -98,7 +95,8 @@ internal class PaymentMethodsViewModel(
 
     // From card remove delegate
     override fun onSuccess(result: Boolean) {
-        val deletedAccountId = (state.value.currentMethod as? UIPaymentMethod.UISavedCardPayPaymentMethod)?.accountId
+        val deletedAccountId = pendingDeleteAccountId
+        pendingDeleteAccountId = null
 
         val filteredMethods = state.value.visiblePaymentMethods
             .filter { item ->

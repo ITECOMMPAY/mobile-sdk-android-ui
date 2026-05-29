@@ -160,7 +160,6 @@ internal fun ApsPageView(
                             super.onPageStarted(view, url, favicon)
                             isLoading = true
                             if (url?.startsWith(paymentUrl) == false) {
-                                paymentMethodsViewModel.onPaymentActionClicked(method)
                                 mainViewModel.saleAps(method)
                             }
                         }
