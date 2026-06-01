@@ -141,7 +141,8 @@ private fun setupStateListener(
                     paymentMethodsViewModel.updatePaymentMethods(
                         actionType = paymentOptions.actionType,
                         paymentMethods = paymentMethods,
-                        savedAccounts = savedAccounts
+                        savedAccounts = savedAccounts,
+                        isSaleWithToken = paymentOptions.paymentInfo.token != null
                     )
                     mainScreenNavigator.navigateTo(Route.PaymentMethods)
                 }

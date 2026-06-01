@@ -14,12 +14,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +44,6 @@ import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.core.domain.entities.init.SavedAccount
 import com.paymentpage.msdk.core.domain.entities.init.WalletSaveMode
 import com.paymentpage.msdk.core.utils.Duration
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.SDKCommonProvider
 import com.paymentpage.msdk.ui.SDKPaymentOptions
@@ -60,6 +57,8 @@ import com.paymentpage.msdk.ui.utils.extensions.paymentMethodLogoId
 @Composable
 internal fun ExpandablePaymentMethodItem(
     method: UIPaymentMethod,
+    isExpanded: Boolean,
+    onToggleExpanded: () -> Unit,
     isOnlyOneMethodOnScreen: Boolean = false,
     fallbackIcon: Painter? = null,
     iconColor: ColorFilter? = ColorFilter.tint(color = SDKTheme.colors.paymentIcon),
@@ -67,15 +66,15 @@ internal fun ExpandablePaymentMethodItem(
             method.paymentMethod.iconUrl.isNullOrEmpty(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
-    val currentMethod = paymentMethodsViewModel.state.collectAsState().value.currentMethod
     val topContentIsEmpty = method.title.isEmpty() && fallbackIcon == null
-    val isExpanded = currentMethod?.index == method.index
     val isDarkTheme = SDKTheme.colors.isDarkTheme
 
-    val sectionRoleContentDescription = stringResource(id = R.string.section_role_content_description)
-    val expandedStateContentDescription = stringResource(id = R.string.expanded_state_content_description)
-    val collapsedStateContentDescription = stringResource(id = R.string.collapsed_state_content_description)
+    val sectionRoleContentDescription =
+        stringResource(id = R.string.section_role_content_description)
+    val expandedStateContentDescription =
+        stringResource(id = R.string.expanded_state_content_description)
+    val collapsedStateContentDescription =
+        stringResource(id = R.string.collapsed_state_content_description)
 
     val context = LocalContext.current
     val drawableId = remember(method) {
@@ -132,10 +131,7 @@ internal fun ExpandablePaymentMethodItem(
                                     indication = null, //turned off animation
                                     interactionSource = remember { MutableInteractionSource() },
                                     onClick = {
-                                        if (currentMethod?.index != method.index)
-                                            paymentMethodsViewModel.setCurrentMethod(method)
-                                        else
-                                            paymentMethodsViewModel.setCurrentMethod(null)
+                                        onToggleExpanded()
                                     }
                                 )
                                 .padding(20.dp)
@@ -189,6 +185,7 @@ internal fun ExpandablePaymentMethodItem(
                                 alignment = Alignment.CenterStart,
                             )
                         }
+
                         fallbackIcon != null -> {
                             Image(
                                 modifier = Modifier.testTag(imageTestTag),
@@ -263,6 +260,8 @@ fun ExpandablePaymentMethodItem_Preview() {
                         availableCardTypes = listOf("visa")
                     )
                 ),
+                isExpanded = true,
+                onToggleExpanded = {},
             ) { }
         }
     }

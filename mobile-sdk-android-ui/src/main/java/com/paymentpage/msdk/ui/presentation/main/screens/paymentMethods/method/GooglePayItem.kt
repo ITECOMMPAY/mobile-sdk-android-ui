@@ -12,21 +12,17 @@ import androidx.compose.ui.unit.dp
 import com.google.android.gms.wallet.IsReadyToPayRequest
 import com.google.android.gms.wallet.Wallet
 import com.google.android.gms.wallet.WalletConstants
-import com.paymentpage.msdk.core.base.ErrorCode
 import com.paymentpage.msdk.core.domain.entities.customer.CustomerFieldValue
 import com.paymentpage.msdk.core.domain.entities.init.PaymentMethodType
 import com.paymentpage.msdk.core.domain.interactors.pay.googlePay.GooglePayEnvironment
 import com.paymentpage.msdk.core.googlePay.GooglePayHelper
 import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
-import com.paymentpage.msdk.ui.base.ErrorResult
 import com.paymentpage.msdk.ui.googlePay.GooglePayActivityContract
-import com.paymentpage.msdk.ui.presentation.main.payGoogle
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.PaymentMethodAction
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.presentation.main.showError
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.hasVisibleCustomerFields
 import com.paymentpage.msdk.ui.utils.extensions.core.isAllCustomerFieldsHidden
@@ -40,11 +36,13 @@ import com.paymentpage.msdk.ui.views.button.GooglePayButton
 internal fun GooglePayItem(
     method: UIPaymentMethod.UIGooglePayPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
+    isSelected: Boolean,
+    onToggleSelection: () -> Unit,
+    onActionClicked: (PaymentMethodAction) -> Unit
 ) {
-    val lastState = LocalMainViewModel.current.lastState
-    val paymentOptions = LocalPaymentOptions.current
     val mainViewModel = LocalMainViewModel.current
-    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
+    val lastState = mainViewModel.lastState
+    val paymentOptions = LocalPaymentOptions.current
     val customerFields = remember { method.paymentMethod.customerFields }
     val additionalFields = paymentOptions.additionalFields
     var isCustomerFieldsValid by remember { mutableStateOf(method.isCustomerFieldsValid) }
@@ -77,22 +75,18 @@ internal fun GooglePayItem(
     }
     val handle: (GooglePayActivityContract.Result) -> Unit = { result ->
         if (!result.errorMessage.isNullOrEmpty()) {
-            mainViewModel.showError(
-                ErrorResult(
-                    code = ErrorCode.UNKNOWN,
+            onActionClicked(
+                PaymentMethodAction.ShowError(
                     message = result.errorMessage
                 )
             )
         } else
             result.token?.let {
-                paymentMethodsViewModel.setCurrentMethod(method)
-                mainViewModel.payGoogle(
-                    actionType = paymentOptions.actionType,
-                    method = method,
-                    merchantId = merchantId,
-                    token = it,
-                    environment = paymentOptions.merchantEnvironment,
-                    recipientInfo = paymentOptions.recipientInfo,
+                onActionClicked(
+                    PaymentMethodAction.PayWithGooglePay(
+                        method = method,
+                        token = it
+                    )
                 )
             }
     }
@@ -131,11 +125,13 @@ internal fun GooglePayItem(
                 additionalFields.any { it.type?.value == field.name && !it.value.isNullOrEmpty() }
             }
 
-    LaunchedEffect(isForcePaymentMethod, isOnlyOneMethodOnScreen) {
+    LaunchedEffect(isForcePaymentMethod, isOnlyOneMethodOnScreen, isSelected) {
         if ((isForcePaymentMethod || isOnlyOneMethodOnScreen) &&
             customerFields.hasVisibleCustomerFields() &&
-            !allVisibleFieldsFilled) {
-            paymentMethodsViewModel.setCurrentMethod(method)
+            !allVisibleFieldsFilled &&
+            !isSelected
+        ) {
+            onToggleSelection()
         }
     }
 
@@ -143,6 +139,8 @@ internal fun GooglePayItem(
         customerFields.hasVisibleCustomerFields() && !allVisibleFieldsFilled -> {
             ExpandablePaymentMethodItem(
                 method = method,
+                isExpanded = isSelected,
+                onToggleExpanded = onToggleSelection,
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
                 fallbackIcon = painterResource(id = SDKTheme.images.googlePayMethodResId),
                 iconColor = null,

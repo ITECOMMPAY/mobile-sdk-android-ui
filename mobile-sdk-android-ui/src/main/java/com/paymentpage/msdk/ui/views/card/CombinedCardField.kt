@@ -195,8 +195,9 @@ fun CombinedCardField_Preview() {
     CombinedCardField(
         onScanningResultReceived = {},
         method = UIPaymentMethod.UICardPayPaymentMethod(
-            1,
-            "Карта",
+            index = 1,
+            title = "Карта",
+            logoUrl = null,
             paymentMethod = PaymentMethod(
                 walletModeAsk = true,
                 walletSaveMode = WalletSaveMode.ASK_CUSTOMER_BEFORE_SAVE,

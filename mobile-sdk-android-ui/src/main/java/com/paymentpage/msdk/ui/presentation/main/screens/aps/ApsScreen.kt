@@ -30,7 +30,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.paymentpage.msdk.core.domain.entities.init.PaymentMethod
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
@@ -161,7 +160,6 @@ internal fun ApsPageView(
                             super.onPageStarted(view, url, favicon)
                             isLoading = true
                             if (url?.startsWith(paymentUrl) == false) {
-                                paymentMethodsViewModel.setCurrentMethod(method)
                                 mainViewModel.saleAps(method)
                             }
                         }

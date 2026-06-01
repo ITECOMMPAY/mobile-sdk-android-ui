@@ -11,14 +11,12 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.TestTagsConstants
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
+import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.PaymentMethodAction
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.presentation.main.showAps
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -28,12 +26,14 @@ import com.paymentpage.msdk.ui.views.button.PayButton
 internal fun ApsPayItem(
     method: UIPaymentMethod.UIApsPaymentMethod,
     isOnlyOneMethodOnScreen: Boolean = false,
+    isSelected: Boolean,
+    onToggleSelection: () -> Unit,
+    onActionClicked: (PaymentMethodAction) -> Unit
 ) {
-    val mainViewModel = LocalMainViewModel.current
-    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
-    val paymentOptions = LocalPaymentOptions.current
     ExpandablePaymentMethodItem(
         method = method,
+        isExpanded = isSelected,
+        onToggleExpanded = onToggleSelection,
         isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
         fallbackIcon = painterResource(id = SDKTheme.images.apsDefaultLogoResId),
     ) {
@@ -57,8 +57,7 @@ internal fun ApsPayItem(
                 isEnabled = true,
                 showRecurringAgreement = false
             ) {
-                paymentMethodsViewModel.setCurrentMethod(method)
-                mainViewModel.showAps(method = method)
+                onActionClicked(PaymentMethodAction.ShowAps(method))
             }
         }
     }

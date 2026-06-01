@@ -10,6 +10,13 @@ android {
         versionName = System.getenv("SDK_VERSION_NAME") ?: Library.version
         versionCode = System.getenv("SDK_VERSION_CODE")?.toInt() ?: 1
     }
+    buildTypes {
+        getByName("debug") {
+            isDebuggable = true
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+        }
+    }
 }
 
 dependencies {
