@@ -33,7 +33,6 @@ import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys.BUTTON_PAY
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.TestTagsConstants
-import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
 import com.paymentpage.msdk.ui.presentation.main.screens.result.views.animation.VerticalSlideFadeAnimation
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
@@ -57,8 +56,7 @@ internal fun SbpQrScreen(
     val smallestScreenWidthDp = LocalConfiguration.current.smallestScreenWidthDp
 
     val lastState = mainViewModel.lastState
-    val method =
-        paymentMethodsViewModel.lastState.currentMethod as UIPaymentMethod.UISbpQrPaymentMethod
+    val method = paymentMethodsViewModel.resolveSbpMethod(mainViewModel.payment?.method)
     val qrData = lastState.sbpQrData.orEmpty()
     val isTablet = remember(smallestScreenWidthDp) {
         derivedStateOf { smallestScreenWidthDp >= TABLET_MIN_SMALLEST_WIDTH_DP }
@@ -77,7 +75,7 @@ internal fun SbpQrScreen(
     BackHandler(true) { }
 
     SDKScaffold(
-        title = method.title,
+        title = method?.title,
         verticalArrangement = Arrangement.Center,
         horizontalPadding = 0.dp,
         scrollableContent = {

@@ -139,6 +139,43 @@ internal class PaymentMethodsViewModelTest {
         assertTrue(state.currentMethod !is UIPaymentMethod.UISavedCardPayPaymentMethod)
     }
 
+    @Test
+    fun `should select first sbp method when payment method code is unknown`() {
+        val viewModel = PaymentMethodsViewModel(cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {})
+        viewModel.setPaymentMethods(
+            listOf(
+                createCardMethod(index = 0),
+                createSbpMethod(index = 1, code = "sbp_qr")
+            )
+        )
+        viewModel.resetCurrentMethod()
+
+        val method = viewModel.selectSbpMethod(paymentMethodCode = null)
+
+        assertTrue(method is UIPaymentMethod.UISbpQrPaymentMethod)
+        assertTrue(method?.id == "sbp_qr")
+        assertTrue(viewModel.state.value.currentMethod == method)
+        assertTrue(viewModel.state.value.visiblePaymentMethods.count { it.isSelected } == 1)
+    }
+
+    @Test
+    fun `should select sbp method by payment method code`() {
+        val viewModel = PaymentMethodsViewModel(cardRemoveInteractor = CardRemoveInteractorProxyMockImpl {})
+        viewModel.setPaymentMethods(
+            listOf(
+                createSbpMethod(index = 0, code = "sbp_first"),
+                createSbpMethod(index = 1, code = "sbp_second")
+            )
+        )
+        viewModel.resetCurrentMethod()
+
+        val method = viewModel.selectSbpMethod(paymentMethodCode = "sbp_second")
+
+        assertTrue(method?.id == "sbp_second")
+        assertTrue(viewModel.state.value.currentMethod == method)
+        assertTrue(viewModel.state.value.visiblePaymentMethods.first { it.method.id == "sbp_second" }.isSelected)
+    }
+
     private fun PaymentMethodsViewModel.configureFilters(
         actionType: SDKActionType,
         isSaleWithToken: Boolean,
@@ -182,6 +219,14 @@ internal class PaymentMethodsViewModelTest {
 
     private fun createApsMethod(index: Int, code: String): UIPaymentMethod.UIApsPaymentMethod {
         return UIPaymentMethod.UIApsPaymentMethod(
+            index = index,
+            title = code,
+            paymentMethod = mockPaymentMethod(code = code)
+        )
+    }
+
+    private fun createSbpMethod(index: Int, code: String): UIPaymentMethod.UISbpQrPaymentMethod {
+        return UIPaymentMethod.UISbpQrPaymentMethod(
             index = index,
             title = code,
             paymentMethod = mockPaymentMethod(code = code)

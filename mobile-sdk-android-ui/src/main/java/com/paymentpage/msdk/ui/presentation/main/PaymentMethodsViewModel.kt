@@ -54,6 +54,32 @@ internal class PaymentMethodsViewModel(
         setCurrentMethod(null)
     }
 
+    fun resolveSbpMethod(paymentMethodCode: String? = null): UIPaymentMethod.UISbpQrPaymentMethod? {
+        val currentMethod = state.value.currentMethod as? UIPaymentMethod.UISbpQrPaymentMethod
+        if (currentMethod != null && currentMethod.matchesPaymentMethodCode(paymentMethodCode)) {
+            return currentMethod
+        }
+
+        return state.value.visiblePaymentMethods
+            .asSequence()
+            .map { it.method }
+            .filterIsInstance<UIPaymentMethod.UISbpQrPaymentMethod>()
+            .firstOrNull { it.matchesPaymentMethodCode(paymentMethodCode) }
+            ?: state.value.visiblePaymentMethods
+                .asSequence()
+                .map { it.method }
+                .filterIsInstance<UIPaymentMethod.UISbpQrPaymentMethod>()
+                .firstOrNull()
+    }
+
+    fun selectSbpMethod(paymentMethodCode: String? = null): UIPaymentMethod.UISbpQrPaymentMethod? {
+        val method = resolveSbpMethod(paymentMethodCode)
+        if (method != null && state.value.currentMethod?.id != method.id) {
+            setCurrentMethod(method)
+        }
+        return method
+    }
+
     fun setPaymentMethods(uiPaymentMethods: List<UIPaymentMethod>) {
         val selectedMethod = resolveCurrentMethod(uiPaymentMethods)
         sendEvent(PaymentMethodsUiEvent.SetCurrentMethod(selectedMethod))
@@ -149,6 +175,14 @@ internal class PaymentMethodsViewModel(
         }
     }
 
+}
+
+private fun UIPaymentMethod.UISbpQrPaymentMethod.matchesPaymentMethodCode(
+    paymentMethodCode: String?,
+): Boolean {
+    return paymentMethodCode == null ||
+        id == paymentMethodCode ||
+        paymentMethod.code == paymentMethodCode
 }
 
 

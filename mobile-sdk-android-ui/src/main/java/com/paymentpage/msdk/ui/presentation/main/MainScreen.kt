@@ -193,7 +193,10 @@ private fun setupStateListener(
                 it.clarificationFields.isNotEmpty() -> mainScreenNavigator.navigateTo(Route.ClarificationFields)
                 it.threeDSecurePageState != null -> mainScreenNavigator.navigateTo(Route.ThreeDSecurePage)
                 it.sbpWebViewData != null -> mainScreenNavigator.navigateTo(Route.SbpWebViewPage)
-                it.sbpQrData != null -> mainScreenNavigator.navigateTo(Route.SbpQrPage)
+                it.sbpQrData != null -> {
+                    paymentMethodsViewModel.selectSbpMethod(mainViewModel.payment?.method)
+                    mainScreenNavigator.navigateTo(Route.SbpQrPage)
+                }
                 it.apsPageState != null -> mainScreenNavigator.navigateTo(Route.ApsPage)
             }
         }.collect()

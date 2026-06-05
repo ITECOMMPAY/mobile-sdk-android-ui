@@ -20,7 +20,7 @@ mavenPublishing {
     pom {
         name.set("mSDK UI Module Common")
         description.set("SDK for Android is a software development kit for fast integration of payment solutions right in your mobile application for Android.")
-        url.set("https://github.com/ITECOMMPAY/mobile-sdk-android-ui.git")
+        url.set("https://github.com/ITETOEDTO/mobile-sdk-android-ui.git")
         licenses {
             license {
                 name.set("MIT")
@@ -35,7 +35,7 @@ mavenPublishing {
             }
         }
         scm {
-            url.set("https://github.com/ITECOMMPAY/mobile-sdk-android-ui/")
+            url.set("https://github.com/ITETOEDTO/mobile-sdk-android-ui/")
         }
     }
 

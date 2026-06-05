@@ -1,9 +1,9 @@
-[![Build Status](https://github.com/ITECOMMPAY/mobile-sdk-android-ui/actions/workflows/master_push_pr.yml/badge.svg)]()
-![Maven Central Version](https://img.shields.io/maven-central/v/com.ecommpay/msdk-ui-common)
+[![Build Status](https://github.com/ITETOEDTO/mobile-sdk-android-ui/actions/workflows/master_push_pr.yml/badge.svg)]()
+![Maven Central Version](https://img.shields.io/maven-central/v/ru.etoplatezhi/msdk-ui-common)
 
 ## Overview
 
-Mobile SDK UI  for Android is a software development kit that can be used to integrate Android applications with the [Ecommpay](https://ecommpay.com/) payment platform.
+Mobile SDK UI  for Android is a software development kit that can be used to integrate Android applications with the [Etoedto](https://etoplatezhi.com/) payment platform.
 
 It provides the functionality for interaction of customers with the user interface and for interaction of a mobile application with the payment platform which allows sending and receiving necessary information during payment processing.
 
@@ -24,7 +24,7 @@ The SDK for Android libraries can be imported via MavenCentral or MavenLocal.<br
 To import the libraries via MavenCentral you need to add the following dependencies to the `dependencies` section:
 
 ```
-implementation "com.ecommpay:msdk-ui:LATEST_VERSION"
+implementation "ru.etoplatezhi:msdk-ui:LATEST_VERSION"
 implementation "dev.ecommlabs:msdk-core-android:LATEST_VERSION"
 ```
 
@@ -35,7 +35,7 @@ To use libraries from the Maven Local repository, you first need to publish them
 ```
 
 Navigate to the .m2/repository folder and locate the following files there:
-`/.m2/repository/com/ecommpay/msdk-ui/X.Y.Z/msdk-ui-X.Y.Z.aar` and `/.m2/repository/com/ecommpay/msdk-ui-common/X.Y.Z/msdk-ui-common-X.Y.Z.aar`
+`/.m2/repository/com/etoplatezhi/msdk-ui/X.Y.Z/msdk-ui-X.Y.Z.aar` and `/.m2/repository/com/etoplatezhi/msdk-ui-common/X.Y.Z/msdk-ui-common-X.Y.Z.aar`
 
 Create a `libs` folder in the root of the project and place both `aar` files into it.
 
@@ -59,7 +59,7 @@ To open the payment form:
 
 This object must contain the following required parameters:
 
-- `projectId`  (Integer) — a project identifier assigned by Ecommpay
+- `projectId`  (Integer) — a project identifier assigned by Etoedto
 - `paymentId`  (String) — a payment identifier unique within the project
 - `paymentCurrency`  (String) — the payment currency code in the ISO 4217 alpha-3 format
 - `paymentAmount`  (Long) — the payment amount in the smallest currency units
@@ -165,21 +165,21 @@ val paymentOptions = paymentOptions {
 }
 ```
 
-4. Create the `Ecommpay` object.
+4. Create the `Etoedto` object.
 
-If necessary, you can open the payment form in the test mode in order to get information about errors if there were any when payment parameters were specified or to test processing payments with a certain payment result. In the `Ecommpay` object, specify the `EcmpMockModeType.SUCCESS` value for the `mockModeType` parameter (if you need to receive `Success` payment result). You can also pass values `EcmpMockModeType.DECLINE` (if you need to receive `Decline` payment result) and `EcmpMockModeType.DISABLED` (if you need to switch to the production mode).
+If necessary, you can open the payment form in the test mode in order to get information about errors if there were any when payment parameters were specified or to test processing payments with a certain payment result. In the `Etoedto` object, specify the `EcmpMockModeType.SUCCESS` value for the `mockModeType` parameter (if you need to receive `Success` payment result). You can also pass values `EcmpMockModeType.DECLINE` (if you need to receive `Decline` payment result) and `EcmpMockModeType.DISABLED` (if you need to switch to the production mode).
 
 ```kotlin
-val sdk = Ecommpay(
+val sdk = Etoedto(
     context = applicationContext,
     paymentOptions = paymentOptions,
-    mockModeType = Ecommpay.EcmpMockModeType.DISABLED
+    mockModeType = Etoedto.EcmpMockModeType.DISABLED
 )
 
 // For debug builds, you can specify custom API hosts
 if (BuildConfig.DEBUG) {
-    sdk.intent.putExtra(Ecommpay.EXTRA_API_HOST, "sdk.ecommpay.com")
-    sdk.intent.putExtra(Ecommpay.EXTRA_WS_API_HOST, "paymentpage.ecommpay.com")
+    sdk.intent.putExtra(Etoedto.EXTRA_API_HOST, "sdk.etoplatezhi.com")
+    sdk.intent.putExtra(Etoedto.EXTRA_WS_API_HOST, "paymentpage.etoplatezhi.com")
 }
 ```
 
@@ -195,9 +195,9 @@ startActivityForResult.launch(sdk.intent)
 val startActivityForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
     val data = result.data
     when (result.resultCode) {
-        Ecommpay.RESULT_SUCCESS -> {
+        Etoedto.RESULT_SUCCESS -> {
             val payment = Json.decodeFromString<Payment?>(
-                data?.getStringExtra(Ecommpay.EXTRA_PAYMENT).toString()
+                data?.getStringExtra(Etoedto.EXTRA_PAYMENT).toString()
             )
             when {
                 payment?.token != null -> {
@@ -214,17 +214,17 @@ val startActivityForResult = registerForActivityResult(ActivityResultContracts.S
                 }
             }
         }
-        Ecommpay.RESULT_CANCELLED -> {
+        Etoedto.RESULT_CANCELLED -> {
             Toast.makeText(this, "Payment was cancelled", Toast.LENGTH_SHORT).show()
             Log.d("PaymentSDK", "Payment was cancelled")
         }
-        Ecommpay.RESULT_DECLINE -> {
+        Etoedto.RESULT_DECLINE -> {
             Toast.makeText(this, "Payment was declined", Toast.LENGTH_SHORT).show()
             Log.d("PaymentSDK", "Payment was declined")
         }
-        Ecommpay.RESULT_ERROR -> {
-            val errorCode = data?.getStringExtra(Ecommpay.EXTRA_ERROR_CODE)
-            val message = data?.getStringExtra(Ecommpay.EXTRA_ERROR_MESSAGE)
+        Etoedto.RESULT_ERROR -> {
+            val errorCode = data?.getStringExtra(Etoedto.EXTRA_ERROR_CODE)
+            val message = data?.getStringExtra(Etoedto.EXTRA_ERROR_MESSAGE)
             Toast.makeText(this, "Payment was interrupted. See logs", Toast.LENGTH_SHORT).show()
             Log.d("PaymentSDK", "Payment was interrupted. Error code: $errorCode. Message: $message")
         }
@@ -257,7 +257,7 @@ In case of card and Google Pay payments, the payment interface described in this
 ## Workflow
 
 Generally, the following workflow is relevant when one-step purchases are processed with the use of SDK UI for Android.
-![](https://developers.ecommpay.com/en/images/sdk/android/en_sdk_ui_core_functional.svg)
+![](https://developers.etoplatezhi.com/en/images/sdk/android/en_sdk_ui_core_functional.svg)
 
 1. In the user interface of a mobile application, the customer initiates a purchase by clicking the payment button or in a different fashion set up on the merchant side.
 2. In the mobile application, a set of parameters for creating a payment session is generated. Then, with the help of SDK UI for Android, this set is converted into a string for signing, and the string is sent to the server side of the merchant web service.
@@ -275,29 +275,29 @@ Generally, the following workflow is relevant when one-step purchases are proces
 
 ## Interface
 
-When card and Google Pay payments are processed, the customer interacts with the user interface designed by the  ecommpay specialists. This user interface can be customised: you can change its colour and add your company's logo.
+When card and Google Pay payments are processed, the customer interacts with the user interface designed by the  etoplatezhi specialists. This user interface can be customised: you can change its colour and add your company's logo.
 
-![](https://developers.ecommpay.com/en/images/sdk/android/all_sdk_ui_core_design_color.png)
+![](https://developers.etoplatezhi.com/en/images/sdk/android/all_sdk_ui_core_design_color.png)
 
 ## Setup
 
-To integrate the web service with the [Ecommpay](https://ecommpay.com/)  payment platform by using SDK UI for Android:
+To integrate the web service with the [Etoedto](https://etoplatezhi.com/)  payment platform by using SDK UI for Android:
 
-1. Address the following organisational issues of interaction with  ecommpay:
-    1. If your company has not obtained a project identifier and a secret key for interacting with  ecommpay, submit the application for connecting to the  ecommpay  payment platform.
-    2. If your company has obtained a project identifier and a secret key for interacting with  ecommpay, inform the technical support specialists about the company's intention to integrate by using SDK UI for Android and coordinate the procedure of testing and launching the functionality.
+1. Address the following organisational issues of interaction with  etoplatezhi:
+    1. If your company has not obtained a project identifier and a secret key for interacting with  etoplatezhi, submit the application for connecting to the  etoplatezhi  payment platform.
+    2. If your company has obtained a project identifier and a secret key for interacting with  etoplatezhi, inform the technical support specialists about the company's intention to integrate by using SDK UI for Android and coordinate the procedure of testing and launching the functionality.
 2. Complete the following preliminary technical steps:
     1. Download and link the SDK UI for Android libraries.
     2. Ensure the collection of data necessary for opening the payment form. The minimum data set needed in order to open the payment form consists of the project, payment, and customer identifiers as well as of the payment amount and currency.
     3. Ensure signature generation for the data on the server side of the mobile application.
     4. Ensure the receipt of and the response to the notifications from SDK UI for Android as well as the receipt of and the response to the callbacks from the payment platform on the web service side.
 3. With the technical support specialists, coordinate the timeline and the main steps of integrating, testing (including testing available payment methods), and launching the solution.
-    1. For testing, use the test project identifier and the details of  [test cards](https://developers.ecommpay.com/en/en_PP_TestCards.html).
-    2. For switching to the production mode, change the value of the test project identifier to the value of the production project identifier received from  ecommpay.
+    1. For testing, use the test project identifier and the details of  [test cards](https://developers.etoplatezhi.com/en/en_PP_TestCards.html).
+    2. For switching to the production mode, change the value of the test project identifier to the value of the production project identifier received from  etoplatezhi.
 
-If you have any questions about working with SDK UI for Android, contact the  ecommpay  technical support specialists ([support@ecommpay.com](mailto:support@ecommpay.com)).
+If you have any questions about working with SDK UI for Android, contact the  etoplatezhi  technical support specialists ([support@etoplatezhi.com](mailto:support@etoplatezhi.com)).
 
-For more detailed information see [docs](https://developers.ecommpay.com/en/en_sdk_ui_and_core_android.html#en_sdk_ui_and_core_android).
+For more detailed information see [docs](https://developers.etoplatezhi.com/en/en_sdk_ui_and_core_android.html#en_sdk_ui_and_core_android).
 
 ## Configuration Management
 

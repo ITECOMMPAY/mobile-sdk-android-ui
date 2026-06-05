@@ -11,12 +11,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.paymentpage.msdk.ui.LocalMainViewModel
-import com.paymentpage.msdk.ui.LocalPaymentMethodsViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.TestTagsConstants
-import com.paymentpage.msdk.ui.presentation.main.saleSbp
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.PaymentMethodAction
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
@@ -33,8 +30,6 @@ internal fun SbpPayItem(
     onToggleSelection: () -> Unit,
     onActionClicked: (PaymentMethodAction) -> Unit
 ) {
-    val mainViewModel = LocalMainViewModel.current
-    val paymentMethodsViewModel = LocalPaymentMethodsViewModel.current
     val paymentOptions = LocalPaymentOptions.current
 
     ExpandablePaymentMethodItem(
@@ -69,8 +64,6 @@ internal fun SbpPayItem(
                         method = method,
                     )
                 )
-                paymentMethodsViewModel.setCurrentMethod(method)
-                mainViewModel.saleSbp(method)
             }
         }
     }

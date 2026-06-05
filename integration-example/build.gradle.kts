@@ -7,9 +7,9 @@ val projectSecretKey = "123"
 val gPayMerchantId = "BCR2DN6TZ75OBLTH"
 
 android {
-    namespace = "com.ecommpay.msdk.ui.integration.example"
+    namespace = "ru.etoplatezhi.msdk.ui.integration.example"
     defaultConfig {
-        applicationId = "com.ecommpay.msdk.ui.integration.example"
+        applicationId = "ru.etoplatezhi.msdk.ui.integration.example"
         versionName = System.getenv("SDK_VERSION_NAME") ?: Library.version
         versionCode = System.getenv("SDK_VERSION_CODE")?.toInt() ?: 1
     }
@@ -60,5 +60,5 @@ android {
 }
 dependencies {
     coreLibraryDesugaring(libs.tools.desugaring)
-    implementation(project(":mobile-sdk-android-ui-ecommpay"))
+    implementation(project(":mobile-sdk-android-ui-etoplatezhi"))
 }

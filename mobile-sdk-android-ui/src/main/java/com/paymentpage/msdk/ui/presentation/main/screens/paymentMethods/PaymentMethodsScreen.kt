@@ -65,6 +65,7 @@ internal fun PaymentMethodsScreen(
                 uiPaymentMethods = uiPaymentMethods,
                 onToggleMethodSelection = paymentMethodsViewModel::onPaymentMethodClick,
                 onActionClicked = { action ->
+                    action.method?.let(paymentMethodsViewModel::setCurrentMethod)
                     mainViewModel.onActionClicked(action, paymentOptions)
                 }
             )

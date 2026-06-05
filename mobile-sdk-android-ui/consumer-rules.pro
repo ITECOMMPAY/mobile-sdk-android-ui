@@ -4,9 +4,9 @@
 -keep, allowobfuscation, allowoptimization class * extends org.kodein.type.TypeReference
 -keep, allowobfuscation, allowoptimization class * extends org.kodein.type.JVMAbstractTypeToken$Companion$WrappingTest
 
--keep class com.ecommpay.msdk.ui.** { *; }
--keepclassmembers class com.ecommpay.msdk.ui.** { *; }
--keep interface com.ecommpay.msdk.ui.**
+-keep class ru.etoplatezhi.msdk.ui.** { *; }
+-keepclassmembers class ru.etoplatezhi.msdk.ui.** { *; }
+-keep interface ru.etoplatezhi.msdk.ui.**
 
 -keep class com.paymentpage.msdk.core.** { *; }
 -keepclassmembers class com.paymentpage.msdk.core.** { *; }
