@@ -94,7 +94,7 @@ internal sealed class UIPaymentMethod(
     data class UISbpQrPaymentMethod(
         override val index: Int,
         override val title: String,
-        override val logoUrl: String?,
+        override val logoUrl: String? = null,
         override val paymentMethod: PaymentMethod,
     ) : UIPaymentMethod() {
         override val id: String = paymentMethod.code

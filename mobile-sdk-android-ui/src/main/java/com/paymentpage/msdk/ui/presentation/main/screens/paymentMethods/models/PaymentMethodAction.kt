@@ -24,6 +24,10 @@ internal sealed interface PaymentMethodAction {
         override val method: UIPaymentMethod.UIApsPaymentMethod
     ) : PaymentMethodAction
 
+    data class ShowSbpQR(
+        override val method: UIPaymentMethod.UISbpQrPaymentMethod
+    ) : PaymentMethodAction
+
     data class ShowError(
         override val method: UIPaymentMethod? = null,
         val message: String

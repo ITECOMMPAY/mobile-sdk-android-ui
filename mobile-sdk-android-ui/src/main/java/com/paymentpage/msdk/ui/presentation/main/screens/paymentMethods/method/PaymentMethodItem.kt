@@ -66,13 +66,16 @@ internal fun PaymentMethodItem(
                 isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
                 isSelected = isSelected,
                 onToggleSelection = onToggleSelection,
-                onActionClicked = onActionClicked
+                onActionClicked = onActionClicked,
             )
         }
         is UIPaymentMethod.UISbpQrPaymentMethod -> {
             SbpPayItem(
                 method = method,
-                isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen
+                isOnlyOneMethodOnScreen = isOnlyOneMethodOnScreen,
+                isSelected = isSelected,
+                onToggleSelection = onToggleSelection,
+                onActionClicked = onActionClicked,
             )
         }
     }
