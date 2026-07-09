@@ -9,4 +9,5 @@ class EcmpRecipientInfo(
     val address: String? = null,
     val city: String? = null,
     val stateCode: String? = null,
+    val dayOfBirth: String? = null,
 )
