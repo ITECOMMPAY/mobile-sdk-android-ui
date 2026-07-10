@@ -8,3 +8,4 @@
 ## [3.10.3] - Fix unknown pan validation
 ## [3.10.4] - Implement proper PaymentActivity state handling after reconfiguration
 ## [3.11.0] - Global refactoring. Moving out payment method selection from UI
+## [3.11.1] - Add recipient day of birth. Implement Google Pay test environment forwarding
