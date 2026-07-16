@@ -1,6 +1,7 @@
 package com.ecommpay.ui.msdk.sample.ui.recipient
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -8,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ecommpay.ui.msdk.sample.domain.ui.base.viewUseCase
@@ -18,6 +20,7 @@ import com.ecommpay.ui.msdk.sample.domain.ui.recipient.RecipientViewUC
 import com.ecommpay.ui.msdk.sample.ui.base.ComposeViewState
 import com.ecommpay.ui.msdk.sample.ui.recipient.views.RecipientCheckbox
 import com.ecommpay.ui.msdk.sample.ui.recipient.views.RecipientTitle
+import com.paymentpage.msdk.ui.utils.MaskVisualTransformation
 
 @Composable
 internal fun RecipientState(
@@ -108,6 +111,24 @@ internal fun RecipientScreen(
         )
         Spacer(modifier = Modifier.size(padding))
         OutlinedTextField(
+            value = recipientData.dayOfBirth?.replace("-", "") ?: "",
+            onValueChange = {
+                val filteredValue = it.filter { char -> char.isDigit() }.take(DAY_OF_BIRTH_LENGTH)
+                intentListener(
+                    RecipientViewIntents.ChangeField(
+                        recipientData = recipientData.copy(
+                            dayOfBirth = filteredValue.formatDayOfBirth()
+                        )
+                    )
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(text = "Day of birth") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            visualTransformation = MaskVisualTransformation("##-##-####")
+        )
+        Spacer(modifier = Modifier.size(padding))
+        OutlinedTextField(
             value = recipientData.address ?: "",
             onValueChange = {
                 intentListener(
@@ -179,3 +200,18 @@ internal fun RecipientScreen(
         }
     }
 }
+
+private const val DAY_OF_BIRTH_LENGTH = 8
+
+private fun String.formatDayOfBirth(): String? =
+    if (isEmpty()) {
+        null
+    } else {
+        val day = take(2)
+        val month = drop(2).take(2)
+        val year = drop(4).take(4)
+
+        listOf(day, month, year)
+            .filter { it.isNotEmpty() }
+            .joinToString("-")
+    }

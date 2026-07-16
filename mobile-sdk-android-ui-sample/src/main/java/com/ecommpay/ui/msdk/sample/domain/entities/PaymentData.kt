@@ -20,4 +20,5 @@ data class PaymentData(
     val wsApiHost: String = BuildConfig.WS_API_HOST,
     val merchantId: String = "BCR2DN6TZ75OBLTH",
     val merchantName: String = "Example Merchant",
+    val isTestEnvironment: Boolean = false,
 )

@@ -11,5 +11,6 @@ internal fun RecipientData.map(): EcmpRecipientInfo = EcmpRecipientInfo(
     cardHolder = cardHolder,
     address = address,
     city = city,
-    stateCode = stateCode
+    stateCode = stateCode,
+    dayOfBirth = dayOfBirth
 )

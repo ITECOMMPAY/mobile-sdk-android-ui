@@ -76,6 +76,7 @@ internal fun EcmpRecipientInfo.map(): RecipientInfo =
         address = address,
         city = city,
         stateCode = stateCode,
+        dayOfBirth = dayOfBirth,
         firstName = null,
         lastName = null
     )

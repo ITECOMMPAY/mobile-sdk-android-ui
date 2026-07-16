@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ecommpay.ui.msdk.sample.domain.entities.PaymentData
 import com.ecommpay.ui.msdk.sample.domain.ui.main.MainViewIntents
+import com.ecommpay.ui.msdk.sample.ui.components.SDKCheckbox
 
 @Composable
 internal fun GooglePayFields(
@@ -51,6 +52,20 @@ internal fun GooglePayFields(
             label = { Text(text = "Merchant Name") }
         )
         Spacer(modifier = Modifier.size(10.dp))
+        SDKCheckbox(
+            modifier = Modifier
+                .testTag("googlePayTestEnvironmentCheckbox"),
+            text = "Test Environment",
+            isChecked = paymentData.isTestEnvironment,
+            onCheckedChange = {
+                intentListener(
+                    MainViewIntents.ChangeField(
+                        paymentData = paymentData.copy(isTestEnvironment = it)
+                    )
+                )
+            }
+        )
+        Spacer(modifier = Modifier.size(10.dp))
         Button(
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,7 +76,8 @@ internal fun GooglePayFields(
                     MainViewIntents.ChangeField(
                     paymentData = paymentData.copy(
                         merchantId = PaymentData().merchantId,
-                        merchantName = PaymentData().merchantName
+                        merchantName = PaymentData().merchantName,
+                        isTestEnvironment = PaymentData().isTestEnvironment
                     )
                 ))
             }

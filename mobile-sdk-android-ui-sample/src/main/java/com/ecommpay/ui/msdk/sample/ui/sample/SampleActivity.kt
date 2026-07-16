@@ -15,10 +15,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
-import com.ecommpay.ui.msdk.sample.BuildConfig
 import com.ecommpay.msdk.ui.EcmpPaymentInfo
 import com.ecommpay.msdk.ui.Ecommpay
 import com.ecommpay.msdk.ui.paymentOptions
+import com.ecommpay.ui.msdk.sample.BuildConfig
 import com.ecommpay.ui.msdk.sample.R
 import com.ecommpay.ui.msdk.sample.data.ProcessRepository
 import com.ecommpay.ui.msdk.sample.domain.mappers.map
@@ -41,8 +41,10 @@ class SampleActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        isPaymentFlowInProgress = savedInstanceState?.getBoolean(KEY_IS_PAYMENT_FLOW_IN_PROGRESS) ?: false
-        shouldRestartPaymentAfterClose = savedInstanceState?.getBoolean(KEY_SHOULD_RESTART_AFTER_CLOSE) ?: false
+        isPaymentFlowInProgress =
+            savedInstanceState?.getBoolean(KEY_IS_PAYMENT_FLOW_IN_PROGRESS) ?: false
+        shouldRestartPaymentAfterClose =
+            savedInstanceState?.getBoolean(KEY_SHOULD_RESTART_AFTER_CLOSE) ?: false
         registerPaymentLauncher()
 
         viewUseCase = viewUseCase("Sample") { SampleViewUC() }
@@ -126,7 +128,7 @@ class SampleActivity : ComponentActivity() {
             //google pay configuration
             merchantId = repositoryPaymentData.merchantId
             merchantName = repositoryPaymentData.merchantName
-            isTestEnvironment = true
+            isTestEnvironment = repositoryPaymentData.isTestEnvironment
             //theme customization
 
             logoImage = ProcessRepository.bitmap ?: ResourcesCompat.getDrawable(
@@ -184,75 +186,75 @@ class SampleActivity : ComponentActivity() {
     private fun registerPaymentLauncher() {
         startActivityForResult?.unregister()
         startActivityForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            isPaymentFlowInProgress = false
-            val data = result.data
-            when (result.resultCode) {
-                Ecommpay.RESULT_SUCCESS -> {
-                    val payment = Json.decodeFromString<Payment?>(
-                        data?.getStringExtra(Ecommpay.EXTRA_PAYMENT).toString()
-                    )
-                    when {
-                        payment?.token != null -> {
-                            viewUseCase.pushIntent(
-                                SampleViewIntents.ShowMessage(
-                                    MessageUI.Dialogs.Info.SuccessTokenize(
-                                        payment.token!!
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                isPaymentFlowInProgress = false
+                val data = result.data
+                when (result.resultCode) {
+                    Ecommpay.RESULT_SUCCESS -> {
+                        val payment = Json.decodeFromString<Payment?>(
+                            data?.getStringExtra(Ecommpay.EXTRA_PAYMENT).toString()
+                        )
+                        when {
+                            payment?.token != null -> {
+                                viewUseCase.pushIntent(
+                                    SampleViewIntents.ShowMessage(
+                                        MessageUI.Dialogs.Info.SuccessTokenize(
+                                            payment.token!!
+                                        )
                                     )
                                 )
-                            )
-                        }
+                            }
 
-                        else -> {
-                            viewUseCase.pushIntent(
-                                SampleViewIntents.ShowMessage(
-                                    MessageUI.Dialogs.Info.Success(
-                                        "Your payment is successful"
+                            else -> {
+                                viewUseCase.pushIntent(
+                                    SampleViewIntents.ShowMessage(
+                                        MessageUI.Dialogs.Info.Success(
+                                            "Your payment is successful"
+                                        )
                                     )
                                 )
-                            )
+                            }
                         }
+                    }
+
+                    Ecommpay.RESULT_CANCELLED -> {
+                        viewUseCase.pushIntent(
+                            SampleViewIntents.ShowMessage(
+                                MessageUI.Dialogs.Info.Cancelled(
+                                    "You cancelled the payment"
+                                )
+                            )
+                        )
+                    }
+
+                    Ecommpay.RESULT_DECLINE -> {
+                        viewUseCase.pushIntent(
+                            SampleViewIntents.ShowMessage(
+                                MessageUI.Dialogs.Info.Decline(
+                                    "Your payment was declined"
+                                )
+                            )
+                        )
+                    }
+
+                    Ecommpay.RESULT_ERROR -> {
+                        val errorCode = data?.getStringExtra(Ecommpay.EXTRA_ERROR_CODE)
+                        val message = data?.getStringExtra(Ecommpay.EXTRA_ERROR_MESSAGE)
+                        viewUseCase.pushIntent(
+                            SampleViewIntents.ShowMessage(
+                                MessageUI.Dialogs.Info.Error(
+                                    "Error code: $errorCode\nMessage: $message"
+                                )
+                            )
+                        )
                     }
                 }
 
-                Ecommpay.RESULT_CANCELLED -> {
-                    viewUseCase.pushIntent(
-                        SampleViewIntents.ShowMessage(
-                            MessageUI.Dialogs.Info.Cancelled(
-                                "You cancelled the payment"
-                            )
-                        )
-                    )
-                }
-
-                Ecommpay.RESULT_DECLINE -> {
-                    viewUseCase.pushIntent(
-                        SampleViewIntents.ShowMessage(
-                            MessageUI.Dialogs.Info.Decline(
-                                "Your payment was declined"
-                            )
-                        )
-                    )
-                }
-
-                Ecommpay.RESULT_ERROR -> {
-                    val errorCode = data?.getStringExtra(Ecommpay.EXTRA_ERROR_CODE)
-                    val message = data?.getStringExtra(Ecommpay.EXTRA_ERROR_MESSAGE)
-                    viewUseCase.pushIntent(
-                        SampleViewIntents.ShowMessage(
-                            MessageUI.Dialogs.Info.Error(
-                                "Error code: $errorCode\nMessage: $message"
-                            )
-                        )
-                    )
+                if (shouldRestartPaymentAfterClose) {
+                    shouldRestartPaymentAfterClose = false
+                    startPaymentPage()
                 }
             }
-
-            if (shouldRestartPaymentAfterClose) {
-                shouldRestartPaymentAfterClose = false
-                startPaymentPage()
-            }
-        }
 
     }
 
