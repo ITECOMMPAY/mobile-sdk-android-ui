@@ -7,7 +7,7 @@ import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.TestTagsConstants
-import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
+import com.paymentpage.msdk.ui.paymentAmountInMajorUnits
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.button.SDKButton
@@ -27,7 +27,7 @@ internal fun CustomerFieldsButton(
                 modifier = Modifier
                     .testTag(TestTagsConstants.PAY_BUTTON),
                 payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
-                amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
+                amount = paymentAmountInMajorUnits(),
                 currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                 isEnabled = isEnabled,
                 onClick = onClick

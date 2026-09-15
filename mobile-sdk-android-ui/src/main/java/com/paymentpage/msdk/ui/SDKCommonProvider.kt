@@ -10,6 +10,7 @@ import com.paymentpage.msdk.ui.core.PayInteractorProxyImpl
 import com.paymentpage.msdk.ui.presentation.init.InitViewModel
 import com.paymentpage.msdk.ui.presentation.main.MainViewModel
 import com.paymentpage.msdk.ui.presentation.main.PaymentMethodsViewModel
+import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.viewModelFactory
 
 internal val LocalPaymentOptions =
@@ -26,6 +27,11 @@ internal val LocalInitViewModel =
 
 internal val LocalPaymentMethodsViewModel =
     compositionLocalOf<PaymentMethodsViewModel> { error("No LocalPaymentMethodsViewModel found!") }
+
+@Composable
+internal fun paymentAmountInMajorUnits(): String =
+    LocalMsdkSession.current.getPaymentAmountInMajorUnits()
+        ?: LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins()
 
 
 @Composable

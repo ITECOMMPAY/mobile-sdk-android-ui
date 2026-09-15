@@ -19,6 +19,7 @@ import com.paymentpage.msdk.core.googlePay.GooglePayHelper
 import com.paymentpage.msdk.ui.LocalMainViewModel
 import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.PaymentActivity
+import com.paymentpage.msdk.ui.paymentAmountInMajorUnits
 import com.paymentpage.msdk.ui.googlePay.GooglePayActivityContract
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.method.expandable.ExpandablePaymentMethodItem
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.PaymentMethodAction
@@ -52,6 +53,7 @@ internal fun GooglePayItem(
 
     val merchantId = paymentOptions.merchantId
     val merchantName = paymentOptions.merchantName
+    val paymentAmount = paymentAmountInMajorUnits()
     var isGooglePayAvailable by remember { mutableStateOf(isForcePaymentMethod) }
     var isGooglePayOpened by remember { mutableStateOf(false) }
     val googlePayHelper = GooglePayHelper(
@@ -101,7 +103,7 @@ internal fun GooglePayItem(
                 merchantId = merchantId,
                 merchantName = merchantName,
                 merchantEnvironment = paymentOptions.merchantEnvironment,
-                amount = paymentOptions.paymentInfo.paymentAmount,
+                amount = paymentAmount,
                 currency = paymentOptions.paymentInfo.paymentCurrency,
                 allowedCardNetworks = ArrayList(method.paymentMethod.availableCardTypes)
             )

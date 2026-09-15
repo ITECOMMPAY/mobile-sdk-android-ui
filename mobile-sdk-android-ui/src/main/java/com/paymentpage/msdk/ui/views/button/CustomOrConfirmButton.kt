@@ -9,9 +9,9 @@ import com.paymentpage.msdk.ui.LocalPaymentOptions
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.TestTagsConstants
+import com.paymentpage.msdk.ui.paymentAmountInMajorUnits
 import com.paymentpage.msdk.ui.base.Constants.COUNT_OF_VISIBLE_CUSTOMER_FIELDS
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.models.UIPaymentMethod
-import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.*
 import com.paymentpage.msdk.ui.views.recurring.RecurringAgreements
 
@@ -47,7 +47,7 @@ internal fun CustomOrConfirmButton(
                     modifier = Modifier
                         .testTag("$testTagPrefix${TestTagsConstants.PAY_BUTTON}"),
                     payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
-                    amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
+                    amount = paymentAmountInMajorUnits(),
                     currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                     isEnabled = isValid && isValidCustomerFields
                 ) {
@@ -80,7 +80,7 @@ internal fun CustomOrConfirmButton(
                     modifier = Modifier
                         .testTag("$testTagPrefix${TestTagsConstants.PAY_BUTTON}"),
                     payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
-                    amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
+                    amount = paymentAmountInMajorUnits(),
                     currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                     isEnabled = isValid
                 ) {

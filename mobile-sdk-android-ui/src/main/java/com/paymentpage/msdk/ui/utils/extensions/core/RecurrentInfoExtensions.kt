@@ -32,22 +32,23 @@ internal fun RecurrentInfo.periodUI(): String? =
     else null
 
 
-internal fun RecurrentInfo.amountUI(paymentInfo: PaymentInfo): String =
+internal fun RecurrentInfo.amountUI(paymentInfo: PaymentInfo, currencyExponent: Int?): String =
     if (this.amount == null)
-        "${paymentInfo.paymentAmount.amountToCoins()} ${paymentInfo.paymentCurrency.uppercase().toCurrencySign()}"
+        "${paymentInfo.paymentAmount.amountToCoins(currencyExponent)} ${paymentInfo.paymentCurrency.uppercase().toCurrencySign()}"
     else
-        "${this.amount.amountToCoins()} ${paymentInfo.paymentCurrency.uppercase().toCurrencySign()}"
+        "${this.amount.amountToCoins(currencyExponent)} ${paymentInfo.paymentCurrency.uppercase().toCurrencySign()}"
 
 internal fun RecurrentInfo.chargedAmountUI(
     actionType: SDKActionType,
-    paymentInfo: PaymentInfo
+    paymentInfo: PaymentInfo,
+    currencyExponent: Int?
 ): String? =
     if (
         this.typeUI() == RecurrentTypeUI.REGULAR &&
         actionType == SDKActionType.Verify &&
         this.periodUI() != null
     )
-        "0.00 ${paymentInfo.paymentCurrency.uppercase().toCurrencySign()}"
+        "${0L.amountToCoins(currencyExponent)} ${paymentInfo.paymentCurrency.uppercase().toCurrencySign()}"
     else
         null
 

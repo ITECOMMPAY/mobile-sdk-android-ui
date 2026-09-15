@@ -13,7 +13,6 @@ import com.paymentpage.msdk.core.domain.entities.customer.CustomerField
 import com.paymentpage.msdk.ui.*
 import com.paymentpage.msdk.ui.presentation.main.sendClarificationFields
 import com.paymentpage.msdk.ui.theme.SDKTheme
-import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.views.button.PayButton
 import com.paymentpage.msdk.ui.views.button.SDKButton
@@ -82,7 +81,7 @@ internal fun ClarificationFieldsScreen(
                     modifier = Modifier
                         .testTag(TestTagsConstants.PAY_BUTTON),
                     payLabel = getStringOverride(OverridesKeys.BUTTON_PAY),
-                    amount = LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins(),
+                    amount = paymentAmountInMajorUnits(),
                     currency = LocalPaymentOptions.current.paymentInfo.paymentCurrency.uppercase(),
                     isEnabled = isClarificationFieldsValid
                 ) {
