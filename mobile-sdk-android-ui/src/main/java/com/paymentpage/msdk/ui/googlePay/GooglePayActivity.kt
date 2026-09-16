@@ -12,7 +12,6 @@ import com.paymentpage.msdk.core.googlePay.GooglePayHelper
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.base.Constants
 import org.json.JSONObject
-import java.math.BigDecimal
 
 internal class GooglePayActivity : AppCompatActivity() {
     private lateinit var googlePayHelper: GooglePayHelper
@@ -24,7 +23,7 @@ internal class GooglePayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_pay)
 
-        val amount = intent.extras?.getLong(GooglePayActivityContract.EXTRA_AMOUNT)
+        val amount = intent.extras?.getString(GooglePayActivityContract.EXTRA_AMOUNT)
         val currency = intent.extras?.getString(GooglePayActivityContract.EXTRA_CURRENCY)
         val merchantName = intent.extras?.getString(GooglePayActivityContract.EXTRA_MERCHANT_NAME)
         val merchantId = intent.extras?.getString(GooglePayActivityContract.EXTRA_MERCHANT_ID)
@@ -56,11 +55,11 @@ internal class GooglePayActivity : AppCompatActivity() {
         }
     }
 
-    private fun setGooglePayAvailable(available: Boolean, amount: Long, currency: String) {
+    private fun setGooglePayAvailable(available: Boolean, amount: String, currency: String) {
         if (available) {
             val googleJson =
                 googlePayHelper.createPaymentDataRequest(
-                    BigDecimal.valueOf(amount / 100.0),
+                    amount,
                     currency
                 ).toString()
             val gpayRequest = PaymentDataRequest.fromJson(googleJson)

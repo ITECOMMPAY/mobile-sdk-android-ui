@@ -45,6 +45,7 @@ import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.R
 import com.paymentpage.msdk.ui.SDKActionType
 import com.paymentpage.msdk.ui.TestTagsConstants
+import com.paymentpage.msdk.ui.paymentAmountInMajorUnits
 import com.paymentpage.msdk.ui.base.Constants.DEFAULT_LANGUAGE
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.detail.PaymentDetailsContent
 import com.paymentpage.msdk.ui.presentation.main.screens.paymentMethods.table.RecurrentInfoTable
@@ -52,7 +53,6 @@ import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.theme.SohneBreitFamily
 import com.paymentpage.msdk.ui.theme.defaults.SdkColorDefaults
 import com.paymentpage.msdk.ui.theme.selectColor
-import com.paymentpage.msdk.ui.utils.extensions.amountToCoins
 import com.paymentpage.msdk.ui.utils.extensions.core.RecurrentTypeUI
 import com.paymentpage.msdk.ui.utils.extensions.core.getStringOverride
 import com.paymentpage.msdk.ui.utils.extensions.core.isShowRecurringUI
@@ -209,7 +209,7 @@ internal fun ExpandablePaymentOverview(
 
                     else -> {
                         val coinsText =
-                            LocalPaymentOptions.current.paymentInfo.paymentAmount.amountToCoins()
+                            paymentAmountInMajorUnits()
                         val currencyText =
                             paymentOptions.paymentInfo.paymentCurrency.toCurrencySign()
 

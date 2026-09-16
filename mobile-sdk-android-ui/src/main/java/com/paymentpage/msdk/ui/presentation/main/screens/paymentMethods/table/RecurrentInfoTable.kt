@@ -9,6 +9,7 @@ import com.paymentpage.msdk.core.domain.entities.PaymentInfo
 import com.paymentpage.msdk.core.domain.entities.RecurrentInfo
 import com.paymentpage.msdk.ui.OverridesKeys
 import com.paymentpage.msdk.ui.SDKActionType
+import com.paymentpage.msdk.ui.LocalMsdkSession
 import com.paymentpage.msdk.ui.theme.SDKTheme
 import com.paymentpage.msdk.ui.utils.extensions.core.amountUI
 import com.paymentpage.msdk.ui.utils.extensions.core.chargedAmountUI
@@ -32,6 +33,7 @@ internal fun RecurrentInfoTable(
 
     val languageCode = paymentInfo.languageCode
     val regionCode = paymentInfo.regionCode
+    val currencyExponent = LocalMsdkSession.current.getCurrencyExponent()
 
     val locale = when {
         !languageCode.isNullOrEmpty() && !regionCode.isNullOrEmpty() -> Locale(languageCode, regionCode)
@@ -43,7 +45,8 @@ internal fun RecurrentInfoTable(
     val recurringChargedRightNowLabel = getStringOverride(OverridesKeys.RECURRING_CHARGED_RIGHT_NOW)
     val recurringChargedRightNowValue = recurrentInfo.chargedAmountUI(
         actionType = actionType,
-        paymentInfo = paymentInfo
+        paymentInfo = paymentInfo,
+        currencyExponent = currencyExponent
     )
 
     //recurring period
@@ -56,7 +59,7 @@ internal fun RecurrentInfoTable(
 
     //recurring amount
     val recurringAmountLabel = getStringOverride(OverridesKeys.RECURRING_AMOUNT)
-    val recurringAmountValue = recurrentInfo.amountUI(paymentInfo)
+    val recurringAmountValue = recurrentInfo.amountUI(paymentInfo, currencyExponent)
 
     //recurring expiry date
     val recurringExpiryDateLabel = getStringOverride(OverridesKeys.RECURRING_TYPE_EXPIRY_DATE)

@@ -46,7 +46,7 @@ internal class GooglePayActivityContract :
         val merchantId: String,
         val merchantName: String,
         val merchantEnvironment: GooglePayEnvironment = GooglePayEnvironment.TEST,
-        val amount: Long,
+        val amount: String,
         val currency: String,
         val allowedCardNetworks: ArrayList<String>
     )
